@@ -36,15 +36,18 @@
     .button-light:hover { color:var(--green-dark); background:#f2d879; }
     .mobile-menu { display:none; border:0; color:var(--green); background:transparent; font:700 14px var(--sans); cursor:pointer; }
 
-    .hero { display:grid; grid-template-columns:1.06fr .94fr; min-height:610px; overflow:hidden; background:#fff; }
-    .hero-copy { display:flex; flex-direction:column; justify-content:center; padding:52px max(30px,calc((100vw - 1180px)/2)) 52px max(30px,calc((100vw - 1180px)/2)); }
+    .hero { display:grid; grid-template-columns:1.06fr .94fr; min-height:575px; overflow:hidden; background:#fff; }
+    .hero-copy { display:flex; flex-direction:column; justify-content:center; padding:42px max(30px,calc((100vw - 1180px)/2)) 42px max(30px,calc((100vw - 1180px)/2)); }
     .eyebrow { margin:0 0 18px; color:var(--green); font-size:12px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; }
     h1,h2,h3,p { margin-top:0; }
-    h1 { max-width:690px; margin-bottom:23px; color:var(--green); font:700 clamp(39px,3.75vw,54px)/1.09 var(--serif); letter-spacing:-.045em; }
-    .lead { max-width:610px; margin-bottom:22px; color:#425147; font-size:17px; line-height:1.53; }
-    .hero-points { display:grid; gap:7px; margin:0 0 25px; padding:0; color:#34483c; font-size:15px; font-weight:600; line-height:1.42; list-style:none; }
+    h1 { max-width:650px; margin-bottom:17px; color:var(--green); font:700 clamp(33px,3.05vw,44px)/1.1 var(--serif); letter-spacing:-.04em; }
+    .lead { max-width:610px; margin-bottom:17px; color:#425147; font-size:16px; line-height:1.5; }
+    .hero-points { display:grid; gap:6px; margin:0 0 20px; padding:0; color:#34483c; font-size:14px; font-weight:600; line-height:1.4; list-style:none; }
     .hero-points li::before { content:'✓'; display:inline-grid; width:20px; height:20px; place-items:center; margin-right:8px; color:var(--green-dark); background:var(--gold); border-radius:50%; font-size:12px; font-weight:900; vertical-align:1px; }
-    .trust-row { display:flex; align-items:center; gap:13px; margin:13px 0 0; color:var(--mute); font-size:13px; line-height:1.4; }
+    .hero-quote { display:flex; flex-direction:column; align-items:flex-start; }
+    .hero-quote .button { min-width:min(100%,356px); min-height:68px; padding:0 28px; color:var(--green-dark); background:var(--gold); box-shadow:0 8px 0 #d2ae38, 0 15px 28px rgba(23,61,45,.16); font-size:19px; }
+    .hero-quote .button:hover { color:var(--green-dark); background:#f2d879; transform:translateY(-2px); box-shadow:0 10px 0 #d2ae38, 0 18px 30px rgba(23,61,45,.18); }
+    .trust-row { display:flex; align-items:center; gap:13px; margin:17px 0 0; color:var(--mute); font-size:13px; line-height:1.4; }
     .ticks { display:flex; gap:2px; color:#cb9d11; font-size:16px; letter-spacing:-.06em; white-space:nowrap; }
     .hero-photo { position:relative; min-height:400px; overflow:hidden; }
     .hero-photo img { width:100%; height:100%; object-fit:cover; object-position:61% center; }
@@ -114,10 +117,10 @@
     .footer-links { display:flex; gap:19px; }
 
     @media (max-width:850px) {
-      .navlinks { gap:16px; } .hero { grid-template-columns:1fr; } .hero-copy { min-height:520px; padding:52px max(21px,calc((100vw - 680px)/2)); } .hero-photo { min-height:440px; } .problems { grid-template-columns:1fr; max-width:570px; margin-left:auto; margin-right:auto; } .solution-grid,.faq-grid { grid-template-columns:1fr; gap:35px; } .service-top { grid-template-columns:1fr; } .service-grid { grid-template-columns:1fr 1fr; } .feature { grid-template-columns:1fr; } .feature-image { min-height:430px; } .occasion-grid { grid-template-columns:1fr 1fr; } .cta-wrap { grid-template-columns:1fr; }
+      .navlinks { gap:16px; } .hero { grid-template-columns:1fr; } .hero-copy { min-height:490px; padding:43px max(21px,calc((100vw - 680px)/2)); } .hero-photo { min-height:440px; } .problems { grid-template-columns:1fr; max-width:570px; margin-left:auto; margin-right:auto; } .solution-grid,.faq-grid { grid-template-columns:1fr; gap:35px; } .service-top { grid-template-columns:1fr; } .service-grid { grid-template-columns:1fr 1fr; } .feature { grid-template-columns:1fr; } .feature-image { min-height:430px; } .occasion-grid { grid-template-columns:1fr 1fr; } .cta-wrap { grid-template-columns:1fr; }
     }
     @media (max-width:600px) {
-      .wrap { width:min(100% - 32px,1180px); } .topbar { font-size:10px; } .nav { min-height:67px; } .logo { font-size:20px; } .mobile-menu { display:block; } .navlinks { display:none; } .navlinks.open { position:absolute; z-index:5; top:67px; left:0; right:0; display:flex; flex-direction:column; align-items:stretch; gap:0; padding:13px 16px 18px; background:#fff; border-bottom:1px solid var(--line); } .navlinks.open a { padding:12px 0; } .navlinks.open .nav-button { margin-top:7px; } .hero-copy { min-height:510px; padding:43px 16px; } h1 { font-size:39px; } .lead { font-size:16px; } .hero-points { margin-bottom:21px; font-size:14px; } .trust-row { align-items:flex-start; } .hero-photo { min-height:320px; } .hero-tag { right:16px; bottom:16px; font-size:12px; } .intro,.solution,.service,.occasions,.faq,.cta { padding:70px 0; } .section-title { font-size:37px; } .benefits,.service-grid,.occasion-grid { grid-template-columns:1fr; } .service-item { min-height:185px; } .service-icon { margin-bottom:32px; } .feature-image { min-height:315px; } .feature-content { padding:59px 16px; } .faq-grid { gap:31px; } .cta .button { width:100%; } .footer-grid { flex-direction:column; } .footer-links { flex-wrap:wrap; }
+      .wrap { width:min(100% - 32px,1180px); } .topbar { font-size:10px; } .nav { min-height:67px; } .logo { font-size:20px; } .mobile-menu { display:block; } .navlinks { display:none; } .navlinks.open { position:absolute; z-index:5; top:67px; left:0; right:0; display:flex; flex-direction:column; align-items:stretch; gap:0; padding:13px 16px 18px; background:#fff; border-bottom:1px solid var(--line); } .navlinks.open a { padding:12px 0; } .navlinks.open .nav-button { margin-top:7px; } .hero-copy { min-height:480px; padding:38px 16px; } h1 { font-size:34px; } .lead { font-size:15px; } .hero-points { margin-bottom:18px; font-size:13px; } .hero-quote .button { width:100%; min-height:63px; font-size:17px; } .trust-row { align-items:flex-start; margin-top:15px; } .hero-photo { min-height:320px; } .hero-tag { right:16px; bottom:16px; font-size:12px; } .intro,.solution,.service,.occasions,.faq,.cta { padding:70px 0; } .section-title { font-size:37px; } .benefits,.service-grid,.occasion-grid { grid-template-columns:1fr; } .service-item { min-height:185px; } .service-icon { margin-bottom:32px; } .feature-image { min-height:315px; } .feature-content { padding:59px 16px; } .faq-grid { gap:31px; } .cta .button { width:100%; } .footer-grid { flex-direction:column; } .footer-links { flex-wrap:wrap; }
     }
   </style>
 </head>
@@ -141,9 +144,7 @@
         <h1 id="title" data-content="hero.titre">Service de café événementiel, baristas et bars à café mobiles.</h1>
         <p class="lead" data-content="hero.texte">EYWA facilite l'organisation d'un coffee bar haut de gamme sur votre événement. Baristas professionnels, bar à café mobile soigné, boissons préparées minute et service attentionné : vos invités vivent une expérience café dont ils se souviennent.</p>
         <ul class="hero-points"><li>Des baristas professionnels et attentifs</li><li>Un bar à café mobile élégant et installé par nos soins</li><li>Café, lattes, cold brew et matcha, chauds ou glacés</li></ul>
-        <div><a class="button" href="devis-instantane.html"><span data-content="hero.bouton">Obtenir mon devis instantané</span> <span aria-hidden="true">→</span></a></div>
-        <div class="trust-row"><span data-content="hero.sous_bouton">Tarif personnalisé gratuit · Vérifiez la disponibilité de votre date.</span></div>
-        <div class="trust-row"><span class="ticks" aria-hidden="true">★★★★★</span><span data-content="hero.avis">5,0 · Catherine C.</span></div>
+        <div class="hero-quote"><a class="button" href="devis-instantane.html"><span data-content="hero.bouton">Obtenir mon devis instantané</span> <span aria-hidden="true">→</span></a><div class="trust-row"><span data-content="hero.sous_bouton">Tarif personnalisé gratuit · Vérifiez la disponibilité de votre date.</span></div><div class="trust-row"><span class="ticks" aria-hidden="true">★★★★★</span><span data-content="hero.avis">5,0 · Catherine C.</span></div></div>
       </div>
       <div class="hero-photo"><img src="assets/eywa-hero.png" alt="Bar à café mobile EYWA servant matcha, latte glacé et cold brew lors d'un événement" data-content-image="hero.photo" data-content-alt="hero.alt_photo"><div class="hero-tag" data-content="hero.etiquette_photo">Espresso, lattes, cold brew, cafés glacés et matcha préparés à la demande.</div></div>
     </section>
