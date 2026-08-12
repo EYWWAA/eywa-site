@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Bar à boissons, baristas et bar mobile pour vos événements à Charleville-Mézières et alentours. Obtenez votre devis EYWA en quelques minutes.">
+  <meta name="theme-color" content="#173d2d">
+  <title>EYWA | Bar à boissons et baristas pour vos événements</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&amp;family=Fraunces:opsz,wght@9..144,600;9..144,700&amp;display=swap" rel="stylesheet">
+  <style>
+    :root { --green:#173d2d; --green-dark:#0e2a1e; --green-soft:#eaf2ec; --cream:#f8f6f1; --sand:#ece6dc; --gold:#e9c85f; --ink:#19271e; --mute:#66736b; --line:#d9ddd6; --white:#fff; --sans:'DM Sans',Arial,sans-serif; --serif:'Fraunces',Georgia,serif; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); background:var(--cream); font-family:var(--sans); }
+    a { color:inherit; text-decoration:none; }
+    .wrap { width:min(1180px,calc(100% - 42px)); margin:auto; }
+    .topbar { padding:10px 16px; text-align:center; color:#fff; background:var(--green-dark); font-size:12px; font-weight:600; letter-spacing:.035em; }
+    .nav { min-height:81px; display:flex; align-items:center; justify-content:space-between; gap:25px; background:var(--cream); }
+    .logo { color:var(--green); font-size:23px; font-weight:700; letter-spacing:.19em; }
+    .navlinks { display:flex; align-items:center; gap:27px; font-size:14px; font-weight:600; }
+    .navlinks a:not(.nav-button):hover { color:var(--green); text-decoration:underline; text-underline-offset:4px; }
+    .nav-button,.button { display:inline-flex; align-items:center; justify-content:center; gap:9px; border:0; border-radius:8px; background:var(--green); color:white; cursor:pointer; font-family:inherit; font-size:15px; font-weight:700; line-height:1; transition:transform .16s, background .16s; }
+    .nav-button { min-height:43px; padding:0 16px; font-size:13px; }
+    .button { min-height:55px; padding:0 23px; }
+    .button:hover,.nav-button:hover { background:var(--green-dark); transform:translateY(-1px); }
+    .button-light { color:var(--green-dark); background:var(--gold); }
+    .button-light:hover { color:var(--green-dark); background:#f2d879; }
+    .mobile-menu { display:none; border:0; color:var(--green); background:transparent; font:700 14px var(--sans); cursor:pointer; }
+
+    .hero { display:grid; grid-template-columns:1.01fr .99fr; min-height:610px; overflow:hidden; background:#fff; }
+    .hero-copy { display:flex; flex-direction:column; justify-content:center; padding:70px max(30px,calc((100vw - 1180px)/2)) 70px max(30px,calc((100vw - 1180px)/2)); }
+    .eyebrow { margin:0 0 18px; color:var(--green); font-size:12px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; }
+    h1,h2,h3,p { margin-top:0; }
+    h1 { max-width:650px; margin-bottom:20px; color:var(--green); font:700 clamp(43px,5.2vw,72px)/1.04 var(--serif); letter-spacing:-.045em; }
+    .lead { max-width:590px; margin-bottom:29px; color:#425147; font-size:18px; line-height:1.58; }
+    .trust-row { display:flex; align-items:center; gap:13px; margin:21px 0 0; color:var(--mute); font-size:13px; line-height:1.4; }
+    .ticks { display:flex; gap:2px; color:#cb9d11; font-size:16px; letter-spacing:-.06em; white-space:nowrap; }
+    .hero-photo { position:relative; min-height:400px; overflow:hidden; }
+    .hero-photo img { width:100%; height:100%; object-fit:cover; object-position:61% center; }
+    .hero-tag { position:absolute; right:25px; bottom:25px; max-width:245px; padding:14px 16px; color:var(--green); background:var(--gold); border-radius:8px; font-size:13px; font-weight:700; line-height:1.35; }
+
+    .intro { padding:93px 0 83px; background:var(--cream); }
+    .section-title { max-width:760px; margin:0 auto 22px; color:var(--green); font:700 clamp(34px,4.3vw,54px)/1.07 var(--serif); text-align:center; letter-spacing:-.04em; }
+    .section-sub { max-width:650px; margin:0 auto; color:var(--mute); font-size:16px; line-height:1.62; text-align:center; }
+    .problems { display:grid; grid-template-columns:repeat(3,1fr); gap:17px; margin-top:48px; }
+    .problem { padding:25px; border:1px solid var(--line); border-radius:12px; background:#fff; }
+    .problem .mark { display:block; margin-bottom:19px; color:#ce5d47; font-size:26px; line-height:1; }
+    .problem h3 { margin-bottom:10px; color:var(--green); font-size:18px; line-height:1.3; }
+    .problem p { margin:0; color:var(--mute); font-size:14px; line-height:1.55; }
+
+    .solution { padding:93px 0; color:#fff; background:var(--green); }
+    .solution-grid { display:grid; grid-template-columns:.92fr 1.08fr; align-items:center; gap:72px; }
+    .solution h2 { max-width:520px; margin:0; font:700 clamp(38px,4.7vw,58px)/1.06 var(--serif); letter-spacing:-.045em; }
+    .solution .eyebrow { color:var(--gold); }
+    .benefits { display:grid; grid-template-columns:1fr 1fr; gap:18px 24px; }
+    .benefit { display:flex; align-items:flex-start; gap:11px; color:rgba(255,255,255,.88); font-size:15px; line-height:1.45; }
+    .check { display:grid; flex:0 0 23px; width:23px; height:23px; place-items:center; color:var(--green-dark); background:var(--gold); border-radius:50%; font-size:14px; font-weight:900; }
+
+    .service { padding:106px 0; background:#fff; }
+    .service-top { display:grid; grid-template-columns:1fr 390px; align-items:end; gap:36px; margin-bottom:44px; }
+    .service h2 { max-width:650px; margin:0; color:var(--green); font:700 clamp(36px,4.5vw,56px)/1.08 var(--serif); letter-spacing:-.045em; }
+    .service-top p { margin:0; color:var(--mute); font-size:16px; line-height:1.58; }
+    .service-grid { display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--line); border-left:1px solid var(--line); }
+    .service-item { min-height:232px; padding:24px 20px; border-right:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--cream); }
+    .service-icon { display:grid; width:43px; height:43px; place-items:center; margin-bottom:56px; color:var(--green); background:var(--green-soft); border-radius:50%; font-size:20px; }
+    .service-item h3 { margin-bottom:8px; color:var(--green); font-size:17px; }
+    .service-item p { margin:0; color:var(--mute); font-size:13px; line-height:1.5; }
+
+    .feature { display:grid; grid-template-columns:1fr 1fr; min-height:565px; color:#fff; background:var(--green-dark); }
+    .feature-image { min-height:390px; overflow:hidden; }
+    .feature-image img { width:100%; height:100%; object-fit:cover; object-position:62% center; }
+    .feature-content { display:flex; flex-direction:column; justify-content:center; align-items:flex-start; padding:68px clamp(32px,7vw,108px); }
+    .feature-content .eyebrow { color:var(--gold); }
+    .feature-content h2 { max-width:490px; margin-bottom:19px; font:700 clamp(36px,4.5vw,55px)/1.07 var(--serif); letter-spacing:-.045em; }
+    .feature-content p { max-width:460px; margin-bottom:29px; color:rgba(255,255,255,.76); font-size:16px; line-height:1.6; }
+
+    .occasions { padding:104px 0 111px; background:var(--cream); }
+    .occasion-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:13px; margin-top:47px; }
+    .occasion { min-height:176px; display:flex; align-items:flex-end; padding:21px; color:#fff; background:linear-gradient(140deg,#295944,#173d2d); border-radius:10px; font:700 24px/1.1 var(--serif); letter-spacing:-.025em; }
+    .occasion:nth-child(2) { color:var(--green); background:var(--gold); }
+    .occasion:nth-child(3) { background:#c35c42; }
+    .occasion:nth-child(4) { background:#879c63; }
+
+    .faq { padding:101px 0; background:#fff; }
+    .faq-grid { display:grid; grid-template-columns:.76fr 1.24fr; gap:75px; }
+    .faq h2 { margin:0; color:var(--green); font:700 clamp(38px,4.2vw,52px)/1.06 var(--serif); letter-spacing:-.045em; }
+    details { border-top:1px solid var(--line); }
+    details:last-child { border-bottom:1px solid var(--line); }
+    summary { display:flex; justify-content:space-between; gap:15px; padding:20px 0; color:var(--green); cursor:pointer; font-size:16px; font-weight:700; list-style:none; }
+    summary::-webkit-details-marker { display:none; }
+    summary::after { content:'+'; color:var(--orange); font-size:21px; line-height:.8; }
+    details[open] summary::after { content:'−'; }
+    details p { max-width:600px; padding:0 0 20px; margin:0; color:var(--mute); font-size:14px; line-height:1.6; }
+
+    .cta { padding:96px 0; color:#fff; background:#c35c42; }
+    .cta-wrap { display:grid; grid-template-columns:1fr auto; align-items:center; gap:35px; }
+    .cta h2 { max-width:760px; margin:0 0 13px; font:700 clamp(39px,4.6vw,58px)/1.05 var(--serif); letter-spacing:-.045em; }
+    .cta p { margin:0; color:rgba(255,255,255,.85); font-size:16px; }
+    .cta .button { white-space:nowrap; }
+    footer { padding:34px 0; color:rgba(255,255,255,.65); background:var(--green-dark); }
+    .footer-grid { display:flex; align-items:flex-start; justify-content:space-between; gap:30px; font-size:13px; line-height:1.5; }
+    .footer-brand { color:white; font-size:20px; font-weight:700; letter-spacing:.19em; }
+    .footer-links { display:flex; gap:19px; }
+
+    @media (max-width:850px) {
+      .navlinks { gap:16px; } .hero { grid-template-columns:1fr; } .hero-copy { min-height:500px; padding:78px max(21px,calc((100vw - 680px)/2)); } .hero-photo { min-height:440px; } .problems { grid-template-columns:1fr; max-width:570px; margin-left:auto; margin-right:auto; } .solution-grid,.faq-grid { grid-template-columns:1fr; gap:35px; } .service-top { grid-template-columns:1fr; } .service-grid { grid-template-columns:1fr 1fr; } .feature { grid-template-columns:1fr; } .feature-image { min-height:430px; } .occasion-grid { grid-template-columns:1fr 1fr; } .cta-wrap { grid-template-columns:1fr; }
+    }
+    @media (max-width:600px) {
+      .wrap { width:min(100% - 32px,1180px); } .topbar { font-size:10px; } .nav { min-height:67px; } .logo { font-size:20px; } .mobile-menu { display:block; } .navlinks { display:none; } .navlinks.open { position:absolute; z-index:5; top:67px; left:0; right:0; display:flex; flex-direction:column; align-items:stretch; gap:0; padding:13px 16px 18px; background:#fff; border-bottom:1px solid var(--line); } .navlinks.open a { padding:12px 0; } .navlinks.open .nav-button { margin-top:7px; } .hero-copy { min-height:492px; padding:62px 16px; } h1 { font-size:45px; } .lead { font-size:16px; } .trust-row { align-items:flex-start; } .hero-photo { min-height:320px; } .hero-tag { right:16px; bottom:16px; font-size:12px; } .intro,.solution,.service,.occasions,.faq,.cta { padding:70px 0; } .section-title { font-size:37px; } .benefits,.service-grid,.occasion-grid { grid-template-columns:1fr; } .service-item { min-height:185px; } .service-icon { margin-bottom:32px; } .feature-image { min-height:315px; } .feature-content { padding:59px 16px; } .faq-grid { gap:31px; } .cta .button { width:100%; } .footer-grid { flex-direction:column; } .footer-links { flex-wrap:wrap; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">Devis gratuit · Vérifiez votre date en quelques minutes · Charleville-Mézières et alentours</div>
+  <header class="wrap nav">
+    <a class="logo" href="#accueil" aria-label="EYWA, accueil">EYWA</a>
+    <button class="mobile-menu" type="button" aria-expanded="false" aria-controls="navlinks">Menu</button>
+    <nav class="navlinks" id="navlinks" aria-label="Navigation principale">
+      <a href="#services">Nos services</a>
+      <a href="#occasions">Vos événements</a>
+      <a href="#faq">Questions</a>
+      <a class="nav-button" href="devis-instantane.html">Obtenir mon devis <span aria-hidden="true">→</span></a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="accueil" aria-labelledby="title">
+      <div class="hero-copy">
+        <p class="eyebrow">Bar à boissons · Baristas · Bar mobile</p>
+        <h1 id="title">Un bar à boissons qui simplifie votre événement.</h1>
+        <p class="lead">EYWA apporte un bar mobile élégant, des boissons préparées minute et une équipe qui s'occupe de chaque détail, pour que vos invités passent un vrai bon moment.</p>
+        <div><a class="button" href="devis-instantane.html">Obtenir mon devis instantané <span aria-hidden="true">→</span></a></div>
+        <div class="trust-row"><span class="ticks" aria-hidden="true">★★★★★</span><span>Prix personnalisé, sans engagement. Nous confirmons votre disponibilité avant toute réservation.</span></div>
+      </div>
+      <div class="hero-photo"><img src="assets/eywa-hero.png" alt="Bar mobile EYWA servant matcha, thé glacé et cold brew lors d'un événement"><div class="hero-tag">Matcha, cold brew, thés glacés, jus frais et recettes sur mesure.</div></div>
+    </section>
+
+    <section class="intro" aria-labelledby="intro-title">
+      <div class="wrap">
+        <h2 class="section-title" id="intro-title">Votre événement compte. Vous ne devriez pas avoir à vous inquiéter des boissons.</h2>
+        <p class="section-sub">Un bar mal préparé ou un prestataire difficile à joindre peut compliquer toute l'organisation. EYWA est là pour que ce soit simple, clair et agréable du devis au dernier verre.</p>
+        <div class="problems">
+          <article class="problem"><span class="mark">×</span><h3>Une organisation floue</h3><p>Quand personne ne vous guide, chaque détail devient une source de stress avant le jour J.</p></article>
+          <article class="problem"><span class="mark">×</span><h3>Un menu trop limité</h3><p>Vos invités n'ont pas tous les mêmes goûts. Une offre réduite laisse forcément des personnes de côté.</p></article>
+          <article class="problem"><span class="mark">×</span><h3>Un service qui ne suit pas</h3><p>Une attente trop longue ou un bar improvisé peut faire retomber l'énergie de votre événement.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="solution" aria-labelledby="solution-title">
+      <div class="wrap solution-grid">
+        <div><p class="eyebrow">EYWA, c'est simple</p><h2 id="solution-title">Un bar mobile complet, pensé pour vous laisser l'esprit tranquille.</h2></div>
+        <div class="benefits">
+          <div class="benefit"><span class="check">✓</span><span>Obtenez une estimation adaptée à votre événement en quelques minutes.</span></div>
+          <div class="benefit"><span class="check">✓</span><span>Un interlocuteur vous accompagne pour choisir le menu et organiser le service.</span></div>
+          <div class="benefit"><span class="check">✓</span><span>Un bar élégant, installé et rangé par notre équipe.</span></div>
+          <div class="benefit"><span class="check">✓</span><span>Des recettes fraîches pour les amateurs de café comme pour ceux qui préfèrent le sans-caféine.</span></div>
+          <div class="benefit"><span class="check">✓</span><span>Un barista attentif qui sert vos invités avec fluidité et le sourire.</span></div>
+          <div class="benefit"><span class="check">✓</span><span>Des options de personnalisation pour adapter le bar à votre occasion.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="service" id="services" aria-labelledby="services-title">
+      <div class="wrap">
+        <div class="service-top"><h2 id="services-title">Tout ce qu'il faut pour servir vos invités.</h2><p>Nous réunissons le matériel, les boissons et le savoir-faire pour créer un service simple à réserver et mémorable à vivre.</p></div>
+        <div class="service-grid">
+          <article class="service-item"><div class="service-icon">☕</div><h3>Bar mobile</h3><p>Un comptoir soigné qui donne tout de suite une vraie présence à votre événement.</p></article>
+          <article class="service-item"><div class="service-icon">✦</div><h3>Barista EYWA</h3><p>Un service chaleureux, à l'aise avec les invités et attentif au rythme de votre journée.</p></article>
+          <article class="service-item"><div class="service-icon">◌</div><h3>Menu varié</h3><p>Matcha, cold brew, thés glacés, jus frais, alternatives sans caféine et options personnalisées.</p></article>
+          <article class="service-item"><div class="service-icon">✓</div><h3>Installation incluse</h3><p>Nous arrivons, installons, servons et remettons l'espace au propre après le service.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="feature" aria-labelledby="feature-title">
+      <div class="feature-image"><img src="assets/eywa-hero.png" alt="Boissons EYWA fraîches préparées à la minute"></div>
+      <div class="feature-content"><p class="eyebrow">Vos invités méritent mieux</p><h2 id="feature-title">Des boissons préparées comme dans un bon coffee shop, chez vous.</h2><p>Notre bar s'adapte aux mariages, fêtes privées, lancements et événements d'entreprise. Chaque détail est réglé avec vous en amont pour que le service soit naturel le jour J.</p><a class="button button-light" href="devis-instantane.html">Faire mon devis <span aria-hidden="true">→</span></a></div>
+    </section>
+
+    <section class="occasions" id="occasions" aria-labelledby="occasions-title">
+      <div class="wrap"><h2 class="section-title" id="occasions-title">Pour les moments qui méritent un peu plus qu'une boisson ordinaire.</h2><p class="section-sub">Une prestation modulable, de quelques dizaines à plusieurs centaines d'invités.</p><div class="occasion-grid"><article class="occasion">Mariages</article><article class="occasion">Événements d'entreprise</article><article class="occasion">Fêtes privées</article><article class="occasion">Lancements & pop-ups</article></div></div>
+    </section>
+
+    <section class="faq" id="faq" aria-labelledby="faq-title">
+      <div class="wrap faq-grid"><h2 id="faq-title">Les questions avant de réserver.</h2><div>
+        <details><summary>Comment obtenir un prix ?</summary><p>Commencez par le devis instantané. Vous renseignez votre date, votre lieu, le nombre d'invités et la durée souhaitée. Nous revenons ensuite vers vous pour confirmer les détails.</p></details>
+        <details><summary>Dans quelle zone intervenez-vous ?</summary><p>EYWA est basé près de Charleville-Mézières. Le déplacement est inclus jusqu'à 20 km, puis calculé simplement selon votre lieu. Indiquez votre ville dans le devis pour recevoir une estimation adaptée.</p></details>
+        <details><summary>Quelles boissons peut-on proposer ?</summary><p>Nous pouvons construire un menu autour du matcha, du cold brew, des thés glacés, des jus frais et d'alternatives sans caféine. Les recettes exactes sont définies avec vous.</p></details>
+        <details><summary>Que faut-il prévoir sur place ?</summary><p>Nous avons principalement besoin d'un espace pour le bar, d'un accès pratique pour l'installation et d'une prise électrique à proximité. Tout est détaillé avant la réservation.</p></details>
+      </div></div>
+    </section>
+
+    <section class="cta" aria-labelledby="cta-title"><div class="wrap cta-wrap"><div><h2 id="cta-title">Préparez votre événement sans perdre de temps.</h2><p>Votre devis est gratuit et sans engagement.</p></div><a class="button button-light" href="devis-instantane.html">Obtenir mon devis <span aria-hidden="true">→</span></a></div></section>
+  </main>
+
+  <footer><div class="wrap footer-grid"><div><div class="footer-brand">EYWA</div><div>Bars à boissons naturels pour vos événements</div></div><div class="footer-links"><a href="mailto:Louis.lepoulain08@gmail.com">Email</a><a href="tel:+33749902156">07 49 90 21 56</a><a href="devis-instantane.html">Devis</a></div><div>© 2026 EYWA</div></div></footer>
+  <script>
+    const mobileMenu = document.querySelector('.mobile-menu'); const navLinks = document.querySelector('.navlinks');
+    mobileMenu.addEventListener('click', () => { const open = navLinks.classList.toggle('open'); mobileMenu.setAttribute('aria-expanded', open); mobileMenu.textContent = open ? 'Fermer' : 'Menu'; });
+    navLinks.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => { navLinks.classList.remove('open'); mobileMenu.setAttribute('aria-expanded','false'); mobileMenu.textContent='Menu'; }));
+  </script>
+</body>
+</html>

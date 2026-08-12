@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EYWA — Obtenir un devis</title>
+  <style>
+    :root {
+      --green: #1a3d2b;
+      --green-light: #2d5c42;
+      --gold: #c8a951;
+      --cream: #f4f2ee;
+      --white: #ffffff;
+      --text: #1a1a1a;
+      --muted: #6b7280;
+      --border: #e5e2d9;
+      --radius: 10px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--cream); color: var(--text);
+      min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+    }
+    header {
+      width: 100%; text-align: center; padding: 2.75rem 1rem 2.25rem;
+      background: var(--green); position: relative; overflow: hidden;
+    }
+    header::before {
+      content: ''; position: absolute; inset: 0;
+      background: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&q=50&auto=format') center/cover no-repeat;
+      opacity: 0.16;
+    }
+    .brand-logo { position: relative; font-size: 34px; font-weight: 700; letter-spacing: 0.22em; color: #fff; text-transform: uppercase; }
+    .brand-tagline { position: relative; font-size: 13px; color: rgba(255,255,255,0.7); margin-top: 6px; letter-spacing: 0.07em; }
+    main { width: 100%; max-width: 560px; padding: 2rem 1.25rem 4rem; flex: 1; }
+    .form-card {
+      background: var(--white); border: 1.5px solid var(--border);
+      border-radius: 14px; padding: 1.75rem 1.5rem 1.5rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+    .dots-nav { display: none; align-items: center; gap: 7px; margin-bottom: 1.75rem; }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: #dddbd4; transition: all 0.3s; flex-shrink: 0; }
+    .dot.done { background: var(--green); }
+    .dot.active { background: var(--green); width: 24px; border-radius: 5px; }
+    .step { display: none; }
+    .step.active { display: block; animation: fadeUp 0.28s ease; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .question { font-size: 20px; font-weight: 700; line-height: 1.35; margin-bottom: 0.3rem; }
+    .question-sub { font-size: 13.5px; color: var(--muted); margin-bottom: 1.5rem; }
+
+    /* S1 Flashquotes */
+    .fq-title { font-size: 22px; font-weight: 800; line-height: 1.3; margin-bottom: 1.5rem; }
+    .fq-section { margin-bottom: 1.25rem; }
+    .fq-label { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; margin-bottom: 10px; }
+    .fq-divider { border: none; border-top: 1.5px solid var(--border); margin: 1.25rem 0; }
+    .fq-barista { display: flex; align-items: center; gap: 14px; margin-bottom: 1.5rem; }
+    .fq-avatars { display: flex; flex-shrink: 0; }
+    .fq-avatar {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: var(--green); color: #fff; font-size: 15px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; border: 2px solid #fff;
+    }
+    .fq-avatar + .fq-avatar { margin-left: -12px; }
+    .fq-barista-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+    .fq-barista-sub { font-size: 12px; color: var(--muted); }
+    .btn-fq {
+      width: 100%; padding: 16px; background: var(--green); color: #fff;
+      border: none; border-radius: var(--radius); cursor: pointer;
+      font-size: 15px; font-weight: 700; font-family: inherit;
+      letter-spacing: 0.02em; transition: background 0.15s;
+    }
+    .btn-fq:hover { background: var(--green-light); }
+
+    /* Stepper */
+    .stepper { display: flex; }
+    .step-btn {
+      flex: 0 0 56px; height: 56px; font-size: 26px; font-weight: 300;
+      background: #fff; border: 1.5px solid var(--border);
+      cursor: pointer; color: var(--text); font-family: inherit;
+      transition: background 0.12s; display: flex; align-items: center; justify-content: center;
+    }
+    .step-btn:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+    .step-btn:last-child { border-radius: 0 var(--radius) var(--radius) 0; border-left: none; }
+    .step-btn:hover { background: var(--cream); }
+    .stepper-center {
+      flex: 1; border: 1.5px solid var(--border); border-left: none; border-right: none;
+      display: flex; align-items: center; justify-content: center; height: 56px;
+    }
+    .stepper-val { font-size: 22px; font-weight: 700; }
+    .guest-input {
+      width: 100%; text-align: center; font-size: 22px; font-weight: 700;
+      border: none; background: transparent; color: var(--text);
+      font-family: inherit; -moz-appearance: textfield;
+    }
+    .guest-input::-webkit-outer-spin-button, .guest-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+    .guest-input:focus { outline: none; }
+    .quick-picks { display: flex; gap: 7px; margin-top: 10px; flex-wrap: wrap; }
+    .qp {
+      padding: 6px 14px; border: 1.5px solid var(--border);
+      border-radius: 20px; font-size: 13px; cursor: pointer;
+      background: #fff; transition: border-color 0.12s, background 0.12s;
+    }
+    .qp:hover { border-color: var(--green); background: #f0f5f2; }
+    .qp.active { border-color: var(--green); background: #f0f5f2; font-weight: 600; }
+
+    /* Type cards (no photos) */
+    .type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+    .type-opt {
+      padding: 14px 12px; border: 1.5px solid var(--border);
+      border-radius: var(--radius); cursor: pointer;
+      background: #fff; transition: border-color 0.15s, background 0.15s;
+    }
+    .type-opt:hover { border-color: var(--green-light); background: #f8faf9; }
+    .type-opt.selected { border-color: var(--green); background: #f0f5f2; }
+    .type-name { font-size: 14px; font-weight: 700; line-height: 1.3; }
+    .type-sub { font-size: 11.5px; color: var(--muted); margin-top: 3px; }
+    .type-opt.full-row { grid-column: span 2; }
+    .autre-wrap { display: none; margin-top: 10px; }
+    .autre-wrap.show { display: block; }
+
+    /* Inputs */
+    input[type="text"], input[type="date"], input[type="time"], input[type="tel"], input[type="email"], textarea {
+      width: 100%; padding: 13px 15px;
+      border: 1.5px solid var(--border); border-radius: var(--radius);
+      font-size: 15px; background: #fff; color: var(--text);
+      font-family: inherit; transition: border-color 0.15s; appearance: none;
+    }
+    textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
+    input:focus, textarea:focus { outline: none; border-color: var(--green); }
+    .input-row { display: flex; gap: 10px; }
+    .input-row > div { flex: 1; }
+    .input-label { font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 6px; }
+
+    /* Days stepper */
+    .days-row { display: flex; align-items: center; gap: 14px; margin-top: 1rem; }
+    .days-label { font-size: 14px; font-weight: 600; }
+    .days-stepper { display: flex; }
+    .days-btn {
+      width: 36px; height: 36px; border: 1.5px solid var(--border);
+      background: #fff; cursor: pointer; font-size: 18px; font-weight: 300;
+      color: var(--text); font-family: inherit;
+      display: flex; align-items: center; justify-content: center; transition: background 0.12s;
+    }
+    .days-btn:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+    .days-btn:last-child { border-radius: 0 var(--radius) var(--radius) 0; border-left: none; }
+    .days-btn:hover { background: var(--cream); }
+    .days-val {
+      min-width: 44px; height: 36px; border: 1.5px solid var(--border);
+      border-left: none; border-right: none;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; font-weight: 700;
+    }
+
+    /* Perso cards */
+    .perso-card {
+      height: 100px; border-radius: 12px; border: 2.5px solid transparent;
+      background-size: cover; background-position: center;
+      position: relative; overflow: hidden; cursor: pointer;
+      display: flex; align-items: flex-end; margin-bottom: 9px; transition: border-color 0.15s;
+    }
+    .perso-card:last-child { margin-bottom: 0; }
+    .perso-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(5,20,10,0.78) 0%, transparent 65%); z-index: 1;
+    }
+    .perso-card.selected { border-color: var(--gold); }
+    .perso-body { position: relative; z-index: 2; padding: 12px 14px; flex: 1; display: flex; align-items: flex-end; justify-content: space-between; }
+    .perso-info { flex: 1; }
+    .perso-name { color: #fff; font-size: 15px; font-weight: 600; }
+    .perso-sub { color: rgba(255,255,255,0.7); font-size: 11.5px; margin-top: 2px; }
+    .perso-check {
+      width: 24px; height: 24px; border: 2px solid rgba(255,255,255,0.5);
+      border-radius: 6px; flex-shrink: 0; margin-left: 12px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .perso-card.selected .perso-check { background: var(--gold); border-color: var(--gold); }
+    .perso-check-icon { display: none; }
+    .perso-card.selected .perso-check-icon { display: block; }
+
+    /* Buttons */
+    .btn-row { display: flex; gap: 10px; margin-top: 1.5rem; }
+    .btn-back {
+      flex: 0 0 90px; padding: 14px 10px; border: 1.5px solid var(--border);
+      background: #fff; border-radius: var(--radius); cursor: pointer;
+      font-size: 14px; font-weight: 500; color: var(--muted); font-family: inherit;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .btn-back:hover { border-color: var(--text); color: var(--text); }
+    .btn-next {
+      flex: 1; padding: 14px; background: var(--green); color: #fff;
+      border: none; border-radius: var(--radius); cursor: pointer;
+      font-size: 15px; font-weight: 600; font-family: inherit;
+      letter-spacing: 0.02em; transition: background 0.15s, transform 0.1s;
+    }
+    .btn-next:hover { background: var(--green-light); }
+    .btn-next:active { transform: scale(0.98); }
+    .btn-next.disabled { opacity: 0.28; cursor: not-allowed; pointer-events: none; }
+    .back-link {
+      display: block; margin-top: 0.9rem; font-size: 13px; color: var(--muted);
+      cursor: pointer; text-align: center; border: none; background: none;
+      padding: 0; font-family: inherit; width: 100%;
+    }
+    .back-link:hover { color: var(--text); text-decoration: underline; }
+
+    /* Price screen */
+    .price-screen { text-align: center; }
+    .price-tag {
+      display: inline-block; background: #e8f0eb; color: var(--green);
+      font-size: 11px; font-weight: 700; padding: 4px 12px;
+      border-radius: 20px; margin-bottom: 1rem; letter-spacing: 0.07em; text-transform: uppercase;
+    }
+    .price-amount { font-size: 58px; font-weight: 800; color: var(--green); line-height: 1; margin-bottom: 0.4rem; }
+    .price-unit { font-size: 17px; color: var(--muted); }
+    .price-context { font-size: 13.5px; color: var(--muted); margin: 1rem 0 1.25rem; line-height: 1.6; }
+    .breakdown { background: var(--cream); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; text-align: left; margin-bottom: 1.25rem; }
+    .brow { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); padding: 4px 0; }
+    .brow.total { color: var(--text); font-weight: 600; font-size: 14px; border-top: 1px solid var(--border); margin-top: 6px; padding-top: 8px; }
+    .brow.note { font-size: 12px; font-style: italic; }
+
+    /* Contact */
+    .fields { display: flex; flex-direction: column; gap: 12px; }
+    .field-block { display: flex; flex-direction: column; gap: 6px; }
+    .btn-cta {
+      width: 100%; margin-top: 1.5rem; padding: 16px; background: var(--green); color: #fff;
+      border: none; border-radius: var(--radius); cursor: pointer;
+      font-size: 16px; font-weight: 700; font-family: inherit;
+      transition: background 0.15s; letter-spacing: 0.02em;
+    }
+    .btn-cta:hover { background: var(--green-light); }
+    .btn-cta.disabled { opacity: 0.28; cursor: not-allowed; pointer-events: none; }
+
+    /* Loading */
+    .loading { display: none; text-align: center; padding: 2.5rem 0; }
+    .spinner {
+      width: 34px; height: 34px; border: 3px solid var(--border);
+      border-top-color: var(--green); border-radius: 50%;
+      animation: spin 0.8s linear infinite; margin: 0 auto 1rem;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Success */
+    .success-screen { text-align: center; padding: 1.5rem 0; }
+    .success-icon { font-size: 52px; margin-bottom: 1rem; }
+    .success-title { font-size: 22px; font-weight: 700; margin-bottom: 0.65rem; color: var(--green); }
+    .success-sub { font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+    .success-detail {
+      margin-top: 1.25rem; background: var(--cream); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 14px;
+      font-size: 13.5px; color: var(--muted); text-align: left; line-height: 1.7;
+    }
+    footer { text-align: center; font-size: 12px; color: var(--muted); padding: 1.25rem 1rem; }
+
+    @media (max-width: 480px) {
+      .price-amount { font-size: 46px; }
+      .form-card { padding: 1.25rem 1.1rem 1.1rem; }
+      .fq-title { font-size: 19px; }
+    }
+  </style>
+</head>
+<body>
+
+<form name="devis-eywa" data-netlify="true" netlify-honeypot="bot-field" style="display:none">
+  <input name="bot-field">
+  <input name="event_type"><input name="event_guests"><input name="event_dur">
+  <input name="event_days"><input name="event_date"><input name="event_time">
+  <input name="event_lieu"><input name="event_details"><input name="personalization">
+  <input name="client_prenom"><input name="client_nom">
+  <input name="client_email"><input name="client_tel">
+  <input name="price_estimate">
+</form>
+
+<header>
+  <div class="brand-logo">EYWA</div>
+  <div class="brand-tagline">Coffee Bar &amp; Boissons naturelles · Devis gratuit et instantané</div>
+</header>
+
+<main>
+  <div class="form-card">
+    <div class="dots-nav" id="dots-nav"></div>
+
+    <!-- S1 : Flashquotes style -->
+    <div class="step active" id="s1">
+      <div class="fq-title">Construisez votre devis instantané</div>
+
+      <div class="fq-section">
+        <div class="fq-label">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Durée du service
+        </div>
+        <div class="stepper">
+          <button class="step-btn" onclick="changeDur(-0.5)">−</button>
+          <div class="stepper-center"><span class="stepper-val" id="dur-display">1h30</span></div>
+          <button class="step-btn" onclick="changeDur(+0.5)">+</button>
+        </div>
+      </div>
+
+      <div class="fq-section">
+        <div class="fq-label">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Nombre d'invités
+        </div>
+        <div class="stepper">
+          <button class="step-btn" onclick="changeGuests(-10)">−</button>
+          <div class="stepper-center">
+            <input type="number" class="guest-input" id="guests-input" min="1" max="2000" value="50" oninput="onGuestsType()">
+          </div>
+          <button class="step-btn" onclick="changeGuests(+10)">+</button>
+        </div>
+        <div class="quick-picks" id="qp-row">
+          <div class="qp" onclick="setGuests(25)">25</div>
+          <div class="qp active" onclick="setGuests(50)">50</div>
+          <div class="qp" onclick="setGuests(75)">75</div>
+          <div class="qp" onclick="setGuests(100)">100</div>
+          <div class="qp" onclick="setGuests(150)">150</div>
+          <div class="qp" onclick="setGuests(200)">200+</div>
+        </div>
+      </div>
+
+      <hr class="fq-divider">
+
+      <div class="fq-barista">
+        <div class="fq-avatars" id="barista-avatars">
+          <div class="fq-avatar">L</div>
+        </div>
+        <div>
+          <div class="fq-barista-name" id="barista-name">1 barista professionnel(le) EYWA</div>
+          <div class="fq-barista-sub">Bar mobile · Matcha, cold brew, thé glacé &amp; plus</div>
+        </div>
+      </div>
+
+      <button class="btn-fq" onclick="go('s1','s2',1)">Obtenir mon devis instantané →</button>
+    </div>
+
+    <!-- S2 : Lieu -->
+    <div class="step" id="s2">
+      <div class="question">Où se déroule votre événement ?</div>
+      <div class="question-sub">Si vous ne connaissez pas l'adresse exacte, indiquez simplement la ville la plus proche.</div>
+      <input type="text" id="lieu-input" placeholder="Ex : Charleville-Mézières, salle des fêtes" oninput="checkS2()">
+      <div class="btn-row">
+        <button class="btn-back" onclick="go('s2','s1',0)">← Retour</button>
+        <button class="btn-next disabled" id="btn2" onclick="go('s2','s3',2)">Continuer →</button>
+      </div>
+    </div>
+
+    <!-- S3 : Date + Heure + Jours -->
+    <div class="step" id="s3">
+      <div class="question">Quand est votre événement ?</div>
+      <div class="question-sub">Nous vérifierons notre disponibilité pour cette date.</div>
+      <div class="input-row">
+        <div>
+          <div class="input-label">Date</div>
+          <input type="date" id="date-input" min="2026-08-12" oninput="checkS3()">
+        </div>
+        <div>
+          <div class="input-label">Heure de début</div>
+          <input type="time" id="time-input" oninput="checkS3()">
+        </div>
+      </div>
+      <div class="days-row">
+        <div class="days-label">Nombre de jours</div>
+        <div class="days-stepper">
+          <button class="days-btn" onclick="changeDays(-1)">−</button>
+          <div class="days-val" id="days-display">1</div>
+          <button class="days-btn" onclick="changeDays(+1)">+</button>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-back" onclick="go('s3','s2',1)">← Retour</button>
+        <button class="btn-next disabled" id="btn3" onclick="go('s3','s4',3)">Continuer →</button>
+      </div>
+    </div>
+
+    <!-- S4 : Type + Détails (optionnel) -->
+    <div class="step" id="s4">
+      <div class="question">Quel type d'événement ?</div>
+      <div class="question-sub">Optionnel. Sélectionnez une option ou passez directement à la suite.</div>
+      <div class="type-grid">
+        <div class="type-opt" data-val="Mariage" onclick="selectType(this)">
+          <div class="type-name">Mariage</div>
+          <div class="type-sub">Cérémonie, cocktail</div>
+        </div>
+        <div class="type-opt" data-val="Anniversaire" onclick="selectType(this)">
+          <div class="type-name">Anniversaire</div>
+          <div class="type-sub">Fête privée, célébration</div>
+        </div>
+        <div class="type-opt" data-val="Entreprise / Bureau" onclick="selectType(this)">
+          <div class="type-name">Entreprise / Bureau</div>
+          <div class="type-sub">Séminaire, team building</div>
+        </div>
+        <div class="type-opt" data-val="Activation de marque" onclick="selectType(this)">
+          <div class="type-name">Activation de marque</div>
+          <div class="type-sub">Lancement, pop-up, stand</div>
+        </div>
+        <div class="type-opt" data-val="Conférence / Expo" onclick="selectType(this)">
+          <div class="type-name">Conférence / Expo</div>
+        </div>
+        <div class="type-opt" data-val="École / Église / Domicile" onclick="selectType(this)">
+          <div class="type-name">École / Église / Domicile</div>
+        </div>
+        <div class="type-opt full-row" data-val="Autre" onclick="selectType(this)">
+          <div class="type-name">Autre événement</div>
+          <div class="type-sub">Décrivez-le ci-dessous</div>
+        </div>
+      </div>
+      <div class="autre-wrap" id="autre-wrap">
+        <input type="text" id="autre-input" placeholder="Décrivez votre événement en quelques mots…">
+      </div>
+      <div style="margin-top: 1rem;">
+        <div class="input-label">Détails supplémentaires <span style="font-weight:400;text-transform:none;letter-spacing:0;">(optionnel)</span></div>
+        <textarea id="details-input" placeholder="Thème, lieu de réception, demandes particulières…"></textarea>
+      </div>
+      <div class="btn-row">
+        <button class="btn-back" onclick="go('s4','s3',2)">← Retour</button>
+        <button class="btn-next" onclick="go('s4','s5',4)">Continuer →</button>
+      </div>
+    </div>
+
+    <!-- S5 : Personnalisation -->
+    <div class="step" id="s5">
+      <div class="question">Des options de personnalisation ?</div>
+      <div class="question-sub">Optionnel. Nous en discutons lors du devis.</div>
+
+      <div class="perso-card" data-val="Gobelets sur mesure" onclick="togglePerso(this)"
+        style="background-image:url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=75&auto=format')">
+        <div class="perso-body">
+          <div class="perso-info">
+            <div class="perso-name">Gobelets sur mesure</div>
+            <div class="perso-sub">Logo, couleurs ou message de l'événement</div>
+          </div>
+          <div class="perso-check">
+            <svg class="perso-check-icon" width="12" height="10" viewBox="0 0 12 10" fill="none">
+              <path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="perso-card" data-val="Décoration du bar" onclick="togglePerso(this)"
+        style="background-image:url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=800&q=75&auto=format')">
+        <div class="perso-body">
+          <div class="perso-info">
+            <div class="perso-name">Décoration du bar</div>
+            <div class="perso-sub">Thème, fleurs, ambiance sur mesure</div>
+          </div>
+          <div class="perso-check">
+            <svg class="perso-check-icon" width="12" height="10" viewBox="0 0 12 10" fill="none">
+              <path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="perso-card" data-val="Menu personnalisé" onclick="togglePerso(this)"
+        style="background-image:url('https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=800&q=75&auto=format')">
+        <div class="perso-body">
+          <div class="perso-info">
+            <div class="perso-name">Menu sur mesure</div>
+            <div class="perso-sub">Carte aux couleurs de l'événement</div>
+          </div>
+          <div class="perso-check">
+            <svg class="perso-check-icon" width="12" height="10" viewBox="0 0 12 10" fill="none">
+              <path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div style="font-size:12px;color:var(--muted);text-align:center;margin-top:10px">Vous pouvez passer cette étape</div>
+      <div class="btn-row">
+        <button class="btn-back" onclick="go('s5','s4',3)">← Retour</button>
+        <button class="btn-next" onclick="go('s5','s6',5)">Continuer →</button>
+      </div>
+    </div>
+
+    <!-- Pause prix -->
+    <div class="step" id="sPrix">
+      <div class="price-screen">
+        <div class="price-tag">Votre estimation</div>
+        <div class="price-amount" id="priceDisplay">—</div>
+        <div class="price-unit">euros TTC</div>
+        <div class="price-context" id="priceContext"></div>
+        <div class="breakdown" id="breakdown"></div>
+        <button class="btn-next" style="margin-top:0;width:100%;padding:14px;" onclick="go('sPrix','s6',5)">Continuer →</button>
+        <button class="back-link" onclick="go('sPrix','s5',4)">← Modifier ma demande</button>
+      </div>
+    </div>
+
+    <!-- S6 : Contact -->
+    <div class="step" id="s6">
+      <div class="question">À qui envoyer votre devis ?</div>
+      <div class="question-sub">Devis gratuit, sans engagement. Réponse sous 24h.</div>
+      <div class="fields">
+        <div class="input-row">
+          <div class="field-block">
+            <div class="input-label">Prénom</div>
+            <input type="text" id="prenom-input" placeholder="Votre prénom" oninput="checkS6()">
+          </div>
+          <div class="field-block">
+            <div class="input-label">Nom</div>
+            <input type="text" id="nom-input" placeholder="Votre nom" oninput="checkS6()">
+          </div>
+        </div>
+        <div class="field-block">
+          <div class="input-label">Email</div>
+          <input type="email" id="email-input" placeholder="prenom@email.com" oninput="checkS6()">
+        </div>
+        <div class="field-block">
+          <div class="input-label">Téléphone</div>
+          <input type="tel" id="tel-input" placeholder="+33 6 XX XX XX XX" oninput="checkS6()">
+        </div>
+      </div>
+      <button class="btn-cta disabled" id="btn6" onclick="submitForm()">Obtenir mon devis →</button>
+      <div style="font-size:11.5px;color:var(--muted);text-align:center;margin-top:10px;line-height:1.6">
+        Devis gratuit · Sans engagement · Réponse sous 24h
+      </div>
+      <button class="back-link" onclick="go('s6','s5',4)">← Retour</button>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <div style="color:var(--muted);font-size:14px;">Envoi de votre demande…</div>
+    </div>
+
+    <!-- Succès -->
+    <div class="step" id="sSuccess">
+      <div class="success-screen">
+        <div class="success-icon">🌿</div>
+        <div class="success-title">Demande reçue !</div>
+        <div class="success-sub" id="success-sub">Nous avons bien reçu votre demande.</div>
+        <div class="success-detail">
+          Votre devis personnalisé vient d'être envoyé à votre adresse email.<br><br>
+          Une question urgente ?<br>
+          <strong>Louis.lepoulain08@gmail.com</strong><br>
+          <strong>07 49 90 21 56</strong>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>EYWA © 2026 · Devis gratuit et sans engagement</footer>
+
+<script>
+  var TOTAL_DOTS = 5;
+
+  function renderDots(n) {
+    var c = document.getElementById('dots-nav');
+    if (!n) { c.style.display = 'none'; return; }
+    c.style.display = 'flex';
+    var html = '';
+    for (var i = 1; i <= TOTAL_DOTS; i++) {
+      if (i < n) html += '<div class="dot done"></div>';
+      else if (i === n) html += '<div class="dot active"></div>';
+      else html += '<div class="dot"></div>';
+    }
+    c.innerHTML = html;
+  }
+
+  var A = {
+    type: '', typeCustom: '',
+    guests: 50, hrs: 1.5,
+    days: 1,
+    date: '', time: '', lieu: '',
+    details: '',
+    personalization: [],
+    prenom: '', nom: '', email: '', tel: '',
+    totalPrice: 0
+  };
+
+  function hrsLabel(h) {
+    return h % 1 === 0 ? h + 'h' : Math.floor(h) + 'h30';
+  }
+
+  function showStep(id) {
+    document.querySelectorAll('.step').forEach(function(s) { s.classList.remove('active'); });
+    var el = document.getElementById(id);
+    if (el) el.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function go(from, to, dotN) {
+    collect();
+    showStep(to);
+    renderDots(dotN);
+  }
+
+  function collect() {
+    var g = document.getElementById('guests-input');
+    if (g && g.value) A.guests = parseInt(g.value) || A.guests;
+    var l = document.getElementById('lieu-input'); if (l) A.lieu = l.value.trim();
+    var d = document.getElementById('date-input'); if (d) A.date = d.value;
+    var t = document.getElementById('time-input'); if (t) A.time = t.value;
+    var ai = document.getElementById('autre-input'); if (ai) A.typeCustom = ai.value.trim();
+    var di = document.getElementById('details-input'); if (di) A.details = di.value.trim();
+    var p = document.getElementById('prenom-input'); if (p) A.prenom = p.value.trim();
+    var n = document.getElementById('nom-input'); if (n) A.nom = n.value.trim();
+    var e = document.getElementById('email-input'); if (e) A.email = e.value.trim();
+    var tel = document.getElementById('tel-input'); if (tel) A.tel = tel.value.trim();
+  }
+
+  /* S1 */
+  function changeDur(delta) {
+    A.hrs = Math.max(1.5, Math.round((A.hrs + delta) * 2) / 2);
+    document.getElementById('dur-display').textContent = hrsLabel(A.hrs);
+    updateBaristaDisplay();
+  }
+
+  function changeGuests(delta) {
+    var input = document.getElementById('guests-input');
+    var v = Math.max(1, (parseInt(input.value) || 0) + delta);
+    input.value = v;
+    A.guests = v;
+    updateQP(v);
+    updateBaristaDisplay();
+  }
+
+  function setGuests(n) {
+    document.getElementById('guests-input').value = n;
+    A.guests = n;
+    updateQP(n);
+    updateBaristaDisplay();
+  }
+
+  function onGuestsType() {
+    var v = parseInt(document.getElementById('guests-input').value) || 0;
+    A.guests = v;
+    updateQP(v);
+    updateBaristaDisplay();
+  }
+
+  function updateQP(n) {
+    document.querySelectorAll('.qp').forEach(function(q) {
+      q.classList[parseInt(q.textContent) === n ? 'add' : 'remove']('active');
+    });
+  }
+
+  function updateBaristaDisplay() {
+    var g = A.guests || 1;
+    var h = A.hrs;
+    var needed = Math.max(1, Math.ceil(g / (h * 50)));
+    var labels = ['', 'Un', 'Deux', 'Trois', 'Quatre', 'Cinq'];
+    var lbl = (needed <= 5 ? labels[needed] : needed) + ' barista' + (needed > 1 ? 's' : '') + ' professionnel' + (needed > 1 ? 's' : '(le)') + ' EYWA';
+    document.getElementById('barista-name').textContent = lbl;
+    var av = document.getElementById('barista-avatars');
+    var html = '';
+    for (var i = 0; i < Math.min(needed, 3); i++) {
+      html += '<div class="fq-avatar">' + (i === 0 ? 'L' : 'E') + '</div>';
+    }
+    av.innerHTML = html;
+  }
+
+  /* S2 */
+  function checkS2() {
+    var v = document.getElementById('lieu-input').value.trim();
+    document.getElementById('btn2').classList[v.length >= 2 ? 'remove' : 'add']('disabled');
+  }
+
+  /* S3 */
+  function checkS3() {
+    var ok = document.getElementById('date-input').value && document.getElementById('time-input').value;
+    document.getElementById('btn3').classList[ok ? 'remove' : 'add']('disabled');
+  }
+
+  function changeDays(delta) {
+    A.days = Math.max(1, A.days + delta);
+    document.getElementById('days-display').textContent = A.days;
+  }
+
+  /* S4 */
+  function selectType(el) {
+    if (el.classList.contains('selected')) {
+      el.classList.remove('selected');
+      A.type = '';
+      document.getElementById('autre-wrap').classList.remove('show');
+      return;
+    }
+    document.querySelectorAll('.type-opt').forEach(function(c) { c.classList.remove('selected'); });
+    el.classList.add('selected');
+    A.type = el.dataset.val;
+    var wrap = document.getElementById('autre-wrap');
+    if (A.type === 'Autre') wrap.classList.add('show');
+    else wrap.classList.remove('show');
+  }
+
+  /* S5 */
+  function togglePerso(el) {
+    el.classList.toggle('selected');
+    var val = el.dataset.val;
+    var idx = A.personalization.indexOf(val);
+    if (idx === -1) A.personalization.push(val);
+    else A.personalization.splice(idx, 1);
+  }
+
+  /* S6 */
+  function checkS6() {
+    var p = document.getElementById('prenom-input').value.trim();
+    var n = document.getElementById('nom-input').value.trim();
+    var e = document.getElementById('email-input').value.trim();
+    var t = document.getElementById('tel-input').value.trim();
+    var ok = p.length >= 2 && n.length >= 2 && e.includes('@') && e.includes('.') && t.length >= 6;
+    document.getElementById('btn6').classList[ok ? 'remove' : 'add']('disabled');
+  }
+
+  /* Prix */
+  function calcPrice() {
+    var extraGuests = Math.max(0, A.guests - 50);
+    var extraHrs = Math.max(0, A.hrs - 1.5);
+    var baristasNeeded = Math.ceil(A.guests / (A.hrs * 50));
+    var extraBaristas = Math.max(0, baristasNeeded - 1);
+    var pricePerDay = 350 + (extraGuests * 5) + Math.round(extraHrs * 70) + (extraBaristas * 200);
+    return pricePerDay * A.days;
+  }
+
+  function showPrice() {
+    collect();
+    var extraGuests = Math.max(0, A.guests - 50);
+    var extraHrs = Math.max(0, A.hrs - 1.5);
+    var baristasNeeded = Math.ceil(A.guests / (A.hrs * 50));
+    var extraBaristas = Math.max(0, baristasNeeded - 1);
+    var pricePerDay = 350 + (extraGuests * 5) + Math.round(extraHrs * 70) + (extraBaristas * 200);
+    A.totalPrice = pricePerDay * A.days;
+
+    document.getElementById('priceDisplay').textContent = A.totalPrice + ' €';
+
+    var dateStr = A.date ? new Date(A.date + 'T12:00').toLocaleDateString('fr-FR', {day:'numeric',month:'long',year:'numeric'}) : '';
+    var ctx = A.guests + ' invité' + (A.guests > 1 ? 's' : '') + ' · ' + hrsLabel(A.hrs);
+    if (A.days > 1) ctx += ' · ' + A.days + ' jours';
+    if (A.type) ctx += ' · ' + A.type;
+    if (dateStr) ctx += ' · ' + dateStr;
+    document.getElementById('priceContext').textContent = ctx;
+
+    var bd = '';
+    bd += '<div class="brow"><span>Base (50 pers., 1h30)</span><span>350 €</span></div>';
+    if (extraGuests > 0) bd += '<div class="brow"><span>+' + extraGuests + ' invité' + (extraGuests>1?'s':'') + ' × 5 €</span><span>+' + (extraGuests*5) + ' €</span></div>';
+    if (extraHrs > 0) bd += '<div class="brow"><span>+' + hrsLabel(extraHrs) + ' × 70 €/h</span><span>+' + Math.round(extraHrs*70) + ' €</span></div>';
+    if (extraBaristas > 0) bd += '<div class="brow"><span>' + extraBaristas + ' barista' + (extraBaristas>1?'s':'') + ' sup. × 200 €</span><span>+' + (extraBaristas*200) + ' €</span></div>';
+    if (A.days > 1) {
+      bd += '<div class="brow total"><span>Par jour</span><span>' + pricePerDay + ' €</span></div>';
+      bd += '<div class="brow"><span>× ' + A.days + ' jours</span><span>' + A.totalPrice + ' €</span></div>';
+    }
+    bd += '<div class="brow total"><span>Estimation totale</span><span>' + A.totalPrice + ' €</span></div>';
+    bd += '<div class="brow note"><span>Déplacement : gratuit jusqu\'à 20 km, puis 0,50 €/km au-delà</span></div>';
+    document.getElementById('breakdown').innerHTML = bd;
+
+    showStep('sPrix');
+    renderDots(4);
+  }
+
+  /* Submit */
+  function buildDevisUrl() {
+    var base = window.location.href.split('?')[0].split('#')[0].replace(/[^/]*$/, '') + 'devis.html';
+    var finalType = A.type === 'Autre' && A.typeCustom ? 'Autre : ' + A.typeCustom : A.type;
+    var params = new URLSearchParams({
+      p: A.prenom, t: finalType,
+      g: A.guests, h: A.hrs, dy: A.days,
+      d: A.date, ti: A.time, l: A.lieu,
+      pr: A.totalPrice
+    });
+    return base + '?' + params.toString();
+  }
+
+  function submitForm() {
+    collect();
+    A.totalPrice = calcPrice();
+
+    var finalType = A.type === 'Autre' && A.typeCustom ? 'Autre : ' + A.typeCustom : (A.type || 'Non précisé');
+    var dateStr = A.date ? new Date(A.date + 'T12:00').toLocaleDateString('fr-FR', {day:'numeric',month:'long',year:'numeric'}) : '—';
+    var devisUrl = buildDevisUrl();
+
+    document.getElementById('s6').classList.remove('active');
+    document.getElementById('loading').style.display = 'block';
+
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        'form-name': 'devis-eywa', 'bot-field': '',
+        event_type: finalType, event_guests: A.guests + ' personnes',
+        event_dur: hrsLabel(A.hrs), event_days: A.days + ' jour(s)',
+        event_date: dateStr, event_time: A.time || '—',
+        event_lieu: A.lieu, event_details: A.details || '—',
+        personalization: A.personalization.join(', ') || 'Aucune',
+        client_prenom: A.prenom, client_nom: A.nom, client_email: A.email,
+        client_tel: A.tel, price_estimate: A.totalPrice + ' €'
+      }).toString()
+    }).catch(function() {});
+
+    fetch('https://formsubmit.co/ajax/Louis.lepoulain08@gmail.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        _subject: 'Nouvelle demande de devis EYWA — ' + A.prenom + ' ' + A.nom,
+        _template: 'table', _captcha: 'false',
+        _cc: A.email,
+        _autoresponse: 'Bonjour ' + A.prenom + ',\n\nMerci pour votre demande de devis EYWA !\n\nVotre devis personnalisé est disponible ici :\n' + devisUrl + '\n\nNous vous recontacterons dans les 24h pour confirmer les détails.\n\nÀ très bientôt,\nLouis — EYWA Coffee Bar\n07 49 90 21 56',
+        email: A.email,
+        'Type d\'événement': finalType,
+        'Nombre d\'invités': A.guests + ' personnes',
+        'Durée': hrsLabel(A.hrs),
+        'Nombre de jours': A.days,
+        'Date': dateStr, 'Heure': A.time || '—',
+        'Lieu': A.lieu, 'Détails': A.details || '—',
+        'Personnalisation': A.personalization.join(', ') || 'Aucune',
+        'Prénom': A.prenom, 'Nom': A.nom, 'Téléphone': A.tel,
+        'Estimation': A.totalPrice + ' €',
+        'Lien devis client': devisUrl
+      })
+    })
+    .catch(function() {})
+    .finally(function() {
+      document.getElementById('loading').style.display = 'none';
+      window.location.href = devisUrl;
+    });
+  }
+
+  renderDots(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Réservation EYWA</title>
+  <style>
+    :root { --green:#1a3d2b; --gold:#c8a951; --cream:#f4f2ee; --white:#fff; --text:#1a1a1a; --muted:#6b7280; --border:#e5e2d9; --red:#dc2626; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:var(--cream); color:var(--text); min-height:100vh; display:flex; flex-direction:column; }
+
+    /* Header */
+    .top { background:var(--green); padding:1rem 1.5rem; display:flex; align-items:center; justify-content:space-between; }
+    .logo { font-size:18px; font-weight:700; letter-spacing:.2em; color:#fff; text-transform:uppercase; text-decoration:none; }
+
+    /* Phase bar */
+    .phases { background:var(--white); border-bottom:1px solid var(--border); padding:.75rem 1.5rem; display:flex; align-items:center; gap:0; justify-content:center; }
+    .phase { display:flex; align-items:center; gap:6px; font-size:13px; font-weight:500; color:var(--muted); }
+    .phase.active { color:var(--green); font-weight:700; }
+    .phase.done { color:var(--green); }
+    .phase-dot { width:28px; height:28px; border-radius:50%; border:2px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:var(--muted); background:var(--white); flex-shrink:0; }
+    .phase.active .phase-dot { border-color:var(--green); color:var(--green); background:#f0f7f3; }
+    .phase.done .phase-dot { border-color:var(--green); background:var(--green); color:#fff; }
+    .phase-line { width:32px; height:2px; background:var(--border); margin:0 4px; }
+    .phase-line.done { background:var(--green); }
+    @media(max-width:480px) { .phase-label { display:none; } .phase-line { width:20px; } }
+
+    /* Dot progress */
+    .dots-row { display:flex; gap:6px; justify-content:center; margin-bottom:1.5rem; }
+    .dot { width:8px; height:8px; border-radius:50%; background:var(--border); transition:background .2s; }
+    .dot.active { background:var(--green); }
+    .dot.done { background:var(--green); opacity:.45; }
+
+    /* Main */
+    .main { flex:1; display:flex; flex-direction:column; align-items:center; padding:2rem 1.25rem 6rem; }
+    .card { background:var(--white); border:1.5px solid var(--border); border-radius:16px; width:100%; max-width:540px; padding:2rem; box-shadow:0 2px 12px rgba(0,0,0,.06); }
+
+    .step-label { font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:.5rem; }
+    .step-title { font-size:22px; font-weight:800; margin-bottom:.35rem; line-height:1.3; }
+    .step-sub { font-size:14px; color:var(--muted); margin-bottom:1.75rem; line-height:1.5; }
+
+    label.fld { display:block; font-size:14px; font-weight:600; margin-bottom:.4rem; margin-top:1.25rem; }
+    label.fld:first-of-type { margin-top:0; }
+    .hint { font-size:12px; color:var(--muted); margin-top:.25rem; margin-bottom:.5rem; }
+    input[type=text], input[type=tel], input[type=email], textarea {
+      width:100%; border:1.5px solid var(--border); border-radius:10px; padding:.75rem 1rem;
+      font-size:15px; font-family:inherit; outline:none; transition:border .15s; background:var(--white);
+    }
+    input:focus, textarea:focus { border-color:var(--green); }
+    textarea { resize:vertical; min-height:80px; }
+
+    .radio-group { display:flex; flex-direction:column; gap:10px; }
+    .radio-opt { display:flex; align-items:center; gap:12px; padding:.75rem 1rem; border:1.5px solid var(--border); border-radius:10px; cursor:pointer; transition:all .15s; }
+    .radio-opt:hover { border-color:var(--green); background:#f8fdf9; }
+    .radio-opt input { accent-color:var(--green); width:18px; height:18px; cursor:pointer; flex-shrink:0; }
+    .radio-opt span { font-size:14px; font-weight:500; }
+    .radio-opt.selected { border-color:var(--green); background:#f0f7f3; }
+
+    .check-group { display:flex; flex-direction:column; gap:12px; }
+    .check-opt { display:flex; align-items:flex-start; gap:12px; padding:.85rem 1rem; border:1.5px solid var(--border); border-radius:10px; cursor:pointer; transition:border .15s; }
+    .check-opt:hover { border-color:var(--green); }
+    .check-opt input { accent-color:var(--green); width:18px; height:18px; cursor:pointer; flex-shrink:0; margin-top:1px; }
+    .check-opt span { font-size:13.5px; line-height:1.45; }
+    .check-opt.checked { border-color:var(--green); background:#f0f7f3; }
+
+    /* Welcome step */
+    .welcome-box { text-align:center; padding:.5rem 0 1rem; }
+    .welcome-icon { font-size:48px; margin-bottom:1rem; }
+    .event-summary { background:#f0f7f3; border-radius:12px; padding:1rem 1.25rem; margin:1.25rem 0; text-align:left; }
+    .event-summary-row { font-size:13px; color:var(--muted); display:flex; gap:8px; align-items:flex-start; padding:3px 0; }
+    .event-summary-row strong { color:var(--text); min-width:80px; flex-shrink:0; }
+
+    /* Buttons */
+    .btn-row { display:flex; gap:10px; margin-top:2rem; }
+    .btn-next { flex:1; background:var(--green); color:#fff; border:none; border-radius:12px; padding:1rem; font-size:16px; font-weight:700; cursor:pointer; font-family:inherit; transition:opacity .15s; }
+    .btn-next:hover { opacity:.88; }
+    .btn-back { background:var(--white); color:var(--text); border:1.5px solid var(--border); border-radius:12px; padding:1rem 1.25rem; font-size:15px; font-weight:600; cursor:pointer; font-family:inherit; transition:all .15s; white-space:nowrap; }
+    .btn-back:hover { border-color:var(--green); color:var(--green); }
+    .btn-pay-final { flex:1; background:var(--gold); color:var(--green); border:none; border-radius:12px; padding:1rem; font-size:16px; font-weight:800; cursor:pointer; font-family:inherit; transition:opacity .15s; display:flex; align-items:center; justify-content:center; gap:8px; text-decoration:none; }
+    .btn-pay-final:hover { opacity:.88; }
+
+    /* Total bar */
+    .total-bar { position:fixed; bottom:0; left:0; right:0; background:var(--white); border-top:1px solid var(--border); padding:.85rem 1.5rem; display:flex; align-items:center; justify-content:space-between; z-index:10; box-shadow:0 -2px 12px rgba(0,0,0,.07); }
+    .total-label { font-size:13px; color:var(--muted); font-weight:500; }
+    .total-amount { font-size:20px; font-weight:800; color:var(--green); }
+
+    .error-msg { color:var(--red); font-size:13px; margin-top:.5rem; display:none; }
+    .error-msg.show { display:block; }
+  </style>
+</head>
+<body>
+
+<div class="top">
+  <a href="#" class="logo">EYWA</a>
+</div>
+
+<div class="phases" id="phases">
+  <div class="phase done" id="ph1"><div class="phase-dot">1</div><span class="phase-label">Détails</span></div>
+  <div class="phase-line" id="pl1"></div>
+  <div class="phase" id="ph2"><div class="phase-dot">2</div><span class="phase-label">Engagements</span></div>
+  <div class="phase-line" id="pl2"></div>
+  <div class="phase" id="ph3"><div class="phase-dot">3</div><span class="phase-label">Paiement</span></div>
+</div>
+
+<div class="main">
+  <div class="card">
+    <div class="dots-row" id="dots"></div>
+
+    <!-- STEP 1: Bienvenue -->
+    <div id="s1" class="step active">
+      <div class="welcome-box">
+        <div class="welcome-icon">🎉</div>
+        <div class="step-title" id="welcome-title">Finalisons votre réservation !</div>
+        <div class="step-sub">Cette étape confirme tous les détails opérationnels de votre événement et génère votre facture.</div>
+      </div>
+      <div class="event-summary" id="event-summary"></div>
+      <div class="btn-row"><button class="btn-next" onclick="goTo(2)">Commencer →</button></div>
+    </div>
+
+    <!-- STEP 2: Adresse exacte -->
+    <div id="s2" class="step" style="display:none">
+      <div class="step-label">Étape 1 sur 6 · Détails</div>
+      <div class="step-title">Adresse exacte de l'événement</div>
+      <div class="step-sub">Confirmez ou précisez l'adresse. Mentionnez tout détail utile pour nous aider à trouver facilement.</div>
+      <label class="fld">Adresse complète *</label>
+      <input type="text" id="addr" placeholder="Salle des fêtes de…, Domaine de…, Appartement 3B…">
+      <p class="hint">Bâtiment, étage, code d'entrée, nom du lieu</p>
+      <div class="error-msg" id="err2">Veuillez indiquer l'adresse exacte.</div>
+      <div class="btn-row"><button class="btn-back" onclick="goTo(1)">← Retour</button><button class="btn-next" onclick="next2()">Suivant →</button></div>
+    </div>
+
+    <!-- STEP 3: Contact sur place -->
+    <div id="s3" class="step" style="display:none">
+      <div class="step-label">Étape 2 sur 6 · Détails</div>
+      <div class="step-title">Contact sur place le jour J</div>
+      <div class="step-sub">Qui notre équipe devra-t-elle contacter à l'arrivée pour être guidée jusqu'au lieu d'installation ?</div>
+      <label class="fld">Prénom et nom *</label>
+      <input type="text" id="contact-nom" placeholder="Marie Dupont">
+      <label class="fld" style="margin-top:1rem">Téléphone portable *</label>
+      <input type="tel" id="contact-tel" placeholder="06 12 34 56 78">
+      <p class="hint">Numéro joignable le jour de l'événement</p>
+      <div class="error-msg" id="err3">Veuillez remplir le nom et le téléphone.</div>
+      <div class="btn-row"><button class="btn-back" onclick="goTo(2)">← Retour</button><button class="btn-next" onclick="next3()">Suivant →</button></div>
+    </div>
+
+    <!-- STEP 4: Installation -->
+    <div id="s4" class="step" style="display:none">
+      <div class="step-label">Étape 3 sur 6 · Détails</div>
+      <div class="step-title">Installation du bar</div>
+      <div class="step-sub">Dites-nous où vous souhaitez que nous installions notre bar mobile.</div>
+      <label class="fld">Où installer le bar ? *</label>
+      <textarea id="setup-lieu" placeholder="Entrée de la salle, coin salon, terrasse couverte…"></textarea>
+      <label class="fld" style="margin-top:1.25rem">L'événement se déroule-t-il en extérieur ? *</label>
+      <div class="radio-group" id="outdoor-group">
+        <label class="radio-opt" onclick="selectRadio('outdoor-group',this,'Non')">
+          <input type="radio" name="outdoor" value="Non"> <span>Intérieur (salle, espace couvert)</span>
+        </label>
+        <label class="radio-opt" onclick="selectRadio('outdoor-group',this,'Oui')">
+          <input type="radio" name="outdoor" value="Oui"> <span>Extérieur (jardin, terrasse, plein air)</span>
+        </label>
+      </div>
+      <div class="error-msg" id="err4">Veuillez indiquer l'emplacement et l'intérieur/extérieur.</div>
+      <div class="btn-row"><button class="btn-back" onclick="goTo(3)">← Retour</button><button class="btn-next" onclick="next4()">Suivant →</button></div>
+    </div>
+
+    <!-- STEP 5: Stationnement -->
+    <div id="s5" class="step" style="display:none">
+      <div class="step-label">Étape 4 sur 6 · Détails</div>
+      <div class="step-title">Stationnement</div>
+      <div class="step-sub">Pour une installation rapide, nous avons besoin de savoir où garer notre véhicule.</div>
+      <label class="fld">Où garer le van pour décharger le matériel ? *</label>
+      <input type="text" id="parking-dl" placeholder="Parking devant le porche, cour intérieure…">
+      <label class="fld" style="margin-top:1rem">Où garer ensuite pendant l'événement ?</label>
+      <input type="text" id="parking-ev" placeholder="Parking visiteurs, rue à côté, je ne sais pas encore…">
+      <div class="error-msg" id="err5">Veuillez indiquer au moins l'emplacement de déchargement.</div>
+      <div class="btn-row"><button class="btn-back" onclick="goTo(4)">← Retour</button><button class="btn-next" onclick="next5()">Suivant →</button></div>
+    </div>
+
+    <!-- STEP 6: Code vestimentaire -->
+    <div id="s6" class="step" style="display:none">
+      <div class="step-label">Étape 5 sur 6 · Détails</div>
+      <div class="step-title">Code vestimentaire</div>
+      <div class="step-sub">Comment souhaitez-vous que notre barista soit habillé(e) pour votre événement ?</div>
+      <div class="radio-group" id="dress-group">
+        <label class="radio-opt" onclick="selectRadio('dress-group',this,'Professionnel')">
+          <input type="radio" name="dress" value="Professionnel"> <span>Tenue professionnelle (tablier EYWA)</span>
+        </label>
+        <label class="radio-opt" onclick="selectRadio('dress-group',this,'Tout en noir')">
+          <input type="radio" name="dress" value="Tout en noir"> <span>Tout en noir</span>
+        </label>
+        <label class="radio-opt" onclick="selectRadio('dress-group',this,'Formelle')">
+          <input type="radio" name="dress" value="Formelle"> <span>Tenue formelle (chemise, pantalon élégant)</span>
+        </label>
+        <label class="radio-opt" onclick="selectRadio('dress-group',this,'Business casual')">
+          <input type="radio" name="dress" value="Business casual"> <span>Business casual</span>
+        </label>
+      </div>
+      <div class="error-msg" id="err6">Veuillez choisir un code vestimentaire.</div>
+      <div class="btn-row"><button class="btn-back" onclick="goTo(5)">← Retour</button><button class="btn-next" onclick="next6()">Suivant →</button></div>
+    </div>
+
+    <!-- STEP 7: Engagements -->
+    <div id="s7" class="step" style="display:none">
+      <div class="step-label">Étape 6 sur 6 · Engagements</div>
+      <div class="step-title">Conditions d'accueil</div>
+      <div class="step-sub">Pour assurer un service impeccable, notre équipe a besoin des conditions suivantes. Merci de confirmer.</div>
+      <div class="check-group">
+        <label class="check-opt" id="ck1-wrap" onclick="toggleCheck(this,'ck1')">
+          <input type="checkbox" id="ck1">
+          <span>Je confirme que notre équipe pourra accéder au lieu d'installation <strong>au moins 60 minutes avant</strong> le début du service pour l'installation et les tests.</span>
+        </label>
+        <label class="check-opt" id="ck2-wrap" onclick="toggleCheck(this,'ck2')">
+          <input type="checkbox" id="ck2">
+          <span>Je confirme qu'un espace d'environ <strong>2m × 1m</strong> sera disponible pour le bar, avec de la place pour former une file d'attente.</span>
+        </label>
+        <label class="check-opt" id="ck3-wrap" onclick="toggleCheck(this,'ck3')">
+          <input type="checkbox" id="ck3">
+          <span>Je confirme qu'une <strong>prise électrique 220V standard</strong> (ou groupe électrogène) sera disponible à moins de 10m du bar.</span>
+        </label>
+      </div>
+      <div class="error-msg" id="err7">Veuillez cocher les trois cases pour continuer.</div>
+      <div class="btn-row"><button class="btn-back" onclick="goTo(6)">← Retour</button><button class="btn-next" onclick="next7()">Suivant →</button></div>
+    </div>
+
+    <!-- STEP 8: Paiement -->
+    <div id="s8" class="step" style="display:none">
+      <div class="step-label">Paiement</div>
+      <div class="step-title">Finalisez votre réservation</div>
+      <div class="step-sub">Plus qu'une étape ! Votre date sera confirmée dès réception du paiement.</div>
+      <label class="fld">Nom ou raison sociale pour la facture *</label>
+      <input type="text" id="billing-name" placeholder="Marie Dupont ou SARL Événements Paris">
+      <div class="check-group" style="margin-top:1.25rem">
+        <label class="check-opt" id="cgv-wrap" onclick="toggleCheck(this,'cgv')">
+          <input type="checkbox" id="cgv">
+          <span>J'ai lu et j'accepte les <strong>conditions générales de vente</strong> d'EYWA. Je comprends que le paiement total confirme ma réservation et bloque la date.</span>
+        </label>
+      </div>
+      <div class="error-msg" id="err8">Veuillez remplir le nom de facturation et accepter les CGV.</div>
+      <div class="btn-row"><button class="btn-back" onclick="goTo(7)">← Retour</button><a class="btn-pay-final" id="btn-pay" href="#" onclick="return doPay()">💳 Payer maintenant</a></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="total-bar">
+  <div>
+    <div class="total-label">Total TTC</div>
+  </div>
+  <div class="total-amount" id="total-display">—</div>
+</div>
+
+<script>
+  var P = {};
+  window.location.search.slice(1).split('&').forEach(function(x) {
+    var kv = x.split('='); if (kv[0]) P[decodeURIComponent(kv[0])] = decodeURIComponent((kv[1]||'').replace(/\+/g,' '));
+  });
+
+  var price = parseInt(P.pr) || 350;
+  document.getElementById('total-display').textContent = price + ' €';
+
+  if (P.p) document.getElementById('welcome-title').textContent = 'Parfait ' + P.p + ' ! Finalisons votre réservation.';
+
+  var dtStr = '';
+  if (P.d) {
+    try { var d = new Date(P.d+'T12:00'); dtStr = d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'}); } catch(e) { dtStr = P.d; }
+  }
+  var summary = document.getElementById('event-summary');
+  var rows = [
+    ['Type', P.t || '—'],
+    ['Date', (dtStr || '—') + (P.ti ? ', ' + P.ti : '')],
+    ['Lieu', P.l || '—'],
+    ['Invités', P.g ? P.g + ' personnes' : '—'],
+    ['Durée', P.h ? (P.h % 1 === 0 ? P.h + 'h' : Math.floor(P.h) + 'h30') : '—'],
+    ['Total', price + ' € TTC']
+  ];
+  rows.forEach(function(r) {
+    var div = document.createElement('div');
+    div.className = 'event-summary-row';
+    div.innerHTML = '<strong>' + r[0] + '</strong> ' + r[1];
+    summary.appendChild(div);
+  });
+
+  var TOTAL_STEPS = 8;
+  var radioVals = {};
+
+  function buildDots(current) {
+    var c = document.getElementById('dots');
+    c.innerHTML = '';
+    if (current === 1) { c.style.display = 'none'; return; }
+    c.style.display = 'flex';
+    for (var i = 2; i <= TOTAL_STEPS; i++) {
+      var d = document.createElement('div');
+      d.className = 'dot' + (i === current ? ' active' : i < current ? ' done' : '');
+      c.appendChild(d);
+    }
+  }
+
+  function updatePhases(step) {
+    var ph1 = document.getElementById('ph1'), ph2 = document.getElementById('ph2'), ph3 = document.getElementById('ph3');
+    var pl1 = document.getElementById('pl1'), pl2 = document.getElementById('pl2');
+    [ph1,ph2,ph3].forEach(function(p){p.className='phase';});
+    [pl1,pl2].forEach(function(p){p.className='phase-line';});
+    if (step <= 6) { ph1.classList.add('active'); }
+    else if (step === 7) { ph1.classList.add('done'); ph2.classList.add('active'); pl1.classList.add('done'); }
+    else { ph1.classList.add('done'); ph2.classList.add('done'); ph3.classList.add('active'); pl1.classList.add('done'); pl2.classList.add('done'); }
+  }
+
+  function goTo(n) {
+    for (var i = 1; i <= TOTAL_STEPS; i++) {
+      var el = document.getElementById('s' + i);
+      if (el) el.style.display = i === n ? '' : 'none';
+    }
+    buildDots(n);
+    updatePhases(n);
+    window.scrollTo(0, 0);
+  }
+
+  function selectRadio(groupId, label, val) {
+    document.querySelectorAll('#' + groupId + ' .radio-opt').forEach(function(el) { el.classList.remove('selected'); });
+    label.classList.add('selected');
+    radioVals[groupId] = val;
+    var inp = label.querySelector('input');
+    if (inp) inp.checked = true;
+  }
+
+  function toggleCheck(wrap, id) {
+    var cb = document.getElementById(id);
+    cb.checked = !cb.checked;
+    wrap.classList.toggle('checked', cb.checked);
+  }
+
+  function showErr(id, show) {
+    var el = document.getElementById(id);
+    if (el) { el.classList[show ? 'add' : 'remove']('show'); }
+  }
+
+  function next2() {
+    var v = document.getElementById('addr').value.trim();
+    if (!v) { showErr('err2', true); return; }
+    showErr('err2', false); goTo(3);
+  }
+  function next3() {
+    var n = document.getElementById('contact-nom').value.trim();
+    var t = document.getElementById('contact-tel').value.trim();
+    if (!n || !t) { showErr('err3', true); return; }
+    showErr('err3', false); goTo(4);
+  }
+  function next4() {
+    var l = document.getElementById('setup-lieu').value.trim();
+    var o = radioVals['outdoor-group'];
+    if (!l || !o) { showErr('err4', true); return; }
+    showErr('err4', false); goTo(5);
+  }
+  function next5() {
+    var dl = document.getElementById('parking-dl').value.trim();
+    if (!dl) { showErr('err5', true); return; }
+    showErr('err5', false); goTo(6);
+  }
+  function next6() {
+    var dr = radioVals['dress-group'];
+    if (!dr) { showErr('err6', true); return; }
+    showErr('err6', false); goTo(7);
+  }
+  function next7() {
+    var c1 = document.getElementById('ck1').checked;
+    var c2 = document.getElementById('ck2').checked;
+    var c3 = document.getElementById('ck3').checked;
+    if (!c1 || !c2 || !c3) { showErr('err7', true); return; }
+    showErr('err7', false); goTo(8);
+  }
+
+  function doPay() {
+    var bn = document.getElementById('billing-name').value.trim();
+    var cgv = document.getElementById('cgv').checked;
+    if (!bn || !cgv) { showErr('err8', true); return false; }
+    showErr('err8', false);
+    var amountCents = price * 100;
+    var label = encodeURIComponent('Réservation EYWA — ' + (P.t || 'Événement') + ' · ' + price + ' €');
+    window.location.href = '/.netlify/functions/checkout?amount=' + amountCents + '&label=' + label;
+    return false;
+  }
+
+  goTo(1);
+</script>
+</body>
+</html>

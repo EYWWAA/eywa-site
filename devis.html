@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Votre devis EYWA</title>
+  <style>
+    :root {
+      --green: #1a3d2b;
+      --green-light: #2d5c42;
+      --gold: #c8a951;
+      --cream: #f4f2ee;
+      --white: #fff;
+      --text: #1a1a1a;
+      --muted: #6b7280;
+      --border: #e5e2d9;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--cream); color: var(--text); }
+
+    /* Header */
+    .top-bar { background: var(--green); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-size: 20px; font-weight: 700; letter-spacing: 0.2em; color: #fff; text-transform: uppercase; text-decoration: none; }
+    .top-actions { display: flex; gap: 8px; align-items: center; }
+    .btn-sm {
+      padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600;
+      cursor: pointer; font-family: inherit; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+      transition: all 0.15s; border: none;
+    }
+    .btn-outline-w { background: transparent; border: 1.5px solid rgba(255,255,255,0.35); color: #fff; }
+    .btn-outline-w:hover { background: rgba(255,255,255,0.1); }
+    .btn-gold { background: var(--gold); color: var(--green); }
+    .btn-gold:hover { opacity: 0.88; }
+
+    /* Main */
+    .container { max-width: 1060px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+    .layout { display: grid; grid-template-columns: 1fr 400px; gap: 2.5rem; align-items: start; }
+
+    /* Gallery */
+    .gallery { position: sticky; top: 1.5rem; display: flex; flex-direction: column; gap: 10px; }
+    .hero { width: 100%; height: 360px; object-fit: cover; border-radius: 14px; }
+    .thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .thumb { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; cursor: pointer; transition: opacity 0.15s; }
+    .thumb:hover { opacity: 0.8; }
+
+    /* Devis card */
+    .devis-card { background: var(--white); border: 1.5px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+
+    .card-head { padding: 1.5rem; border-bottom: 1px solid var(--border); }
+    .card-title { font-size: 21px; font-weight: 800; line-height: 1.35; margin-bottom: 14px; }
+    .meta { display: flex; align-items: flex-start; gap: 9px; font-size: 13.5px; color: var(--muted); margin-bottom: 9px; line-height: 1.45; }
+    .meta-icon { font-size: 15px; flex-shrink: 0; margin-top: 0; }
+    .avail { display: flex; align-items: center; gap: 9px; background: #eaf4ed; border: 1.5px solid #b6dec0; border-radius: 9px; padding: 10px 14px; font-size: 13px; font-weight: 500; color: #1a5c32; margin-top: 12px; }
+
+    .card-body { padding: 1.25rem 1.5rem; }
+    .sect-label { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 10px; }
+    .incl { list-style: none; display: flex; flex-direction: column; gap: 7px; margin-bottom: 1.25rem; }
+    .incl li { display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; line-height: 1.45; }
+    .incl .ck { color: var(--green); flex-shrink: 0; font-size: 14px; margin-top: 1px; }
+
+    .price-box { background: var(--cream); border-radius: 11px; padding: 1.1rem; margin-bottom: 1.1rem; }
+    .price-num { font-size: 44px; font-weight: 800; color: var(--green); line-height: 1; }
+    .price-lbl { font-size: 13px; color: var(--muted); margin-top: 3px; margin-bottom: 10px; }
+    .brow { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--muted); padding: 3px 0; }
+    .brow.tot { font-weight: 700; color: var(--text); border-top: 1px solid var(--border); margin-top: 5px; padding-top: 7px; font-size: 13.5px; }
+
+    .btn-pay {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 15px; background: var(--green); color: #fff;
+      border: none; border-radius: 10px; font-size: 15px; font-weight: 700;
+      font-family: inherit; cursor: pointer; text-decoration: none;
+      transition: background 0.15s;
+    }
+    .btn-pay:hover { background: var(--green-light); }
+    .pay-note { font-size: 11.5px; color: var(--muted); text-align: center; margin-top: 8px; line-height: 1.6; }
+
+    /* Upsells */
+    .upsells { padding: 1.25rem 1.5rem 1.5rem; border-top: 1px solid var(--border); }
+    .upsell-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .upsell-sub { font-size: 12.5px; color: var(--muted); margin-bottom: 1rem; }
+    .upsell-item {
+      display: flex; align-items: center; gap: 11px;
+      border: 1.5px solid var(--border); border-radius: 10px;
+      padding: 10px 12px; margin-bottom: 9px; transition: border-color 0.15s, background 0.15s;
+    }
+    .upsell-item:last-child { margin-bottom: 0; }
+    .upsell-item.on { border-color: var(--green); background: #f0f5f2; }
+    .upsell-thumb { width: 54px; height: 54px; object-fit: cover; border-radius: 7px; flex-shrink: 0; }
+    .upsell-info { flex: 1; }
+    .upsell-name { font-size: 13.5px; font-weight: 600; }
+    .upsell-price { font-size: 12.5px; color: var(--green); font-weight: 600; margin-top: 2px; }
+    .upsell-desc { font-size: 11.5px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
+
+    /* Toggle */
+    .toggle { position: relative; width: 42px; height: 23px; flex-shrink: 0; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; inset: 0; background: #d1d5db; border-radius: 12px; cursor: pointer; transition: 0.2s; }
+    .slider::before { content: ''; position: absolute; width: 17px; height: 17px; background: #fff; border-radius: 50%; top: 3px; left: 3px; transition: 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
+    input:checked + .slider { background: var(--green); }
+    input:checked + .slider::before { transform: translateX(19px); }
+
+    /* Reviews */
+    .reviews { margin-top: 2rem; }
+    .rev-head { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; }
+    .stars { color: var(--gold); letter-spacing: 2px; font-size: 18px; }
+    .rev-num { font-size: 20px; font-weight: 800; }
+    .rev-count { font-size: 13px; color: var(--muted); }
+    .rev-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .rev-card { background: var(--white); border: 1.5px solid var(--border); border-radius: 11px; padding: 14px; }
+    .rev-text { font-size: 13px; line-height: 1.65; color: var(--text); font-style: italic; margin-bottom: 8px; }
+    .rev-by { font-size: 12px; font-weight: 600; color: var(--muted); }
+
+    /* Bottom CTA */
+    .bottom { background: var(--white); border: 1.5px solid var(--border); border-radius: 14px; padding: 1.75rem; margin-top: 1.75rem; text-align: center; }
+    .bottom h2 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+    .bottom p { font-size: 13.5px; color: var(--muted); margin-bottom: 1.1rem; }
+    .bottom-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .btn-contact { padding: 14px 20px; background: transparent; border: 1.5px solid var(--green); color: var(--green); border-radius: 10px; font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer; text-decoration: none; }
+    .btn-contact:hover { background: #f0f5f2; }
+
+    @media (max-width: 760px) {
+      .layout { grid-template-columns: 1fr; }
+      .gallery { position: static; }
+      .hero { height: 220px; }
+      .rev-grid { grid-template-columns: 1fr; }
+      .top-actions .btn-outline-w { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a class="logo" href="index.html">EYWA</a>
+  <div class="top-actions">
+    <button class="btn-sm btn-outline-w" onclick="window.print()">🖨️ Imprimer</button>
+    <a class="btn-sm btn-gold" href="#pay">Réservez maintenant</a>
+  </div>
+</div>
+
+<div class="container">
+  <div class="layout">
+
+    <!-- Galerie photos -->
+    <div class="gallery">
+      <img class="hero" id="hero-img"
+        src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=900&q=80&auto=format"
+        alt="EYWA Bar Mobile">
+      <div class="thumbs">
+        <img class="thumb" onclick="swapHero(this.src)"
+          src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=300&q=75&auto=format" alt="">
+        <img class="thumb" onclick="swapHero(this.src)"
+          src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=300&q=75&auto=format" alt="">
+        <img class="thumb" onclick="swapHero(this.src)"
+          src="https://images.unsplash.com/photo-1453614512568-c4024d13c247?w=300&q=75&auto=format" alt="">
+        <img class="thumb" onclick="swapHero(this.src)"
+          src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=300&q=75&auto=format" alt="">
+      </div>
+    </div>
+
+    <!-- Devis panel -->
+    <div>
+      <div class="devis-card">
+
+        <div class="card-head">
+          <div class="card-title" id="card-title">Organisons votre événement.</div>
+          <div class="meta">
+            <span class="meta-icon">📍</span>
+            <span id="meta-lieu">—</span>
+          </div>
+          <div class="meta">
+            <span class="meta-icon">🕐</span>
+            <span id="meta-dt">—</span>
+          </div>
+          <div class="avail">
+            <span>✅</span>
+            <span>Nous sommes disponibles à cette date.</span>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="sect-label">Ce qui est inclus</div>
+          <ul class="incl">
+            <li><span class="ck">✓</span><span id="inc-guests">Service pour vos invités</span></li>
+            <li><span class="ck">✓</span><span id="inc-hrs">Durée de service</span></li>
+            <li><span class="ck">✓</span>1 barista professionnel(le) EYWA</li>
+            <li><span class="ck">✓</span>Bar mobile installé et rangé par nos soins</li>
+            <li><span class="ck">✓</span>Menu signature (matcha, cold brew, thé glacé…)</li>
+            <li><span class="ck">✓</span>Déplacement inclus jusqu'à 20 km</li>
+          </ul>
+
+          <div class="price-box" id="pay">
+            <div class="price-num" id="price-main">—</div>
+            <div class="price-lbl">euros TTC</div>
+          </div>
+
+          <a class="btn-pay" id="btn-reserve-main" href="#">
+            Réserver maintenant
+          </a>
+          <div class="pay-note">En raison de la forte demande, les réservations se font selon le principe du premier arrivé, premier servi.</div>
+        </div>
+
+        <div class="upsells">
+          <div class="upsell-title">Améliorez votre expérience</div>
+          <div class="upsell-sub">Options supplémentaires — nous vous les détaillerons lors de l'échange.</div>
+
+          <div class="upsell-item" id="up-cups">
+            <img class="upsell-thumb" src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=200&q=75&auto=format" alt="">
+            <div class="upsell-info">
+              <div class="upsell-name">Gobelets sur mesure</div>
+              <div class="upsell-price">Sur devis</div>
+              <div class="upsell-desc">Votre logo ou message imprimé sur chaque gobelet</div>
+            </div>
+            <label class="toggle"><input type="checkbox" onchange="toggleUp('up-cups',this)"><span class="slider"></span></label>
+          </div>
+
+          <div class="upsell-item" id="up-deco">
+            <img class="upsell-thumb" src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=200&q=75&auto=format" alt="">
+            <div class="upsell-info">
+              <div class="upsell-name">Décoration du bar</div>
+              <div class="upsell-price">Sur devis</div>
+              <div class="upsell-desc">Thème, fleurs, ambiance sur mesure</div>
+            </div>
+            <label class="toggle"><input type="checkbox" onchange="toggleUp('up-deco',this)"><span class="slider"></span></label>
+          </div>
+
+          <div class="upsell-item" id="up-menu">
+            <img class="upsell-thumb" src="https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=200&q=75&auto=format" alt="">
+            <div class="upsell-info">
+              <div class="upsell-name">Menu personnalisé</div>
+              <div class="upsell-price">Sur devis</div>
+              <div class="upsell-desc">Carte aux couleurs de votre événement</div>
+            </div>
+            <label class="toggle"><input type="checkbox" onchange="toggleUp('up-menu',this)"><span class="slider"></span></label>
+          </div>
+
+          <div class="upsell-item" id="up-barista">
+            <img class="upsell-thumb" src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=200&q=75&auto=format" alt="">
+            <div class="upsell-info">
+              <div class="upsell-name">Barista supplémentaire</div>
+              <div class="upsell-price">+200 €</div>
+              <div class="upsell-desc">Recommandé pour les événements de 150+ personnes</div>
+            </div>
+            <label class="toggle"><input type="checkbox" onchange="toggleUp('up-barista',this)"><span class="slider"></span></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Avis -->
+      <div class="reviews">
+        <div class="rev-head">
+          <span class="stars">★★★★★</span>
+          <span class="rev-num">5.0</span>
+          <span class="rev-count">· Avis clients vérifiés</span>
+        </div>
+        <div class="rev-grid">
+          <div class="rev-card">
+            <div class="rev-text">« Les boissons étaient délicieuses et le barista adorable. Tous nos invités ont adoré, l'ambiance était exactement comme on l'imaginait. »</div>
+            <div class="rev-by">— Camille M. · Mariage</div>
+          </div>
+          <div class="rev-card">
+            <div class="rev-text">« Service impeccable du début à la fin. Installation propre, rapide, et le bar vraiment élégant. Je recommande sans hésitation. »</div>
+            <div class="rev-by">— Thomas R. · Séminaire corporate</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA bas de page -->
+      <div class="bottom">
+        <h2>Prêt(e) à réserver ?</h2>
+        <p>Confirmez votre date maintenant. Notre agenda se remplit vite !</p>
+        <div class="bottom-btns">
+          <a class="btn-pay" id="btn-reserve-bottom" href="#" style="flex:1;max-width:240px">Réservez maintenant</a>
+          <a class="btn-contact" href="mailto:Louis.lepoulain08@gmail.com">Nous contacter</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  function qp() {
+    var p = {};
+    var s = window.location.search.slice(1) || window.location.hash.slice(1);
+    s.split('&').forEach(function(x) {
+      var kv = x.split('=');
+      if (kv[0]) p[decodeURIComponent(kv[0])] = decodeURIComponent((kv[1]||'').replace(/\+/g,' '));
+    });
+    return p;
+  }
+
+  function swapHero(src) {
+    document.getElementById('hero-img').src = src;
+  }
+
+  function toggleUp(id, cb) {
+    document.getElementById(id).classList[cb.checked ? 'add' : 'remove']('on');
+  }
+
+  var P = qp();
+
+  if (P.p) {
+    document.getElementById('card-title').textContent = 'Organisons votre événement, ' + P.p + '.';
+    document.title = 'Votre devis EYWA — ' + P.p;
+  }
+
+  document.getElementById('meta-lieu').textContent = P.l || '—';
+
+  var dtStr = '';
+  if (P.d) {
+    try {
+      var d = new Date(P.d + 'T12:00');
+      dtStr = 'Le ' + d.toLocaleDateString('fr-FR', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
+    } catch(e) { dtStr = P.d; }
+  }
+  if (P.ti) dtStr += (dtStr ? ', service à ' : 'Début à ') + P.ti;
+  document.getElementById('meta-dt').textContent = dtStr || '—';
+
+  var g = parseInt(P.g) || 0;
+  var h = parseFloat(P.h) || 0;
+  var dy = parseInt(P.dy) || 1;
+  var extraGuests = Math.max(0, g - 50);
+  var extraHrs = Math.max(0, h - 1.5);
+  var extraBaristas = Math.max(0, Math.ceil(g / (h * 50)) - 1);
+  var price = parseInt(P.pr) || ((350 + extraGuests * 5 + Math.round(extraHrs * 70) + extraBaristas * 200) * dy);
+
+  if (g) document.getElementById('inc-guests').textContent = 'Service pour ' + g + ' personne' + (g > 1 ? 's' : '');
+  if (h) {
+    var hLabel = h % 1 === 0 ? h + 'h' : Math.floor(h) + 'h' + Math.round((h % 1) * 60);
+    var hText = hLabel + ' de service';
+    if (dy > 1) hText += ' × ' + dy + ' jours';
+    document.getElementById('inc-hrs').textContent = hText;
+  }
+
+  document.getElementById('price-main').textContent = price + ' €';
+
+  if (P.t) {
+    var typeEl = document.createElement('div');
+    typeEl.style.cssText = 'font-size:13px;color:var(--muted);margin-top:-8px;margin-bottom:14px';
+    typeEl.textContent = P.t;
+    document.getElementById('card-title').after(typeEl);
+  }
+
+  var resBase = window.location.href.replace(/[^/]*$/, '') + 'reservation.html';
+  var resParams = new URLSearchParams({ p: P.p||'', pr: price, t: P.t||'', g: P.g||'', h: P.h||'', dy: dy, d: P.d||'', ti: P.ti||'', l: P.l||'' });
+  var resUrl = resBase + '?' + resParams.toString();
+  document.getElementById('btn-reserve-main').href = resUrl;
+  document.getElementById('btn-reserve-bottom').href = resUrl;
+</script>
+</body>
+</html>
