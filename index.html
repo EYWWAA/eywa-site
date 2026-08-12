@@ -265,8 +265,27 @@
     navLinks.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => { navLinks.classList.remove('open'); mobileMenu.setAttribute('aria-expanded','false'); mobileMenu.textContent='Menu'; }));
     const placesNav = document.querySelector('.nav-places');
     const placesTrigger = document.querySelector('.nav-places-trigger');
+    let placesCloseTimer;
+    const isMobileNav = () => window.matchMedia('(max-width: 600px)').matches;
+    const openPlaces = () => {
+      if (isMobileNav()) return;
+      window.clearTimeout(placesCloseTimer);
+      placesNav.classList.add('open');
+    };
+    const closePlaces = () => {
+      if (isMobileNav()) return;
+      placesCloseTimer = window.setTimeout(() => {
+        placesNav.classList.remove('open');
+        placesTrigger.setAttribute('aria-expanded', 'false');
+      }, 220);
+    };
+    placesNav.addEventListener('mouseenter', openPlaces);
+    placesNav.addEventListener('mouseleave', closePlaces);
     placesTrigger.addEventListener('click', () => {
-      if (!window.matchMedia('(max-width: 600px)').matches) return;
+      if (!isMobileNav()) {
+        placesTrigger.blur();
+        return;
+      }
       const open = placesNav.classList.toggle('open');
       placesTrigger.setAttribute('aria-expanded', open);
     });
