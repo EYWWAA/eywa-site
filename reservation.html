@@ -376,7 +376,8 @@
     showErr('err8', false);
     var amountCents = price * 100;
     var label = encodeURIComponent('Réservation EYWA — ' + (P.t || 'Événement') + ' · ' + price + ' €');
-    window.location.href = '/.netlify/functions/checkout?amount=' + amountCents + '&label=' + label;
+    var checkoutUrl = 'https://tubular-granita-827569.netlify.app/.netlify/functions/checkout';
+    window.location.href = checkoutUrl + '?amount=' + amountCents + '&label=' + label + '&cancel=reservation.html';
     return false;
   }
 
