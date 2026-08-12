@@ -133,13 +133,23 @@
     @media (max-width:600px) { .nav-places-trigger,.navlinks > a:not(.nav-button) { margin:0; } }
     @media (max-width:600px) { h1 { font-size:32px; } }
     @media (min-width:601px) { h1 { font-size:40px !important; } .section-title { font-size:38px !important; } .peace-title { font-size:40px !important; } .quote-cta h2 { font-size:38px !important; } }
+    .carousel-caption { display:none !important; }
+    @media (max-width:600px) {
+      .nav { position:relative; }
+      .mobile-menu { display:flex !important; width:42px; height:42px; align-items:center; justify-content:center; flex-direction:column; gap:5px; padding:0 !important; }
+      .mobile-menu span { display:block; width:21px; height:2px; border-radius:2px; background:currentColor; transition:transform .18s, opacity .18s; }
+      .mobile-menu.is-open span:first-child { transform:translateY(7px) rotate(45deg); }
+      .mobile-menu.is-open span:nth-child(2) { opacity:0; }
+      .mobile-menu.is-open span:last-child { transform:translateY(-7px) rotate(-45deg); }
+      .navlinks.open { z-index:50; box-shadow:0 14px 20px rgba(23,61,45,.1); }
+    }
   </style>
 </head>
 <body>
   <div class="topbar">Devis gratuit · Vérifiez votre date en quelques minutes · Charleville-Mézières et alentours</div>
   <header class="wrap nav">
     <a class="logo" href="#accueil" aria-label="EYWA, accueil">EYWA</a>
-    <button class="mobile-menu" type="button" aria-expanded="false" aria-controls="navlinks">Menu</button>
+    <button class="mobile-menu" type="button" aria-expanded="false" aria-controls="navlinks" aria-label="Ouvrir le menu"><span></span><span></span><span></span></button>
     <nav class="navlinks" id="navlinks" aria-label="Navigation principale">
       <a href="galerie.html">Galerie</a>
       <a href="menu.html">Menu</a>
@@ -176,11 +186,11 @@
 
       <div class="photo-carousel" aria-label="Galerie de prestations EYWA">
         <div class="carousel-stage" id="carousel-stage">
-          <figure class="carousel-slide active"><img src="assets/eywa-hero.png" alt="Bar à café mobile EYWA avec matcha et boissons glacées"><figcaption class="carousel-caption">Des boissons préparées à la demande pour vos invités.</figcaption></figure>
-          <figure class="carousel-slide"><img src="assets/eywa-corporate-event.png" alt="Coffee bar EYWA lors d'un événement d'entreprise"><figcaption class="carousel-caption">Un bar mobile qui s'intègre à votre événement.</figcaption></figure>
-          <figure class="carousel-slide"><img src="assets/eywa-drinks-detail.png" alt="Détail de boissons café et matcha EYWA"><figcaption class="carousel-caption">Café, lattes, cold brew et matcha, selon vos envies.</figcaption></figure>
-          <figure class="carousel-slide"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&amp;fit=crop&amp;w=1600&amp;q=85" alt="Barista préparant un café espresso"><figcaption class="carousel-caption">Un service barista attentif, du premier invité au dernier.</figcaption></figure>
-          <figure class="carousel-slide"><img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&amp;fit=crop&amp;w=1600&amp;q=85" alt="Latte art préparé par un barista"><figcaption class="carousel-caption">Une expérience coffee shop, directement sur votre lieu.</figcaption></figure>
+          <figure class="carousel-slide active"><img src="assets/eywa-hero.png" alt="Bar à café mobile EYWA avec matcha et boissons glacées"></figure>
+          <figure class="carousel-slide"><img src="assets/eywa-corporate-event.png" alt="Coffee bar EYWA lors d'un événement d'entreprise"></figure>
+          <figure class="carousel-slide"><img src="assets/eywa-drinks-detail.png" alt="Détail de boissons café et matcha EYWA"></figure>
+          <figure class="carousel-slide"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&amp;fit=crop&amp;w=1600&amp;q=85" alt="Barista préparant un café espresso"></figure>
+          <figure class="carousel-slide"><img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&amp;fit=crop&amp;w=1600&amp;q=85" alt="Latte art préparé par un barista"></figure>
           <button class="carousel-arrow prev" type="button" aria-label="Photo précédente">‹</button>
           <button class="carousel-arrow next" type="button" aria-label="Photo suivante">›</button>
         </div>
@@ -265,8 +275,8 @@
   <script>
     const mobileMenu = document.querySelector('.mobile-menu');
     const navLinks = document.querySelector('.navlinks');
-    mobileMenu.addEventListener('click', () => { const open = navLinks.classList.toggle('open'); mobileMenu.setAttribute('aria-expanded', open); mobileMenu.textContent = open ? 'Fermer' : 'Menu'; });
-    navLinks.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => { navLinks.classList.remove('open'); mobileMenu.setAttribute('aria-expanded','false'); mobileMenu.textContent='Menu'; }));
+    mobileMenu.addEventListener('click', () => { const open = navLinks.classList.toggle('open'); mobileMenu.classList.toggle('is-open', open); mobileMenu.setAttribute('aria-expanded', String(open)); mobileMenu.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu'); });
+    navLinks.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => { navLinks.classList.remove('open'); mobileMenu.classList.remove('is-open'); mobileMenu.setAttribute('aria-expanded','false'); mobileMenu.setAttribute('aria-label','Ouvrir le menu'); }));
     const placesNav = document.querySelector('.nav-places');
     const placesTrigger = document.querySelector('.nav-places-trigger');
     let placesCloseTimer;
