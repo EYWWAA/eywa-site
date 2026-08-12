@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://eywwaa.github.io/eywa-site/sitemap.xml

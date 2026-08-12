@@ -4,8 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Service de café événementiel pour entreprises et marques : baristas professionnels, bar à café mobile, lattes, espresso, cold brew et matcha à Charleville-Mézières et alentours.">
+  <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#173d2d">
-  <title>Service de café événementiel, baristas et bars à café mobiles | EYWA</title>
+  <link rel="canonical" href="https://eywwaa.github.io/eywa-site/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://eywwaa.github.io/eywa-site/">
+  <meta property="og:title" content="Coffee catering à Charleville-Mézières | EYWA">
+  <meta property="og:description" content="Baristas professionnels et bar à café mobile pour les événements d'entreprise et les marques.">
+  <meta property="og:image" content="https://eywwaa.github.io/eywa-site/assets/eywa-hero.png">
+  <title>Coffee catering à Charleville-Mézières | EYWA</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&amp;family=Fraunces:opsz,wght@9..144,600;9..144,700&amp;display=swap" rel="stylesheet">
@@ -129,7 +136,7 @@
   <main>
     <section class="hero" id="accueil" aria-labelledby="title">
       <div class="hero-copy">
-        <h1 id="title">Service de café événementiel, baristas et bars à café mobiles.</h1>
+        <h1 id="title">Coffee catering, baristas et bars à café mobiles pour vos événements.</h1>
         <p class="lead">EYWA facilite l'organisation d'un coffee bar haut de gamme sur votre événement. Baristas professionnels, bar à café mobile soigné, boissons préparées minute et service attentionné : vos invités vivent une expérience café dont ils se souviennent.</p>
         <div><a class="button" href="devis-instantane.html">Obtenir mon devis instantané <span aria-hidden="true">→</span></a></div>
         <div class="trust-row"><span>Tarif personnalisé gratuit <b aria-hidden="true">·</b> Vérifiez la disponibilité de votre date.</span></div>
@@ -176,6 +183,13 @@
       </div>
     </section>
 
+    <section class="intro" aria-labelledby="local-seo-title">
+      <div class="wrap">
+        <h2 class="section-title" id="local-seo-title">Coffee catering à Charleville-Mézières et dans les Ardennes.</h2>
+        <p class="section-sub">EYWA accompagne les entreprises, agences et marques qui souhaitent offrir une expérience café soignée à leurs équipes, clients et invités. Pour un séminaire, un lancement de produit, un salon ou une activation de marque, notre coffee bar mobile vient directement sur votre lieu d'événement.</p>
+      </div>
+    </section>
+
     <section class="feature" aria-labelledby="feature-title">
       <div class="feature-image"><img src="assets/eywa-hero.png" alt="Boissons EYWA fraîches préparées à la minute"></div>
       <div class="feature-content"><p class="eyebrow">Vos invités méritent mieux</p><h2 id="feature-title">Des boissons préparées comme dans un bon coffee shop, chez vous.</h2><p>Notre bar s'adapte aux mariages, fêtes privées, lancements et événements d'entreprise. Chaque détail est réglé avec vous en amont pour que le service soit naturel le jour J.</p><a class="button button-light" href="devis-instantane.html">Faire mon devis <span aria-hidden="true">→</span></a></div>
@@ -198,6 +212,31 @@
   </main>
 
   <footer><div class="wrap footer-grid"><div><div class="footer-brand">EYWA</div><div>Bars à boissons naturels pour vos événements</div></div><div class="footer-links"><a href="mailto:Louis.lepoulain08@gmail.com">Email</a><a href="tel:+33749902156">07 49 90 21 56</a><a href="devis-instantane.html">Devis</a></div><div>© 2026 EYWA</div></div></footer>
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {
+        "@type":"Organization",
+        "@id":"https://eywwaa.github.io/eywa-site/#organization",
+        "name":"EYWA",
+        "url":"https://eywwaa.github.io/eywa-site/",
+        "logo":"https://eywwaa.github.io/eywa-site/assets/eywa-hero.png",
+        "email":"Louis.lepoulain08@gmail.com",
+        "telephone":"+33749902156",
+        "areaServed":["Charleville-Mézières","Ardennes","Grand Est"]
+      },
+      {
+        "@type":"Service",
+        "name":"Coffee catering pour entreprises et marques",
+        "serviceType":"Coffee catering, baristas et bar à café mobile",
+        "provider":{"@id":"https://eywwaa.github.io/eywa-site/#organization"},
+        "areaServed":["Charleville-Mézières","Ardennes","Grand Est"],
+        "description":"Service de café événementiel avec baristas professionnels, bar à café mobile, espresso, lattes, cold brew et matcha pour les événements d'entreprise et les activations de marque."
+      }
+    ]
+  }
+  </script>
   <script>
     const mobileMenu = document.querySelector('.mobile-menu'); const navLinks = document.querySelector('.navlinks');
     mobileMenu.addEventListener('click', () => { const open = navLinks.classList.toggle('open'); mobileMenu.setAttribute('aria-expanded', open); mobileMenu.textContent = open ? 'Fermer' : 'Menu'; });
