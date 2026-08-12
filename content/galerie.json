@@ -1,0 +1,32 @@
+{
+  "hero": {
+    "sur_titre": "Galerie",
+    "titre": "Un coffee bar qui attire les regards.",
+    "texte": "Découvrez l'univers EYWA : bars à café mobiles, boissons préparées à la demande et service pensé pour les événements d'entreprise, les activations de marque et les réceptions."
+  },
+  "photo_1": {
+    "image": "assets/eywa-corporate-event.png",
+    "alt": "Barista EYWA servant des boissons lors d'un événement professionnel",
+    "legende": "Coffee bar pour événement professionnel"
+  },
+  "photo_2": {
+    "image": "assets/eywa-drinks-detail.png",
+    "alt": "Matcha, café glacé et cold brew préparés à la demande",
+    "legende": "Boissons préparées minute"
+  },
+  "photo_3": {
+    "image": "assets/eywa-hero.png",
+    "alt": "Bar à café mobile EYWA avec matcha et cold brew",
+    "legende": "Un bar mobile élégant"
+  },
+  "photo_4": {
+    "image": "assets/eywa-corporate-event.png",
+    "alt": "Service de café par un barista EYWA",
+    "legende": "Une animation qui fait venir les invités"
+  },
+  "appel": {
+    "titre": "Vous aimez ce que vous voyez ?",
+    "texte": "Construisons un coffee bar qui s'intègre à votre marque et à votre événement.",
+    "bouton": "Obtenir mon devis →"
+  }
+}

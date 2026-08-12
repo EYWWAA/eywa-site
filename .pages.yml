@@ -1,0 +1,149 @@
+media:
+  - name: photos
+    label: Photos du site
+    input: assets
+    output: assets
+    extensions: [png, jpg, jpeg, webp]
+
+content:
+  - name: accueil
+    label: Accueil
+    type: file
+    path: content/accueil.json
+    format: json
+    fields:
+      - name: hero
+        label: Premier écran
+        type: object
+        fields:
+          - { name: titre, label: Grand titre, type: text }
+          - { name: texte, label: Texte de présentation, type: text }
+          - { name: bouton, label: Texte du bouton devis, type: string }
+          - { name: sous_bouton, label: Texte sous le bouton, type: string }
+          - { name: avis, label: Avis client, type: string }
+          - { name: photo, label: Photo principale, type: image, options: { media: photos } }
+          - { name: alt_photo, label: Description de la photo, type: string }
+          - { name: etiquette_photo, label: Texte sur la photo, type: text }
+      - name: presentation
+        label: Section présentation
+        type: object
+        fields:
+          - { name: titre, label: Titre, type: text }
+          - { name: texte, label: Texte, type: text }
+      - name: zone
+        label: Zone d'intervention
+        type: object
+        fields:
+          - { name: titre, label: Titre, type: text }
+          - { name: texte, label: Texte, type: text }
+      - name: appel
+        label: Dernier appel à l'action
+        type: object
+        fields:
+          - { name: titre, label: Titre, type: text }
+          - { name: texte, label: Texte, type: text }
+          - { name: bouton, label: Bouton, type: string }
+
+  - name: tarifs
+    label: Tarifs
+    type: file
+    path: content/tarifs.json
+    format: json
+    fields:
+      - name: hero
+        label: Premier écran
+        type: object
+        fields:
+          - { name: sur_titre, label: Petit titre, type: string }
+          - { name: titre, label: Grand titre, type: text }
+          - { name: texte, label: Texte, type: text }
+      - name: devis
+        label: Carte devis
+        type: object
+        fields:
+          - { name: titre, label: Titre, type: string }
+          - { name: texte, label: Texte, type: text }
+          - { name: bouton, label: Bouton, type: string }
+      - name: appel
+        label: Dernier appel à l'action
+        type: object
+        fields:
+          - { name: titre, label: Titre, type: text }
+          - { name: texte, label: Texte, type: text }
+          - { name: bouton, label: Bouton, type: string }
+
+  - name: menu
+    label: Menu
+    type: file
+    path: content/menu.json
+    format: json
+    fields:
+      - name: hero
+        label: Premier écran
+        type: object
+        fields:
+          - { name: sur_titre, label: Petit titre, type: string }
+          - { name: titre, label: Grand titre, type: text }
+          - { name: texte, label: Texte, type: text }
+      - name: intro
+        label: Introduction de la carte
+        type: object
+        fields:
+          - { name: titre, label: Titre, type: text }
+          - { name: texte, label: Texte, type: text }
+      - name: appel
+        label: Dernier appel à l'action
+        type: object
+        fields:
+          - { name: titre, label: Titre, type: text }
+          - { name: texte, label: Texte, type: text }
+          - { name: bouton, label: Bouton, type: string }
+
+  - name: galerie
+    label: Galerie
+    type: file
+    path: content/galerie.json
+    format: json
+    fields:
+      - name: hero
+        label: Premier écran
+        type: object
+        fields:
+          - { name: sur_titre, label: Petit titre, type: string }
+          - { name: titre, label: Grand titre, type: text }
+          - { name: texte, label: Texte, type: text }
+      - name: photo_1
+        label: Photo 1
+        type: object
+        fields:
+          - { name: image, label: Photo, type: image, options: { media: photos } }
+          - { name: alt, label: Description de la photo, type: string }
+          - { name: legende, label: Légende, type: string }
+      - name: photo_2
+        label: Photo 2
+        type: object
+        fields:
+          - { name: image, label: Photo, type: image, options: { media: photos } }
+          - { name: alt, label: Description de la photo, type: string }
+          - { name: legende, label: Légende, type: string }
+      - name: photo_3
+        label: Photo 3
+        type: object
+        fields:
+          - { name: image, label: Photo, type: image, options: { media: photos } }
+          - { name: alt, label: Description de la photo, type: string }
+          - { name: legende, label: Légende, type: string }
+      - name: photo_4
+        label: Photo 4
+        type: object
+        fields:
+          - { name: image, label: Photo, type: image, options: { media: photos } }
+          - { name: alt, label: Description de la photo, type: string }
+          - { name: legende, label: Légende, type: string }
+      - name: appel
+        label: Dernier appel à l'action
+        type: object
+        fields:
+          - { name: titre, label: Titre, type: text }
+          - { name: texte, label: Texte, type: text }
+          - { name: bouton, label: Bouton, type: string }

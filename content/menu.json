@@ -1,0 +1,16 @@
+{
+  "hero": {
+    "sur_titre": "Notre carte",
+    "titre": "La carte d'un bon coffee shop, directement sur votre événement.",
+    "texte": "Chaque boisson est préparée à la demande par nos baristas. Toutes les recettes peuvent être proposées chaudes ou glacées, selon votre format et la saison."
+  },
+  "intro": {
+    "titre": "Pour chaque invité, la boisson qui lui donne envie de revenir au bar.",
+    "texte": "Pas de packs compliqués à comparer. La carte EYWA est construite autour des grands classiques du café, du matcha et des options glacées."
+  },
+  "appel": {
+    "titre": "Choisissez votre date, on s'occupe de la carte.",
+    "texte": "Obtenez un tarif adapté à votre événement en quelques minutes.",
+    "bouton": "Obtenir mon devis →"
+  }
+}

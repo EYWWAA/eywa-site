@@ -1,0 +1,25 @@
+{
+  "hero": {
+    "titre": "Un coffee bar qui donne du relief à vos événements.",
+    "texte": "EYWA facilite l'organisation d'un coffee bar haut de gamme sur votre événement. Baristas professionnels, bar à café mobile soigné, boissons préparées minute et service attentionné : vos invités vivent une expérience café dont ils se souviennent.",
+    "bouton": "Obtenir mon devis instantané",
+    "sous_bouton": "Tarif personnalisé gratuit · Vérifiez la disponibilité de votre date.",
+    "avis": "5,0 · Catherine C.",
+    "photo": "assets/eywa-hero.png",
+    "alt_photo": "Bar à café mobile EYWA servant matcha, latte glacé et cold brew lors d'un événement",
+    "etiquette_photo": "Espresso, lattes, cold brew, cafés glacés et matcha préparés à la demande."
+  },
+  "presentation": {
+    "titre": "Votre événement compte. Vous ne devriez pas avoir à vous inquiéter des boissons.",
+    "texte": "Un bar mal préparé ou un prestataire difficile à joindre peut compliquer toute l'organisation. EYWA est là pour que ce soit simple, clair et agréable du devis au dernier verre."
+  },
+  "zone": {
+    "titre": "Coffee catering à Charleville-Mézières et dans les Ardennes.",
+    "texte": "EYWA accompagne les entreprises, agences et marques qui souhaitent offrir une expérience café soignée à leurs équipes, clients et invités. Pour un séminaire, un lancement de produit, un salon ou une activation de marque, notre coffee bar mobile vient directement sur votre lieu d'événement."
+  },
+  "appel": {
+    "titre": "Préparez votre événement sans perdre de temps.",
+    "texte": "Votre devis est gratuit et sans engagement.",
+    "bouton": "Obtenir mon devis"
+  }
+}

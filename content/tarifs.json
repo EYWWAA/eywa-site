@@ -1,0 +1,17 @@
+{
+  "hero": {
+    "sur_titre": "Tarifs coffee catering",
+    "titre": "Plus accessible que vous ne l'imaginez. Plus simple à réserver que vous ne le pensez.",
+    "texte": "Beaucoup d'entreprises imaginent qu'un barista privé et un coffee bar mobile sont hors budget. Obtenez votre tarif personnalisé en moins de 60 secondes, sans appel et sans attente."
+  },
+  "devis": {
+    "titre": "Votre devis en 60 secondes",
+    "texte": "Répondez à quelques questions simples. Vous voyez une estimation et pouvez vérifier la disponibilité de votre date.",
+    "bouton": "Voir mon tarif personnalisé →"
+  },
+  "appel": {
+    "titre": "Connaissez votre prix maintenant.",
+    "texte": "Obtenez votre estimation personnalisée et vérifiez votre date.",
+    "bouton": "Obtenir mon devis →"
+  }
+}
