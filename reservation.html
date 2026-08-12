@@ -78,6 +78,7 @@
     .btn-back:hover { border-color:var(--green); color:var(--green); }
     .btn-pay-final { flex:1; background:var(--gold); color:var(--green); border:none; border-radius:12px; padding:1rem; font-size:16px; font-weight:800; cursor:pointer; font-family:inherit; transition:opacity .15s; display:flex; align-items:center; justify-content:center; gap:8px; text-decoration:none; }
     .btn-pay-final:hover { opacity:.88; }
+    .payment-methods-note { margin:0 0 1rem; padding:.8rem .9rem; border:1px solid #d7e4da; border-radius:10px; background:#f0f7f3; color:#365442; font-size:12.5px; line-height:1.5; }
 
     /* Total bar */
     .total-bar { position:fixed; bottom:0; left:0; right:0; background:var(--white); border-top:1px solid var(--border); padding:.85rem 1.5rem; display:flex; align-items:center; justify-content:space-between; z-index:10; box-shadow:0 -2px 12px rgba(0,0,0,.07); }
@@ -227,6 +228,7 @@
       <div class="step-label">Paiement</div>
       <div class="step-title">Finalisez votre réservation</div>
       <div class="step-sub">Plus qu'une étape ! Votre date sera confirmée dès réception du paiement.</div>
+      <div class="payment-methods-note"><strong>Paiement sécurisé.</strong> Carte, PayPal et Klarna peuvent être proposés sur la page de paiement. Le paiement en plusieurs fois apparaît selon l’éligibilité de la commande.</div>
       <label class="fld">Nom ou raison sociale pour la facture *</label>
       <input type="text" id="billing-name" placeholder="Marie Dupont ou SARL Événements Paris">
       <div class="check-group" style="margin-top:1.25rem">

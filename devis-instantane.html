@@ -44,7 +44,7 @@
     .dot.done { background: var(--green); }
     .dot.active { background: var(--green); width: 24px; border-radius: 5px; }
     .step { display: none; }
-    .step.active { display: block; animation: fadeUp 0.28s ease; }
+    .step.active { display: block; animation: fadeUp 0.28s ease; padding-bottom: 76px; }
     @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
     .question { font-size: 20px; font-weight: 700; line-height: 1.35; margin-bottom: 0.3rem; }
     .question-sub { font-size: 13.5px; color: var(--muted); margin-bottom: 1.5rem; }
@@ -180,7 +180,14 @@
     .perso-card.selected .perso-check-icon { display: block; }
 
     /* Buttons */
-    .btn-row { display: flex; gap: 10px; margin-top: 1.5rem; }
+    .btn-row {
+      display: flex; gap: 10px; margin-top: 1.5rem;
+      position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
+      z-index: 20; width: min(calc(100vw - 32px), 512px);
+      padding: 9px; background: rgba(255,255,255,0.96);
+      border: 1px solid var(--border); border-radius: 14px;
+      box-shadow: 0 8px 24px rgba(20,43,30,0.16);
+    }
     .btn-back {
       flex: 0 0 90px; padding: 14px 10px; border: 1.5px solid var(--border);
       background: #fff; border-radius: var(--radius); cursor: pointer;
@@ -218,6 +225,11 @@
     .brow { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); padding: 4px 0; }
     .brow.total { color: var(--text); font-weight: 600; font-size: 14px; border-top: 1px solid var(--border); margin-top: 6px; padding-top: 8px; }
     .brow.note { font-size: 12px; font-style: italic; }
+    .payment-note {
+      margin: 0 0 1.25rem; padding: 11px 12px; border: 1px solid #d7e4da;
+      border-radius: var(--radius); background: #f0f7f3; color: #365442;
+      font-size: 12.5px; line-height: 1.5; text-align: left;
+    }
 
     /* Contact */
     .fields { display: flex; flex-direction: column; gap: 12px; }
@@ -256,6 +268,7 @@
       .price-amount { font-size: 46px; }
       .form-card { padding: 1.25rem 1.1rem 1.1rem; }
       .fq-title { font-size: 19px; }
+      .btn-row { bottom: 12px; width: calc(100vw - 24px); }
     }
   </style>
 </head>
@@ -482,6 +495,9 @@
         <div class="price-unit">euros TTC</div>
         <div class="price-context" id="priceContext"></div>
         <div class="breakdown" id="breakdown"></div>
+        <div class="payment-note">
+          <strong>Paiement sécurisé.</strong> Carte, PayPal et Klarna peuvent être proposés au moment de la réservation. Les options de paiement en plusieurs fois s’affichent selon l’éligibilité de la commande.
+        </div>
         <button class="btn-next" style="margin-top:0;width:100%;padding:14px;" onclick="go('sPrix','s6',5)">Continuer →</button>
         <button class="back-link" onclick="go('sPrix','s5',4)">← Modifier ma demande</button>
       </div>
