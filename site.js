@@ -1,0 +1,1 @@
+document.querySelectorAll('.mobile-menu').forEach((button) => { const nav = button.nextElementSibling; button.addEventListener('click', () => { const open = nav.classList.toggle('open'); button.setAttribute('aria-expanded', String(open)); button.textContent = open ? 'Fermer' : 'Menu'; }); });
