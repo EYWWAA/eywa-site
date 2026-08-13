@@ -110,21 +110,22 @@
 /* text-wrap:balance repartit les lignes uniformement et evite qu'un mot
    se retrouve seul. Le retour forcé n'est plus necessaire a cette taille. */
 .hero h1 { font-size: clamp(34px, 3.3vw, 46px) !important; max-width: 620px; text-wrap: balance; }
+/* Deux colonnes alignees plutot qu'une ligne separee par des puces : la
+   ligne filait jusqu'au bord de la photo, et les puces en debut de ligne
+   creaient un bord gauche irregulier au moment du repli. */
 .hero-events {
-  display: flex; flex-wrap: wrap; gap: 8px 0;
+  display: grid; grid-template-columns: repeat(2, auto);
+  justify-content: start; gap: 10px 34px;
   margin: 22px 0 26px; padding: 0; list-style: none;
   color: #34483c; font-size: 14.5px; font-weight: 600;
 }
-/* Puce portee par ::before de l'element suivant : ainsi elle ne se
-   retrouve jamais orpheline en fin de ligne quand la liste se replie. */
-.hero-events li { display: flex; align-items: center; white-space: nowrap; }
-.hero-events li:not(:first-child)::before {
-  content: ''; flex: none; width: 4px; height: 4px; margin: 0 12px;
+.hero-events li { display: flex; align-items: center; gap: 10px; }
+.hero-events li::before {
+  content: ''; flex: none; width: 5px; height: 5px;
   border-radius: 50%; background: var(--gold);
 }
 @media (max-width: 600px) {
-  .hero-events { font-size: 13.5px; margin: 18px 0 22px; }
-  .hero-events li:not(:first-child)::before { margin: 0 9px; }
+  .hero-events { grid-template-columns: 1fr; gap: 9px; font-size: 13.5px; margin: 18px 0 22px; }
 }
 
 /* Vignettes du hero : plus grandes et plus espacees de la photo
