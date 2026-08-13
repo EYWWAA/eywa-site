@@ -159,6 +159,7 @@
     }
   </style>
   <link rel="stylesheet" href="header.css?v=hdr-1">
+  <link rel="stylesheet" href="home.css?v=home-1">
 </head>
 <body>
   <header class="wrap nav">
@@ -212,52 +213,88 @@
       </div>
     </section>
 
-    <section class="video-section" aria-labelledby="video-title">
+    <section class="intro-band" aria-labelledby="intro-title">
       <div class="wrap">
-        <p class="section-kicker">Le service EYWA</p>
-        <h2 class="section-title" id="video-title">Découvrez comment se déroule votre coffee bar.</h2>
-        <p class="section-sub">Un aperçu simple de l’expérience que vos invités vivront, de l’installation au service des boissons.</p>
-        <div class="video-frame">
-          <video controls muted playsinline preload="metadata" poster="assets/eywa-corporate-event.png">
-            <source src="https://videos.pexels.com/video-files/4374386/4374386-hd_1920_1080_25fps.mp4" type="video/mp4">
-            Votre navigateur ne prend pas en charge la lecture vidéo.
-          </video>
-        </div>
-        <p class="video-credit">Vidéo d’illustration libre d’utilisation : <a href="https://www.pexels.com/video/barista-serving-a-cup-of-coffee-4374386/" target="_blank" rel="noopener noreferrer">Pexels</a>.</p>
+        <h2 id="intro-title">Là où se rencontrent moments savoureux et événements réussis.</h2>
+        <p>EYWA installe un bar à café mobile sur votre lieu et prépare chaque boisson à la minute, devant vos invités. Café de spécialité, matcha, cold brew et boissons glacées. Un mariage, un séminaire ou une réception privée : le format s'adapte à votre lieu, à votre horaire et à votre nombre d'invités.</p>
       </div>
     </section>
 
-    <section class="peace" aria-labelledby="peace-title">
-      <div class="wrap peace-grid">
-        <h2 class="peace-title" id="peace-title">Vous obtenez plus qu’un café : vous gagnez en tranquillité.</h2>
+    <section class="booking" aria-labelledby="booking-title">
+      <div class="wrap booking-grid">
+        <figure class="booking-photo">
+          <img src="assets/eywa-drinks-detail.png" alt="Boissons café et matcha préparées au bar EYWA" loading="lazy">
+        </figure>
         <div>
-          <p class="peace-copy">Le devis est rapide, l’organisation est claire et notre équipe reste à vos côtés jusqu’au jour J. Vous nous indiquez votre besoin, nous nous occupons du reste.</p>
-          <ul class="peace-list">
-            <li><span class="check">✓</span><span>Réservez votre événement en ligne en quelques minutes, avec un devis personnalisé immédiat.</span></li>
-            <li><span class="check">✓</span><span>Un interlocuteur vous accompagne à chaque étape, du devis à la réalisation de votre prestation.</span></li>
-            <li><span class="check">✓</span><span>Nous anticipons la logistique, l’installation et le service pour un déroulement fluide du début à la fin.</span></li>
-          </ul>
-          <a class="button" href="devis-instantane.html">Obtenir mon devis instantané<span aria-hidden="true">→</span></a>
+          <p class="section-kicker">Réservation</p>
+          <h2 id="booking-title">Le formulaire de réservation le plus simple qui soit.</h2>
+          <p>Obtenez votre tarif personnalisé en moins de 60 secondes. Sans appel à passer, sans attente, et sans engagement.</p>
+          <ol class="booking-steps">
+            <li><span class="num">1</span><span>Indiquez la date, le lieu et le nombre d'invités</span></li>
+            <li><span class="num">2</span><span>Découvrez votre tarif immédiatement à l'écran</span></li>
+            <li><span class="num">3</span><span>Vérifiez que votre date est disponible</span></li>
+          </ol>
+          <a class="button button-gold" href="devis-instantane.html">Obtenir mon devis instantané<span aria-hidden="true">→</span></a>
         </div>
       </div>
     </section>
 
-    <section class="quote-cta" aria-labelledby="quote-title">
-      <div class="wrap quote-cta-wrap">
-        <div><h2 id="quote-title">Prêt à simplifier l’organisation de votre événement ?</h2><p>Répondez à quelques questions et découvrez votre estimation personnalisée.</p></div>
-        <a class="button button-gold" href="devis-instantane.html">Obtenir mon devis<span aria-hidden="true">→</span></a>
+    <section class="services" id="services" aria-labelledby="services-title">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="section-kicker">Nos services</p>
+          <h2 class="section-title" id="services-title">Nos prestations pour votre événement.</h2>
+          <p class="section-sub">Une prestation complète, du montage au rangement, pensée pour que vous n'ayez rien à gérer le jour J.</p>
+        </div>
+        <article class="service-card">
+          <figure><img src="assets/eywa-hero.png" alt="Bar à café mobile EYWA installé en extérieur" loading="lazy"></figure>
+          <div class="service-body">
+            <p class="service-kicker">Service principal</p>
+            <h3>Bar à café mobile</h3>
+            <p class="service-claim">Un vrai coffee shop, installé chez vous.</p>
+            <p>Nous arrivons avec le bar, le matériel et les produits. Un barista prépare chaque boisson à la demande pendant toute la durée du service, puis nous rangeons tout derrière nous.</p>
+            <ul class="service-list">
+              <li>Café de spécialité, matcha, cold brew et boissons glacées</li>
+              <li>Barista professionnel présent pendant tout le service</li>
+              <li>Installation et rangement compris</li>
+              <li>Déplacement inclus jusqu'à 20 km</li>
+            </ul>
+            <div class="service-actions">
+              <a class="button" href="menu.html">Voir la carte<span aria-hidden="true">→</span></a>
+              <a class="button button-gold" href="devis-instantane.html">Obtenir mon devis<span aria-hidden="true">→</span></a>
+            </div>
+          </div>
+        </article>
       </div>
     </section>
 
-    <section class="places" id="lieux" aria-labelledby="places-title">
+    <section class="why" aria-labelledby="why-title">
       <div class="wrap">
-        <p class="section-kicker">Nos lieux d’intervention</p>
-        <h2 class="section-title" id="places-title">EYWA vient à votre rencontre.</h2>
-        <p class="section-sub">Nous intervenons pour vos événements à Charleville-Mézières, Reims et Bruxelles.</p>
-        <div class="place-list">
-          <article class="place"><span class="place-pin" aria-hidden="true">⌖</span><h3>Charleville-Mézières</h3><p>Ardennes et alentours</p></article>
-          <article class="place"><span class="place-pin" aria-hidden="true">⌖</span><h3>Reims</h3><p>Marne et alentours</p></article>
-          <article class="place"><span class="place-pin" aria-hidden="true">⌖</span><h3>Bruxelles</h3><p>Bruxelles et alentours</p></article>
+        <div class="section-head">
+          <p class="section-kicker">Pourquoi EYWA</p>
+          <h2 id="why-title">Pourquoi nous confier votre événement.</h2>
+        </div>
+        <div class="why-grid">
+          <article class="why-card">
+            <span class="ico" aria-hidden="true">☕</span>
+            <h3>Un barista qui va vers vos invités</h3>
+            <p>Le bar n'est pas un simple stand. Chaque boisson est préparée devant vos invités, et l'échange fait partie du moment.</p>
+          </article>
+          <article class="why-card">
+            <span class="ico" aria-hidden="true">✦</span>
+            <h3>Un bar qui s'adapte à votre événement</h3>
+            <p>Format du bar, carte des boissons, gobelets à votre logo ou décoration aux couleurs de votre événement.</p>
+          </article>
+          <article class="why-card">
+            <span class="ico" aria-hidden="true">◈</span>
+            <h3>Des boissons que vos invités remarquent</h3>
+            <p>Matcha, cold brew et café de spécialité préparés à la minute, avec des alternatives végétales et sans caféine.</p>
+          </article>
+          <article class="why-card">
+            <span class="ico" aria-hidden="true">⏱</span>
+            <h3>Un tarif clair en 60 secondes</h3>
+            <p>Pas de devis flou envoyé trois jours plus tard. Vous voyez votre prix à l'écran et vérifiez votre date immédiatement.</p>
+          </article>
         </div>
       </div>
     </section>
@@ -274,6 +311,22 @@
       </div>
     </section>
 
+    <section class="gallery-teaser" aria-labelledby="teaser-title">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="section-kicker">En images</p>
+          <h2 class="section-title" id="teaser-title">Le bar EYWA en événement.</h2>
+        </div>
+        <div class="teaser-grid">
+          <figure><img src="assets/eywa-hero.png" alt="Bar à café mobile EYWA en extérieur" loading="lazy"></figure>
+          <figure><img src="assets/eywa-corporate-event.png" alt="Coffee bar EYWA lors d'un événement d'entreprise" loading="lazy"></figure>
+          <figure><img src="assets/eywa-drinks-detail.png" alt="Boissons café et matcha EYWA" loading="lazy"></figure>
+          <figure><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&amp;fit=crop&amp;w=700&amp;q=80" alt="Barista préparant un café" loading="lazy"></figure>
+        </div>
+        <div class="center-action"><a class="button" href="galerie.html">Voir la galerie<span aria-hidden="true">→</span></a></div>
+      </div>
+    </section>
+
     <section class="faq-home" id="faq" aria-labelledby="faq-title">
       <div class="wrap">
         <p class="section-kicker">Questions fréquentes</p>
@@ -284,6 +337,26 @@
           <details><summary>Puis-je personnaliser le service ?</summary><p>Oui. Le format du bar, les boissons et certaines attentions peuvent être adaptés à votre événement ou à votre marque.</p></details>
         </div>
         <p class="faq-link"><a href="faq.html">Voir toutes les questions<span aria-hidden="true">→</span></a></p>
+      </div>
+    </section>
+
+    <section class="places" id="lieux" aria-labelledby="places-title">
+      <div class="wrap">
+        <p class="section-kicker">Nos lieux d’intervention</p>
+        <h2 class="section-title" id="places-title">EYWA vient à votre rencontre.</h2>
+        <p class="section-sub">Nous intervenons pour vos événements à Charleville-Mézières, Reims et Bruxelles.</p>
+        <div class="place-list">
+          <article class="place"><span class="place-pin" aria-hidden="true">⌖</span><h3>Charleville-Mézières</h3><p>Ardennes et alentours</p></article>
+          <article class="place"><span class="place-pin" aria-hidden="true">⌖</span><h3>Reims</h3><p>Marne et alentours</p></article>
+          <article class="place"><span class="place-pin" aria-hidden="true">⌖</span><h3>Bruxelles</h3><p>Bruxelles et alentours</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="quote-cta" aria-labelledby="quote-title">
+      <div class="wrap quote-cta-wrap">
+        <div><h2 id="quote-title">Prêt à réserver votre coffee bar ?</h2><p>Répondez à quelques questions et découvrez votre estimation personnalisée.</p></div>
+        <a class="button button-gold" href="devis-instantane.html">Obtenir mon devis<span aria-hidden="true">→</span></a>
       </div>
     </section>
   </main>

@@ -1,0 +1,87 @@
+/* ============================================================
+   EYWA — Sections de la page d'accueil
+   Charge uniquement par index.html, apres header.css.
+   ============================================================ */
+
+/* --- Bloc d'introduction --- */
+.intro-band { padding: 84px 0; background: #fff; }
+.intro-band .wrap { max-width: 860px; text-align: center; }
+.intro-band h2 { margin: 0 0 20px; color: var(--green); font: 700 clamp(30px, 3vw, 40px)/1.12 var(--serif); letter-spacing: -.04em; }
+.intro-band p { margin: 0 auto; max-width: 720px; color: #425147; font-size: 17px; line-height: 1.65; }
+
+/* --- Reservation --- */
+.booking { padding: 84px 0; background: var(--cream); }
+.booking-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 54px; align-items: center; }
+.booking-photo { margin: 0; overflow: hidden; border-radius: 16px; aspect-ratio: 4 / 3; }
+.booking-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.booking h2 { margin: 0 0 16px; color: var(--green); font: 700 clamp(28px, 2.8vw, 38px)/1.13 var(--serif); letter-spacing: -.04em; }
+.booking p { margin: 0 0 24px; color: #425147; font-size: 16px; line-height: 1.6; }
+.booking-steps { display: grid; gap: 11px; margin: 0 0 28px; padding: 0; list-style: none; color: #34483c; font-size: 15px; font-weight: 600; }
+.booking-steps li { display: flex; gap: 11px; align-items: flex-start; }
+.booking-steps .num { flex: none; display: grid; width: 24px; height: 24px; place-items: center; border-radius: 50%; background: var(--gold); color: var(--green-dark); font-size: 12px; font-weight: 800; }
+
+/* --- Services --- */
+.services { padding: 84px 0; background: #fff; }
+.services .section-head { max-width: 720px; margin: 0 auto 44px; text-align: center; }
+.service-card { display: grid; grid-template-columns: 1fr 1fr; gap: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 18px; background: var(--cream); }
+.service-card figure { margin: 0; min-height: 320px; }
+.service-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.service-body { padding: 42px 44px; }
+.service-kicker { margin: 0 0 9px; color: var(--gold); font-size: 12px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
+.service-body h3 { margin: 0 0 8px; color: var(--green); font: 700 clamp(25px, 2.3vw, 31px)/1.15 var(--serif); letter-spacing: -.03em; }
+.service-claim { margin: 0 0 15px; color: var(--ink); font-size: 16px; font-weight: 700; }
+.service-body > p { margin: 0 0 19px; color: #425147; font-size: 15px; line-height: 1.6; }
+.service-list { display: grid; gap: 9px; margin: 0 0 26px; padding: 0; list-style: none; color: #34483c; font-size: 14px; font-weight: 600; }
+.service-list li::before { content: '✓'; display: inline-grid; width: 19px; height: 19px; place-items: center; margin-right: 9px; border-radius: 50%; background: var(--gold); color: var(--green-dark); font-size: 11px; font-weight: 900; vertical-align: 1px; }
+.service-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.service-actions .button { min-height: 50px; padding: 0 20px; font-size: 14px; }
+
+/* --- Pourquoi EYWA --- */
+.why { padding: 84px 0; background: var(--green); }
+.why .section-head { max-width: 760px; margin: 0 auto 46px; text-align: center; }
+.why .section-kicker { color: var(--gold); }
+.why h2 { margin: 0; color: #fff; font: 700 clamp(30px, 3vw, 40px)/1.12 var(--serif); letter-spacing: -.04em; }
+.why-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.why-card { padding: 30px 26px; border: 1px solid rgba(255,255,255,.16); border-radius: 14px; background: rgba(255,255,255,.05); }
+.why-card .ico { display: grid; width: 40px; height: 40px; place-items: center; margin-bottom: 17px; border-radius: 10px; background: var(--gold); color: var(--green-dark); font-size: 19px; }
+.why-card h3 { margin: 0 0 9px; color: #fff; font-size: 17px; font-weight: 700; line-height: 1.3; }
+.why-card p { margin: 0; color: rgba(255,255,255,.76); font-size: 14px; line-height: 1.55; }
+
+/* --- Apercu galerie --- */
+.gallery-teaser { padding: 84px 0; background: var(--cream); }
+.gallery-teaser .section-head { max-width: 720px; margin: 0 auto 40px; text-align: center; }
+.teaser-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 36px; }
+.teaser-grid figure { margin: 0; overflow: hidden; border-radius: 13px; aspect-ratio: 1 / 1; }
+.teaser-grid img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .3s; }
+.teaser-grid figure:hover img { transform: scale(1.04); }
+.center-action { text-align: center; }
+
+/* --- FAQ de l'accueil ---
+   index.html ne charge pas site.css et n'avait aucun style pour .faq-list :
+   les questions s'affichaient avec le marqueur brut du navigateur.
+   Reprend la presentation de la page Questions. */
+.faq-list { max-width: 790px; margin: 30px auto 0; }
+.faq-list details { border-top: 1px solid var(--line); }
+.faq-list details:last-child { border-bottom: 1px solid var(--line); }
+.faq-list summary { position: relative; padding: 22px 38px 22px 0; color: var(--green); cursor: pointer; font-size: 17px; font-weight: 700; list-style: none; }
+.faq-list summary::-webkit-details-marker { display: none; }
+.faq-list summary::after { content: '+'; position: absolute; right: 3px; top: 16px; font-size: 28px; font-weight: 400; }
+.faq-list details[open] summary::after { content: '−'; }
+.faq-list details p { max-width: 680px; margin: 0; padding: 0 0 22px; color: var(--mute); line-height: 1.6; }
+.faq-link { margin: 28px 0 0; text-align: center; font-size: 15px; font-weight: 700; }
+.faq-link a { display: inline-flex; align-items: center; gap: 8px; color: var(--green); }
+.faq-link a:hover { text-decoration: underline; }
+
+@media (max-width: 900px) {
+  .booking-grid, .service-card { grid-template-columns: 1fr; }
+  .service-card figure { min-height: 240px; }
+  .service-body { padding: 32px 26px; }
+  .why-grid { grid-template-columns: 1fr 1fr; }
+  .teaser-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .intro-band, .booking, .services, .why, .gallery-teaser { padding: 60px 0; }
+  .booking-grid { gap: 30px; }
+  .why-grid { grid-template-columns: 1fr; }
+  .service-actions .button { width: 100%; }
+}
