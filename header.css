@@ -55,18 +55,39 @@
 }
 .nav-group { display: flex; align-items: center; gap: 26px; }
 
+/* ------------------------------------------------------------------
+   Anti-debordement du hero
+   Un element de grille a min-width:auto : il ne peut pas devenir plus
+   etroit que son contenu. Le bouton imposait min-width:356px, donc la
+   colonne de texte avait un plancher de 356px + marges. Des que la
+   piste devenait plus etroite, la colonne debordait et .hero
+   (overflow:hidden) coupait le texte au lieu de le renvoyer a la ligne.
+   ------------------------------------------------------------------ */
+.hero-copy { min-width: 0; }
+.hero-copy > * { min-width: 0; max-width: 100%; }
+.hero-quote { width: 100%; }
+.hero-quote .button { min-width: 0; width: 100%; max-width: 356px; }
+.hero h1, .hero .lead, .hero-points li { overflow-wrap: break-word; }
+
 /* Desktop : logo a gauche, puis les liens, le bouton devis a droite.
    display:contents fait des deux groupes des enfants directs du flex,
    sans toucher a l'ordre du DOM (le hamburger doit rester le frere
    precedent de .navlinks pour site.js). */
 @media (min-width: 761px) {
-  .nav { justify-content: flex-start; gap: 40px; }
+  /* gap identique a celui des liens pour que les deux groupes se lisent
+     comme un seul menu continu */
+  .nav { justify-content: flex-start; gap: 26px; }
   .navlinks { display: contents; }
-  .nav-group-right { margin-left: auto; }
+  /* pousse le premier groupe (et donc tout le menu) vers la droite,
+     le bouton devis se retrouve au bout */
+  .nav-group-left { margin-left: auto; }
 }
-.navlinks > a:not(.nav-button) { margin: -6px -9px; padding: 6px 9px; border-radius: 7px; transition: background .15s; }
-.navlinks > a:not(.nav-button):hover { background: var(--green-soft, #eaf2ec); text-decoration: none; }
-.navlinks > a[aria-current="page"] { background: var(--green-soft, #eaf2ec); }
+/* Cible .nav-group > a : depuis que le menu est scinde en deux groupes,
+   les liens ne sont plus enfants directs de .navlinks, donc l'ancien
+   selecteur .navlinks > a ne les atteignait plus (aucun survol). */
+.nav-group > a:not(.nav-button) { margin: -6px -9px; padding: 6px 9px; border-radius: 7px; transition: background .15s; }
+.nav-group > a:not(.nav-button):hover { background: var(--green-soft, #eaf2ec); text-decoration: none; }
+.nav-group > a[aria-current="page"] { background: var(--green-soft, #eaf2ec); }
 
 /* Menu deroulant Lieux */
 .nav-places { position: relative; }
