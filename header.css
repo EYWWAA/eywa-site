@@ -69,6 +69,15 @@
 .hero-quote .button { min-width: 0; width: 100%; max-width: 356px; }
 .hero h1, .hero .lead, .hero-points li { overflow-wrap: break-word; }
 
+/* Retour a la ligne impose, uniquement sur grand ecran (>=1024px), la ou
+   la colonne est assez large pour l'honorer en 2 lignes propres. En
+   dessous, le texte se replie naturellement : sinon un mot se retrouvait
+   seul sur une ligne entre 851 et 1000px.
+   L'espace avant le <br> est volontaire, il evite que les deux mots se
+   collent quand le retour est masque. */
+.br-lg { display: none; }
+@media (min-width: 1024px) { .br-lg { display: inline; } }
+
 /* Desktop : logo a gauche, puis les liens, le bouton devis a droite.
    display:contents fait des deux groupes des enfants directs du flex,
    sans toucher a l'ordre du DOM (le hamburger doit rester le frere
