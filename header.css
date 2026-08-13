@@ -78,6 +78,12 @@
 .br-lg { display: none; }
 @media (min-width: 1024px) { .br-lg { display: inline; } }
 
+/* Depuis que la barre est collante, un lien d'ancre (#avis, #lieux)
+   amenait la cible sous la barre, qui masquait le haut de la section.
+   scroll-margin-top reserve la hauteur de la barre + une marge. */
+[id] { scroll-margin-top: 96px; }
+@media (max-width: 760px) { [id] { scroll-margin-top: 84px; } }
+
 /* Desktop : logo a gauche, puis les liens, le bouton devis a droite.
    display:contents fait des deux groupes des enfants directs du flex,
    sans toucher a l'ordre du DOM (le hamburger doit rester le frere
