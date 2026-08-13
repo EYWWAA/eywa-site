@@ -1,4 +1,38 @@
 /* ============================================================
+   EYWA — Palette chaude
+   Reprise de l'ambiance loft : bois miel, brique, lumiere doree,
+   vert profond mais chaud. Les anciennes valeurs etaient froides
+   (vert bleute, creme grise, or citronne).
+   Redefinie ici car header.css est charge en dernier sur toutes
+   les pages, ce qui ecrase les :root de index.html et site.css.
+   ============================================================ */
+:root {
+  --green: #2f4036;        /* vert profond rechauffe (etait #173d2d) */
+  --green-dark: #1f2b23;   /* fonds sombres           (etait #0e2a1e) */
+  --green-soft: #e9ece4;   /* survols                 (etait #eaf2ec) */
+  --cream: #f5ece0;        /* fond de page beige      (etait #f8f6f1) */
+  --gold: #d9a45f;         /* or miel, moins citronne (etait #e9c85f) */
+  --gold-deep: #b8783c;    /* ombre du bouton dore */
+  --terracotta: #a2654c;   /* accent brique */
+  --ink: #2b241d;          /* texte, brun chaud       (etait #19271e) */
+  --mute: #7b6a5a;         /* texte secondaire        (etait #66736b) */
+  --line: #e2d6c5;         /* filets                  (etait #d9ddd6) */
+}
+
+/* Le bouton dore portait des ombres codees en dur, restees jaunes. */
+.button-gold { box-shadow: 0 7px 0 var(--gold-deep), 0 14px 26px rgba(43, 36, 29, .16) !important; }
+.button-gold:hover { background: #e6b878 !important; box-shadow: 0 9px 0 var(--gold-deep), 0 16px 28px rgba(43, 36, 29, .2) !important; }
+
+/* Etoiles des avis : ambre plutot que jaune vif. */
+.ticks, .avis-card .ticks, .avis-score .ticks { color: #c08a3e !important; }
+
+/* Les blancs purs des autres pages tranchaient avec le beige chaud.
+   Remplaces par un blanc creme. */
+.page-hero + *, .info-page, .section, .included, .gallery, .menu-catalog,
+.drink-group, .contact-card, .avis-card, .price-card, .menu-card { background: #fdfaf4; }
+body { background: var(--cream); }
+
+/* ============================================================
    EYWA — Header partage (source unique de verite)
    Charge APRES le CSS de chaque page pour garantir un rendu
    identique sur les 6 pages. Point de rupture unique : 760px.
