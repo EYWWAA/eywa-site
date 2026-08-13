@@ -10,15 +10,6 @@ document.querySelectorAll('.mobile-menu').forEach((button) => {
   });
 });
 
-document.querySelectorAll('.navlinks').forEach((nav) => {
-  if (nav.querySelector('.nav-places')) return;
-  const places = document.createElement('div');
-  places.className = 'nav-places';
-  places.innerHTML = '<button class="nav-places-trigger" type="button" aria-expanded="false">Lieux</button><div class="nav-places-menu" aria-label="Villes desservies"><a href="index.html#lieux">Charleville-Mézières</a><a href="index.html#lieux">Reims</a><a href="index.html#lieux">Bruxelles</a></div>';
-  const before = [...nav.children].find((item) => item.getAttribute('href') === 'index.html#faq');
-  nav.insertBefore(places, before || null);
-});
-
 document.querySelectorAll('.nav-places').forEach((places) => {
   const trigger = places.querySelector('.nav-places-trigger');
   let closeTimer;
