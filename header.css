@@ -91,7 +91,7 @@
 .hero-quote .button { position: relative; justify-content: center; text-align: center; }
 /* la fleche sort du flux pour se caler a droite sans decentrer le libelle */
 .hero-quote .button > span[aria-hidden="true"] { position: absolute; right: 24px; top: 50%; transform: translateY(-50%); }
-.hero-quote .button { padding-right: 58px; padding-left: 58px; }
+.hero-quote .button { padding-right: 58px; padding-left: 58px; font-size: 20px; }
 
 /* 21px : degage l'ombre portee de 7px du bouton dore */
 .quote-note { max-width: 356px; margin: 21px 0 0; color: var(--mute); font-size: 13px; line-height: 1.45; }
