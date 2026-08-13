@@ -1,3 +1,15 @@
+// Marque le lien de la page courante (fond vert conserve apres le clic).
+// L'attribut est deja pose dans le HTML de chaque page ; ce bloc sert de
+// filet si une nouvelle page oubliait de le mettre.
+(() => {
+  const page = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+  if (document.querySelector('.nav-group [aria-current="page"]')) return;
+  document.querySelectorAll('.nav-group > a[href]').forEach((link) => {
+    const cible = link.getAttribute('href').split('/').pop().split('#')[0].toLowerCase();
+    if (cible && cible === page) link.setAttribute('aria-current', 'page');
+  });
+})();
+
 document.querySelectorAll('.mobile-menu').forEach((button) => {
   const nav = button.nextElementSibling;
   button.innerHTML = '<span></span><span></span><span></span>';
