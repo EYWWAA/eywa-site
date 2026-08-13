@@ -26,6 +26,16 @@
 /* Etoiles des avis : ambre plutot que jaune vif. */
 .ticks, .avis-card .ticks, .avis-score .ticks { color: #c08a3e !important; }
 
+/* Reseaux sociaux du pied de page : discrets, juste les logos.
+   Volontairement pas de section dediee dans la page : l'objectif est de
+   garder le visiteur sur le site, pas de l'envoyer sur Instagram.
+   YouTube, Facebook et TikTok ne sont pas cliquables tant que les liens
+   ne sont pas fournis, plutot que de pointer dans le vide. */
+.footer-social { display: flex; align-items: center; gap: 14px; }
+.footer-social a, .footer-social span { display: inline-flex; color: inherit; opacity: .62; transition: opacity .15s; }
+.footer-social a:hover { opacity: 1; }
+.footer-social svg { width: 17px; height: 17px; fill: currentColor; display: block; }
+
 /* Les blancs purs des autres pages tranchaient avec le beige chaud.
    Remplaces par un blanc creme. */
 .page-hero + *, .info-page, .section, .included, .gallery, .menu-catalog,

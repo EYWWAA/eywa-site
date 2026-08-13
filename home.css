@@ -62,16 +62,6 @@
 .ev-col li { position: relative; padding-left: 19px; color: #4c4136; font-size: 14.5px; line-height: 1.45; }
 .ev-col li::before { content: ''; position: absolute; left: 0; top: 8px; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
 
-/* --- Instagram ---
-   Volontairement pas de fausse grille de publications : les images du site
-   ne sont pas des posts. Simple invitation a suivre le compte. */
-.insta { padding: 76px 0; background: var(--green-dark); text-align: center; }
-.insta .section-kicker { color: var(--gold); }
-.insta h2 { margin: 0 0 12px; color: #fff; font: 700 clamp(28px, 2.9vw, 38px)/1.13 var(--serif); letter-spacing: -.04em; }
-.insta > .wrap > p { max-width: 520px; margin: 0 auto 22px; color: rgba(255,255,255,.72); font-size: 16px; line-height: 1.6; }
-.insta-handle { display: block; margin: 0 0 26px; color: #fff; font: 400 clamp(24px,2.4vw,32px)/1 var(--serif); letter-spacing: .04em; }
-.insta-handle:hover { color: var(--gold); }
-
 /* --- Apercu galerie --- */
 .gallery-teaser { padding: 84px 0; background: var(--cream); }
 .gallery-teaser .section-head { max-width: 720px; margin: 0 auto 40px; text-align: center; }
