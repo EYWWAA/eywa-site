@@ -40,10 +40,19 @@
   border-bottom: 1px solid var(--line);
 }
 
-/* Mot-symbole EYWA seul (la pousse a ete retiree), a gauche et centre
-   verticalement sur la meme ligne que Galerie / Menu / Tarifs. */
-.logo { display: flex; align-items: center; color: var(--green); }
-.logo img { display: block; width: 118px; height: 28px; object-fit: contain; }
+/* Mot-symbole EYWA en texte, dans la police des titres du site (Fraunces),
+   a gauche et centre verticalement sur la ligne des liens. Remplace le
+   decoupage du logo d'origine, dont les traits trop fins juraient avec le
+   reste de la page. */
+.logo {
+  display: flex;
+  align-items: center;
+  color: var(--green);
+  font: 400 28px/1 var(--serif);
+  letter-spacing: .26em;
+  text-indent: .26em; /* compense le tracking du dernier caractere */
+  white-space: nowrap;
+}
 
 .navlinks {
   display: flex;
@@ -181,7 +190,7 @@
   .topbar { padding: 8px 14px; font-size: 11px; letter-spacing: .03em; }
 
   .nav { min-height: 68px; }
-  .logo img { width: 58px; height: 52px; }
+  .logo { font-size: 23px; letter-spacing: .22em; text-indent: .22em; }
 
   .mobile-menu {
     display: flex !important;
