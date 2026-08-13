@@ -40,9 +40,10 @@
   border-bottom: 1px solid var(--line);
 }
 
-/* Logo centre, plus grand, sur la meme ligne que les liens */
-.logo { display: flex; align-items: center; justify-content: center; color: var(--green); }
-.logo img { display: block; width: 92px; height: 72px; object-fit: contain; }
+/* Mot-symbole EYWA seul (la pousse a ete retiree), a gauche et centre
+   verticalement sur la meme ligne que Galerie / Menu / Tarifs. */
+.logo { display: flex; align-items: center; color: var(--green); }
+.logo img { display: block; width: 118px; height: 28px; object-fit: contain; }
 
 .navlinks {
   display: flex;
@@ -54,16 +55,14 @@
 }
 .nav-group { display: flex; align-items: center; gap: 26px; }
 
-/* Desktop : 3 colonnes egales, logo au centre.
-   display:contents fait des deux groupes des enfants directs de la grille,
+/* Desktop : logo a gauche, puis les liens, le bouton devis a droite.
+   display:contents fait des deux groupes des enfants directs du flex,
    sans toucher a l'ordre du DOM (le hamburger doit rester le frere
    precedent de .navlinks pour site.js). */
 @media (min-width: 761px) {
-  .nav { display: grid; grid-template-columns: 1fr auto 1fr; }
+  .nav { justify-content: flex-start; gap: 40px; }
   .navlinks { display: contents; }
-  .nav-group-left { grid-column: 1; grid-row: 1; justify-content: flex-start; }
-  .logo { grid-column: 2; grid-row: 1; }
-  .nav-group-right { grid-column: 3; grid-row: 1; justify-content: flex-end; }
+  .nav-group-right { margin-left: auto; }
 }
 .navlinks > a:not(.nav-button) { margin: -6px -9px; padding: 6px 9px; border-radius: 7px; transition: background .15s; }
 .navlinks > a:not(.nav-button):hover { background: var(--green-soft, #eaf2ec); text-decoration: none; }
