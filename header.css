@@ -96,6 +96,14 @@
 /* 21px : degage l'ombre portee de 7px du bouton dore */
 .quote-note { max-width: 356px; margin: 21px 0 0; color: var(--mute); font-size: 13px; line-height: 1.45; }
 
+/* Bloc note de la section Avis de l'accueil */
+.reviews-score { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 26px 0 14px; }
+.reviews-score .note { color: var(--ink); font: 700 30px var(--sans); }
+.reviews-score .ticks { font-size: 22px; }
+.reviews-score .src { color: var(--mute); font-size: 14px; }
+.reviews-line { max-width: 620px; margin: 0 auto 26px; color: #425147; font-size: 16px; line-height: 1.6; text-align: center; }
+.reviews .button { display: inline-flex; }
+
 .trust-row { gap: 8px; }
 .rating-num { color: var(--ink); font-size: 15px; font-weight: 700; }
 .rating-src { color: var(--mute); }
