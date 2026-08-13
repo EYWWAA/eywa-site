@@ -105,6 +105,36 @@
 /* 21px : degage l'ombre portee de 7px du bouton dore */
 .quote-note { max-width: 356px; margin: 21px 0 0; color: var(--mute); font-size: 13px; line-height: 1.45; }
 
+/* --- Hero : titre agrandi, accroche et liste de features supprimees,
+   remplacees par les types d'evenements cibles (entreprise d'abord). --- */
+/* text-wrap:balance repartit les lignes uniformement et evite qu'un mot
+   se retrouve seul. Le retour forcé n'est plus necessaire a cette taille. */
+.hero h1 { font-size: clamp(34px, 3.3vw, 46px) !important; max-width: 620px; text-wrap: balance; }
+.hero-events {
+  display: flex; flex-wrap: wrap; gap: 8px 0;
+  margin: 22px 0 26px; padding: 0; list-style: none;
+  color: #34483c; font-size: 14.5px; font-weight: 600;
+}
+/* Puce portee par ::before de l'element suivant : ainsi elle ne se
+   retrouve jamais orpheline en fin de ligne quand la liste se replie. */
+.hero-events li { display: flex; align-items: center; white-space: nowrap; }
+.hero-events li:not(:first-child)::before {
+  content: ''; flex: none; width: 4px; height: 4px; margin: 0 12px;
+  border-radius: 50%; background: var(--gold);
+}
+@media (max-width: 600px) {
+  .hero-events { font-size: 13.5px; margin: 18px 0 22px; }
+  .hero-events li:not(:first-child)::before { margin: 0 9px; }
+}
+
+/* Vignettes du hero : plus grandes et plus espacees de la photo
+   principale, pour qu'on les distingue vraiment. */
+.carousel-stage { height: calc(100% - 112px) !important; }
+.carousel-thumbs { height: 94px !important; margin-top: 18px !important; }
+@media (max-width: 600px) {
+  .carousel-thumbs { height: 74px !important; margin-top: 13px !important; }
+}
+
 /* Bloc note de la section Avis de l'accueil */
 .reviews-score { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 26px 0 14px; }
 .reviews-score .note { color: var(--ink); font: 700 30px var(--sans); }
