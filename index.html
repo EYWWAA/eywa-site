@@ -32,7 +32,6 @@
     .navlinks > a:not(.nav-button) { margin:-5px -8px; padding:5px 8px; border-radius:6px; }
     .navlinks > a:not(.nav-button):hover { color:var(--green); background:var(--green-soft); text-decoration:none; }
     .nav-places { position:relative; }
-    .nav-places-mobile { display:none; }
     .nav-places-trigger { display:inline-flex; align-items:center; gap:5px; margin:-5px -8px; padding:5px 8px; border:0; border-radius:6px; color:inherit; background:transparent; cursor:pointer; font:inherit; font-weight:600; }
     .nav-places:hover .nav-places-trigger,.nav-places:focus-within .nav-places-trigger,.nav-places.open .nav-places-trigger { color:var(--green); background:var(--green-soft); }
     .nav-places-trigger::after { content:'⌄'; font-size:14px; transform:translateY(-1px); }
@@ -150,10 +149,6 @@
       .mobile-menu.is-open span:nth-child(2) { opacity:0; }
       .mobile-menu.is-open span:last-child { transform:translateY(-7px) rotate(-45deg); }
       .navlinks.open { z-index:50; box-shadow:0 14px 20px rgba(23,61,45,.1); }
-      .nav-places-mobile { display:none; }
-      .navlinks.open .nav-places-mobile { display:grid !important; padding:0 0 8px 15px; }
-      .navlinks.open .nav-places-mobile a { display:block !important; padding:8px 0 !important; color:var(--green); }
-      .navlinks.open .nav-places-menu { display:none !important; height:0 !important; max-height:0 !important; margin:0 !important; padding:0 !important; overflow:hidden !important; }
     }
   </style>
 </head>
@@ -169,11 +164,6 @@
       <a href="faq.html">Questions</a>
       <div class="nav-places">
         <button class="nav-places-trigger" type="button" aria-expanded="false">Lieux</button>
-        <div class="nav-places-mobile" aria-label="Villes desservies">
-          <a href="#lieux">Charleville-Mézières</a>
-          <a href="#lieux">Reims</a>
-          <a href="#lieux">Bruxelles</a>
-        </div>
         <div class="nav-places-menu" aria-label="Villes desservies">
           <a href="#lieux">Charleville-Mézières</a>
           <a href="#lieux">Reims</a>
