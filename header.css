@@ -84,6 +84,28 @@
 [id] { scroll-margin-top: 96px; }
 @media (max-width: 760px) { [id] { scroll-margin-top: 84px; } }
 
+/* ------------------------------------------------------------------
+   Bloc devis du hero : libelle centre, fleche calee a droite, puis la
+   sous-ligne et la note. Couleurs, polices et tailles EYWA conservees.
+   ------------------------------------------------------------------ */
+.hero-quote .button { position: relative; justify-content: center; text-align: center; }
+/* la fleche sort du flux pour se caler a droite sans decentrer le libelle */
+.hero-quote .button > span[aria-hidden="true"] { position: absolute; right: 24px; top: 50%; transform: translateY(-50%); }
+.hero-quote .button { padding-right: 58px; padding-left: 58px; }
+
+/* 21px : degage l'ombre portee de 7px du bouton dore */
+.quote-note { max-width: 356px; margin: 21px 0 0; color: var(--mute); font-size: 13px; line-height: 1.45; }
+
+.trust-row { gap: 8px; }
+.rating-num { color: var(--ink); font-size: 15px; font-weight: 700; }
+.rating-src { color: var(--mute); }
+
+@media (max-width: 760px) {
+  .hero-quote .button > span[aria-hidden="true"] { right: 18px; }
+  .hero-quote .button { padding-right: 48px; padding-left: 48px; }
+  .quote-note { max-width: none; }
+}
+
 /* Desktop : logo a gauche, puis les liens, le bouton devis a droite.
    display:contents fait des deux groupes des enfants directs du flex,
    sans toucher a l'ordre du DOM (le hamburger doit rester le frere
