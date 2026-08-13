@@ -18,19 +18,31 @@
   letter-spacing: .04em;
 }
 
+/* Barre fixee en haut au defilement. Le fond doit deborder sur toute la
+   largeur alors que .nav est contraint a 1180px : d'ou le ::before en
+   pleine largeur (inset lateral negatif jusqu'aux bords du viewport). */
 .nav {
-  position: relative;
-  min-height: 88px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  min-height: 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
+}
+.nav::before {
+  content: '';
+  position: absolute;
+  inset: 0 calc(50% - 50vw);
+  z-index: -1;
   background: var(--cream);
   border-bottom: 1px solid var(--line);
 }
 
-.logo { display: flex; align-items: center; color: var(--green); }
-.logo img { display: block; width: 78px; height: 68px; object-fit: contain; }
+/* Logo centre, plus grand, sur la meme ligne que les liens */
+.logo { display: flex; align-items: center; justify-content: center; color: var(--green); }
+.logo img { display: block; width: 92px; height: 72px; object-fit: contain; }
 
 .navlinks {
   display: flex;
@@ -39,6 +51,19 @@
   color: var(--green);
   font: 600 14px var(--sans);
   letter-spacing: .005em;
+}
+.nav-group { display: flex; align-items: center; gap: 26px; }
+
+/* Desktop : 3 colonnes egales, logo au centre.
+   display:contents fait des deux groupes des enfants directs de la grille,
+   sans toucher a l'ordre du DOM (le hamburger doit rester le frere
+   precedent de .navlinks pour site.js). */
+@media (min-width: 761px) {
+  .nav { display: grid; grid-template-columns: 1fr auto 1fr; }
+  .navlinks { display: contents; }
+  .nav-group-left { grid-column: 1; grid-row: 1; justify-content: flex-start; }
+  .logo { grid-column: 2; grid-row: 1; }
+  .nav-group-right { grid-column: 3; grid-row: 1; justify-content: flex-end; }
 }
 .navlinks > a:not(.nav-button) { margin: -6px -9px; padding: 6px 9px; border-radius: 7px; transition: background .15s; }
 .navlinks > a:not(.nav-button):hover { background: var(--green-soft, #eaf2ec); text-decoration: none; }
@@ -104,6 +129,9 @@
   .mobile-menu.is-open span:last-child { transform: translateY(-7px) rotate(-45deg); }
 
   .navlinks { display: none; }
+  /* display:contents : les liens des deux groupes redeviennent des enfants
+     directs du panneau et s'empilent verticalement. */
+  .navlinks.open .nav-group { display: contents; }
   .navlinks.open {
     position: absolute !important;
     z-index: 60 !important;
@@ -115,7 +143,7 @@
     border-bottom: 1px solid var(--line);
     box-shadow: 0 16px 24px rgba(23, 61, 45, .1);
   }
-  .navlinks.open > a:not(.nav-button) { margin: 0; padding: 13px 0; border-radius: 0; }
+  .navlinks.open a:not(.nav-button):not(.nav-places-menu a) { margin: 0; padding: 13px 0; border-radius: 0; }
   .navlinks.open .nav-button { margin-top: 10px; min-height: 52px; font-size: 15px; }
 
   /* Lieux devient un simple sous-groupe deplie, sans survol */
