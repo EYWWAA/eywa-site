@@ -159,7 +159,7 @@
     }
   </style>
   <link rel="stylesheet" href="header.css?v=hdr-19">
-  <link rel="stylesheet" href="home.css?v=home-17">
+  <link rel="stylesheet" href="home.css?v=home-18">
 </head>
 <body>
   <header class="wrap nav">
@@ -224,24 +224,44 @@
 
     <section class="booking" aria-labelledby="booking-title">
       <div class="wrap booking-grid">
-        <!-- Amorce du devis : un seul champ, pas de prix affiche.
-             Louis a juge que deux curseurs plus le prix faisaient trop
-             lourd a cet endroit (14/08/2026). -->
+        <!-- Amorce du devis, calee sur le modele de reference : deux
+             champs empiles, le barista affiche selon le besoin reel, et
+             aucun prix ici. Le tarif se decouvre au bout du parcours,
+             dans devis-instantane.html. -->
         <div class="mini-devis">
-          <p class="md-title">Combien serez-vous ?</p>
+          <div class="md-field">
+            <div class="md-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              Durée du service
+            </div>
+            <div class="md-stepper">
+              <button type="button" class="md-btn" onclick="mdHours(-0.5)" aria-label="Réduire la durée">−</button>
+              <span class="md-box"><span class="md-val" id="md-hours">1h30</span><span class="md-unit">de service</span></span>
+              <button type="button" class="md-btn" onclick="mdHours(0.5)" aria-label="Augmenter la durée">+</button>
+            </div>
+          </div>
 
-          <div class="md-row">
-            <span class="md-label">Invités</span>
+          <div class="md-field">
+            <div class="md-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              Nombre d'invités
+            </div>
             <div class="md-stepper">
               <button type="button" class="md-btn" onclick="mdGuests(-10)" aria-label="Moins d'invités">−</button>
-              <span class="md-val" id="md-guests">50</span>
+              <span class="md-box"><span class="md-val" id="md-guests">50</span><span class="md-unit">personnes</span></span>
               <button type="button" class="md-btn" onclick="mdGuests(10)" aria-label="Plus d'invités">+</button>
             </div>
           </div>
 
-          <p class="md-note" id="md-note">Boissons illimitées pendant tout le service, un barista sur place. Montage et rangement non décomptés.</p>
+          <div class="md-sep"></div>
 
-          <a class="button button-gold md-cta" id="md-cta" href="devis-instantane.html?invites=50">Voir mon tarif<span aria-hidden="true">→</span></a>
+          <p class="md-staff" id="md-staff">Un barista professionnel EYWA</p>
+          <p class="md-staff-sub">Il monte le bar, prépare chaque boisson à la minute devant vos invités et repart sans laisser de trace. Le montage et le rangement ne sont pas décomptés de votre service.</p>
+          <div class="md-avatars" id="md-avatars"><span class="md-avatar">L</span></div>
+
+          <div class="md-sep"></div>
+
+          <a class="button button-gold md-cta" id="md-cta" href="devis-instantane.html?invites=50&amp;heures=1.5">Voir mon tarif<span aria-hidden="true">→</span></a>
         </div>
         <div>
           <p class="section-kicker">Réservation</p>
@@ -527,16 +547,33 @@
     (() => {
       const guestsEl = document.getElementById('md-guests');
       if (!guestsEl) return;
+      const hoursEl = document.getElementById('md-hours');
       const ctaEl = document.getElementById('md-cta');
+      const staffEl = document.getElementById('md-staff');
+      const avatarsEl = document.getElementById('md-avatars');
 
       let guests = 50;
+      let hours = 1.5;
+
+      /* Meme regle que devis-instantane.html : un barista sert environ
+         50 invites par heure de service. */
+      const baristas = () => Math.max(1, Math.ceil(guests / (hours * 50)));
+      const mots = ['', 'Un', 'Deux', 'Trois', 'Quatre', 'Cinq'];
 
       const render = () => {
         guestsEl.textContent = guests;
-        ctaEl.href = 'devis-instantane.html?invites=' + guests;
+        hoursEl.textContent = hours % 1 === 0 ? hours + 'h' : Math.floor(hours) + 'h30';
+        ctaEl.href = 'devis-instantane.html?invites=' + guests + '&heures=' + hours;
+
+        const n = baristas();
+        staffEl.textContent = (n <= 5 ? mots[n] : n) + ' barista' + (n > 1 ? 's' : '')
+          + ' professionnel' + (n > 1 ? 's' : '') + ' EYWA';
+        avatarsEl.innerHTML = Array.from({ length: Math.min(n, 3) },
+          (_, i) => '<span class="md-avatar">' + (i === 0 ? 'L' : 'E') + '</span>').join('');
       };
 
       window.mdGuests = (delta) => { guests = Math.min(2000, Math.max(10, guests + delta)); render(); };
+      window.mdHours = (delta) => { hours = Math.min(12, Math.max(1.5, Math.round((hours + delta) * 2) / 2)); render(); };
 
       render();
     })();
