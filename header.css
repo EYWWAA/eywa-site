@@ -59,7 +59,7 @@
   display: flex;
   align-items: center;
   color: var(--green);
-  font: 400 28px/1 var(--serif);
+  font: 400 34px/1 var(--serif);
   letter-spacing: .26em;
   text-indent: .26em; /* compense le tracking du dernier caractere */
   white-space: nowrap;
@@ -233,10 +233,10 @@
 
 /* Bouton devis */
 .nav-button {
-  min-height: 46px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  padding: 0 20px; border: 0; border-radius: 10px;
+  min-height: 50px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 0 22px; border: 0; border-radius: 10px;
   color: #fff; background: var(--green); cursor: pointer;
-  font: 700 13.5px var(--sans); letter-spacing: .01em;
+  font: 700 15.5px var(--sans); letter-spacing: .01em;
   transition: background .16s, transform .16s;
 }
 .nav-button:hover { background: var(--green-dark); transform: translateY(-1px); }
@@ -249,7 +249,7 @@
   .topbar { padding: 8px 14px; font-size: 11px; letter-spacing: .03em; }
 
   .nav { min-height: 68px; }
-  .logo { font-size: 23px; letter-spacing: .22em; text-indent: .22em; }
+  .logo { font-size: 27px; letter-spacing: .22em; text-indent: .22em; }
 
   .mobile-menu {
     display: flex !important;
