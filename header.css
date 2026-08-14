@@ -308,11 +308,11 @@
    ------------------------------------------------------------------ */
 .hero-copy { justify-content: center !important; }
 
-/* Textes legerement agrandis, sauf le bouton doré qui reste a 20px */
-.hero h1 { font-size: clamp(36px, 3.5vw, 49px) !important; margin-bottom: 22px !important; }
-.hero-events { font-size: 15.5px; margin: 0 0 26px; gap: 11px 34px; }
-.quote-note { font-size: 14px; margin-top: 18px; }
+/* Textes agrandis, sauf le bouton doré qui reste a 20px */
+.hero h1 { font-size: clamp(40px, 4vw, 56px) !important; max-width: 660px; margin-bottom: 24px !important; }
+.hero-events { font-size: 17px; margin: 0 0 28px; gap: 12px 36px; }
+.quote-note { font-size: 15px; margin-top: 18px; }
 
 @media (max-width: 600px) {
-  .hero-events { font-size: 14.5px; margin: 0 0 22px; }
+  .hero-events { font-size: 15.5px; margin: 0 0 24px; }
 }
