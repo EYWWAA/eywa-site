@@ -836,6 +836,21 @@
   }
 
   renderDots(0);
+
+  /* Reprise des valeurs du mini-simulateur de la page d'accueil.
+     index.html envoie ?invites=80&heures=2 : on prerempli l'etape 1 pour
+     que le visiteur ne resaisisse pas ce qu'il vient d'indiquer. */
+  (function reprendreSimulateur() {
+    var p = new URLSearchParams(window.location.search);
+    var g = parseInt(p.get('invites'), 10);
+    var h = parseFloat(p.get('heures'));
+    if (g >= 1 && g <= 2000) setGuests(g);
+    if (h >= 1.5 && h <= 12) {
+      A.hrs = Math.round(h * 2) / 2;
+      document.getElementById('dur-display').textContent = hrsLabel(A.hrs);
+    }
+    updateBaristaDisplay();
+  })();
 </script>
 </body>
 </html>
