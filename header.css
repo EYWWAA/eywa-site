@@ -140,11 +140,28 @@
 }
 
 /* Vignettes du hero : plus grandes et plus espacees de la photo
-   principale, pour qu'on les distingue vraiment. */
-.carousel-stage { height: calc(100% - 112px) !important; }
-.carousel-thumbs { height: 94px !important; margin-top: 18px !important; }
+   principale, pour qu'on les distingue vraiment.
+   IMPORTANT : la hauteur de la grande photo ne doit etre forcee QUE sur
+   desktop. En dessous de 851px, .photo-carousel n'a pas de hauteur
+   definie, donc calc(100% - 112px) tombait a 0 et la grande photo
+   disparaissait completement, seules les vignettes restaient visibles. */
+@media (min-width: 851px) {
+  .carousel-stage { height: calc(100% - 112px) !important; }
+  .carousel-thumbs { height: 94px !important; margin-top: 18px !important; }
+}
+@media (max-width: 850px) {
+  .carousel-thumbs { height: 84px !important; margin-top: 14px !important; }
+}
 @media (max-width: 600px) {
   .carousel-thumbs { height: 74px !important; margin-top: 13px !important; }
+}
+
+/* Mobile : hamburger tout a gauche, EYWA centre.
+   Le logo est positionne en absolu pour etre centre sur la barre, sans
+   que la largeur du hamburger le decale. */
+@media (max-width: 760px) {
+  .mobile-menu { order: -1; }
+  .logo { position: absolute; left: 50%; transform: translateX(-50%); }
 }
 
 /* Bloc note de la section Avis de l'accueil */
