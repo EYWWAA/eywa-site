@@ -4,7 +4,10 @@
    ============================================================ */
 
 /* --- Bloc d'introduction --- */
-.intro-band { padding: 84px 0; background: #fff; }
+/* Fond vert clair (green-soft, deja dans la palette) : le hero et cette
+   bande etaient tous les deux blancs, la transition ne se voyait pas.
+   Suit un bloc cream (.booking) puis un blanc, l'alternance reste lisible. */
+.intro-band { padding: 84px 0; background: var(--green-soft); }
 .intro-band .wrap { max-width: 860px; text-align: center; }
 .intro-band h2 { margin: 0 0 20px; color: var(--green); font: 700 clamp(30px, 3vw, 40px)/1.12 var(--serif); letter-spacing: -.04em; }
 .intro-band p { margin: 0 auto; max-width: 720px; color: #425147; font-size: 17px; line-height: 1.65; }
