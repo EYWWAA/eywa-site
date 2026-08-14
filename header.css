@@ -308,7 +308,7 @@
    ------------------------------------------------------------------ */
 /* padding-bottom superieur au padding-top : le bloc reste groupe mais
    remonte dans la colonne, au lieu d'etre parfaitement centre. */
-.hero-copy { justify-content: center !important; padding-bottom: 62px; }
+.hero-copy { justify-content: center !important; padding-bottom: 34px; }
 
 /* Textes agrandis, sauf le bouton doré qui reste a 20px.
    Les marges redonnent de l'air entre titre, liste et bouton apres le
@@ -319,7 +319,7 @@
 
 @media (max-width: 600px) {
   .hero-events { font-size: 15.5px; margin: 0 0 30px; }
-  .hero-copy { padding-bottom: 40px; }
+  .hero-copy { padding-bottom: 24px; }
 }
 
 /* ------------------------------------------------------------------
