@@ -28,10 +28,7 @@
 .md-btn { width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 9px; background: var(--cream); color: var(--green); cursor: pointer; font: 700 17px/1 var(--sans); transition: background .15s, border-color .15s; }
 .md-btn:hover { background: var(--green-soft); border-color: var(--green); }
 .md-val { min-width: 62px; text-align: center; color: var(--ink); font: 700 17px var(--sans); font-variant-numeric: tabular-nums; }
-.md-price { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-top: 16px; padding: 15px 17px; border-radius: 12px; background: var(--green-soft); }
-.md-price-label { color: var(--green); font-size: 13px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
-.md-price-val { color: var(--green); font: 700 32px/1 var(--serif); font-variant-numeric: tabular-nums; }
-.md-note { margin: 13px 0 20px !important; color: var(--mute); font-size: 13px !important; line-height: 1.5 !important; }
+.md-note { margin: 18px 0 20px !important; color: var(--mute); font-size: 13px !important; line-height: 1.5 !important; }
 .mini-devis .md-cta { width: 100%; }
 @media (max-width: 760px) { .mini-devis { padding: 24px 20px 22px; } }
 .booking h2 { margin: 0 0 16px; color: var(--green); font: 700 clamp(28px, 2.8vw, 38px)/1.13 var(--serif); letter-spacing: -.04em; }

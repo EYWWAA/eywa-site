@@ -159,7 +159,7 @@
     }
   </style>
   <link rel="stylesheet" href="header.css?v=hdr-19">
-  <link rel="stylesheet" href="home.css?v=home-16">
+  <link rel="stylesheet" href="home.css?v=home-17">
 </head>
 <body>
   <header class="wrap nav">
@@ -224,11 +224,11 @@
 
     <section class="booking" aria-labelledby="booking-title">
       <div class="wrap booking-grid">
-        <!-- Mini-simulateur : le visiteur obtient un prix sans quitter
-             l'accueil. La formule est identique a celle de
-             devis-instantane.html, les deux doivent rester synchronisees. -->
+        <!-- Amorce du devis : un seul champ, pas de prix affiche.
+             Louis a juge que deux curseurs plus le prix faisaient trop
+             lourd a cet endroit (14/08/2026). -->
         <div class="mini-devis">
-          <p class="md-title">Votre estimation, tout de suite</p>
+          <p class="md-title">Combien serez-vous ?</p>
 
           <div class="md-row">
             <span class="md-label">Invités</span>
@@ -239,23 +239,9 @@
             </div>
           </div>
 
-          <div class="md-row">
-            <span class="md-label">Durée de service</span>
-            <div class="md-stepper">
-              <button type="button" class="md-btn" onclick="mdHours(-0.5)" aria-label="Moins longtemps">−</button>
-              <span class="md-val" id="md-hours">1h30</span>
-              <button type="button" class="md-btn" onclick="mdHours(0.5)" aria-label="Plus longtemps">+</button>
-            </div>
-          </div>
-
-          <div class="md-price">
-            <span class="md-price-label">Estimation</span>
-            <span class="md-price-val" id="md-price" aria-live="polite">350 €</span>
-          </div>
-
           <p class="md-note" id="md-note">Boissons illimitées pendant tout le service, un barista sur place. Montage et rangement non décomptés.</p>
 
-          <a class="button button-gold md-cta" id="md-cta" href="devis-instantane.html?invites=50&amp;heures=1.5">Finaliser mon devis<span aria-hidden="true">→</span></a>
+          <a class="button button-gold md-cta" id="md-cta" href="devis-instantane.html?invites=50">Voir mon tarif<span aria-hidden="true">→</span></a>
         </div>
         <div>
           <p class="section-kicker">Réservation</p>
@@ -532,50 +518,25 @@
     stage.addEventListener('pointercancel', () => { swipeStart = null; });
 
     /* ----------------------------------------------------------------
-       Mini-simulateur de devis de la section Reservation.
-       La formule est la copie exacte de calcPrice() dans
-       devis-instantane.html : forfait de base 350 € couvrant 50 invites
-       et 1h30 de service, puis 5 € par invite supplementaire, 70 € par
-       heure supplementaire, 200 € par barista additionnel (un barista
-       sert environ 50 invites par heure).
-       ATTENTION : si le tarif bouge dans devis-instantane.html, il doit
-       bouger ici aussi, sinon l'accueil annonce un prix different de
-       celui du formulaire.
+       Amorce du devis dans la section Reservation : le visiteur indique
+       seulement son nombre d'invites, la valeur est transmise en
+       parametre a devis-instantane.html qui prerempli l'etape 1.
+       Volontairement sans prix affiche ici : le tarif reste calcule a un
+       seul endroit, dans devis-instantane.html.
        ---------------------------------------------------------------- */
     (() => {
       const guestsEl = document.getElementById('md-guests');
       if (!guestsEl) return;
-      const hoursEl = document.getElementById('md-hours');
-      const priceEl = document.getElementById('md-price');
       const ctaEl = document.getElementById('md-cta');
-      const noteEl = document.getElementById('md-note');
 
       let guests = 50;
-      let hours = 1.5;
-
-      const labelHours = (h) => (h % 1 === 0 ? h + 'h' : Math.floor(h) + 'h30');
-      const baristas = () => Math.max(1, Math.ceil(guests / (hours * 50)));
-
-      const price = () => {
-        const extraGuests = Math.max(0, guests - 50);
-        const extraHours = Math.max(0, hours - 1.5);
-        const extraBaristas = Math.max(0, baristas() - 1);
-        return 350 + extraGuests * 5 + Math.round(extraHours * 70) + extraBaristas * 200;
-      };
 
       const render = () => {
         guestsEl.textContent = guests;
-        hoursEl.textContent = labelHours(hours);
-        priceEl.textContent = price() + ' €';
-        ctaEl.href = 'devis-instantane.html?invites=' + guests + '&heures=' + hours;
-        const n = baristas();
-        noteEl.textContent = 'Boissons illimitées pendant tout le service, '
-          + (n > 1 ? n + ' baristas sur place' : 'un barista sur place')
-          + '. Montage et rangement non décomptés.';
+        ctaEl.href = 'devis-instantane.html?invites=' + guests;
       };
 
       window.mdGuests = (delta) => { guests = Math.min(2000, Math.max(10, guests + delta)); render(); };
-      window.mdHours = (delta) => { hours = Math.min(12, Math.max(1.5, Math.round((hours + delta) * 2) / 2)); render(); };
 
       render();
     })();
