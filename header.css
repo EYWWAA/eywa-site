@@ -36,7 +36,7 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  min-height: 80px;
+  min-height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -248,7 +248,7 @@
 @media (max-width: 760px) {
   .topbar { padding: 8px 14px; font-size: 11px; letter-spacing: .03em; }
 
-  .nav { min-height: 68px; }
+  .nav { min-height: 58px; }
   .logo { font-size: 27px; letter-spacing: .22em; text-indent: .22em; }
 
   .mobile-menu {
@@ -315,4 +315,28 @@
 
 @media (max-width: 600px) {
   .hero-events { font-size: 15.5px; margin: 0 0 24px; }
+}
+
+/* ------------------------------------------------------------------
+   Bouton WhatsApp de la page contact (14/08/2026)
+   ------------------------------------------------------------------ */
+.button-whatsapp { gap: 10px; color: #fff; background: #25D366; }
+.button-whatsapp:hover { color: #fff; background: #1da851; }
+.button-whatsapp .wa-icon { width: 19px; height: 19px; flex: none; fill: currentColor; }
+.contact-card .button + .button { margin-top: 10px; }
+
+/* ------------------------------------------------------------------
+   Entete resserree (14/08/2026)
+   La barre passe de 80 a 64px. Le bouton devis est donc ramene a 44px
+   pour garder une respiration egale au-dessus et en dessous.
+   Le libelle passe a "Obtenir mon devis instantane", plus long : entre
+   761 et 1120px les espacements sont reduits, sinon le menu deborde du
+   conteneur et le bouton passe sous les liens.
+   ------------------------------------------------------------------ */
+.nav-button { min-height: 44px; }
+
+@media (min-width: 761px) and (max-width: 1120px) {
+  .nav, .navlinks, .nav-group { gap: 15px; }
+  .nav-button { padding: 0 15px; font-size: 14px; }
+  .logo { font-size: 29px; }
 }
