@@ -159,7 +159,7 @@
     }
   </style>
   <link rel="stylesheet" href="header.css?v=hdr-19">
-  <link rel="stylesheet" href="home.css?v=home-18">
+  <link rel="stylesheet" href="home.css?v=home-19">
 </head>
 <body>
   <header class="wrap nav">
@@ -223,11 +223,19 @@
     </section>
 
     <section class="booking" aria-labelledby="booking-title">
-      <div class="wrap booking-grid">
+      <div class="wrap booking-solo">
+        <div class="section-head">
+          <p class="section-kicker">Réservation</p>
+          <h2 id="booking-title">Le formulaire de réservation le plus simple qui soit.</h2>
+          <p class="booking-sub">Obtenez votre tarif personnalisé en moins de 60 secondes. Sans appel à passer, sans attente, et sans engagement.</p>
+        </div>
+
         <!-- Amorce du devis, calee sur le modele de reference : deux
              champs empiles, le barista affiche selon le besoin reel, et
              aucun prix ici. Le tarif se decouvre au bout du parcours,
-             dans devis-instantane.html. -->
+             dans devis-instantane.html.
+             La colonne de texte qui accompagnait ce bloc a ete retiree le
+             14/08/2026 : elle repetait ce que la carte montre deja. -->
         <div class="mini-devis">
           <div class="md-field">
             <div class="md-label">
@@ -262,17 +270,6 @@
           <div class="md-sep"></div>
 
           <a class="button button-gold md-cta" id="md-cta" href="devis-instantane.html?invites=50&amp;heures=1.5">Voir mon tarif<span aria-hidden="true">→</span></a>
-        </div>
-        <div>
-          <p class="section-kicker">Réservation</p>
-          <h2 id="booking-title">Le formulaire de réservation le plus simple qui soit.</h2>
-          <p>Obtenez votre tarif personnalisé en moins de 60 secondes. Sans appel à passer, sans attente, et sans engagement.</p>
-          <ol class="booking-steps">
-            <li><span class="num">1</span><span>Indiquez la date, le lieu et le nombre d'invités</span></li>
-            <li><span class="num">2</span><span>Découvrez votre tarif immédiatement à l'écran</span></li>
-            <li><span class="num">3</span><span>Vérifiez que votre date est disponible</span></li>
-          </ol>
-          <a class="button button-gold" href="devis-instantane.html">Obtenir mon devis instantané<span aria-hidden="true">→</span></a>
         </div>
       </div>
     </section>

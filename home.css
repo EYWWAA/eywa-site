@@ -18,6 +18,12 @@
 .booking-photo { margin: 0; overflow: hidden; border-radius: 16px; aspect-ratio: 4 / 3; }
 .booking-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
+/* Colonne unique centree : titre au-dessus, carte de devis en dessous. */
+.booking-solo { max-width: 620px; }
+.booking-solo .section-head { margin-bottom: 34px; text-align: center; }
+.booking-solo h2 { margin: 0 0 14px; }
+.booking-sub { margin: 0 auto !important; max-width: 520px; }
+
 /* --- Amorce de devis (accueil) ---
    Bordure doree, deux champs empiles, bloc barista, bouton dore.
    Aucun prix ici : il se decouvre dans devis-instantane.html. */
