@@ -306,15 +306,20 @@
    center regroupe les trois blocs : le titre descend, le bouton remonte,
    et l'espace se reporte en haut et en bas plutot qu'au milieu.
    ------------------------------------------------------------------ */
-.hero-copy { justify-content: center !important; }
+/* padding-bottom superieur au padding-top : le bloc reste groupe mais
+   remonte dans la colonne, au lieu d'etre parfaitement centre. */
+.hero-copy { justify-content: center !important; padding-bottom: 62px; }
 
-/* Textes agrandis, sauf le bouton doré qui reste a 20px */
-.hero h1 { font-size: clamp(40px, 4vw, 56px) !important; max-width: 660px; margin-bottom: 24px !important; }
-.hero-events { font-size: 17px; margin: 0 0 28px; gap: 12px 36px; }
-.quote-note { font-size: 15px; margin-top: 18px; }
+/* Textes agrandis, sauf le bouton doré qui reste a 20px.
+   Les marges redonnent de l'air entre titre, liste et bouton apres le
+   resserrage, sans revenir aux grands vides du space-between. */
+.hero h1 { font-size: clamp(40px, 4vw, 56px) !important; max-width: 660px; margin-bottom: 32px !important; }
+.hero-events { font-size: 17px; margin: 0 0 38px; gap: 14px 36px; }
+.quote-note { font-size: 15px; margin-top: 20px; }
 
 @media (max-width: 600px) {
-  .hero-events { font-size: 15.5px; margin: 0 0 24px; }
+  .hero-events { font-size: 15.5px; margin: 0 0 30px; }
+  .hero-copy { padding-bottom: 40px; }
 }
 
 /* ------------------------------------------------------------------
