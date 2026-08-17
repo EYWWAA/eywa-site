@@ -5,24 +5,24 @@
     "texte": "Découvrez l'univers EYWA : bars à café mobiles, boissons préparées à la demande et service pensé pour les événements d'entreprise, les activations de marque et les réceptions."
   },
   "photo_1": {
-    "image": "assets/eywa-corporate-event.png",
-    "alt": "Barista EYWA servant des boissons lors d'un événement professionnel",
-    "legende": "Coffee bar pour événement professionnel"
+    "image": "assets/activation-marque-beaute.jpg",
+    "alt": "Exemple d'activation beauté avec bar, gobelets et tenue personnalisés",
+    "legende": "Une identité de marque déclinée sur tout le coffee bar"
   },
   "photo_2": {
-    "image": "assets/eywa-drinks-detail.png",
-    "alt": "Matcha, café glacé et chocolat chaud préparés à la demande",
-    "legende": "Boissons préparées minute"
+    "image": "assets/activation-marque-sport.jpg",
+    "alt": "Exemple d'activation sportive avec boissons et supports personnalisés",
+    "legende": "Des boissons servies dans l'univers visuel de la marque"
   },
   "photo_3": {
-    "image": "assets/eywa-hero.png",
-    "alt": "Bar à café mobile EYWA avec matcha et café glacé",
-    "legende": "Un bar mobile élégant"
+    "image": "assets/activation-marque-corporate.jpg",
+    "alt": "Exemple de coffee bar corporate bleu et orange entièrement personnalisé",
+    "legende": "Un bar mobile conçu aux couleurs du client"
   },
   "photo_4": {
-    "image": "assets/eywa-corporate-event.png",
-    "alt": "Service de café par un barista EYWA",
-    "legende": "Une animation qui fait venir les invités"
+    "image": "assets/activation-marque-beaute.jpg",
+    "alt": "Exemple de service café intégré à une activation de marque beauté",
+    "legende": "Une animation cohérente avec chaque univers de marque"
   },
   "appel": {
     "titre": "Vous aimez ce que vous voyez ?",
