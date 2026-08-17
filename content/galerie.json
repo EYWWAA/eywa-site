@@ -2,27 +2,7 @@
   "hero": {
     "sur_titre": "Galerie",
     "titre": "Un coffee bar qui attire les regards.",
-    "texte": "Découvrez l'univers EYWA : bars à café mobiles, boissons préparées à la demande et service pensé pour les événements d'entreprise, les activations de marque et les réceptions."
-  },
-  "photo_1": {
-    "image": "assets/activation-marque-beaute.jpg",
-    "alt": "Exemple d'activation beauté avec bar, gobelets et tenue personnalisés",
-    "legende": "Une identité de marque déclinée sur tout le coffee bar"
-  },
-  "photo_2": {
-    "image": "assets/activation-marque-sport.jpg",
-    "alt": "Exemple d'activation sportive avec boissons et supports personnalisés",
-    "legende": "Des boissons servies dans l'univers visuel de la marque"
-  },
-  "photo_3": {
-    "image": "assets/activation-marque-corporate.jpg",
-    "alt": "Exemple de coffee bar corporate bleu et orange entièrement personnalisé",
-    "legende": "Un bar mobile conçu aux couleurs du client"
-  },
-  "photo_4": {
-    "image": "assets/activation-marque-beaute.jpg",
-    "alt": "Exemple de service café intégré à une activation de marque beauté",
-    "legende": "Une animation cohérente avec chaque univers de marque"
+    "texte": "Découvrez 20 façons d'intégrer un coffee bar à l'identité d'une marque : habillage complet, service, boissons personnalisées, installation et coulisses."
   },
   "appel": {
     "titre": "Vous aimez ce que vous voyez ?",
