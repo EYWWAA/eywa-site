@@ -197,3 +197,13 @@
   .photo-band-img { min-height: 300px; }
   .photo-band-copy { padding: 54px 24px 62px; }
 }
+
+/* --- Hierarchie des appels a l'action (22/08/2026) ---
+   Un seul bouton plein sur la page, celui qui mene au devis, repete a
+   l'identique. Tout ce qui ne fait que naviguer devient un lien discret :
+   le visiteur voit d'un coup d'oeil quelle est LA chose a faire.
+   Principe releve chez Goodhart Coffee, qui repete un libelle unique
+   plus de dix fois. Detail dans eywa-benchmark-conversion.md */
+.link-more { display: inline-flex; align-items: center; gap: 8px; padding-bottom: 3px; border-bottom: 1px solid var(--line); color: var(--ink); font-size: 15px; font-weight: 600; transition: border-color .18s, gap .18s; }
+.link-more:hover { border-bottom-color: var(--gold); gap: 12px; text-decoration: none; }
+.link-more span { color: var(--gold); }
