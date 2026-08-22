@@ -179,3 +179,21 @@
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
 }
+
+/* --- Bande photo pleine largeur (refonte 22/08/2026) ---
+   Photo sur une moitie, texte sur l'autre. Aucun texte pose sur l'image :
+   c'est la seule facon de garder les deux lisibles. */
+.photo-band { display: grid; grid-template-columns: 1.15fr 1fr; align-items: stretch; background: var(--green); }
+.photo-band-img { margin: 0; min-height: 580px; overflow: hidden; }
+.photo-band-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.photo-band-copy { display: flex; flex-direction: column; justify-content: center; gap: 20px; padding: 84px clamp(28px, 5.5vw, 92px); }
+.photo-band-copy .section-kicker { margin: 0; text-align: left; color: var(--gold); }
+.photo-band-copy h2 { margin: 0; color: #fff; font: 600 clamp(30px, 3.4vw, 46px)/1.06 var(--serif); letter-spacing: -.035em; }
+.photo-band-copy p { margin: 0; max-width: 46ch; color: rgba(255,255,255,.74); font-size: 16px; line-height: 1.68; }
+.photo-band-copy .button { align-self: flex-start; margin-top: 10px; background: #fff; color: var(--ink); }
+.photo-band-copy .button:hover { background: var(--cream); }
+@media (max-width: 900px) {
+  .photo-band { grid-template-columns: 1fr; }
+  .photo-band-img { min-height: 300px; }
+  .photo-band-copy { padding: 54px 24px 62px; }
+}
