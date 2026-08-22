@@ -39,12 +39,14 @@
     .nav-places:hover .nav-places-menu,.nav-places:focus-within .nav-places-menu,.nav-places.open .nav-places-menu { opacity:1; pointer-events:auto; transform:translate(-50%,0); }
     .nav-places-menu a { padding:9px 11px; border-radius:6px; color:var(--green); font-size:13px; }
     .nav-places-menu a:hover { background:var(--green-soft); text-decoration:none; }
-    .nav-button,.button { display:inline-flex; align-items:center; justify-content:center; gap:9px; border:0; border-radius:8px; background:var(--green); color:#fff; cursor:pointer; font-family:inherit; font-size:15px; font-weight:700; line-height:1; transition:transform .16s,background .16s; }
+    .nav-button,.button { display:inline-flex; align-items:center; justify-content:center; gap:9px; border:0; border-radius:4px; background:var(--green); color:#fff; cursor:pointer; font-family:inherit; font-size:15px; font-weight:700; line-height:1; transition:transform .16s,background .16s; }
     .nav-button { min-height:43px; padding:0 16px; font-size:13px; }
     .button { min-height:56px; padding:0 23px; }
     .button:hover,.nav-button:hover { background:var(--green-dark); transform:translateY(-1px); }
-    .button-gold { color:var(--green-dark); background:var(--gold); box-shadow:0 7px 0 #d2ae38,0 14px 26px rgba(23,61,45,.14); }
-    .button-gold:hover { color:var(--green-dark); background:#f2d879; box-shadow:0 9px 0 #d2ae38,0 16px 28px rgba(23,61,45,.16); }
+    /* Le dore ne porte plus d'ombre en relief : cet effet vient du SaaS ludique
+       et jurait avec le serif. Aplat franc, transition sobre. */
+    .button-gold { color:var(--green-dark); background:var(--gold); box-shadow:none; }
+    .button-gold:hover { color:var(--green-dark); background:#f2d879; box-shadow:none; transform:translateY(-1px); }
     .mobile-menu { display:none; border:0; color:var(--green); background:transparent; font:700 14px var(--sans); cursor:pointer; }
 
     /* Hero en image plein cadre (22/08/2026).
@@ -174,7 +176,7 @@
     }
   </style>
   <link rel="stylesheet" href="header.css?v=hdr-19">
-  <link rel="stylesheet" href="home.css?v=home-23">
+  <link rel="stylesheet" href="home.css?v=home-24">
 </head>
 <body>
   <header class="wrap nav">
