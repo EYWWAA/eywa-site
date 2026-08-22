@@ -761,6 +761,8 @@
       bd += '<div class="brow"><span>× ' + A.days + ' jours</span><span>' + A.totalPrice + ' €</span></div>';
     }
     bd += '<div class="brow total"><span>Estimation totale</span><span>' + A.totalPrice + ' €</span></div>';
+    var perGuest = A.totalPrice / A.guests;
+    bd += '<div class="brow note"><span>Soit ' + perGuest.toFixed(2).replace('.', ',') + ' € par invité</span></div>';
     bd += '<div class="brow note"><span>Déplacement inclus, sans frais kilométriques</span></div>';
     document.getElementById('breakdown').innerHTML = bd;
 
