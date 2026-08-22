@@ -161,3 +161,12 @@
   .why-grid { grid-template-columns: 1fr; }
   .service-actions .button { width: 100%; }
 }
+
+/* --- Apparition au defilement (22/08/2026) ---
+   Les blocs montent legerement et se revelent a l'approche du viewport.
+   Neutralise si l'utilisateur a demande a reduire les animations. */
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.is-visible { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
