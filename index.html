@@ -47,13 +47,20 @@
     .button-gold:hover { color:var(--green-dark); background:#f2d879; box-shadow:0 9px 0 #d2ae38,0 16px 28px rgba(23,61,45,.16); }
     .mobile-menu { display:none; border:0; color:var(--green); background:transparent; font:700 14px var(--sans); cursor:pointer; }
 
-    .hero { display:grid; grid-template-columns:1fr .94fr; min-height:570px; overflow:hidden; background:#fff; }
+    /* Hero en image plein cadre (22/08/2026).
+       L'image occupe toute la largeur derriere le contenu. Un voile en degrade
+       part de la gauche, opaque sous le texte, et disparait vers la droite pour
+       laisser la photo visible. L'oeil lit a gauche et regarde a droite, il ne
+       fait jamais les deux au meme endroit. */
+    .hero { position:relative; display:flex; align-items:center; min-height:660px; overflow:hidden; background:var(--green-dark); }
+    .hero::after { content:''; position:absolute; inset:0; z-index:1; pointer-events:none;
+      background:linear-gradient(100deg, rgba(248,246,241,.985) 0%, rgba(248,246,241,.965) 30%, rgba(248,246,241,.80) 46%, rgba(248,246,241,.28) 62%, rgba(248,246,241,0) 78%); }
     /* space-between : le contenu se repartit sur toute la hauteur, ce qui
        aligne la ligne des etoiles sur la rangee des vignettes a droite
        au lieu de laisser 112px de vide en bas. */
     /* Couloir droit reduit a 58px : le padding symetrique laissait 112px
        de vide entre le texte et la photo. */
-    .hero-copy { display:flex; flex-direction:column; justify-content:space-between; padding:26px 58px 22px max(30px,calc((100vw - 1180px)/2)); }
+    .hero-copy { position:relative; z-index:2; display:flex; flex-direction:column; justify-content:center; gap:22px; width:min(640px,58%); padding:54px 48px 54px max(30px,calc((100vw - 1180px)/2)); }
     h1,h2,h3,p { margin-top:0; }
     h1 { max-width:590px; margin-bottom:18px; color:var(--green); font:700 clamp(32px,3vw,44px)/1.08 var(--serif); letter-spacing:-.045em; }
     .lead { max-width:570px; margin-bottom:20px; color:#425147; font-size:16px; line-height:1.55; }
@@ -64,18 +71,18 @@
     .trust-row { display:flex; align-items:center; gap:12px; margin:17px 0 0; color:var(--mute); font-size:13px; line-height:1.4; }
     .ticks { display:flex; gap:2px; color:#cb9d11; font-size:16px; letter-spacing:-.06em; white-space:nowrap; }
 
-    .photo-carousel { min-width:0; padding:26px 26px 22px 0; background:#fff; }
-    .carousel-stage { position:relative; height:calc(100% - 83px); min-height:405px; overflow:hidden; border-radius:16px; background:var(--green-dark); touch-action:pan-y; }
+    .photo-carousel { position:absolute; inset:0; z-index:0; min-width:0; padding:0; background:var(--green-dark); }
+    .carousel-stage { position:absolute; inset:0; height:100%; min-height:0; overflow:hidden; border-radius:0; background:var(--green-dark); touch-action:pan-y; }
     .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity .35s ease; pointer-events:none; }
     .carousel-slide.active { opacity:1; pointer-events:auto; }
     .carousel-slide img { width:100%; height:100%; object-fit:cover; object-position:center; }
-    .carousel-slide::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg,transparent 62%,rgba(8,27,18,.54)); pointer-events:none; }
+    .carousel-slide::after { content:none; }
     .carousel-caption { position:absolute; z-index:1; right:18px; bottom:18px; max-width:255px; padding:11px 13px; color:#fff; background:rgba(14,42,30,.86); border:1px solid rgba(255,255,255,.18); border-radius:8px; font-size:12px; font-weight:600; line-height:1.42; }
     .carousel-arrow { position:absolute; z-index:2; top:50%; display:grid; width:45px; height:45px; place-items:center; border:0; border-radius:50%; color:#fff; background:rgba(23,61,45,.93); cursor:pointer; transform:translateY(-50%); font-size:26px; line-height:1; transition:background .15s,transform .15s; }
     .carousel-arrow:hover { background:var(--green-dark); transform:translateY(-50%) scale(1.05); }
-    .carousel-arrow.prev { left:16px; }
-    .carousel-arrow.next { right:16px; }
-    .carousel-thumbs { display:flex; gap:8px; height:69px; margin-top:10px; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; }
+    .carousel-arrow.prev { left:auto; right:78px; z-index:3; }
+    .carousel-arrow.next { right:22px; z-index:3; }
+    .carousel-thumbs { position:absolute; z-index:3; right:22px; bottom:22px; display:flex; gap:8px; width:min(310px,44%); height:60px; margin:0; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; }
     .carousel-thumbs::-webkit-scrollbar { display:none; }
     .carousel-thumb { flex:0 0 calc((100% - 16px)/3); min-width:0; padding:0; overflow:hidden; border:2px solid transparent; border-radius:7px; background:var(--green-dark); cursor:pointer; opacity:.58; scroll-snap-align:start; transition:opacity .15s,border-color .15s; }
     .carousel-thumb.active { border-color:var(--gold); opacity:1; }
@@ -145,7 +152,15 @@
     /* Aligne le bas du texte (ligne des etoiles) sur le bas des vignettes
        de droite : meme padding-bottom que .photo-carousel (22px). */
     .hero-copy { justify-content:space-between; padding-top:26px; padding-bottom:22px; }
-    @media (max-width:850px) { .hero { min-height:0; } .hero-copy { justify-content:flex-start; padding-top:30px; } }
+    /* Mobile : le degrade passe a la verticale. La photo respire en haut,
+       le texte se pose en bas sur un fond quasi opaque, toujours lisible. */
+    @media (max-width:850px) {
+      .hero { min-height:86vh; align-items:flex-end; }
+      .hero::after { background:linear-gradient(180deg, rgba(248,246,241,0) 0%, rgba(248,246,241,.30) 26%, rgba(248,246,241,.90) 46%, rgba(248,246,241,.99) 60%); }
+      .hero-copy { width:100%; justify-content:flex-end; gap:16px; padding:0 24px 40px; }
+      .carousel-thumbs { display:none; }
+      .carousel-arrow { top:26%; }
+    }
     @media (max-width:600px) {
       .nav { min-height:64px; position:relative; }
       .logo img { width:58px; height:54px; }
@@ -159,7 +174,7 @@
     }
   </style>
   <link rel="stylesheet" href="header.css?v=hdr-19">
-  <link rel="stylesheet" href="home.css?v=home-22">
+  <link rel="stylesheet" href="home.css?v=home-23">
 </head>
 <body>
   <header class="wrap nav">
