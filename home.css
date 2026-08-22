@@ -207,3 +207,12 @@
 .link-more { display: inline-flex; align-items: center; gap: 8px; padding-bottom: 3px; border-bottom: 1px solid var(--line); color: var(--ink); font-size: 15px; font-weight: 600; transition: border-color .18s, gap .18s; }
 .link-more:hover { border-bottom-color: var(--gold); gap: 12px; text-decoration: none; }
 .link-more span { color: var(--gold); }
+
+/* --- Indicateur de defilement du hero (22/08/2026) ---
+   Un trait vertical qui descend en boucle. Invite a poursuivre sans
+   ajouter un mot. Neutralise si l'utilisateur a reduit les animations. */
+.hero-scroll { position: absolute; z-index: 3; bottom: 30px; left: 50%; width: 1px; height: 54px; overflow: hidden; background: rgba(255,255,255,.28); transform: translateX(-50%); }
+.hero-scroll span { position: absolute; inset: 0 auto auto 0; width: 1px; height: 22px; background: #fff; animation: heroScroll 2.1s cubic-bezier(.7,0,.3,1) infinite; }
+@keyframes heroScroll { 0% { transform: translateY(-24px); } 100% { transform: translateY(56px); } }
+@media (prefers-reduced-motion: reduce) { .hero-scroll span { animation: none; } }
+@media (max-width: 850px) { .hero-scroll { display: none; } }
