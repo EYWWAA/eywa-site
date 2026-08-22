@@ -30,11 +30,16 @@
        barre pleine au-dessus. C'est le geste qui fait le plus pour la
        perception de qualite, et il ne coute rien. (22/08/2026) */
     .nav { position:absolute; z-index:20; top:0; right:0; left:0; min-height:88px; display:flex; align-items:center; justify-content:space-between; gap:25px; background:none; }
-    .nav .logo, .nav .navlinks > span > a:not(.nav-button), .nav .nav-places-trigger { color:#fff; }
-    .nav .nav-button { background:rgba(255,255,255,.14); backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,.34); color:#fff; }
-    .nav .nav-button:hover { background:#fff; border-color:#fff; color:var(--ink); }
-    .nav .navlinks > span > a:not(.nav-button):hover, .nav .nav-places:hover .nav-places-trigger { color:#fff; background:rgba(255,255,255,.14); }
-    .nav .mobile-menu { color:#fff; }
+    /* Texte sombre : le voile du hero est clair a gauche, du blanc y serait
+       invisible. Un bandeau degrade en haut garantit la lisibilite des liens
+       de droite, qui eux surplombent la photo. */
+    .nav .logo, .nav .navlinks > span > a:not(.nav-button), .nav .nav-places-trigger { color:var(--ink); }
+    .nav .nav-button { background:var(--green); border:0; color:#fff; }
+    .nav .nav-button:hover { background:var(--green-dark); color:#fff; }
+    .nav .navlinks > span > a:not(.nav-button):hover, .nav .nav-places:hover .nav-places-trigger { color:var(--ink); background:rgba(255,255,255,.55); }
+    .nav .mobile-menu { color:var(--ink); }
+    .hero::before { content:''; position:absolute; z-index:1; top:0; right:0; left:0; height:190px; pointer-events:none;
+      background:linear-gradient(180deg, rgba(248,245,240,.92) 0%, rgba(248,245,240,.62) 45%, rgba(248,245,240,0) 100%); }
     body { position:relative; }
     .logo { color:var(--green); font-size:23px; font-weight:700; letter-spacing:.19em; }
     .navlinks { display:flex; align-items:center; gap:27px; font-size:14px; font-weight:600; }
@@ -185,7 +190,7 @@
     }
   </style>
   <link rel="stylesheet" href="header.css?v=hdr-20">
-  <link rel="stylesheet" href="home.css?v=home-30">
+  <link rel="stylesheet" href="home.css?v=home-31">
 </head>
 <body>
   <header class="wrap nav">
