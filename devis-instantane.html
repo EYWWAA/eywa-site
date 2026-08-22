@@ -724,12 +724,20 @@
   }
 
   /* Prix */
+  /* Personnalisation incluse d'office sur les formats a fort enjeu :
+     activation de marque et mariage. Ailleurs elle reste en option.
+     Reference : fourchettes Flashquotes par type d'evenement (22/08/2026). */
+  var PERSO_INCLUSE = 250;
+  function persoIncluse() {
+    return (A.type === 'Activation de marque' || A.type === 'Mariage') ? PERSO_INCLUSE : 0;
+  }
+
   function calcPrice() {
     var extraGuests = Math.max(0, A.guests - 50);
     var extraHrs = Math.max(0, A.hrs - 1.5);
     var baristasNeeded = Math.ceil(A.guests / (A.hrs * 50));
     var extraBaristas = Math.max(0, baristasNeeded - 1);
-    var pricePerDay = 450 + (extraGuests * 5) + Math.round(extraHrs * 70) + (extraBaristas * 200);
+    var pricePerDay = 450 + (extraGuests * 5) + Math.round(extraHrs * 70) + (extraBaristas * 200) + persoIncluse();
     return pricePerDay * A.days;
   }
 
@@ -739,7 +747,7 @@
     var extraHrs = Math.max(0, A.hrs - 1.5);
     var baristasNeeded = Math.ceil(A.guests / (A.hrs * 50));
     var extraBaristas = Math.max(0, baristasNeeded - 1);
-    var pricePerDay = 450 + (extraGuests * 5) + Math.round(extraHrs * 70) + (extraBaristas * 200);
+    var pricePerDay = 450 + (extraGuests * 5) + Math.round(extraHrs * 70) + (extraBaristas * 200) + persoIncluse();
     A.totalPrice = pricePerDay * A.days;
 
     document.getElementById('priceDisplay').textContent = A.totalPrice + ' €';
@@ -756,6 +764,7 @@
     if (extraGuests > 0) bd += '<div class="brow"><span>+' + extraGuests + ' invité' + (extraGuests>1?'s':'') + ' × 5 €</span><span>+' + (extraGuests*5) + ' €</span></div>';
     if (extraHrs > 0) bd += '<div class="brow"><span>+' + hrsLabel(extraHrs) + ' × 70 €/h</span><span>+' + Math.round(extraHrs*70) + ' €</span></div>';
     if (extraBaristas > 0) bd += '<div class="brow"><span>' + extraBaristas + ' barista' + (extraBaristas>1?'s':'') + ' sup. × 200 €</span><span>+' + (extraBaristas*200) + ' €</span></div>';
+    if (persoIncluse() > 0) bd += '<div class="brow"><span>Habillage du bar à vos couleurs, inclus</span><span>+' + persoIncluse() + ' €</span></div>';
     if (A.days > 1) {
       bd += '<div class="brow total"><span>Par jour</span><span>' + pricePerDay + ' €</span></div>';
       bd += '<div class="brow"><span>× ' + A.days + ' jours</span><span>' + A.totalPrice + ' €</span></div>';
