@@ -729,7 +729,7 @@
     var extraHrs = Math.max(0, A.hrs - 1.5);
     var baristasNeeded = Math.ceil(A.guests / (A.hrs * 50));
     var extraBaristas = Math.max(0, baristasNeeded - 1);
-    var pricePerDay = 350 + (extraGuests * 5) + Math.round(extraHrs * 70) + (extraBaristas * 200);
+    var pricePerDay = 400 + (extraGuests * 5) + Math.round(extraHrs * 70) + (extraBaristas * 200);
     return pricePerDay * A.days;
   }
 
@@ -739,7 +739,7 @@
     var extraHrs = Math.max(0, A.hrs - 1.5);
     var baristasNeeded = Math.ceil(A.guests / (A.hrs * 50));
     var extraBaristas = Math.max(0, baristasNeeded - 1);
-    var pricePerDay = 350 + (extraGuests * 5) + Math.round(extraHrs * 70) + (extraBaristas * 200);
+    var pricePerDay = 400 + (extraGuests * 5) + Math.round(extraHrs * 70) + (extraBaristas * 200);
     A.totalPrice = pricePerDay * A.days;
 
     document.getElementById('priceDisplay').textContent = A.totalPrice + ' €';
@@ -752,7 +752,7 @@
     document.getElementById('priceContext').textContent = ctx;
 
     var bd = '';
-    bd += '<div class="brow"><span>Base (50 pers., 1h30)</span><span>350 €</span></div>';
+    bd += '<div class="brow"><span>Base (50 pers., 1h30)</span><span>400 €</span></div>';
     if (extraGuests > 0) bd += '<div class="brow"><span>+' + extraGuests + ' invité' + (extraGuests>1?'s':'') + ' × 5 €</span><span>+' + (extraGuests*5) + ' €</span></div>';
     if (extraHrs > 0) bd += '<div class="brow"><span>+' + hrsLabel(extraHrs) + ' × 70 €/h</span><span>+' + Math.round(extraHrs*70) + ' €</span></div>';
     if (extraBaristas > 0) bd += '<div class="brow"><span>' + extraBaristas + ' barista' + (extraBaristas>1?'s':'') + ' sup. × 200 €</span><span>+' + (extraBaristas*200) + ' €</span></div>';
