@@ -275,14 +275,23 @@
 </head>
 <body>
 
-<form name="devis-eywa" data-netlify="true" netlify-honeypot="bot-field" style="display:none">
-  <input name="bot-field">
-  <input name="event_type"><input name="event_guests"><input name="event_dur">
-  <input name="event_days"><input name="event_date"><input name="event_time">
-  <input name="event_lieu"><input name="event_details"><input name="personalization">
-  <input name="client_prenom"><input name="client_nom">
-  <input name="client_email"><input name="client_tel">
-  <input name="price_estimate">
+<!-- Zoho CRM. Chaque demande de devis devient un prospect.
+     Le POST part dans l'iframe cachée : le parcours client ne change pas d'un pixel. -->
+<iframe name="zoho-sink" id="zoho-sink" title="zoho" style="display:none"></iframe>
+<form id="zoho-lead" method="POST" target="zoho-sink" accept-charset="UTF-8"
+      action="https://crm.zoho.eu/crm/WebToLeadForm" style="display:none">
+  <input type="hidden" name="xnQsjsdp" value="e2da5a8cf45448703c3cfb1140ec97efc999f578be7c90f0dcfa57a2b9d98e02">
+  <input type="hidden" name="xmIwtLD" value="412c9f006355720cbfa4c74be27f2d9bbfb1878320d8219ceb79fa92a818fdd1a612586cdd3aad02698eb601a9c51b54">
+  <input type="hidden" name="actionType" value="TGVhZHM=">
+  <input type="hidden" name="returnURL" value="https://eywwaa.github.io/eywa-site/merci.html">
+  <input type="hidden" name="zc_gad" value="">
+  <input type="hidden" name="aG9uZXlwb3Q" value="">
+  <input type="hidden" name="Company">
+  <input type="hidden" name="Last Name">
+  <input type="hidden" name="First Name">
+  <input type="hidden" name="Email">
+  <input type="hidden" name="Phone">
+  <input type="hidden" name="Description">
 </form>
 
 <header>
@@ -813,20 +822,31 @@
     document.getElementById('s6').classList.remove('active');
     document.getElementById('loading').style.display = 'block';
 
-    fetch('/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({
-        'form-name': 'devis-eywa', 'bot-field': '',
-        event_type: finalType, event_guests: A.guests + ' personnes',
-        event_dur: hrsLabel(A.hrs), event_days: A.days + ' jour(s)',
-        event_date: dateStr, event_time: A.time || '—',
-        event_lieu: A.lieu, event_details: A.details || '—',
-        personalization: A.personalization.join(', ') || 'Aucune',
-        client_prenom: A.prenom, client_nom: A.nom, client_email: A.email,
-        client_tel: A.tel, price_estimate: A.totalPrice + ' €'
-      }).toString()
-    }).catch(function() {});
+    /* Zoho CRM. Envoi silencieux dans l'iframe, avant le mail, pour que le POST
+       soit parti bien avant la redirection vers le devis. */
+    try {
+      var zf = document.getElementById('zoho-lead');
+      zf.elements['Company'].value = finalType;
+      zf.elements['Last Name'].value = A.nom || A.prenom || 'Non précisé';
+      zf.elements['First Name'].value = A.prenom || '';
+      zf.elements['Email'].value = A.email || '';
+      zf.elements['Phone'].value = A.tel || '';
+      zf.elements['Description'].value = [
+        'Source : devis instantané du site',
+        'Type : ' + finalType,
+        'Invités : ' + A.guests,
+        'Durée : ' + hrsLabel(A.hrs),
+        'Jours : ' + A.days,
+        'Date : ' + dateStr,
+        'Heure : ' + (A.time || '—'),
+        'Lieu : ' + A.lieu,
+        'Personnalisation : ' + (A.personalization.join(', ') || 'Aucune'),
+        'Détails : ' + (A.details || '—'),
+        'Estimation : ' + A.totalPrice + ' €',
+        'Devis client : ' + devisUrl
+      ].join('\n');
+      zf.submit();
+    } catch (e) {}
 
     fetch('https://formsubmit.co/ajax/contact.eywa08@gmail.com', {
       method: 'POST',
