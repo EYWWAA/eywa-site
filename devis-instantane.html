@@ -280,8 +280,8 @@
 <iframe name="zoho-sink" id="zoho-sink" title="zoho" style="display:none"></iframe>
 <form id="zoho-lead" method="POST" target="zoho-sink" accept-charset="UTF-8"
       action="https://crm.zoho.eu/crm/WebToLeadForm" style="display:none">
-  <input type="hidden" name="xnQsjsdp" value="de70f34b504ac537125b2b7171aa8e4508cdec196547004d30ff7c70a7c21b68">
-  <input type="hidden" name="xmIwtLD" value="1210205ebf4399649f21b8a1adb205f5b8cb85ddfbca0a945df62098f698925ed9fc27df35abbcfc329077a587fb2cd4">
+  <input type="hidden" name="xnQsjsdp" value="86e9cf25cad229c1aa6cb9ee76682b002300c1d9293749ff2a16c9f368ab5eb0">
+  <input type="hidden" name="xmIwtLD" value="25d04618647e646f1c6b62418096eaa89e4e1c51b43531c130ab2305e4bc12ceb9e7a833b2e6819846c498bac43198db">
   <input type="hidden" name="actionType" value="TGVhZHM=">
   <input type="hidden" name="returnURL" value="https://eywwaa.github.io/eywa-site/merci.html">
   <input type="hidden" name="zc_gad" value="">
@@ -291,6 +291,11 @@
   <input type="hidden" name="First Name">
   <input type="hidden" name="Email">
   <input type="hidden" name="Phone">
+  <input type="hidden" name="No of Employees">
+  <input type="hidden" name="Annual Revenue">
+  <input type="hidden" name="Skype ID">
+  <input type="hidden" name="Twitter">
+  <input type="hidden" name="Address - City">
   <input type="hidden" name="Description">
 </form>
 
@@ -530,6 +535,10 @@
           </div>
         </div>
         <div class="field-block">
+          <div class="input-label">Société <span style="color:var(--muted);font-weight:400">(facultatif)</span></div>
+          <input type="text" id="societe-input" placeholder="Nom de votre entreprise">
+        </div>
+        <div class="field-block">
           <div class="input-label">Email</div>
           <input type="email" id="email-input" placeholder="prenom@email.com" oninput="checkS6()">
         </div>
@@ -594,7 +603,7 @@
     date: '', time: '', lieu: '',
     details: '',
     personalization: [],
-    prenom: '', nom: '', email: '', tel: '',
+    prenom: '', nom: '', societe: '', email: '', tel: '',
     totalPrice: 0
   };
 
@@ -625,6 +634,7 @@
     var di = document.getElementById('details-input'); if (di) A.details = di.value.trim();
     var p = document.getElementById('prenom-input'); if (p) A.prenom = p.value.trim();
     var n = document.getElementById('nom-input'); if (n) A.nom = n.value.trim();
+    var so = document.getElementById('societe-input'); if (so) A.societe = so.value.trim();
     var e = document.getElementById('email-input'); if (e) A.email = e.value.trim();
     var tel = document.getElementById('tel-input'); if (tel) A.tel = tel.value.trim();
   }
@@ -826,11 +836,20 @@
        soit parti bien avant la redirection vers le devis. */
     try {
       var zf = document.getElementById('zoho-lead');
-      zf.elements['Company'].value = finalType;
+      zf.elements['Company'].value = A.societe || finalType;
       zf.elements['Last Name'].value = A.nom || A.prenom || 'Non précisé';
       zf.elements['First Name'].value = A.prenom || '';
       zf.elements['Email'].value = A.email || '';
       zf.elements['Phone'].value = A.tel || '';
+      /* Champs standards Zoho détournés, libellés côté CRM :
+         No of Employees = Nombre d'invités, Annual Revenue = Montant estimé,
+         Skype ID = Date de l'événement, Twitter = Lien du devis.
+         Les deux premiers sont numériques, ne jamais y mettre d'unité. */
+      zf.elements['No of Employees'].value = A.guests;
+      zf.elements['Annual Revenue'].value = A.totalPrice;
+      zf.elements['Skype ID'].value = dateStr;
+      zf.elements['Twitter'].value = devisUrl;
+      zf.elements['Address - City'].value = A.lieu || '';
       zf.elements['Description'].value = [
         'Source : devis instantané du site',
         'Type : ' + finalType,
@@ -864,7 +883,7 @@
         'Date': dateStr, 'Heure': A.time || '—',
         'Lieu': A.lieu, 'Détails': A.details || '—',
         'Personnalisation': A.personalization.join(', ') || 'Aucune',
-        'Prénom': A.prenom, 'Nom': A.nom, 'Téléphone': A.tel,
+        'Prénom': A.prenom, 'Nom': A.nom, 'Société': A.societe || '—', 'Téléphone': A.tel,
         'Estimation': A.totalPrice + ' €',
         'Lien devis client': devisUrl
       })
