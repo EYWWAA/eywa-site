@@ -62,19 +62,3 @@ document.querySelectorAll('.eywa-menu').forEach((menu) => {
     });
   }));
 });
-
-/* Apparition au defilement. Ajoute .reveal aux sections puis les revele
-   une a une a l'approche de l'ecran. Ne touche pas au hero, qui doit etre
-   visible immediatement. */
-(function () {
-  if (!('IntersectionObserver' in window)) return;
-  var sections = document.querySelectorAll('main > section:not(.hero):not(.page-hero)');
-  if (!sections.length) return;
-  sections.forEach(function (s) { s.classList.add('reveal'); });
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
-    });
-  }, { rootMargin: '0px 0px -12% 0px', threshold: 0.06 });
-  sections.forEach(function (s) { io.observe(s); });
-})();

@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&amp;family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&amp;display=swap" rel="stylesheet">
   <style>
-    :root { --green:#26221b; --green-dark:#17140f; --green-soft:#efeae1; --cream:#f8f5f0; --gold:#9a7f52; --ink:#1c1915; --mute:#6f675c; --line:#ddd6ca; --white:#fff; --sans:'DM Sans',Arial,sans-serif; --serif:'Fraunces',Georgia,serif; }
+    :root { --green:#173d2d; --green-dark:#0e2a1e; --green-soft:#eaf2ec; --cream:#f8f6f1; --gold:#e9c85f; --ink:#19271e; --mute:#66736b; --line:#d9ddd6; --white:#fff; --sans:'DM Sans',Arial,sans-serif; --serif:'Fraunces',Georgia,serif; }
     * { box-sizing:border-box; }
     figure { margin:0; }
     html { scroll-behavior:smooth; }
@@ -26,21 +26,7 @@
     button { font:inherit; }
     .wrap { width:min(1180px,calc(100% - 42px)); margin:auto; }
     .topbar { padding:10px 16px; color:#fff; background:var(--green-dark); text-align:center; font-size:12px; font-weight:600; letter-spacing:.035em; }
-    /* La navigation flotte par-dessus l'image du hero au lieu d'occuper une
-       barre pleine au-dessus. C'est le geste qui fait le plus pour la
-       perception de qualite, et il ne coute rien. (22/08/2026) */
-    .nav { position:absolute; z-index:20; top:0; right:0; left:0; min-height:88px; display:flex; align-items:center; justify-content:space-between; gap:25px; background:none; }
-    /* Texte sombre : le voile du hero est clair a gauche, du blanc y serait
-       invisible. Un bandeau degrade en haut garantit la lisibilite des liens
-       de droite, qui eux surplombent la photo. */
-    .nav .logo, .nav .navlinks > span > a:not(.nav-button), .nav .nav-places-trigger { color:var(--ink); }
-    .nav .nav-button { background:var(--green); border:0; color:#fff; }
-    .nav .nav-button:hover { background:var(--green-dark); color:#fff; }
-    .nav .navlinks > span > a:not(.nav-button):hover, .nav .nav-places:hover .nav-places-trigger { color:var(--ink); background:rgba(255,255,255,.55); }
-    .nav .mobile-menu { color:var(--ink); }
-    .hero::before { content:''; position:absolute; z-index:1; top:0; right:0; left:0; height:190px; pointer-events:none;
-      background:linear-gradient(180deg, rgba(248,245,240,.92) 0%, rgba(248,245,240,.62) 45%, rgba(248,245,240,0) 100%); }
-    body { position:relative; }
+    .nav { min-height:81px; display:flex; align-items:center; justify-content:space-between; gap:25px; background:var(--cream); }
     .logo { color:var(--green); font-size:23px; font-weight:700; letter-spacing:.19em; }
     .navlinks { display:flex; align-items:center; gap:27px; font-size:14px; font-weight:600; }
     .navlinks > a:not(.nav-button) { margin:-5px -8px; padding:5px 8px; border-radius:6px; }
@@ -53,32 +39,23 @@
     .nav-places:hover .nav-places-menu,.nav-places:focus-within .nav-places-menu,.nav-places.open .nav-places-menu { opacity:1; pointer-events:auto; transform:translate(-50%,0); }
     .nav-places-menu a { padding:9px 11px; border-radius:6px; color:var(--green); font-size:13px; }
     .nav-places-menu a:hover { background:var(--green-soft); text-decoration:none; }
-    .nav-button,.button { display:inline-flex; align-items:center; justify-content:center; gap:9px; border:0; border-radius:4px; background:var(--green); color:#fff; cursor:pointer; font-family:inherit; font-size:15px; font-weight:700; line-height:1; transition:transform .16s,background .16s; }
+    .nav-button,.button { display:inline-flex; align-items:center; justify-content:center; gap:9px; border:0; border-radius:8px; background:var(--green); color:#fff; cursor:pointer; font-family:inherit; font-size:15px; font-weight:700; line-height:1; transition:transform .16s,background .16s; }
     .nav-button { min-height:43px; padding:0 16px; font-size:13px; }
     .button { min-height:56px; padding:0 23px; }
     .button:hover,.nav-button:hover { background:var(--green-dark); transform:translateY(-1px); }
-    /* Le dore ne porte plus d'ombre en relief : cet effet vient du SaaS ludique
-       et jurait avec le serif. Aplat franc, transition sobre. */
-    .button-gold { color:var(--green-dark); background:var(--gold); box-shadow:none; }
-    .button-gold:hover { color:var(--green-dark); background:#f2d879; box-shadow:none; transform:translateY(-1px); }
+    .button-gold { color:var(--green-dark); background:var(--gold); box-shadow:0 7px 0 #d2ae38,0 14px 26px rgba(23,61,45,.14); }
+    .button-gold:hover { color:var(--green-dark); background:#f2d879; box-shadow:0 9px 0 #d2ae38,0 16px 28px rgba(23,61,45,.16); }
     .mobile-menu { display:none; border:0; color:var(--green); background:transparent; font:700 14px var(--sans); cursor:pointer; }
 
-    /* Hero en image plein cadre (22/08/2026).
-       L'image occupe toute la largeur derriere le contenu. Un voile en degrade
-       part de la gauche, opaque sous le texte, et disparait vers la droite pour
-       laisser la photo visible. L'oeil lit a gauche et regarde a droite, il ne
-       fait jamais les deux au meme endroit. */
-    .hero { position:relative; display:flex; align-items:center; min-height:100svh; overflow:hidden; background:var(--green-dark); }
-    .hero::after { content:''; position:absolute; inset:0; z-index:1; pointer-events:none;
-      background:linear-gradient(100deg, rgba(248,246,241,.985) 0%, rgba(248,246,241,.965) 30%, rgba(248,246,241,.80) 46%, rgba(248,246,241,.28) 62%, rgba(248,246,241,0) 78%); }
+    .hero { display:grid; grid-template-columns:1fr .94fr; min-height:570px; overflow:hidden; background:#fff; }
     /* space-between : le contenu se repartit sur toute la hauteur, ce qui
        aligne la ligne des etoiles sur la rangee des vignettes a droite
        au lieu de laisser 112px de vide en bas. */
     /* Couloir droit reduit a 58px : le padding symetrique laissait 112px
        de vide entre le texte et la photo. */
-    .hero-copy { position:relative; z-index:2; display:flex; flex-direction:column; justify-content:center; gap:22px; width:min(640px,58%); padding:118px 48px 64px max(30px,calc((100vw - 1180px)/2)); }
+    .hero-copy { display:flex; flex-direction:column; justify-content:space-between; padding:26px 58px 22px max(30px,calc((100vw - 1180px)/2)); }
     h1,h2,h3,p { margin-top:0; }
-    h1 { max-width:640px; margin-bottom:20px; color:var(--ink); font:600 clamp(38px,4.4vw,62px)/1.02 var(--serif); letter-spacing:-.035em; }
+    h1 { max-width:590px; margin-bottom:18px; color:var(--green); font:700 clamp(32px,3vw,44px)/1.08 var(--serif); letter-spacing:-.045em; }
     .lead { max-width:570px; margin-bottom:20px; color:#425147; font-size:16px; line-height:1.55; }
     .hero-points { display:grid; gap:9px; margin:0 0 23px; padding:0; color:#34483c; font-size:14px; font-weight:600; line-height:1.4; list-style:none; }
     .hero-points li::before { content:'✓'; display:inline-grid; width:20px; height:20px; place-items:center; margin-right:8px; color:var(--green-dark); background:var(--gold); border-radius:50%; font-size:12px; font-weight:900; vertical-align:1px; }
@@ -87,26 +64,26 @@
     .trust-row { display:flex; align-items:center; gap:12px; margin:17px 0 0; color:var(--mute); font-size:13px; line-height:1.4; }
     .ticks { display:flex; gap:2px; color:#cb9d11; font-size:16px; letter-spacing:-.06em; white-space:nowrap; }
 
-    .photo-carousel { position:absolute; inset:0; z-index:0; min-width:0; padding:0; background:var(--green-dark); }
-    .carousel-stage { position:absolute; inset:0; height:100%; min-height:0; overflow:hidden; border-radius:0; background:var(--green-dark); touch-action:pan-y; }
+    .photo-carousel { min-width:0; padding:26px 26px 22px 0; background:#fff; }
+    .carousel-stage { position:relative; height:calc(100% - 83px); min-height:405px; overflow:hidden; border-radius:16px; background:var(--green-dark); touch-action:pan-y; }
     .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity .35s ease; pointer-events:none; }
     .carousel-slide.active { opacity:1; pointer-events:auto; }
     .carousel-slide img { width:100%; height:100%; object-fit:cover; object-position:center; }
-    .carousel-slide::after { content:none; }
+    .carousel-slide::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg,transparent 62%,rgba(8,27,18,.54)); pointer-events:none; }
     .carousel-caption { position:absolute; z-index:1; right:18px; bottom:18px; max-width:255px; padding:11px 13px; color:#fff; background:rgba(14,42,30,.86); border:1px solid rgba(255,255,255,.18); border-radius:8px; font-size:12px; font-weight:600; line-height:1.42; }
     .carousel-arrow { position:absolute; z-index:2; top:50%; display:grid; width:45px; height:45px; place-items:center; border:0; border-radius:50%; color:#fff; background:rgba(23,61,45,.93); cursor:pointer; transform:translateY(-50%); font-size:26px; line-height:1; transition:background .15s,transform .15s; }
     .carousel-arrow:hover { background:var(--green-dark); transform:translateY(-50%) scale(1.05); }
-    .carousel-arrow.prev { left:auto; right:78px; z-index:3; }
-    .carousel-arrow.next { right:22px; z-index:3; }
-    .carousel-thumbs { position:absolute; z-index:3; right:22px; bottom:22px; display:flex; gap:8px; width:min(310px,44%); height:60px; margin:0; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; }
+    .carousel-arrow.prev { left:16px; }
+    .carousel-arrow.next { right:16px; }
+    .carousel-thumbs { display:flex; gap:8px; height:69px; margin-top:10px; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; }
     .carousel-thumbs::-webkit-scrollbar { display:none; }
     .carousel-thumb { flex:0 0 calc((100% - 16px)/3); min-width:0; padding:0; overflow:hidden; border:2px solid transparent; border-radius:7px; background:var(--green-dark); cursor:pointer; opacity:.58; scroll-snap-align:start; transition:opacity .15s,border-color .15s; }
     .carousel-thumb.active { border-color:var(--gold); opacity:1; }
     .carousel-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
 
     .video-section { padding:80px 0; background:var(--cream); }
-    .section-kicker { margin:0 0 14px; color:var(--gold); font-size:11px; font-weight:600; letter-spacing:.16em; text-align:center; text-transform:uppercase; }
-    .section-title { max-width:760px; margin:0 auto 17px; color:var(--ink); font:600 clamp(32px,3.8vw,50px)/1.06 var(--serif); text-align:center; letter-spacing:-.035em; }
+    .section-kicker { margin:0 0 12px; color:var(--green); font-size:12px; font-weight:700; letter-spacing:.09em; text-align:center; text-transform:uppercase; }
+    .section-title { max-width:720px; margin:0 auto 17px; color:var(--green); font:700 clamp(30px,3.4vw,42px)/1.1 var(--serif); text-align:center; letter-spacing:-.045em; }
     .section-sub { max-width:650px; margin:0 auto; color:var(--mute); font-size:16px; line-height:1.6; text-align:center; }
     .video-frame { max-width:880px; aspect-ratio:16/9; margin:36px auto 0; overflow:hidden; background:var(--green-dark); border-radius:15px; box-shadow:0 18px 38px rgba(23,61,45,.18); }
     .video-frame video { width:100%; height:100%; object-fit:cover; display:block; }
@@ -160,7 +137,7 @@
     }
     @media (max-width:600px) { .nav-places-trigger,.navlinks > a:not(.nav-button) { margin:0; } }
     @media (max-width:600px) { h1 { font-size:29px; } }
-    @media (min-width:601px) { .section-title { font-size:38px !important; } .peace-title { font-size:40px !important; } .quote-cta h2 { font-size:38px !important; } }
+    @media (min-width:601px) { h1 { font-size:34px !important; } .section-title { font-size:38px !important; } .peace-title { font-size:40px !important; } .quote-cta h2 { font-size:38px !important; } }
     .carousel-caption { display:none !important; }
     .logo { display:flex; align-items:center; }
     .logo img { display:block; width:72px; height:64px; object-fit:contain; }
@@ -168,15 +145,7 @@
     /* Aligne le bas du texte (ligne des etoiles) sur le bas des vignettes
        de droite : meme padding-bottom que .photo-carousel (22px). */
     .hero-copy { justify-content:space-between; padding-top:26px; padding-bottom:22px; }
-    /* Mobile : le degrade passe a la verticale. La photo respire en haut,
-       le texte se pose en bas sur un fond quasi opaque, toujours lisible. */
-    @media (max-width:850px) {
-      .hero { min-height:86vh; align-items:flex-end; }
-      .hero::after { background:linear-gradient(180deg, rgba(248,246,241,0) 0%, rgba(248,246,241,.30) 26%, rgba(248,246,241,.90) 46%, rgba(248,246,241,.99) 60%); }
-      .hero-copy { width:100%; justify-content:flex-end; gap:16px; padding:0 24px 40px; }
-      .carousel-thumbs { display:none; }
-      .carousel-arrow { top:26%; }
-    }
+    @media (max-width:850px) { .hero { min-height:0; } .hero-copy { justify-content:flex-start; padding-top:30px; } }
     @media (max-width:600px) {
       .nav { min-height:64px; position:relative; }
       .logo img { width:58px; height:54px; }
@@ -189,8 +158,8 @@
       .navlinks.open { z-index:50; box-shadow:0 14px 20px rgba(23,61,45,.1); }
     }
   </style>
-  <link rel="stylesheet" href="header.css?v=hdr-20">
-  <link rel="stylesheet" href="home.css?v=home-31">
+  <link rel="stylesheet" href="header.css?v=hdr-19">
+  <link rel="stylesheet" href="home.css?v=home-21">
 </head>
 <body>
   <header class="wrap nav">
@@ -218,15 +187,13 @@
           <li>Événements privés</li>
         </ul>
         <div class="hero-quote">
-          <a class="button button-gold" href="devis-instantane.html">Obtenir mon devis<span aria-hidden="true">→</span></a>
+          <a class="button button-gold" href="devis-instantane.html">Obtenir mon devis instantané<span aria-hidden="true">→</span></a>
           <p class="quote-note">Tarif personnalisé gratuit · Vérifiez la disponibilité de votre date</p>
           <!-- Bloc note et avis retire le 14/08/2026 : aucun avis Google n'existe
                encore. A remettre des que la fiche Google Business est en ligne
                et que les premiers avis reels sont publies. -->
         </div>
       </div>
-
-      <div class="hero-scroll" aria-hidden="true"><span></span></div>
 
       <div class="photo-carousel" aria-label="Galerie de prestations EYWA">
         <div class="carousel-stage" id="carousel-stage">
@@ -304,7 +271,7 @@
 
           <div class="md-sep"></div>
 
-          <a class="button button-gold md-cta" id="md-cta" href="devis-instantane.html?invites=50&amp;heures=1.5">Obtenir mon devis<span aria-hidden="true">→</span></a>
+          <a class="button button-gold md-cta" id="md-cta" href="devis-instantane.html?invites=50&amp;heures=1.5">Voir mon tarif<span aria-hidden="true">→</span></a>
         </div>
       </div>
     </section>
@@ -330,12 +297,12 @@
               <li>Déplacement inclus, sans frais kilométriques</li>
             </ul>
             <div class="service-actions">
-              <a class="link-more" href="menu.html">Voir la carte<span aria-hidden="true">→</span></a>
+              <a class="button" href="menu.html">Voir la carte<span aria-hidden="true">→</span></a>
               <a class="button button-gold" href="devis-instantane.html">Obtenir mon devis<span aria-hidden="true">→</span></a>
             </div>
           </div>
         </article>
-        <div class="center-action" style="margin-top:34px"><a class="link-more" href="services.html">Tous les services<span aria-hidden="true">→</span></a></div>
+        <div class="center-action" style="margin-top:34px"><a class="button" href="services.html">Tous les services<span aria-hidden="true">→</span></a></div>
       </div>
     </section>
 
@@ -383,7 +350,7 @@
           </article>
         </div>
 
-        <div class="center-action" style="margin-top:38px"><a class="button button-gold" href="devis-instantane.html">Obtenir mon devis<span aria-hidden="true">→</span></a></div>
+        <div class="center-action" style="margin-top:38px"><a class="button button-gold" href="devis-instantane.html">Demander une activation de marque<span aria-hidden="true">→</span></a></div>
       </div>
     </section>
 
@@ -416,7 +383,7 @@
             <p>Offrir un vrai café de spécialité à ses équipes ou à ses clients marque plus qu'un buffet standard. C'est un geste concret, et il s'en souvient.</p>
           </article>
         </div>
-        <div class="center-action" style="margin-top:36px"><a class="link-more" href="services.html">Découvrir nos services<span aria-hidden="true">→</span></a></div>
+        <div class="center-action" style="margin-top:36px"><a class="button button-gold" href="services.html">Découvrir nos services<span aria-hidden="true">→</span></a></div>
       </div>
     </section>
 
@@ -497,7 +464,7 @@
             </ul>
           </div>
         </div>
-        <div class="center-action" style="margin-top:36px"><a class="button button-gold" href="devis-instantane.html">Obtenir mon devis<span aria-hidden="true">→</span></a></div>
+        <div class="center-action" style="margin-top:36px"><a class="button" href="devis-instantane.html">Votre événement n'est pas dans la liste ? Demandez<span aria-hidden="true">→</span></a></div>
       </div>
     </section>
 
@@ -508,22 +475,7 @@
         <!-- Score retire le 14/08/2026 : aucun avis Google n'existe encore.
              A remettre avec le vrai score des que les avis sont publies. -->
         <p class="reviews-line">Le bar a déjà tourné en conditions réelles, du montage au service, sur un mariage étalé sur trois lieux en deux jours. Les retours de nos clients seront publiés ici.</p>
-        <a class="link-more" href="avis.html">Voir les avis<span aria-hidden="true">→</span></a>
-      </div>
-    </section>
-
-    <!-- Bande photo pleine largeur : la photo occupe une moitie entiere,
-         le texte l'autre sur fond plein. L'oeil regarde d'un cote et lit de
-         l'autre, jamais les deux au meme endroit. (refonte 22/08/2026) -->
-    <section class="photo-band" aria-labelledby="band-title">
-      <figure class="photo-band-img">
-        <img src="assets/photos-reelles/reelle-0779.jpg" alt="Barista EYWA servant un matcha à une invitée souriante" loading="lazy">
-      </figure>
-      <div class="photo-band-copy">
-        <p class="section-kicker">Sur place</p>
-        <h2 id="band-title">Chaque boisson préparée devant vos invités.</h2>
-        <p>Pas de thermos posée sur une table, pas de gobelets remplis à l'avance. Un barista, un comptoir, et la boisson qui se fait sous leurs yeux. C'est ce moment-là qu'ils photographient.</p>
-        <a class="button button-gold" href="devis-instantane.html">Obtenir mon devis<span aria-hidden="true">→</span></a>
+        <a class="button" href="avis.html">Voir les avis<span aria-hidden="true">→</span></a>
       </div>
     </section>
 
@@ -534,12 +486,12 @@
           <h2 class="section-title" id="teaser-title">Votre marque au centre de l'événement.</h2>
         </div>
         <div class="teaser-grid">
-          <figure><img src="assets/photos-reelles/reelle-0778.jpg" alt="Le bar mobile EYWA installé sous un barnum, prêt pour le service" loading="lazy"></figure>
-          <figure><img src="assets/photos-reelles/reelle-0774.jpg" alt="Invités rassemblés autour du bar EYWA lors d'une réception" loading="lazy"></figure>
-          <figure><img src="assets/photos-reelles/reelle-0781.jpg" alt="Préparation d'un matcha au comptoir EYWA" loading="lazy"></figure>
-          <figure><img src="assets/photos-reelles/reelle-0782.jpg" alt="Le bar EYWA lors d'un mariage, invités en tenue de cérémonie" loading="lazy"></figure>
+          <figure><img src="assets/gallery-v3/gallery-04-veuve-clicquot.jpg" alt="Projection d'un coffee bar Veuve Clicquot sous parasol" loading="lazy"></figure>
+          <figure><img src="assets/gallery-v3/gallery-07-sephora.jpg" alt="Projection d'un coffee bar Sephora pendant une activation beauté" loading="lazy"></figure>
+          <figure><img src="assets/gallery-v3/gallery-14-tiktok.jpg" alt="Projection d'un coffee bar TikTok pendant un événement de créateurs" loading="lazy"></figure>
+          <figure><img src="assets/gallery-v3/gallery-18-taittinger.jpg" alt="Projection d'un coffee bar Taittinger dans une cave de réception" loading="lazy"></figure>
         </div>
-        <div class="center-action"><a class="link-more" href="galerie.html">Voir la galerie<span aria-hidden="true">→</span></a></div>
+        <div class="center-action"><a class="button" href="galerie.html">Voir la galerie<span aria-hidden="true">→</span></a></div>
       </div>
     </section>
 
@@ -566,7 +518,7 @@
           <article class="place"><span class="place-pin" aria-hidden="true">⌖</span><h3>Reims</h3><p>Marne et alentours</p></article>
           <article class="place"><span class="place-pin" aria-hidden="true">⌖</span><h3>Sedan</h3><p>Ardennes et Meuse</p></article>
         </div>
-        <div class="center-action" style="margin-top:32px"><a class="button button-gold" href="devis-instantane.html">Obtenir mon devis<span aria-hidden="true">→</span></a></div>
+        <div class="center-action" style="margin-top:32px"><a class="button" href="devis-instantane.html">Vérifier ma date<span aria-hidden="true">→</span></a></div>
       </div>
     </section>
 
@@ -673,22 +625,5 @@
       render();
     })();
   </script>
-<script>
-/* Apparition au defilement (22/08/2026). Les sections montent et se revelent
-   a l'approche de l'ecran. Le hero est exclu, il doit etre visible tout de suite.
-   Respecte prefers-reduced-motion via la feuille de style. */
-(function () {
-  if (!('IntersectionObserver' in window)) return;
-  var secs = document.querySelectorAll('main > section:not(.hero)');
-  if (!secs.length) return;
-  Array.prototype.forEach.call(secs, function (s) { s.classList.add('reveal'); });
-  var io = new IntersectionObserver(function (es) {
-    es.forEach(function (e) {
-      if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
-    });
-  }, { rootMargin: '0px 0px -12% 0px', threshold: 0.06 });
-  Array.prototype.forEach.call(secs, function (s) { io.observe(s); });
-})();
-</script>
 </body>
 </html>
