@@ -603,6 +603,7 @@
     date: '', time: '', lieu: '',
     details: '',
     personalization: [],
+    design: '',
     prenom: '', nom: '', societe: '', email: '', tel: '',
     totalPrice: 0
   };
@@ -860,6 +861,7 @@
         'Heure : ' + (A.time || '—'),
         'Lieu : ' + A.lieu,
         'Personnalisation : ' + (A.personalization.join(', ') || 'Aucune'),
+        'Design 3D : ' + (A.design || 'Aucun'),
         'Détails : ' + (A.details || '—'),
         'Estimation : ' + A.totalPrice + ' €',
         'Devis client : ' + devisUrl
@@ -883,6 +885,7 @@
         'Date': dateStr, 'Heure': A.time || '—',
         'Lieu': A.lieu, 'Détails': A.details || '—',
         'Personnalisation': A.personalization.join(', ') || 'Aucune',
+        'Design 3D': A.design || 'Aucun',
         'Prénom': A.prenom, 'Nom': A.nom, 'Société': A.societe || '—', 'Téléphone': A.tel,
         'Estimation': A.totalPrice + ' €',
         'Lien devis client': devisUrl
@@ -921,6 +924,61 @@
       renderDots(1);
       document.getElementById('lieu-input').focus();
     }
+  })();
+
+  /* Reprise du configurateur 3D de la page d'accueil.
+     index.html envoie ?visuel=full&fichier=logo.png. On note le design
+     pour qu'il parte dans le CRM et dans le mail, et on affiche la
+     capture que le configurateur a deposee en sessionStorage.
+     L'image ne quitte jamais le navigateur du visiteur. */
+  (function reprendreConfigurateur() {
+    var p = new URLSearchParams(window.location.search);
+    var mode = p.get('visuel');
+    var LIBELLES = {
+      logo:  'Logo centré sur la façade',
+      full:  'Visuel sur toute la façade',
+      sides: 'Visuel sur la façade et les deux côtés'
+    };
+    var libelle = LIBELLES[mode];
+    if (!libelle) return;
+
+    var fichier = (p.get('fichier') || '').slice(0, 120);
+    A.design = libelle + (fichier ? ' — fichier : ' + fichier : '');
+
+    var apercu = '';
+    try { apercu = sessionStorage.getItem('eywa-cfg-preview') || ''; } catch (e) {}
+
+    var hote = document.querySelector('main');
+    var carte = document.querySelector('.form-card');
+    if (!hote || !carte) return;
+
+    var banniere = document.createElement('div');
+    banniere.style.cssText = 'display:flex;align-items:center;gap:14px;max-width:720px;'
+      + 'margin:0 auto 16px;padding:12px 16px;border:1px solid #d9ddd6;border-radius:12px;'
+      + 'background:#fff;box-shadow:0 8px 22px rgba(23,61,45,.07)';
+
+    /* On n'accepte que notre propre capture PNG, jamais une valeur arbitraire. */
+    if (apercu.indexOf('data:image/png;base64,') === 0) {
+      var img = document.createElement('img');
+      img.src = apercu;
+      img.alt = 'Aperçu de votre bar personnalisé';
+      img.style.cssText = 'width:96px;height:60px;flex:none;object-fit:cover;'
+        + 'border-radius:7px;background:#f2efe9';
+      banniere.appendChild(img);
+    }
+
+    var texte = document.createElement('div');
+    var titre = document.createElement('strong');
+    titre.textContent = 'Votre design est joint à la demande';
+    titre.style.cssText = 'display:block;color:#173d2d;font-size:14px;margin-bottom:3px';
+    var detail = document.createElement('span');
+    detail.textContent = libelle + (fichier ? ' · ' + fichier : '');
+    detail.style.cssText = 'color:#66736b;font-size:13px';
+    texte.appendChild(titre);
+    texte.appendChild(detail);
+    banniere.appendChild(texte);
+
+    hote.insertBefore(banniere, carte);
   })();
 </script>
 </body>

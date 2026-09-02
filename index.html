@@ -160,6 +160,7 @@
   </style>
   <link rel="stylesheet" href="header.css?v=hdr-19">
   <link rel="stylesheet" href="home.css?v=home-21">
+  <link rel="stylesheet" href="configurateur.css?v=cfg-1">
 </head>
 <body>
   <header class="wrap nav">
@@ -351,6 +352,56 @@
         </div>
 
         <div class="center-action" style="margin-top:38px"><a class="button button-gold" href="devis-instantane.html">Demander une activation de marque<span aria-hidden="true">→</span></a></div>
+      </div>
+    </section>
+
+    <section class="cfg" id="configurateur" data-configurateur aria-labelledby="cfg-title">
+      <div class="wrap">
+        <div class="cfg-head">
+          <p class="cfg-kicker">Aperçu en direct</p>
+          <h2 id="cfg-title">Visualisez votre bar personnalisé.</h2>
+          <p>Importez votre logo ou votre visuel et découvrez instantanément à quoi pourrait ressembler votre coffee bar personnalisé.</p>
+        </div>
+
+        <div class="cfg-shell">
+          <div class="cfg-stage">
+            <div class="cfg-loader">
+              <div class="cfg-loader-mark" aria-hidden="true"></div>
+              <p>Préparation de l'aperçu…</p>
+            </div>
+            <p class="cfg-hint">Faites tourner le bar</p>
+          </div>
+
+          <div class="cfg-panel">
+            <div>
+              <span class="cfg-modes-label" id="cfg-modes-label">Mode de personnalisation</span>
+              <div class="cfg-modes" role="group" aria-labelledby="cfg-modes-label">
+                <button type="button" class="cfg-mode" data-mode="logo" aria-pressed="false">Logo centré</button>
+                <button type="button" class="cfg-mode" data-mode="full" aria-pressed="true">Façade complète</button>
+                <button type="button" class="cfg-mode" data-mode="sides" aria-pressed="false">Façade + côtés</button>
+              </div>
+            </div>
+
+            <div class="cfg-actions">
+              <button type="button" class="cfg-upload">
+                <span aria-hidden="true">↑</span>Importer votre visuel
+              </button>
+              <button type="button" class="cfg-reset">Réinitialiser</button>
+              <input class="cfg-input" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+            </div>
+          </div>
+
+          <p class="cfg-file" aria-live="polite"></p>
+          <p class="cfg-error" role="alert" hidden></p>
+
+          <div class="cfg-foot">
+            <p class="cfg-disclaimer">Aperçu non contractuel. Le rendu final sera adapté à votre fichier d'impression.</p>
+            <div class="cfg-cta-group">
+              <button type="button" class="cfg-save">Enregistrer l'aperçu</button>
+              <button type="button" class="cfg-cta">Demander un devis avec ce design<span aria-hidden="true">→</span></button>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -625,5 +676,17 @@
       render();
     })();
   </script>
+
+  <!-- Configurateur 3D. Three.js n'est telecharge que lorsque la section
+       approche de l'ecran, le reste de la page n'est pas ralenti. -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module" src="configurateur.js?v=cfg-1"></script>
 </body>
 </html>
