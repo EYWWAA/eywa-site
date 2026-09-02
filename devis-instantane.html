@@ -470,7 +470,7 @@
         style="background-image:url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=800&q=75&auto=format')">
         <div class="perso-body">
           <div class="perso-info">
-            <div class="perso-name">Habillage du bar · 200 €</div>
+            <div class="perso-name">Habillage du bar · 250 €</div>
             <div class="perso-sub">Façade du comptoir imprimée à vos couleurs</div>
           </div>
           <div class="perso-check">
@@ -751,7 +751,7 @@
      d'evenement. Decision de Louis du 22/08/2026 : meme tarif de base pour
      tous, c'est la personnalisation qui fait monter le panier. */
   var PERSO_PRIX = {
-    'Habillage du bar': 200,
+    'Habillage du bar': 250,
     'Gobelets sur mesure': 100,
     'Logo sur les boissons': 100
   };
@@ -766,7 +766,7 @@
     var extraHrs = Math.max(0, A.hrs - 1.5);
     var baristasNeeded = Math.ceil(A.guests / (A.hrs * 50));
     var extraBaristas = Math.max(0, baristasNeeded - 1);
-    var pricePerDay = 450 + (extraGuests * 5) + Math.round(extraHrs * 70) + (extraBaristas * 200) + persoTotal();
+    var pricePerDay = 650 + (extraGuests * 5) + Math.round(extraHrs * 70) + (extraBaristas * 200) + persoTotal();
     return pricePerDay * A.days;
   }
 
@@ -776,7 +776,7 @@
     var extraHrs = Math.max(0, A.hrs - 1.5);
     var baristasNeeded = Math.ceil(A.guests / (A.hrs * 50));
     var extraBaristas = Math.max(0, baristasNeeded - 1);
-    var pricePerDay = 450 + (extraGuests * 5) + Math.round(extraHrs * 70) + (extraBaristas * 200) + persoTotal();
+    var pricePerDay = 650 + (extraGuests * 5) + Math.round(extraHrs * 70) + (extraBaristas * 200) + persoTotal();
     A.totalPrice = pricePerDay * A.days;
 
     document.getElementById('priceDisplay').textContent = A.totalPrice + ' €';
@@ -789,7 +789,7 @@
     document.getElementById('priceContext').textContent = ctx;
 
     var bd = '';
-    bd += '<div class="brow"><span>Base (50 pers., 1h30)</span><span>450 €</span></div>';
+    bd += '<div class="brow"><span>Base (50 pers., 1h30)</span><span>650 €</span></div>';
     if (extraGuests > 0) bd += '<div class="brow"><span>+' + extraGuests + ' invité' + (extraGuests>1?'s':'') + ' × 5 €</span><span>+' + (extraGuests*5) + ' €</span></div>';
     if (extraHrs > 0) bd += '<div class="brow"><span>+' + hrsLabel(extraHrs) + ' × 70 €/h</span><span>+' + Math.round(extraHrs*70) + ' €</span></div>';
     if (extraBaristas > 0) bd += '<div class="brow"><span>' + extraBaristas + ' barista' + (extraBaristas>1?'s':'') + ' sup. × 200 €</span><span>+' + (extraBaristas*200) + ' €</span></div>';
