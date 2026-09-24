@@ -936,6 +936,11 @@
     if (!marque) return;
     A.societe = marque;
     A.design = 'Direction artistique EYWA — ' + marque + (configuration ? ' — configuration ' + configuration : '');
+    var habillage = ['Signature', 'Graphique', 'Épure'].includes(p.get('habillage')) ? p.get('habillage') : '';
+    var finition = p.get('finition') === 'matte' ? 'mate veloutée' : p.get('finition') === 'satin' ? 'satinée' : '';
+    var eclairage = p.get('eclairage') === 'warm' ? 'chaleureux' : p.get('eclairage') === 'neutral' ? 'neutre' : p.get('eclairage') === 'none' ? 'éteint' : '';
+    var choix = [habillage, finition && 'finition ' + finition, eclairage && 'éclairage ' + eclairage].filter(Boolean).join(' · ');
+    if (choix) A.design += ' — ' + choix;
     var societe = document.getElementById('societe-input');
     if (societe && !societe.value) societe.value = marque;
     var hote = document.querySelector('main');
@@ -950,7 +955,7 @@
     titre.style.cssText = 'display:block;color:#173d2d;font-size:14px;margin-bottom:3px';
     banniere.appendChild(titre);
     var detail = document.createElement('span');
-    detail.textContent = 'Nous reprendrons cette direction artistique dans votre demande de devis.';
+    detail.textContent = choix ? 'Votre sélection : ' + choix + '. Elle sera reprise dans votre demande de devis.' : 'Nous reprendrons cette direction artistique dans votre demande de devis.';
     banniere.appendChild(detail);
     hote.insertBefore(banniere, carte);
   })();

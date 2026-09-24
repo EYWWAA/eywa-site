@@ -24,7 +24,7 @@ function readCache(key: string): Ready | null {
     const entry = entries[key];
     if (entry?.at > Date.now() - TTL && entry?.value?.status === 'ready') {
       BrandingSchema.parse(entry.value.branding);
-      return { ...entry.value, cached: true, modelUrl: asset('/models/eywa-bar-v2.glb') };
+      return { ...entry.value, cached: true, modelUrl: asset('/models/eywa-bar-v3.glb') };
     }
   } catch {}
   return null;
@@ -38,7 +38,7 @@ function saveCache(key: string, value: Ready) {
   } catch {}
 }
 export function readyProposal(b: Branding, mode: Ready['mode'] = 'proposal', sourced = false): Ready {
-  return { status: 'ready', id: 'eywa-' + hashName(b.brand.name), branding: b, cached: false, mode, logoStatus: b.bar.logo ? sourced ? 'sourced' : 'verified' : 'wordmark', modelUrl: asset('/models/eywa-bar-v2.glb'), modelApproved: false, imagesReady: false };
+  return { status: 'ready', id: 'eywa-' + hashName(b.brand.name), branding: b, cached: false, mode, logoStatus: b.bar.logo ? sourced ? 'sourced' : 'verified' : 'wordmark', modelUrl: asset('/models/eywa-bar-v3.glb'), modelApproved: false, imagesReady: false };
 }
 async function api(host: string, args: Record<string, string>, signal: AbortSignal) {
   const query = new URLSearchParams({ format: 'json', origin: '*', ...args });
