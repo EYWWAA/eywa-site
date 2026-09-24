@@ -1,262 +1,285 @@
-/* EYWA — direction éditoriale. Chargée après les styles historiques.
-   Les règles d'accueil restent isolées du devis et du configurateur. */
+/* EYWA — direction visuelle inspirée de Seaside Juicery.
+   Habillage partagé des pages publiques ; le devis et le configurateur
+   conservent leurs composants et leur fonctionnement. */
 :root {
-  --green: #203d30;
-  --green-dark: #152b22;
-  --green-soft: #edf0e9;
-  --cream: #f8f7f3;
-  --ink: #243c30;
-  --mute: #657068;
-  --gold: #e6ce83;
-  --line: #dcded6;
+  --green: #183735;
+  --green-dark: #122a28;
+  --green-soft: #eeece4;
+  --cream: #eeece4;
+  --ink: #183735;
+  --mute: #5d6c67;
+  --gold: #cf9c3d;
+  --wine: #86363e;
+  --wine-dark: #48151c;
+  --line: #d9dbd2;
+  --sans: 'Space Grotesk', Arial, sans-serif;
+  --serif: 'Space Grotesk', Arial, sans-serif;
+  --wordmark: 'Fraunces', Georgia, serif;
 }
-body { font-size: 1rem; -webkit-font-smoothing: antialiased; }
-html { scroll-padding-top: 6rem; }
-:focus-visible { outline: 2px solid var(--green); outline-offset: 5px; }
-.wrap { width: min(1280px, calc(100% - 96px)); }
-.nav { min-height: 88px; background: var(--cream); }
-.nav::before { background: var(--cream); border-color: var(--line); }
-.logo { font-size: 2rem; letter-spacing: .22em; }
-.navlinks, .nav-group { gap: 24px; font-weight: 500; }
-.nav-button { min-height: 46px; padding: 0 20px; border-radius: 4px; font-size: .875rem; font-weight: 500; }
-.nav-button > span { margin-left: 8px; }
-.button {
-  min-height: 54px; gap: 24px; padding: 16px 25px;
-  border: 1px solid transparent; border-radius: 4px;
-  font-size: .9375rem; font-weight: 500; line-height: 1.35;
+* { box-sizing: border-box; }
+html { scroll-padding-top: 110px; }
+body { color: var(--ink); background: #fff; font: 400 1rem/1.65 var(--sans); -webkit-font-smoothing: antialiased; }
+:focus-visible { outline: 2px solid var(--wine); outline-offset: 5px; }
+.wrap { width: min(1240px, calc(100% - 64px)); }
+.announcement { min-height: 42px; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; padding: 9px 24px; color: #fff; background: var(--wine-dark); text-align: center; font-size: .8125rem; line-height: 1.5; }
+.announcement span { font-size: 1rem; }
+.nav { width: calc(100% - 48px); max-width: none; min-height: 96px; gap: 40px; background: #f5f4f0; }
+.nav::before { background: #f5f4f0; border: 0; }
+.logo { font: 400 3.15rem/1 var(--wordmark); letter-spacing: -.055em; text-indent: 0; text-transform: lowercase; }
+.navlinks, .nav-group { gap: 26px; font: 400 .9375rem/1.5 var(--sans); text-transform: lowercase; }
+.nav-button { min-height: 46px; padding: 11px 22px; border-radius: 90px; background: var(--wine); font: 400 .875rem/1.4 var(--sans); }
+.nav-button:hover { background: var(--wine-dark); transform: none; }
+.nav-button > span[aria-hidden], .button > span[aria-hidden] { display: none; }
+.nav-group > a:not(.nav-button) { border-radius: 0; }
+.nav-group > a:not(.nav-button):hover, .nav-group > a[aria-current='page'] { background: transparent; text-decoration: underline; text-underline-offset: 6px; }
+.nav-places-trigger { font-weight: 400; }
+.button, .button-gold {
+  min-height: 58px; padding: 17px 34px; border: 1px solid transparent; border-radius: 90px;
+  color: #fff; background: var(--wine); font: 400 .9375rem/1.5 var(--sans); text-transform: lowercase;
   box-shadow: none; transition: background .2s, color .2s, border-color .2s;
 }
-.button:hover, .nav-button:hover { transform: none; }
-.button-gold, .button-gold:hover { box-shadow: none; }
-.button > span[aria-hidden] { font-size: 1.25rem; font-weight: 400; }
-footer { padding: 55px 0 36px; }
-.footer-grid { flex-wrap: wrap; row-gap: 30px; font-size: .875rem; }
-.footer-brand { margin-bottom: 14px; font: 400 3rem/1 var(--serif); letter-spacing: .18em; }
-.footer-links { flex-wrap: wrap; max-width: 470px; row-gap: 18px; }
-.footer-links a:hover { color: white; text-decoration: underline; text-underline-offset: 5px; }
-.footer-social a, .footer-social span { min-width: 32px; min-height: 32px; justify-content: center; }
-.page-hero { padding: 80px 0 !important; }
-.page-hero h1, .svc-hero h1 { font: 400 clamp(2.5rem, 4.3vw, 4rem)/1.1 var(--serif) !important; letter-spacing: -.035em; }
-.info-page .intro h1 { font-weight: 400; }
-.section-title { font-weight: 400 !important; letter-spacing: -.035em; }
-.gallery-showcase { background: var(--cream); }
+.button:hover, .button-gold:hover { color: #fff; background: var(--wine-dark); box-shadow: none; transform: none; }
+h1, h2, h3 { font-weight: 400; }
+.section-title, .page-hero h1, .svc-hero h1, .info-page .intro h1,
 .gallery-category-head h2, .included h2, .price-layout h2, .cta h2,
-.contact-card h2, .menu-group > h2 { font-weight: 400; }
-.gallery-category-head p { color: var(--mute); font-weight: 400; }
-.gallery-category-grid figure { border-radius: 4px; box-shadow: none; }
-.contact-card, .price-box { border-radius: 5px; box-shadow: none; }
-.eywa-home .hero {
-  width: min(1280px, calc(100% - 96px)); margin: 0 auto;
-  padding: 48px 0 64px; grid-template-columns: 1fr 1fr;
-  gap: clamp(32px, 5vw, 76px); min-height: 0;
-  overflow: visible; background: var(--cream);
+.contact-card h2, .menu-group > h2, .menu-intro h1, .menu-explainer h2, .menu-faq > h2, .menu-cta h2 {
+  font-family: var(--sans) !important; font-weight: 400 !important;
+  letter-spacing: -.045em; text-transform: lowercase;
 }
-.eywa-home .hero-copy { min-height: 0; padding: 12px 0 20px; justify-content: center !important; }
-.hero-eyebrow { margin: 0 0 27px; font-size: .75rem; font-weight: 600; line-height: 1.5; letter-spacing: .16em; text-transform: uppercase; }
-.eywa-home .hero h1 {
-  margin: 0 0 24px !important; max-width: none;
-  font-size: clamp(2.5rem, 4.15vw, 3.9rem) !important;
-  font-weight: 400; line-height: 1.1; letter-spacing: -.052em;
-  text-wrap: initial;
-}
-.hero h1 em { font-weight: 400; }
-.hero-location { margin-bottom: 28px; color: var(--mute); font-size: 1rem; line-height: 1.6; }
-.eywa-home .hero-events { grid-template-columns: repeat(2, auto); gap: 10px 22px; margin: 0 0 32px; font-size: .875rem; font-weight: 400; line-height: 1.5; }
-.eywa-home .hero-events li { gap: 9px; }
-.eywa-home .hero-events li::before { width: 4px; height: 4px; background: #897b4e; }
-.eywa-home .hero-quote .button { min-width: 246px; min-height: 56px; padding: 16px 24px; justify-content: space-between; font-size: .9375rem; color: white; background: var(--green); }
-.eywa-home .hero-quote .button:hover { background: var(--green-dark); }
-.eywa-home .hero-quote .button > span { position: static; transform: none; font-size: 1.4rem; }
-.eywa-home .quote-note { max-width: 325px; margin: 15px 0 0; font-size: .8125rem; line-height: 1.6; }
-.eywa-home .photo-carousel { padding: 0; background: transparent; }
-.eywa-home .carousel-stage { height: 500px !important; min-height: 0; border-radius: 5px; }
-.eywa-home .carousel-slide img { object-position: center; }
-.eywa-home .carousel-slide::after { background: linear-gradient(0deg, rgba(15,28,21,.2), transparent 30%); }
-.eywa-home .carousel-arrow { top: auto; bottom: 18px; width: 44px; height: 44px; transform: none; background: rgba(248,247,243,.95); color: var(--green); font-size: 25px; }
-.eywa-home .carousel-arrow:hover { transform: none; background: white; }
-.eywa-home .carousel-arrow.prev { left: auto; right: 70px; }
-.eywa-home .carousel-arrow.next { right: 18px; }
-.eywa-home .carousel-thumbs { height: 58px !important; margin-top: 12px !important; gap: 10px; }
-.eywa-home .carousel-thumb { flex-basis: calc((100% - 40px)/5); border-radius: 3px; border-width: 1px; opacity: .66; }
-.eywa-home .carousel-thumb.active { opacity: 1; border-color: var(--green); }
-.eywa-home .carousel-thumb:focus-visible { outline-offset: -4px; outline-color: white; }
+.section-title { font-size: clamp(1.9rem, 3vw, 2.65rem) !important; line-height: 1.18 !important; }
+.section-kicker, .cfg-kicker, .eyebrow { font-size: .875rem; font-weight: 400; letter-spacing: 0; text-transform: lowercase; }
+.page-hero { padding: 72px 0 !important; color: var(--green); background: var(--cream); text-align: center; }
+.page-hero h1, .svc-hero h1 { max-width: 920px; margin-inline: auto; font-size: clamp(2rem, 3.4vw, 3rem) !important; line-height: 1.2 !important; }
+.page-hero p:not(.eyebrow) { margin-inline: auto; max-width: 740px; color: var(--green); }
+.page-hero .eyebrow { color: var(--wine); }
+.svc-hero { background: var(--cream); }
+.svc-hero h1, .svc-hero p { color: var(--green); }
+.svc-hero .eyebrow { color: var(--wine); }
+.gallery-showcase { background: white; }
+.gallery-category-head p { color: var(--wine); font-weight: 400; }
+.gallery-category-grid figure { border-radius: 10px; box-shadow: none; }
+.contact-card, .price-box { border-radius: 10px; box-shadow: none; background: var(--cream); }
+.faq-list summary { font-weight: 400; }
 
-/* Des compositions ouvertes alternent avec les surfaces vertes de la marque. */
-.eywa-home :is(.intro-band, .booking, .services, .branding, .why, .timeline, .event-types, .reviews, .gallery-teaser, .faq-home, .places, .cfg) { padding: 96px 0; }
-.eywa-home :is(.section-title, .intro-band h2, .booking h2, .branding h2, .why h2, .cfg-head h2, .quote-cta h2) {
-  font: 400 clamp(2rem, 3.4vw, 3.15rem)/1.14 var(--serif) !important;
-  letter-spacing: -.035em; text-wrap: balance;
-}
-.section-kicker, .cfg-kicker, .eyebrow { font-size: .75rem; font-weight: 500; letter-spacing: .15em; }
-.eywa-home :is(.section-sub, .section-copy, .why-sub) { font-size: 1rem; line-height: 1.75; }
-.eywa-home .intro-band { background: #eeefe8; border-top: 1px solid var(--line); }
-.eywa-home .intro-band .wrap { max-width: 1280px; display: grid; grid-template-columns: .85fr 1.15fr; gap: 0 100px; text-align: left; }
-.eywa-home .intro-band h2 { grid-row: span 3; max-width: 390px; margin: 0; }
-.eywa-home .intro-band p { max-width: none; font-size: 1rem; line-height: 1.8; }
-.eywa-home .intro-band .intro-reach { font-size: .875rem; color: var(--mute); }
-.eywa-home .booking { background: var(--green); }
-.eywa-home .booking-solo { max-width: 1180px; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 100px; }
-.eywa-home .booking .section-head { margin: 0; text-align: left; }
-.eywa-home .booking .section-kicker { margin-bottom: 24px; color: var(--gold); text-align: left; }
-.eywa-home .booking h2 { color: white; max-width: 440px; margin-bottom: 26px; }
-.eywa-home .booking-sub { color: #d8e0d7; }
-.eywa-home .mini-devis { padding: 34px; border: 0; border-radius: 5px; background: var(--cream); box-shadow: none; }
-.eywa-home .md-label { font-size: .875rem; font-weight: 500; margin-bottom: 14px; }
-.eywa-home .md-label svg { stroke-width: 1.4; }
+/* Un bandeau photographique bord à bord et ses commandes accessibles. */
+.eywa-home .hero { position: relative; isolation: isolate; display: grid; grid-template-columns: 1fr; place-items: center; width: 100%; min-height: 610px; margin: 0; padding: 60px 72px 85px; overflow: hidden; background: var(--green-dark); }
+.eywa-home .hero-copy { z-index: 2; width: min(900px, 100%); min-height: 0; padding: 0; align-items: center; justify-content: center !important; text-align: center; color: #fff; }
+.hero-eyebrow { margin: 0 0 22px; color: #fff; font: 400 1rem/1.5 var(--sans); letter-spacing: 0; text-transform: lowercase; }
+.eywa-home .hero h1 { max-width: 860px; margin: 0 0 22px !important; color: white; font: 400 clamp(2.2rem, 4.05vw, 3.65rem)/1.12 var(--sans) !important; letter-spacing: -.055em; text-wrap: balance; }
+.hero-location { margin: 0 0 30px; color: white; font-size: 1.0625rem; line-height: 1.6; }
+.eywa-home .hero-quote { align-items: center; }
+.eywa-home .hero-quote .button { min-width: 260px; min-height: 62px; padding: 18px 38px; color: white; background: var(--wine); font-size: .9375rem; }
+.eywa-home .hero-quote .button:hover { background: var(--wine-dark); }
+.eywa-home .quote-note { max-width: 440px; margin: 15px 0 0; color: white; font-size: .8125rem; line-height: 1.5; }
+.eywa-home .photo-carousel { position: absolute; inset: 0; z-index: -1; width: 100%; max-width: none; padding: 0; margin: 0; background: var(--green-dark); }
+.eywa-home .carousel-stage { position: absolute; inset: 0; height: 100% !important; min-height: 0; border-radius: 0; }
+.eywa-home .carousel-slide { margin: 0; }
+.eywa-home .carousel-slide img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 53%; }
+.eywa-home .carousel-slide::after { background: rgba(8, 18, 14, .58); }
+.eywa-home .carousel-collage { display: grid; grid-template-columns: 35% 39% 26%; }
+.eywa-home .carousel-collage img { min-width: 0; object-position: 50% 50%; }
+.eywa-home .carousel-collage .collage-drinks { object-position: 24% center; }
+.eywa-home .carousel-collage .collage-barista { object-position: 52% 38%; }
+.eywa-home .carousel-collage .collage-event { object-position: 60% 70%; }
+.eywa-home .carousel-arrow { z-index: 4; top: 50%; width: 48px; height: 48px; border-radius: 50%; color: white; background: transparent; font-size: 38px; font-weight: 400; transform: translateY(-50%); }
+.eywa-home .carousel-arrow:hover { background: rgba(255,255,255,.12); transform: translateY(-50%); }
+.eywa-home .carousel-arrow.prev { left: 30px; }
+.eywa-home .carousel-arrow.next { right: 30px; }
+.eywa-home .carousel-thumbs { position: absolute; z-index: 4; bottom: 10px; left: 0; right: 0; display: flex; align-items: center; justify-content: center; height: 44px !important; gap: 0; margin: 0 !important; overflow: visible; }
+.eywa-home .carousel-thumb { position: relative; flex: 0 0 32px; width: 32px; height: 44px; padding: 0; border: 0; border-radius: 0; background: transparent; opacity: 1; }
+.eywa-home .carousel-thumb::after { content: ''; display: block; width: 8px; height: 8px; margin: auto; border: 1px solid white; border-radius: 20px; transition: width .2s; }
+.eywa-home .carousel-thumb.active::after { width: 24px; background: rgba(255,255,255,.28); }
+.eywa-home .carousel-thumb:focus-visible, .eywa-home .carousel-arrow:focus-visible { outline-color: white; outline-offset: -2px; }
+.event-ribbon { background: var(--cream); padding: 30px 24px; }
+.eywa-home .hero-events { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 18px 30px; max-width: 1300px; margin: 0 auto; padding: 0; color: var(--green); font-size: .9375rem; font-weight: 400; line-height: 1.6; text-transform: lowercase; }
+.eywa-home .hero-events li { gap: 0; }
+.eywa-home .hero-events li::before { display: none; }
+.eywa-home .hero-events li + li::before { content: '✶'; display: inline; width: auto; height: auto; margin-right: 30px; color: var(--wine); background: none; font-size: .875rem; }
+
+/* Deux portes d'entrée photographiques : la carte et la personnalisation. */
+.discovery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; padding: 70px 24px; }
+.discovery-card { position: relative; isolation: isolate; display: grid; place-items: center; min-width: 0; min-height: 520px; overflow: hidden; border-radius: 10px; color: white; text-align: center; background: var(--green); }
+.discovery-card > img { position: absolute; z-index: -2; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.discovery-card::before { content: ''; position: absolute; z-index: -1; inset: 0; background: rgba(8, 23, 18, .39); }
+.discovery-copy { padding: 40px 28px; }
+.discovery-copy h2 { margin: 0 auto 34px; max-width: 510px; color: #fff; font: 400 clamp(1.75rem, 2.5vw, 2.3rem)/1.22 var(--sans); letter-spacing: -.045em; }
+.discovery-copy .button { min-width: 275px; }
+
+/* Rythme clair, blocs crème et titres sans empattement. */
+.eywa-home :is(.intro-band, .booking, .services, .branding, .why, .timeline, .event-types, .reviews, .gallery-teaser, .faq-home, .places, .cfg) { padding: 80px 0; }
+.eywa-home :is(.section-title, .intro-band h2, .booking h2, .branding h2, .why h2, .cfg-head h2, .quote-cta h2) { font: 400 clamp(1.9rem, 3vw, 2.75rem)/1.2 var(--sans) !important; letter-spacing: -.05em; text-transform: lowercase; text-wrap: balance; }
+.eywa-home :is(.section-sub, .section-copy, .why-sub) { font-size: 1rem; line-height: 1.7; }
+.eywa-home .intro-band { position: relative; isolation: isolate; overflow: hidden; background: #e7e5dd; }
+.eywa-home .intro-band::before { content: ''; position: absolute; z-index: -1; left: -18%; top: -85%; width: 135%; height: 155%; border-radius: 50%; background: var(--cream); transform: rotate(13deg); }
+.eywa-home .intro-band .wrap { max-width: 1020px; text-align: center; }
+.eywa-home .intro-band h2 { max-width: none; margin: 0 auto 24px; }
+.eywa-home .intro-band p { max-width: none; color: var(--green); font-size: 1rem; line-height: 1.75; }
+.eywa-home .intro-band .intro-reach { max-width: 850px; color: var(--mute); font-size: .875rem; }
+.eywa-home .booking { background: white; }
+.eywa-home .booking-solo { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 90px; max-width: 1150px; }
+.eywa-home .booking .section-head { margin: 0; text-align: center; }
+.eywa-home .booking .section-kicker { margin-bottom: 22px; color: var(--wine); }
+.eywa-home .booking h2 { margin: 0 auto 24px; color: var(--green); }
+.eywa-home .booking-sub { color: var(--green); }
+.eywa-home .mini-devis { padding: 34px; border: 0; border-radius: 10px; background: var(--cream); box-shadow: none; }
+.eywa-home .md-label { font-size: .9375rem; font-weight: 400; }
+.eywa-home .md-label svg { stroke-width: 1.5; }
 .eywa-home .md-stepper { justify-content: space-between; }
-.eywa-home .md-box { flex: 1; justify-content: center; border: 0; }
-.eywa-home .md-val { font-size: 1.65rem; font-weight: 400; }
-.eywa-home .md-btn { width: 44px; height: 44px; background: transparent; }
+.eywa-home .md-box { min-width: 0; flex: 1; justify-content: center; padding-inline: 6px; border: 0; }
+.eywa-home .md-val { font-size: 1.75rem; font-weight: 400; }
+.eywa-home .md-btn { width: 44px; height: 44px; background: transparent; border-color: #bac3ba; }
 .eywa-home .md-staff { font-size: 1rem !important; font-weight: 500; }
 .eywa-home .md-staff-sub { color: var(--mute); }
-.eywa-home .md-avatar { width: 36px; height: 36px; font-weight: 400; font-size: .875rem; }
-.eywa-home .md-cta { justify-content: space-between; color: white; background: var(--green); }
-.eywa-home .md-cta:hover { background: var(--green-dark); }
+.eywa-home .md-avatar { width: 36px; height: 36px; font-size: .875rem; font-weight: 400; }
 .eywa-home .services { background: var(--cream); }
-.eywa-home .services .section-head { max-width: none; margin-bottom: 52px; text-align: left; }
-.eywa-home .services .section-head :is(.section-title, .section-sub, .section-kicker) { margin-left: 0; text-align: left; }
-.service-card { background: transparent; border: 0; border-radius: 0; gap: 56px; align-items: center; overflow: visible; }
-.service-card figure { min-width: 0; min-height: 0; border-radius: 5px; overflow: hidden; aspect-ratio: 1; }
-.service-body { padding: 16px 0; }
-.service-kicker { color: var(--mute); font-size: .75rem; letter-spacing: .13em; }
-.service-body h3 { margin: 0 0 24px; font-size: 2.1rem; font-weight: 400; }
-.service-body > p { font-size: 1rem; line-height: 1.75; }
-.service-list { gap: 13px; font-weight: 400; line-height: 1.65; }
-.service-list li::before { color: var(--green); background: transparent; border-radius: 0; font-size: .9rem; }
-.service-actions .button { font-weight: 500; border: 1px solid var(--green); }
-.service-actions .button:not(.button-gold) { color: var(--green); background: transparent; }
-.service-actions .button:not(.button-gold):hover { background: var(--green-soft); }
-.service-actions .button-gold { color: white; background: var(--green); }
-.eywa-home .branding { background: #eeefe8; }
-.eywa-home .branding .section-head { max-width: 750px; margin-bottom: 58px; }
-.eywa-home .brand-grid { gap: 0 40px; }
-.eywa-home .brand-card { padding: 32px 0 36px; border: 0; border-top: 1px solid #c5cec2; border-radius: 0; background: transparent; }
-.eywa-home .brand-num { margin-bottom: 24px; color: #697560; font-size: .875rem; font-weight: 400; }
-.eywa-home .brand-card h3 { font-size: 1.55rem; font-weight: 400; }
-.eywa-home .brand-card p { line-height: 1.75; font-size: .9375rem; }
-.eywa-home .brand-card-note { padding: 32px 28px; margin: 0 0 16px; background: var(--green); border-color: var(--green); border-radius: 3px; }
-.eywa-home .brand-card-note h3 { color: white; margin-bottom: 20px; }
-.eywa-home .brand-card-note p { color: #d8e0d7; }
+.eywa-home .services .section-head { max-width: 810px; margin-bottom: 42px; }
+.service-card { gap: 55px; align-items: center; border: 0; border-radius: 0; background: transparent; overflow: visible; }
+.service-card figure { min-width: 0; min-height: 0; aspect-ratio: 1; overflow: hidden; border-radius: 10px; }
+.service-body { padding: 14px 0; }
+.service-kicker { color: var(--wine); font-size: .875rem; letter-spacing: 0; text-transform: lowercase; }
+.service-body h3 { margin-bottom: 20px; font: 400 2rem/1.2 var(--sans); letter-spacing: -.045em; text-transform: lowercase; }
+.service-body > p { font-size: 1rem; line-height: 1.7; }
+.service-list { gap: 11px; font-size: .9375rem; font-weight: 400; line-height: 1.6; }
+.service-list li::before { border-radius: 0; background: transparent; color: var(--wine); font-size: 1rem; }
+.service-actions .button { padding: 14px 24px; font-size: .875rem; }
+.service-actions .button:not(.button-gold) { border: 1px solid var(--green); color: var(--green); background: transparent; }
+.service-actions .button:not(.button-gold):hover { color: white; background: var(--green); }
+.eywa-home .branding { background: white; }
+.eywa-home .branding .section-head { max-width: 800px; }
+.eywa-home .brand-grid { gap: 28px 40px; }
+.eywa-home .brand-card { padding: 28px 0; border: 0; border-top: 1px solid var(--line); border-radius: 0; background: transparent; }
+.eywa-home .brand-num { color: var(--wine); font: 400 .875rem var(--sans); }
+.eywa-home .brand-card h3 { font: 400 1.5rem/1.25 var(--sans); letter-spacing: -.035em; text-transform: lowercase; }
+.eywa-home .brand-card p { font-size: .9375rem; line-height: 1.7; }
+.eywa-home .brand-card-note { padding: 28px; border: 0; border-radius: 10px; background: var(--cream); }
 .eywa-home .cfg { background: var(--cream); }
-.eywa-home .cfg-frame-wrap { border-radius: 5px; box-shadow: none; }
+.eywa-home .cfg-frame-wrap { border-radius: 10px; box-shadow: none; }
 .eywa-home .cfg-frame-note { font-size: .8125rem; }
-.eywa-home .why .section-head { margin-bottom: 56px; }
+.eywa-home .why { background: var(--green); }
+.eywa-home .why .section-head { max-width: 800px; }
 .eywa-home .why-grid { gap: 36px; }
-.eywa-home .why-card { padding: 30px 0 0; background: transparent; border: 0; border-top: 1px solid #61776a; border-radius: 0; }
+.eywa-home .why-card { padding: 28px 0 0; border: 0; border-top: 1px solid #61776a; border-radius: 0; background: transparent; }
 .eywa-home .why-card .ico { display: none; }
-.eywa-home .why-card h3 { font: 400 1.5rem/1.25 var(--serif); margin-bottom: 18px; }
-.eywa-home .why-card p { font-size: .9375rem; line-height: 1.75; }
-.eywa-home .timeline { border-bottom: 1px solid var(--line); }
-.eywa-home .tl { gap: 36px; }
+.eywa-home .why-card h3 { margin-bottom: 18px; font: 400 1.4rem/1.25 var(--sans); letter-spacing: -.035em; text-transform: lowercase; }
+.eywa-home .why-card p { font-size: .9375rem; line-height: 1.7; }
+.eywa-home .why .button { color: var(--green-dark); background: var(--gold); }
+.eywa-home .why .button:hover { background: #ddb35f; }
+.eywa-home .timeline { background: white; }
+.eywa-home .tl { gap: 32px; }
 .eywa-home .tl li { padding: 0; border: 0; border-radius: 0; background: transparent; }
-.eywa-home .tl-num { display: block; width: auto; height: auto; margin-bottom: 22px; padding-bottom: 24px; border-radius: 0; border-bottom: 1px solid var(--line); background: transparent; color: #75816d; font: 400 3.3rem/1 var(--serif); }
-.eywa-home .tl h3 { font-weight: 500; font-size: 1rem; }
-.eywa-home .tl p { font-size: .9375rem; line-height: 1.75; }
+.eywa-home .tl-num { display: block; width: auto; height: auto; margin-bottom: 18px; padding-bottom: 22px; border-radius: 0; border-bottom: 1px solid var(--line); background: transparent; color: var(--wine); font: 400 2.4rem/1 var(--sans); }
+.eywa-home .tl h3 { font: 400 1.15rem/1.4 var(--sans); text-transform: lowercase; }
+.eywa-home .tl p { font-size: .9375rem; line-height: 1.7; }
 .eywa-home .event-types { background: var(--cream); }
-.eywa-home .ev-cols { gap: 44px; }
-.eywa-home .ev-col { border: 0; border-top: 1px solid var(--line); border-radius: 0; background: transparent; padding: 30px 0 0; }
-.eywa-home .ev-col-main { border-color: var(--green); }
-.eywa-home .ev-col h3 { font-size: 1.55rem; font-weight: 400; }
-.eywa-home .ev-tag { font-size: .75rem; background: var(--green-soft); padding: 6px 10px; font-weight: 500; letter-spacing: .05em; }
+.eywa-home .ev-cols { gap: 36px; }
+.eywa-home .ev-col { padding: 28px 0; border: 0; border-top: 1px solid #bdc5bb; border-radius: 0; background: transparent; }
+.eywa-home .ev-col h3 { font: 400 1.4rem/1.3 var(--sans); letter-spacing: -.035em; text-transform: lowercase; }
+.eywa-home .ev-tag { padding: 5px 11px; color: white; background: var(--wine); font: 400 .75rem/1.5 var(--sans); letter-spacing: 0; text-transform: lowercase; }
 .eywa-home .ev-col li { font-size: .9375rem; line-height: 1.6; }
-.eywa-home .ev-col li::before { width: 3px; height: 3px; top: 10px; background: #75816d; }
-.eywa-home .reviews { background: #eeefe8; }
-.eywa-home .gallery-teaser { background: var(--cream); }
-.eywa-home .teaser-grid { grid-template-columns: 1.2fr 1fr 1fr 1.2fr; gap: 18px; align-items: center; }
-.eywa-home .teaser-grid figure { border-radius: 4px; aspect-ratio: 3/4; }
-.eywa-home .teaser-grid figure:nth-child(2n) { margin-top: 55px; }
-.eywa-home .teaser-grid img { object-position: center; }
-.eywa-home .faq-home { border-top: 1px solid var(--line); background: white; }
-.eywa-home .faq-list { max-width: 840px; margin-top: 48px; }
-.eywa-home .faq-list summary { font-weight: 500; padding-top: 26px; padding-bottom: 26px; line-height: 1.5; }
-.eywa-home .places { background: var(--cream); }
-.eywa-home .place-list { max-width: none; margin-top: 42px; gap: 32px; }
+.eywa-home .ev-col li::before { width: 3px; height: 3px; top: 10px; background: var(--wine); }
+.eywa-home .reviews { background: white; }
+.eywa-home .gallery-teaser { background: white; }
+.eywa-home .teaser-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.eywa-home .teaser-grid figure { border-radius: 10px; aspect-ratio: 3/4; }
+.eywa-home .faq-home { background: var(--cream); }
+.eywa-home .faq-list { max-width: 850px; margin-top: 40px; }
+.eywa-home .faq-list summary { padding-block: 25px; font-weight: 400; line-height: 1.5; }
+.eywa-home .places { background: white; }
+.eywa-home .place-list { max-width: none; gap: 32px; margin-top: 40px; }
 .eywa-home .place { padding: 28px 0; border: 0; border-top: 1px solid var(--line); border-radius: 0; background: transparent; }
 .eywa-home .place-pin { display: none; }
-.eywa-home .place h3 { font-size: 1.5rem; font-weight: 400; }
-.eywa-home .place p { font-size: .875rem; margin-top: 10px; }
-.eywa-home .quote-cta { padding: 84px 0; }
-.eywa-home .quote-cta h2 { max-width: 680px; }
-.eywa-home .quote-cta .button { color: var(--green); background: var(--cream); }
-.eywa-home .quote-cta .button:hover { background: white; }
-.eywa-home .button:focus-visible, .nav-button:focus-visible { outline-color: #9e843a; }
+.eywa-home .place h3 { font: 400 1.4rem/1.3 var(--sans); letter-spacing: -.035em; }
+.eywa-home .place p { font-size: .875rem; }
+.eywa-home .quote-cta { padding: 75px 0; background: var(--cream); color: var(--green); }
+.eywa-home .quote-cta-wrap { display: flex; flex-direction: column; gap: 30px; text-align: center; }
+.eywa-home .quote-cta h2 { max-width: none; }
+.eywa-home .quote-cta p { color: var(--green); }
+footer { padding: 54px 0 36px; color: #e1e7df; background: var(--green); }
+.footer-grid { flex-wrap: wrap; row-gap: 30px; font-size: .875rem; }
+.footer-brand { margin-bottom: 15px; color: white; font: 400 3.6rem/1 var(--wordmark); letter-spacing: -.06em; text-transform: lowercase; }
+.footer-links { flex-wrap: wrap; max-width: 450px; row-gap: 18px; text-transform: lowercase; }
+.footer-links a:hover { color: white; text-decoration: underline; text-underline-offset: 5px; }
+.footer-social a, .footer-social span { min-width: 32px; min-height: 32px; justify-content: center; }
 
-@media (max-width: 1100px) {
-  .eywa-home .intro-band .wrap { gap: 0 48px; }
-  .eywa-home .booking-solo { gap: 48px; }
-  .eywa-home .why-grid, .eywa-home .tl { gap: 24px; }
+@media (min-width: 761px) and (max-width: 1150px) {
+  .nav, .navlinks, .nav-group { gap: 16px; }
+  .navlinks, .nav-group { font-size: .8125rem; }
+  .logo { font-size: 2.7rem; }
+  .nav-button { padding: 10px 17px; font-size: .8125rem; }
+  .eywa-home .booking-solo { gap: 46px; }
 }
 @media (max-width: 900px) {
-  .eywa-home .intro-band .wrap { grid-template-columns: 1fr; }
-  .eywa-home .intro-band h2 { grid-row: auto; max-width: 580px; margin-bottom: 26px; }
-  .eywa-home .booking-solo { grid-template-columns: 1fr; max-width: 660px; gap: 36px; }
-  .eywa-home .booking h2 { max-width: none; }
-  .eywa-home .booking-sub { max-width: none; }
-  .service-card { gap: 28px; }
+  .wrap { width: calc(100% - 48px); }
+  .eywa-home .hero { min-height: 590px; padding-inline: 64px; }
+  .eywa-home .hero h1 { font-size: 2.9rem !important; }
+  .eywa-home .carousel-collage { grid-template-columns: 43% 57%; }
+  .eywa-home .carousel-collage .collage-event { display: none; }
+  .discovery-grid { gap: 18px; padding: 48px 24px; }
+  .discovery-card { min-height: 410px; }
+  .discovery-copy { padding: 26px 18px; }
+  .discovery-copy .button { min-width: 0; padding-inline: 24px; }
+  .eywa-home .booking-solo { grid-template-columns: 1fr; max-width: 650px; gap: 34px; }
+  .service-card { grid-template-columns: 1fr; gap: 28px; }
   .service-card figure { aspect-ratio: 4/3; }
-  .eywa-home .ev-cols { grid-template-columns: 1fr; gap: 34px; }
   .eywa-home .teaser-grid { grid-template-columns: 1fr 1fr; }
-  .eywa-home .teaser-grid figure:nth-child(2n) { margin-top: 28px; }
-}
-@media (max-width: 600px) {
-  .eywa-home :is(.intro-band, .booking, .services, .branding, .why, .timeline, .event-types, .reviews, .gallery-teaser, .faq-home, .places, .cfg) { padding: 64px 0; }
-  .eywa-home .mini-devis { padding: 25px 20px; }
-  .eywa-home :is(.section-title, .intro-band h2, .booking h2, .branding h2, .why h2, .cfg-head h2, .quote-cta h2) { font-size: 2rem !important; }
-  .eywa-home .brand-grid { grid-template-columns: 1fr; }
-  .eywa-home .brand-card { padding: 26px 0; }
-  .eywa-home .brand-card-note { padding: 28px 24px; }
-  .eywa-home .brand-num { margin-bottom: 12px; }
-  .eywa-home .why-grid { gap: 30px; }
-  .eywa-home .tl { gap: 30px; }
-  .eywa-home .tl li { display: grid; grid-template-columns: 48px 1fr; gap: 8px 22px; }
-  .eywa-home .tl-num { grid-row: span 2; margin: 0; padding: 0; border: 0; font-size: 2.8rem; }
-  .eywa-home .tl h3, .eywa-home .tl p { margin: 0; }
-  .eywa-home .teaser-grid { gap: 12px; }
-  .eywa-home .place { display: block; text-align: left; padding: 24px 0; }
-  .eywa-home .place-list { gap: 0; }
-  .eywa-home .quote-cta { padding: 64px 0; }
-}
-
-@media (min-width: 761px) and (max-width: 1190px) {
-  .nav, .navlinks, .nav-group { gap: 16px; }
-  .nav-button { padding: 0 14px; font-size: .8125rem; }
-  .logo { font-size: 1.65rem; }
-}
-@media (max-width: 1100px) and (min-width: 761px) {
-  .wrap, .eywa-home .hero { width: calc(100% - 48px); }
-  .nav, .navlinks, .nav-group { gap: 14px; }
-  .navlinks { font-size: .8125rem; }
-  .nav-button { max-width: 172px; text-align: left; line-height: 1.3; }
-  .eywa-home .hero-events { grid-template-columns: 1fr; gap: 6px; }
-  .eywa-home .carousel-stage { height: 500px !important; }
-}
-@media (max-width: 850px) {
-  .eywa-home .hero { grid-template-columns: 1fr; gap: 28px; padding: 44px 0; }
-  .eywa-home .hero-copy { padding: 0; }
-  .eywa-home .hero h1 { font-size: clamp(2.5rem, 6.6vw, 3.8rem) !important; }
-  .eywa-home .hero-events { grid-template-columns: repeat(2, auto); justify-content: start; }
-  .eywa-home .photo-carousel { width: 100%; max-width: none; }
-  .eywa-home .carousel-stage { height: auto !important; aspect-ratio: 4/3; }
+  .eywa-home .ev-cols { grid-template-columns: 1fr; gap: 24px; }
 }
 @media (max-width: 760px) {
-  .wrap, .eywa-home .hero { width: calc(100% - 40px); }
-  .nav { min-height: 72px; }
-  .logo { font-size: 1.75rem; }
-  .navlinks.open { max-height: calc(100dvh - 72px); overflow-y: auto; padding: 12px 20px 24px; }
+  .announcement { min-height: 36px; padding: 7px 16px; column-gap: 7px; row-gap: 0; font-size: .75rem; }
+  .wrap { width: calc(100% - 40px); }
+  .nav { width: calc(100% - 40px); min-height: 78px; }
+  .logo { font-size: 2.7rem; }
+  .navlinks.open { max-height: calc(100dvh - 78px); overflow-y: auto; padding: 12px 20px 22px; background: #f5f4f0; }
   .mobile-menu { width: 44px; height: 44px; }
-  .hero-eyebrow { margin-bottom: 22px; font-size: .75rem; letter-spacing: .11em; }
-  .eywa-home .hero-events { font-size: .8125rem; gap: 8px 14px; }
-  .eywa-home .hero-quote .button { width: 100%; min-height: 54px; }
-  .eywa-home .quote-note { max-width: none; font-size: .8125rem; }
-  .eywa-home .carousel-thumbs { height: 49px !important; gap: 7px; }
-  .eywa-home .carousel-thumb { flex-basis: calc((100% - 28px)/5); }
-  .page-hero { padding: 56px 0 !important; }
-  .footer-grid { gap: 30px; }
-  .footer-links { gap: 20px; }
+  .eywa-home .hero { min-height: 600px; padding: 48px 28px 95px; }
+  .eywa-home .hero-copy { width: 100%; }
+  .hero-eyebrow { margin-bottom: 22px; font-size: .9375rem; }
+  .eywa-home .hero h1 { font-size: clamp(2rem, 7vw, 3rem) !important; line-height: 1.18 !important; }
+  .hero-location { max-width: 280px; font-size: 1rem; margin-bottom: 28px; }
+  .eywa-home .hero-quote .button { min-width: 240px; width: auto; min-height: 56px; padding-inline: 30px; }
+  .eywa-home .quote-note { max-width: 285px; font-size: .8125rem; }
+  .eywa-home .carousel-collage { grid-template-columns: 1fr; }
+  .eywa-home .carousel-collage .collage-drinks { display: none; }
+  .eywa-home .carousel-collage .collage-barista { object-position: 50% center; }
+  .eywa-home .carousel-arrow { top: auto; bottom: 8px; transform: none; }
+  .eywa-home .carousel-arrow:hover { transform: none; }
+  .eywa-home .carousel-arrow.prev { left: 18px; }
+  .eywa-home .carousel-arrow.next { right: 18px; }
+  .eywa-home .carousel-thumbs { bottom: 10px; left: 70px; right: 70px; }
+  .event-ribbon { padding: 28px 20px; }
+  .eywa-home .hero-events { gap: 8px 18px; font-size: .875rem; }
+  .eywa-home .hero-events li + li::before { display: none; }
+  .discovery-grid { grid-template-columns: 1fr; padding: 40px 20px; gap: 20px; }
+  .discovery-card { min-height: 400px; }
+  .discovery-copy h2 { font-size: 1.9rem; }
+  .discovery-copy .button { min-width: 235px; }
+  .eywa-home :is(.intro-band, .booking, .services, .branding, .why, .timeline, .event-types, .reviews, .gallery-teaser, .faq-home, .places, .cfg) { padding: 60px 0; }
+  .eywa-home :is(.section-title, .intro-band h2, .booking h2, .branding h2, .why h2, .cfg-head h2, .quote-cta h2) { font-size: 1.95rem !important; }
+  .eywa-home .mini-devis { padding: 26px 20px; }
+  .eywa-home .md-stepper { gap: 6px; }
+  .eywa-home .md-box { gap: 7px; }
+  .eywa-home .md-unit { font-size: .8125rem; }
+  .eywa-home .brand-grid { grid-template-columns: 1fr; gap: 0; }
+  .eywa-home .brand-card { padding: 28px 0; }
+  .eywa-home .brand-card-note { padding: 28px 22px; }
+  .eywa-home .why-grid { gap: 28px; }
+  .eywa-home .tl { gap: 30px; }
+  .eywa-home .tl li { display: grid; grid-template-columns: 42px 1fr; gap: 8px 20px; }
+  .eywa-home .tl-num { grid-row: span 2; margin: 0; padding: 0; border: 0; }
+  .eywa-home .tl h3, .eywa-home .tl p { margin: 0; }
+  .eywa-home .teaser-grid { gap: 12px; }
+  .eywa-home .place-list { gap: 0; }
+  .eywa-home .place { display: block; padding: 24px 0; text-align: left; }
+  .eywa-home .quote-cta { padding: 60px 0; }
+  .eywa-home .quote-cta .button { align-self: center; width: auto; min-width: 250px; }
+  .page-hero { padding: 52px 0 !important; }
+  .footer-grid { gap: 28px; }
 }
-@media (max-width: 380px) {
-  .eywa-home .hero h1 { font-size: 2.15rem !important; }
-  .eywa-home .hero-events { grid-template-columns: 1fr; }
+@media (max-width: 360px) {
+  .eywa-home .hero { padding-inline: 20px; }
+  .discovery-copy h2 { font-size: 1.6rem; }
+  .discovery-copy .button { min-width: 0; padding-inline: 24px; }
+  .eywa-home .md-val { font-size: 1.5rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

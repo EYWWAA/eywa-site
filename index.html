@@ -15,7 +15,7 @@
   <title>Traiteur café et bar mobile | Charleville, Reims | EYWA</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&amp;family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Fraunces:opsz,wght@9..144,400&amp;display=swap" rel="stylesheet">
   <style>
     :root { --green:#173d2d; --green-dark:#0e2a1e; --green-soft:#eaf2ec; --cream:#f8f6f1; --gold:#e9c85f; --ink:#19271e; --mute:#66736b; --line:#d9ddd6; --white:#fff; --sans:'DM Sans',Arial,sans-serif; --serif:'Fraunces',Georgia,serif; }
     * { box-sizing:border-box; }
@@ -161,9 +161,10 @@
   <link rel="stylesheet" href="header.css?v=hdr-19">
   <link rel="stylesheet" href="home.css?v=home-21">
   <link rel="stylesheet" href="configurateur.css?v=cfg-1">
-  <link rel="stylesheet" href="design.css?v=design-1">
+  <link rel="stylesheet" href="design.css?v=seaside-2">
 </head>
 <body class="eywa-home">
+<div class="announcement">un coffee bar à votre image <span aria-hidden="true">✶</span> charleville-mézières, reims & au-delà</div>
   <header class="wrap nav">
     <a class="logo" href="#accueil" aria-label="EYWA, accueil">EYWA</a>
     <button class="mobile-menu" type="button" aria-expanded="false" aria-controls="navlinks" aria-label="Ouvrir le menu"><span></span><span></span><span></span></button>
@@ -181,15 +182,8 @@
     <section class="hero" id="accueil" aria-labelledby="title">
       <div class="hero-copy">
         <p class="hero-eyebrow">Coffee catering & événements</p>
-        <h1 id="title">Un barista et son<br>bar à café mobile.<br><em>À votre événement.</em></h1>
+        <h1 id="title">un vrai coffee shop,<br>invité à votre événement.</h1>
         <p class="hero-location">À Charleville-Mézières, Reims et au-delà.</p>
-        <ul class="hero-events">
-          <li>Événements d'entreprise</li>
-          <li>Activations de marque</li>
-          <li>Séminaires &amp; congrès</li>
-          <li>Lancements de produit</li>
-          <li>Événements privés</li>
-        </ul>
         <div class="hero-quote">
           <a class="button button-gold" href="devis-instantane.html">Obtenir mon devis<span aria-hidden="true">↗</span></a>
           <p class="quote-note">Tarif personnalisé gratuit · Vérifiez la disponibilité de votre date</p>
@@ -201,7 +195,11 @@
 
       <div class="photo-carousel" aria-label="Galerie de prestations EYWA">
         <div class="carousel-stage" id="carousel-stage">
-          <figure class="carousel-slide active"><img src="assets/hero/hero-01.jpg?v=1" alt="Bar à café mobile EYWA installé pour une réception, barista en tenue" fetchpriority="high"></figure>
+          <figure class="carousel-slide carousel-collage active">
+            <img class="collage-drinks" src="assets/eywa-drinks-detail.png" alt="Café glacé et matcha servis au comptoir" fetchpriority="high">
+            <img class="collage-barista" src="assets/hero/hero-01.jpg?v=1" alt="Bar à café mobile EYWA installé pour une réception, barista en tenue" fetchpriority="high">
+            <img class="collage-event" src="assets/photos-reelles/reelle-0780.jpg" alt="Le bar en bois EYWA lors d'un événement en extérieur" fetchpriority="high">
+          </figure>
           <figure class="carousel-slide"><img src="assets/gallery-v3/gallery-09-nestle.jpg" alt="Projection d'un coffee bar Nestlé sous parasol"></figure>
           <figure class="carousel-slide"><img src="assets/gallery-v3/gallery-13-netflix.jpg" alt="Projection d'un coffee bar Netflix pendant une soirée"></figure>
           <figure class="carousel-slide"><img src="assets/gallery-v3/gallery-15-nike.jpg" alt="Projection d'un coffee bar Nike sur un rooftop"></figure>
@@ -210,13 +208,40 @@
           <button class="carousel-arrow next" type="button" aria-label="Photo suivante">›</button>
         </div>
         <div class="carousel-thumbs" role="tablist" aria-label="Choisir une photo">
-          <button class="carousel-thumb active" type="button" role="tab" aria-selected="true" aria-label="Voir la photo 1"><img src="assets/hero/hero-01.jpg?v=1" alt=""></button>
-          <button class="carousel-thumb" type="button" role="tab" aria-selected="false" aria-label="Voir la photo 2"><img src="assets/gallery-v3/gallery-09-nestle.jpg" alt=""></button>
-          <button class="carousel-thumb" type="button" role="tab" aria-selected="false" aria-label="Voir la photo 3"><img src="assets/gallery-v3/gallery-13-netflix.jpg" alt=""></button>
-          <button class="carousel-thumb" type="button" role="tab" aria-selected="false" aria-label="Voir la photo 4"><img src="assets/gallery-v3/gallery-15-nike.jpg" alt=""></button>
-          <button class="carousel-thumb" type="button" role="tab" aria-selected="false" aria-label="Voir la photo 5"><img src="assets/gallery-v3/gallery-20-microsoft.jpg" alt=""></button>
+          <button class="carousel-thumb active" type="button" role="tab" aria-selected="true" aria-label="Voir la photo 1" tabindex="0"></button>
+          <button class="carousel-thumb" type="button" role="tab" aria-selected="false" aria-label="Voir la photo 2" tabindex="-1"></button>
+          <button class="carousel-thumb" type="button" role="tab" aria-selected="false" aria-label="Voir la photo 3" tabindex="-1"></button>
+          <button class="carousel-thumb" type="button" role="tab" aria-selected="false" aria-label="Voir la photo 4" tabindex="-1"></button>
+          <button class="carousel-thumb" type="button" role="tab" aria-selected="false" aria-label="Voir la photo 5" tabindex="-1"></button>
         </div>
       </div>
+    </section>
+
+    <div class="event-ribbon" aria-label="Vos événements">
+      <ul class="hero-events">
+        <li>Événements d'entreprise</li>
+        <li>Activations de marque</li>
+        <li>Séminaires &amp; congrès</li>
+        <li>Lancements de produit</li>
+        <li>Événements privés</li>
+      </ul>
+    </div>
+
+    <section class="discovery-grid" aria-label="Découvrez l'univers EYWA">
+      <article class="discovery-card">
+        <img src="assets/eywa-drinks-detail.png" alt="Matcha et cafés glacés préparés à la demande" loading="lazy">
+        <div class="discovery-copy">
+          <h2>chaud, glacé,<br>toujours préparé pour vous.</h2>
+          <a class="button" href="menu.html">découvrir la carte</a>
+        </div>
+      </article>
+      <article class="discovery-card">
+        <img src="assets/gallery-v3/gallery-01-hermes.jpg" alt="Projection d'un coffee bar habillé aux couleurs d'une marque" loading="lazy">
+        <div class="discovery-copy">
+          <h2>votre marque,<br>jusque dans la tasse.</h2>
+          <a class="button" href="#configurateur">imaginer votre coffee bar</a>
+        </div>
+      </article>
     </section>
 
     <section class="intro-band" aria-labelledby="intro-title">
@@ -596,12 +621,22 @@
     const showSlide = (next) => {
       activeSlide = (next + slides.length) % slides.length;
       slides.forEach((slide, index) => slide.classList.toggle('active', index === activeSlide));
-      thumbs.forEach((thumb, index) => { const selected = index === activeSlide; thumb.classList.toggle('active', selected); thumb.setAttribute('aria-selected', selected); });
-      thumbs[activeSlide].scrollIntoView({ block:'nearest', inline:'center', behavior:'smooth' });
+      thumbs.forEach((thumb, index) => { const selected = index === activeSlide; thumb.classList.toggle('active', selected); thumb.setAttribute('aria-selected', selected); thumb.tabIndex = selected ? 0 : -1; });
     };
     document.querySelector('.carousel-arrow.prev').addEventListener('click', () => showSlide(activeSlide - 1));
     document.querySelector('.carousel-arrow.next').addEventListener('click', () => showSlide(activeSlide + 1));
     thumbs.forEach((thumb, index) => thumb.addEventListener('click', () => showSlide(index)));
+    document.querySelector('.carousel-thumbs').addEventListener('keydown', (event) => {
+      let next;
+      if (event.key === 'ArrowRight') next = activeSlide + 1;
+      else if (event.key === 'ArrowLeft') next = activeSlide - 1;
+      else if (event.key === 'Home') next = 0;
+      else if (event.key === 'End') next = slides.length - 1;
+      else return;
+      event.preventDefault();
+      showSlide(next);
+      thumbs[activeSlide].focus({ preventScroll: true });
+    });
     let swipeStart = null;
     stage.addEventListener('pointerdown', (event) => { swipeStart = event.clientX; });
     stage.addEventListener('pointerup', (event) => { if (swipeStart === null) return; const distance = event.clientX - swipeStart; if (Math.abs(distance) > 35) showSlide(activeSlide + (distance < 0 ? 1 : -1)); swipeStart = null; });
