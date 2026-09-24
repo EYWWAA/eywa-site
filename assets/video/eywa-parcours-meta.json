@@ -1,0 +1,35 @@
+{
+  "duration": 93.0,
+  "chapters": [
+    {
+      "id": "concept",
+      "duration": 12.583333333333334
+    },
+    {
+      "id": "devis",
+      "duration": 13.5
+    },
+    {
+      "id": "personnalisation",
+      "duration": 13.208333333333334
+    },
+    {
+      "id": "reservation",
+      "duration": 14.416666666666666
+    },
+    {
+      "id": "confirmation",
+      "duration": 13.541666666666666
+    },
+    {
+      "id": "preparation",
+      "duration": 12.208333333333334
+    },
+    {
+      "id": "jour-j",
+      "duration": 13.541666666666666
+    }
+  ],
+  "voice": "Thomas — synthèse macOS",
+  "status": "Version de travail ; confirmation automatique à valider avant diffusion"
+}
