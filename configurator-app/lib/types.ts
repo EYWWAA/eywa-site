@@ -11,7 +11,7 @@ export const BrandingSchema = z.object({
 export type Branding = z.infer<typeof BrandingSchema>;
 export type Candidate = { name: string; domain: string; description: string };
 export type Analysis = { status: 'ready'; id: string; branding: Branding; cached: boolean; mode: 'live' | 'example' | 'public' | 'proposal'; logoStatus: 'verified' | 'sourced' | 'wordmark'; modelUrl: string; modelApproved: boolean; imagesReady: boolean } | { status: 'ambiguous'; candidates: Candidate[] } | { status: 'not_found'; message: string };
-export type Visuals = { scene?: string; cup?: string; latte?: string; errors?: Record<string, string> };
+export type Visuals = { scene?: string; cup?: string; latte?: string; errors?: Record<string, string>; provenance?: 'curated' | 'openai'; directorModel?: string; imageModel?: string };
 export const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || '';
 export const asset = (p: string) => `${BASE_PATH}${p}`;
 export const normalizeBrand = (s: string) => s.normalize('NFKC').trim().toLocaleLowerCase('fr').replace(/\s+/g, ' ');

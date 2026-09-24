@@ -1,28 +1,39 @@
-# EYWA — configurateur de coffee bar
+# EYWA — configurateur photographique et bar 3D
 
-Cette application remplace l’ancien import manuel du configurateur EYWA par une expérience où le prospect saisit seulement le nom d’une marque. Les cinq directions visibles (Celio, Nike, Dior, Cupra et Renault) restent des inspirations rapides ; n’importe quel autre nom peut maintenant produire une proposition éditoriale et ses trois visuels, sans bloquer sur une liste fermée.
+Le site public GitHub Pages présente désormais la photographie Celio fournie par Louis, avec ses deux détails (gobelet et latte) réellement créés par l’outil de génération d’images OpenAI. Aucun montage Canvas n’est affiché. La photo complète est la vue principale ; « Explorer en 3D » charge à la demande le modèle GLB fixe. Les trois photographies peuvent être agrandies et sont conservées sans recadrage.
 
-## Deux déploiements complémentaires
+Les autres noms restent acceptés pour l’aperçu 3D. En l’absence de serveur OpenAI actif, l’interface annonce clairement que leurs photographies sur mesure ne sont pas encore disponibles. Elle ne substitue ni un montage, ni l’image d’une autre entreprise. Le catalogue photographique couvre actuellement **Celio uniquement**.
 
-- `pnpm build:pages` produit `../configurateur/`, une exportation statique à publier sous `/eywa-site/configurateur/` sur GitHub Pages. Elle embarque le GLB photo‑basé v2, le viewer, les directions publiques et les références visuelles générées. En mode statique, la recherche publique Wikidata est mise en cache côté navigateur ; si elle est indisponible, une proposition locale déterministe reste disponible. GitHub Pages ne peut pas garder une clé OpenAI ni exécuter les routes API.
-- `pnpm build && node .next/standalone/server.js` produit le backend Node à héberger séparément. La page statique utilise `public/runtime-config.json` pour connaître l’URL HTTPS de ce backend.
+## Génération à la demande — code préparé, accès de production requis
 
-L’analyse automatique nécessite `EYWA_LIVE_ENABLED=true`, `OPENAI_API_KEY` et `EYWA_PUBLIC_API_ORIGIN`. Les images nécessitent en plus les références maîtres approuvées et un logo vérifié. Une clé ne doit jamais être placée dans `NEXT_PUBLIC_*` ou dans le dépôt.
+- `server/brand.ts` utilise par défaut **gpt-6-astra**, la recherche web et les sources officielles pour élaborer la direction artistique.
+- `server/photo-direction.ts` fixe **gpt-6-astra** comme directeur et **gpt-image-2.5-sunburst** comme outil d’édition, qualité haute. Chaque appel Responses reçoit de vraies images de référence. Aucun retour silencieux à un autre modèle.
+- `server/images.ts` génère des photographies complètes, puis fait contrôler par Astra le produit, le logo et le réalisme. Un visuel refusé n’est pas publié. Les succès sont conservés pour éviter de les payer de nouveau lors d’un nouvel essai. La limite quotidienne s’applique à chaque image, et non seulement aux scènes.
+- La référence réelle du bar prime sur l’exemple Celio pour la géométrie et l’équipement. Le gobelet et le latte générés deviennent des références stables jusqu’au remplacement par des photos réelles. Une édition générative ne garantit pas une conservation pixel par pixel ; le contrôle visuel réduit les dérives sans remplacer une validation humaine. La géométrie GLB, elle, reste identique pour chaque marque.
 
-## Références maîtres
+Documentation consultée le 24 septembre 2026 :
+https://developers.openai.com/api/docs/models/gpt-6-astra
+https://developers.openai.com/api/docs/guides/tools-image-generation
 
-Le meuble est généré une seule fois par `scripts/build-model.mjs` à partir de la photo reçue : `eywa-bar-v2.glb` conserve un caisson rectangulaire plat, le plateau noyer, les roulettes, le moulin et la machine. Il est le modèle affiché par défaut ; ses surfaces protégées reçoivent uniquement l’habillage de marque. En production, il pourra être remplacé par un GLB mesuré et les références photographiques approuvées. L’interface d’administration `/api/admin/upload` vérifie le type, la taille, les dimensions, les nœuds GLB indispensables (`BAR_FRONT`, `BAR_LEFT`, `BAR_RIGHT`, `COUNTERTOP`) et les ressources embarquées. La calibration des quatre coins est ensuite stockée par `/api/admin/masters`.
+## Déploiement
 
-La composition des photos est déterministe : le meuble original détouré est recoloré et recomposé après la génération de la plaque d’environnement. Les pixels hors des surfaces calibrées restent inchangés ; la structure, les proportions, les roulettes, le plateau noyer, la machine et le moulin ne sont donc pas régénérés par l’IA.
+Le frontend reste sur le site existant : `pnpm build:pages` exporte dans `../configurateur/`, sous `/eywa-site/configurateur/`. Les anciens fichiers JS portant une empreinte restent accessibles aux pages mises en cache.
 
-## Commandes
+Le backend est une application Next.js Node 22.13+ (`pnpm build`, puis démarrage standalone) qui nécessite un **disque persistant** pour SQLite, les verrous, les quotas et les images. Le Dockerfile existant convient à un hôte avec volume persistant. Ne pas déployer ce stockage local tel quel dans une fonction Vercel éphémère : remplacer d’abord SQLite/fichiers par une base et un stockage d’objets durables si cet hébergement est retenu.
 
-```bash
-pnpm install --frozen-lockfile
-pnpm check
-pnpm test
-pnpm build
-pnpm build:pages
-```
+Pour activer le parcours photographique :
 
-Le viewer utilise WebGL avec une boucle de rendu limitée à la demande. Un aperçu SVG projeté du même GLB est utilisé lorsqu’un navigateur ne fournit pas WebGL ; la vérification finale de fluidité GPU doit être faite sur un appareil compatible.
+1. Configurer la clé `OPENAI_API_KEY` exclusivement côté serveur avec un compte ayant accès aux modèles et une facturation active.
+2. Déposer la vraie photo du bar dans le stockage privé et définir `EYWA_BAR_REFERENCE_FILE` (exemple : `./data/eywa-bar-reference.jpg`). Le fichier original reçu est préparé localement dans `data/`, ignoré par Git et jamais publié dans le site.
+3. Configurer `EYWA_PUBLIC_API_ORIGIN`, les origines CORS et le stockage durable. Tester les appels réels et le contrôle qualité avant `EYWA_LIVE_ENABLED=true`.
+4. Renseigner cette origine HTTPS dans `public/runtime-config.json`, reconstruire et publier la page statique.
+
+Les références via l’administration historique sont également reconnues. Si un ensemble maître approuvé existe, ses photographies prennent priorité. Le GLB v2 de présentation peut être remplacé par un modèle mesuré via l’administration.
+
+## Vérifications
+
+`pnpm check`, `pnpm test`, `pnpm build:pages`.
+
+Les tests photographiques simulent le fournisseur : ils vérifient le passage effectif des références à Astra, le cache et le refus d’un résultat non conforme. Ils ne prouvent pas l’accès API de production ni la qualité de résultats qui n’ont pas été générés.
+
+Le viewer WebGL est rendu à la demande. Une projection SVG du même GLB sert de solution de repli sur les appareils sans WebGL ; sa qualité ne représente pas celle d’un rendu GPU. Les dimensions du modèle photo‑basé doivent encore être validées sur le meuble réel.

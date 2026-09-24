@@ -12,3 +12,25 @@ body{font-family:'DM Sans Variable',DM,Arial,sans-serif}
 em,.photo-unavailable>span,.detail-unavailable>span{font-family:'Fraunces Variable',Fraunces,Georgia,serif}
 .embedded .studio-intro{display:none}
 .embedded .workspace{padding-top:34px}
+
+/* Photography is the main presentation. The fixed 3D model is a separate view. */
+.view-switch{display:flex;align-items:center;gap:25px;min-height:48px;border-bottom:1px solid var(--line);margin-bottom:16px}
+.view-switch button{align-self:stretch;background:none;padding:8px 0;font-size:13px;color:var(--muted);border-bottom:2px solid transparent}
+.view-switch button[aria-selected=true]{color:var(--forest);border-color:var(--forest)}
+.view-switch>span{margin-left:auto;font-size:9px;letter-spacing:.12em;color:var(--muted)}
+.hero-photo{background:#e7e4de;min-height:240px}
+.enlarge-photo{display:block;position:relative;padding:0;background:none;width:100%;cursor:zoom-in;overflow:hidden}
+.enlarge-photo>img{display:block;width:100%;height:auto;object-fit:contain}
+.enlarge-icon{position:absolute;right:16px;bottom:16px;display:grid;place-items:center;color:white;background:#17241c85;backdrop-filter:blur(8px);width:36px;height:36px;border-radius:50%;transition:background .2s}
+.enlarge-photo:hover .enlarge-icon{background:#17241c}
+.editorial-details{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.editorial-details figure{margin:0;min-width:0}
+.editorial-details img{aspect-ratio:3/2}
+.text-link{display:inline-flex;align-items:center;gap:8px;background:none;color:var(--forest);border-bottom:1px solid #a8b39f;padding:8px 0;font-size:13px}
+.photo-status{font-size:13px;line-height:1.7;color:var(--muted);border-top:1px solid var(--line);padding-top:17px;margin-top:22px}
+.photo-status a{display:flex;align-items:center;gap:5px;color:var(--forest);margin-top:8px;text-decoration:underline;text-underline-offset:4px}
+.photo-dialog{border:0;padding:0;max-width:94vw;max-height:94vh;background:transparent;overflow:visible}
+.photo-dialog::backdrop{background:#111912ed;backdrop-filter:blur(8px)}
+.photo-dialog>img{display:block;max-width:94vw;max-height:88vh;object-fit:contain}
+.close-photo{position:absolute;right:12px;top:12px;display:grid;place-items:center;background:#18231dcf;color:white;width:42px;height:42px;border-radius:50%;z-index:1}
+@media(max-width:720px){.view-switch{gap:22px;margin-bottom:12px}.view-switch button{font-size:12px}.view-switch>span{display:none}.editorial-details{grid-template-columns:1fr;gap:24px}.enlarge-icon{width:32px;height:32px;right:12px;bottom:12px}.hero-photo{min-height:0}.proposal-heading h2{font-size:31px}.photo-dialog{max-width:100vw}.photo-dialog>img{max-width:100vw}.close-photo{right:8px;top:8px}}
