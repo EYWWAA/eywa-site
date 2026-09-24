@@ -17,12 +17,12 @@ if ((!overlap.startsWith('..') && !isAbsolute(overlap)) || (!inverse.startsWith(
 }
 // A new directory is required: existing user files are never replaced.
 await mkdir(output, { recursive: false });
-const oldUrl = 'https://eywwaa.github.io/eywa-site/';
+const oldUrls = ['https://eywwaa.github.io/eywa-site/', 'https://eywacoffeecatering.com/'];
 const newUrl = `https://${domain}/`;
 for (const entry of await readdir(site, { withFileTypes: true })) {
   if (entry.isFile() && /\.(?:html|css|js|xml|txt)$/.test(entry.name)) {
     const source = await readFile(join(site, entry.name), 'utf8');
-    await writeFile(join(output, entry.name), source.split(oldUrl).join(newUrl));
+    await writeFile(join(output, entry.name), oldUrls.reduce((text, oldUrl) => text.split(oldUrl).join(newUrl), source));
   }
 }
 for (const folder of ['assets', 'content', 'models']) await cp(join(site, folder), join(output, folder), { recursive: true });

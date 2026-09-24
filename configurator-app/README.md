@@ -17,7 +17,7 @@ https://developers.openai.com/api/docs/guides/tools-image-generation
 
 ## Déploiement
 
-Le frontend reste sur le site existant : `pnpm build:pages` exporte dans `../configurateur/`, sous `/eywa-site/configurateur/`. Les anciens fichiers JS portant une empreinte restent accessibles aux pages mises en cache.
+Le frontend est publié sur `https://eywacoffeecatering.com/configurateur/` : `pnpm build:pages` exporte dans `../configurateur/`, sous `/configurateur`. Le domaine professionnel est la destination par défaut des liens. Les anciens fichiers JS portant une empreinte restent accessibles aux pages mises en cache. `EYWA_BASE_PATH` et `EYWA_SITE_URL` permettent de préparer une autre destination explicitement.
 
 Le backend est une application Next.js Node 22.13+ (`pnpm build`, puis démarrage standalone) qui nécessite un **disque persistant** pour SQLite, les verrous, les quotas et les images. Le Dockerfile existant convient à un hôte avec volume persistant. Ne pas déployer ce stockage local tel quel dans une fonction Vercel éphémère : remplacer d’abord SQLite/fichiers par une base et un stockage d’objets durables si cet hébergement est retenu.
 
@@ -40,7 +40,7 @@ Après installation des dépendances, exécuter depuis `configurator-app` :
 node scripts/prepare-domain.mjs eywacoffeecatering.com /chemin/vers/un-nouveau-dossier
 ```
 
-Le script construit une copie statique complète avec `/configurateur` comme chemin de base, les liens du devis et les métadonnées sur le nouveau domaine, et le fichier `CNAME`. Il ne modifie ni le site publié ni les DNS. Le dossier doit être neuf et extérieur au dépôt. Ne publier cette copie qu’après achat et vérification du domaine. L’export courant reste compatible avec l’adresse GitHub Pages existante.
+Le script construit une copie statique complète avec `/configurateur` comme chemin de base, les liens du devis et les métadonnées sur le nouveau domaine, et le fichier `CNAME`. Il ne modifie ni le site publié ni les DNS. Le dossier doit être neuf et extérieur au dépôt. Ne publier cette copie qu’après achat et vérification du domaine. L’ancienne adresse GitHub Pages redirige vers le domaine professionnel.
 
 Le serveur peut être contrôlé avec `node --env-file=.env.local scripts/preflight.mjs`. Ce contrôle vérifie les prérequis locaux sans afficher de secrets ni facturer d’appel API. Le stockage SQLite/fichiers nécessite toujours un volume persistant. Une connexion au compte Vercel, à elle seule, ne rend pas cette architecture compatible avec les fonctions Vercel.
 

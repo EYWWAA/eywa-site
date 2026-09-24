@@ -7,7 +7,7 @@ import { discoverBrand } from '@/lib/brand-discovery';
 import { curatedPhotos } from '@/lib/photo-catalog';
 import { asset, type Analysis, type Visuals, type Candidate } from '@/lib/types';
 const BarViewer = dynamic(() => import('./BarViewer'), { ssr: false, loading: () => <div className="viewer viewer-placeholder"><span className="fine-spinner" /></div> });
-const SITE = process.env.NEXT_PUBLIC_SITE_URL || 'https://eywwaa.github.io/eywa-site/';
+const SITE = process.env.NEXT_PUBLIC_SITE_URL || 'https://eywacoffeecatering.com/';
 const QUOTE = new URL('devis-instantane.html', SITE).href;
 type Ready = Extract<Analysis, { status: 'ready' }>;
 type Kind = 'scene' | 'cup' | 'latte';

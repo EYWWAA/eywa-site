@@ -3,7 +3,7 @@ import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { dirname,join,resolve as resolvePath,relative,isAbsolute } from 'node:path';
 const root=dirname(dirname(fileURLToPath(import.meta.url))),stage=join(root,'.export-stage');
-const basePath=process.env.EYWA_BASE_PATH ?? '/eywa-site/configurateur';
+const basePath=process.env.EYWA_BASE_PATH ?? '/configurateur';
 if(!/^\/(?:[A-Za-z0-9_-]+\/)*[A-Za-z0-9_-]+$/.test(basePath))throw new Error('EYWA_BASE_PATH must be an absolute URL path without trailing slash.');
 const target=resolvePath(process.env.EYWA_EXPORT_DIR || join(root,'..','configurateur'));
 // This script replaces its destination. Never accept a source directory or its ancestor.

@@ -7,6 +7,6 @@ const config: NextConfig = {
   images: { unoptimized: true },
   serverExternalPackages: ['sharp', 'node:sqlite'],
   allowedDevOrigins: ['terminal.local'],
-  env: { NEXT_PUBLIC_BASE_PATH: process.env.EYWA_BASE_PATH || '', NEXT_PUBLIC_STATIC_EXPORT: exporting ? '1' : '0', NEXT_PUBLIC_SITE_URL: process.env.EYWA_SITE_URL || 'https://eywwaa.github.io/eywa-site/' },
+  env: { NEXT_PUBLIC_BASE_PATH: process.env.EYWA_BASE_PATH || '', NEXT_PUBLIC_STATIC_EXPORT: exporting ? '1' : '0', NEXT_PUBLIC_SITE_URL: process.env.EYWA_SITE_URL || 'https://eywacoffeecatering.com/' },
 };
 export default config;
