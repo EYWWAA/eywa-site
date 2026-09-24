@@ -1,0 +1,7 @@
+configurator-app/node_modules/
+configurator-app/.next/
+configurator-app/.env*
+!configurator-app/.env.example
+configurator-app/data/
+configurator-app/*.tsbuildinfo
+configurator-app/.export-stage/

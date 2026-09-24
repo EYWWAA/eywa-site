@@ -1,0 +1,7 @@
+node_modules
+.next
+.export-stage
+data
+.env*
+tests
+*.tsbuildinfo

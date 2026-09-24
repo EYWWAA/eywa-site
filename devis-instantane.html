@@ -926,6 +926,35 @@
     }
   })();
 
+  /* Reprise du configurateur de marque EYWA. Les valeurs sont uniquement
+     reprises depuis l'URL créée par notre page de projection et sont
+     injectées dans le parcours par textContent, jamais comme du HTML. */
+  (function reprendreMarqueConfigurateur() {
+    var p = new URLSearchParams(window.location.search);
+    var marque = (p.get('marque') || '').trim().slice(0, 100);
+    var configuration = (p.get('configuration') || '').trim().slice(0, 80);
+    if (!marque) return;
+    A.societe = marque;
+    A.design = 'Direction artistique EYWA — ' + marque + (configuration ? ' — configuration ' + configuration : '');
+    var societe = document.getElementById('societe-input');
+    if (societe && !societe.value) societe.value = marque;
+    var hote = document.querySelector('main');
+    var carte = document.querySelector('.form-card');
+    if (!hote || !carte) return;
+    var banniere = document.createElement('div');
+    banniere.style.cssText = 'max-width:720px;margin:0 auto 16px;padding:12px 16px;'
+      + 'border:1px solid #d9ddd6;border-radius:12px;background:#fff;'
+      + 'box-shadow:0 8px 22px rgba(23,61,45,.07);color:#66736b;font-size:13px';
+    var titre = document.createElement('strong');
+    titre.textContent = 'Votre projet ' + marque + ' est déjà attaché';
+    titre.style.cssText = 'display:block;color:#173d2d;font-size:14px;margin-bottom:3px';
+    banniere.appendChild(titre);
+    var detail = document.createElement('span');
+    detail.textContent = 'Nous reprendrons cette direction artistique dans votre demande de devis.';
+    banniere.appendChild(detail);
+    hote.insertBefore(banniere, carte);
+  })();
+
   /* Reprise du configurateur 3D de la page d'accueil.
      index.html envoie ?visuel=full&fichier=logo.png. On note le design
      pour qu'il parte dans le CRM et dans le mail, et on affiche la
