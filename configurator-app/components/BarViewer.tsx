@@ -8,7 +8,7 @@ export default function BarViewer({branding, modelUrl}:{branding:Branding;modelU
  const mount=useRef<HTMLDivElement>(null),controller=useRef<Controller|null>(null),latest=useRef(branding);
  const [state,setState]=useState<'loading'|'ready'|'light'|'error'>('loading');
  latest.current=branding;
- useEffect(()=>{let cancelled=false;setState('loading');import('@/lib/viewer').then(async({createViewer})=>{if(!mount.current||cancelled)return;const c=await createViewer(mount.current,modelUrl||asset('/models/eywa-bar-v1.glb'),s=>!cancelled&&setState(s));if(cancelled){c.dispose();return;}controller.current=c;await c.brand(latest.current);}).catch(()=>!cancelled&&setState('error'));return()=>{cancelled=true;controller.current?.dispose();controller.current=null;}},[modelUrl]);
+ useEffect(()=>{let cancelled=false;setState('loading');import('@/lib/viewer').then(async({createViewer})=>{if(!mount.current||cancelled)return;const c=await createViewer(mount.current,modelUrl||asset('/models/eywa-bar-v2.glb'),s=>!cancelled&&setState(s));if(cancelled){c.dispose();return;}controller.current=c;await c.brand(latest.current);}).catch(()=>!cancelled&&setState('error'));return()=>{cancelled=true;controller.current?.dispose();controller.current=null;}},[modelUrl]);
  useEffect(()=>{void controller.current?.brand(branding)},[branding]);
  return <div className="viewer" data-viewer-state={state}>
    <div ref={mount} className="viewer-surface" role="img" aria-label={`Bar EYWA personnalisé pour ${branding.brand.name}, aperçu interactif. Façade ${branding.bar.front_color}.`}/>
