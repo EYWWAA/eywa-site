@@ -1,0 +1,264 @@
+/* EYWA — direction éditoriale. Chargée après les styles historiques.
+   Les règles d'accueil restent isolées du devis et du configurateur. */
+:root {
+  --green: #203d30;
+  --green-dark: #152b22;
+  --green-soft: #edf0e9;
+  --cream: #f8f7f3;
+  --ink: #243c30;
+  --mute: #657068;
+  --gold: #e6ce83;
+  --line: #dcded6;
+}
+body { font-size: 1rem; -webkit-font-smoothing: antialiased; }
+html { scroll-padding-top: 6rem; }
+:focus-visible { outline: 2px solid var(--green); outline-offset: 5px; }
+.wrap { width: min(1280px, calc(100% - 96px)); }
+.nav { min-height: 88px; background: var(--cream); }
+.nav::before { background: var(--cream); border-color: var(--line); }
+.logo { font-size: 2rem; letter-spacing: .22em; }
+.navlinks, .nav-group { gap: 24px; font-weight: 500; }
+.nav-button { min-height: 46px; padding: 0 20px; border-radius: 4px; font-size: .875rem; font-weight: 500; }
+.nav-button > span { margin-left: 8px; }
+.button {
+  min-height: 54px; gap: 24px; padding: 16px 25px;
+  border: 1px solid transparent; border-radius: 4px;
+  font-size: .9375rem; font-weight: 500; line-height: 1.35;
+  box-shadow: none; transition: background .2s, color .2s, border-color .2s;
+}
+.button:hover, .nav-button:hover { transform: none; }
+.button-gold, .button-gold:hover { box-shadow: none; }
+.button > span[aria-hidden] { font-size: 1.25rem; font-weight: 400; }
+footer { padding: 55px 0 36px; }
+.footer-grid { flex-wrap: wrap; row-gap: 30px; font-size: .875rem; }
+.footer-brand { margin-bottom: 14px; font: 400 3rem/1 var(--serif); letter-spacing: .18em; }
+.footer-links { flex-wrap: wrap; max-width: 470px; row-gap: 18px; }
+.footer-links a:hover { color: white; text-decoration: underline; text-underline-offset: 5px; }
+.footer-social a, .footer-social span { min-width: 32px; min-height: 32px; justify-content: center; }
+.page-hero { padding: 80px 0 !important; }
+.page-hero h1, .svc-hero h1 { font: 400 clamp(2.5rem, 4.3vw, 4rem)/1.1 var(--serif) !important; letter-spacing: -.035em; }
+.info-page .intro h1 { font-weight: 400; }
+.section-title { font-weight: 400 !important; letter-spacing: -.035em; }
+.gallery-showcase { background: var(--cream); }
+.gallery-category-head h2, .included h2, .price-layout h2, .cta h2,
+.contact-card h2, .menu-group > h2 { font-weight: 400; }
+.gallery-category-head p { color: var(--mute); font-weight: 400; }
+.gallery-category-grid figure { border-radius: 4px; box-shadow: none; }
+.contact-card, .price-box { border-radius: 5px; box-shadow: none; }
+.eywa-home .hero {
+  width: min(1280px, calc(100% - 96px)); margin: 0 auto;
+  padding: 48px 0 64px; grid-template-columns: 1fr 1fr;
+  gap: clamp(32px, 5vw, 76px); min-height: 0;
+  overflow: visible; background: var(--cream);
+}
+.eywa-home .hero-copy { min-height: 0; padding: 12px 0 20px; justify-content: center !important; }
+.hero-eyebrow { margin: 0 0 27px; font-size: .75rem; font-weight: 600; line-height: 1.5; letter-spacing: .16em; text-transform: uppercase; }
+.eywa-home .hero h1 {
+  margin: 0 0 24px !important; max-width: none;
+  font-size: clamp(2.5rem, 4.15vw, 3.9rem) !important;
+  font-weight: 400; line-height: 1.1; letter-spacing: -.052em;
+  text-wrap: initial;
+}
+.hero h1 em { font-weight: 400; }
+.hero-location { margin-bottom: 28px; color: var(--mute); font-size: 1rem; line-height: 1.6; }
+.eywa-home .hero-events { grid-template-columns: repeat(2, auto); gap: 10px 22px; margin: 0 0 32px; font-size: .875rem; font-weight: 400; line-height: 1.5; }
+.eywa-home .hero-events li { gap: 9px; }
+.eywa-home .hero-events li::before { width: 4px; height: 4px; background: #897b4e; }
+.eywa-home .hero-quote .button { min-width: 246px; min-height: 56px; padding: 16px 24px; justify-content: space-between; font-size: .9375rem; color: white; background: var(--green); }
+.eywa-home .hero-quote .button:hover { background: var(--green-dark); }
+.eywa-home .hero-quote .button > span { position: static; transform: none; font-size: 1.4rem; }
+.eywa-home .quote-note { max-width: 325px; margin: 15px 0 0; font-size: .8125rem; line-height: 1.6; }
+.eywa-home .photo-carousel { padding: 0; background: transparent; }
+.eywa-home .carousel-stage { height: 500px !important; min-height: 0; border-radius: 5px; }
+.eywa-home .carousel-slide img { object-position: center; }
+.eywa-home .carousel-slide::after { background: linear-gradient(0deg, rgba(15,28,21,.2), transparent 30%); }
+.eywa-home .carousel-arrow { top: auto; bottom: 18px; width: 44px; height: 44px; transform: none; background: rgba(248,247,243,.95); color: var(--green); font-size: 25px; }
+.eywa-home .carousel-arrow:hover { transform: none; background: white; }
+.eywa-home .carousel-arrow.prev { left: auto; right: 70px; }
+.eywa-home .carousel-arrow.next { right: 18px; }
+.eywa-home .carousel-thumbs { height: 58px !important; margin-top: 12px !important; gap: 10px; }
+.eywa-home .carousel-thumb { flex-basis: calc((100% - 40px)/5); border-radius: 3px; border-width: 1px; opacity: .66; }
+.eywa-home .carousel-thumb.active { opacity: 1; border-color: var(--green); }
+.eywa-home .carousel-thumb:focus-visible { outline-offset: -4px; outline-color: white; }
+
+/* Des compositions ouvertes alternent avec les surfaces vertes de la marque. */
+.eywa-home :is(.intro-band, .booking, .services, .branding, .why, .timeline, .event-types, .reviews, .gallery-teaser, .faq-home, .places, .cfg) { padding: 96px 0; }
+.eywa-home :is(.section-title, .intro-band h2, .booking h2, .branding h2, .why h2, .cfg-head h2, .quote-cta h2) {
+  font: 400 clamp(2rem, 3.4vw, 3.15rem)/1.14 var(--serif) !important;
+  letter-spacing: -.035em; text-wrap: balance;
+}
+.section-kicker, .cfg-kicker, .eyebrow { font-size: .75rem; font-weight: 500; letter-spacing: .15em; }
+.eywa-home :is(.section-sub, .section-copy, .why-sub) { font-size: 1rem; line-height: 1.75; }
+.eywa-home .intro-band { background: #eeefe8; border-top: 1px solid var(--line); }
+.eywa-home .intro-band .wrap { max-width: 1280px; display: grid; grid-template-columns: .85fr 1.15fr; gap: 0 100px; text-align: left; }
+.eywa-home .intro-band h2 { grid-row: span 3; max-width: 390px; margin: 0; }
+.eywa-home .intro-band p { max-width: none; font-size: 1rem; line-height: 1.8; }
+.eywa-home .intro-band .intro-reach { font-size: .875rem; color: var(--mute); }
+.eywa-home .booking { background: var(--green); }
+.eywa-home .booking-solo { max-width: 1180px; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 100px; }
+.eywa-home .booking .section-head { margin: 0; text-align: left; }
+.eywa-home .booking .section-kicker { margin-bottom: 24px; color: var(--gold); text-align: left; }
+.eywa-home .booking h2 { color: white; max-width: 440px; margin-bottom: 26px; }
+.eywa-home .booking-sub { color: #d8e0d7; }
+.eywa-home .mini-devis { padding: 34px; border: 0; border-radius: 5px; background: var(--cream); box-shadow: none; }
+.eywa-home .md-label { font-size: .875rem; font-weight: 500; margin-bottom: 14px; }
+.eywa-home .md-label svg { stroke-width: 1.4; }
+.eywa-home .md-stepper { justify-content: space-between; }
+.eywa-home .md-box { flex: 1; justify-content: center; border: 0; }
+.eywa-home .md-val { font-size: 1.65rem; font-weight: 400; }
+.eywa-home .md-btn { width: 44px; height: 44px; background: transparent; }
+.eywa-home .md-staff { font-size: 1rem !important; font-weight: 500; }
+.eywa-home .md-staff-sub { color: var(--mute); }
+.eywa-home .md-avatar { width: 36px; height: 36px; font-weight: 400; font-size: .875rem; }
+.eywa-home .md-cta { justify-content: space-between; color: white; background: var(--green); }
+.eywa-home .md-cta:hover { background: var(--green-dark); }
+.eywa-home .services { background: var(--cream); }
+.eywa-home .services .section-head { max-width: none; margin-bottom: 52px; text-align: left; }
+.eywa-home .services .section-head :is(.section-title, .section-sub, .section-kicker) { margin-left: 0; text-align: left; }
+.service-card { background: transparent; border: 0; border-radius: 0; gap: 56px; align-items: center; overflow: visible; }
+.service-card figure { min-width: 0; min-height: 0; border-radius: 5px; overflow: hidden; aspect-ratio: 1; }
+.service-body { padding: 16px 0; }
+.service-kicker { color: var(--mute); font-size: .75rem; letter-spacing: .13em; }
+.service-body h3 { margin: 0 0 24px; font-size: 2.1rem; font-weight: 400; }
+.service-body > p { font-size: 1rem; line-height: 1.75; }
+.service-list { gap: 13px; font-weight: 400; line-height: 1.65; }
+.service-list li::before { color: var(--green); background: transparent; border-radius: 0; font-size: .9rem; }
+.service-actions .button { font-weight: 500; border: 1px solid var(--green); }
+.service-actions .button:not(.button-gold) { color: var(--green); background: transparent; }
+.service-actions .button:not(.button-gold):hover { background: var(--green-soft); }
+.service-actions .button-gold { color: white; background: var(--green); }
+.eywa-home .branding { background: #eeefe8; }
+.eywa-home .branding .section-head { max-width: 750px; margin-bottom: 58px; }
+.eywa-home .brand-grid { gap: 0 40px; }
+.eywa-home .brand-card { padding: 32px 0 36px; border: 0; border-top: 1px solid #c5cec2; border-radius: 0; background: transparent; }
+.eywa-home .brand-num { margin-bottom: 24px; color: #697560; font-size: .875rem; font-weight: 400; }
+.eywa-home .brand-card h3 { font-size: 1.55rem; font-weight: 400; }
+.eywa-home .brand-card p { line-height: 1.75; font-size: .9375rem; }
+.eywa-home .brand-card-note { padding: 32px 28px; margin: 0 0 16px; background: var(--green); border-color: var(--green); border-radius: 3px; }
+.eywa-home .brand-card-note h3 { color: white; margin-bottom: 20px; }
+.eywa-home .brand-card-note p { color: #d8e0d7; }
+.eywa-home .cfg { background: var(--cream); }
+.eywa-home .cfg-frame-wrap { border-radius: 5px; box-shadow: none; }
+.eywa-home .cfg-frame-note { font-size: .8125rem; }
+.eywa-home .why .section-head { margin-bottom: 56px; }
+.eywa-home .why-grid { gap: 36px; }
+.eywa-home .why-card { padding: 30px 0 0; background: transparent; border: 0; border-top: 1px solid #61776a; border-radius: 0; }
+.eywa-home .why-card .ico { display: none; }
+.eywa-home .why-card h3 { font: 400 1.5rem/1.25 var(--serif); margin-bottom: 18px; }
+.eywa-home .why-card p { font-size: .9375rem; line-height: 1.75; }
+.eywa-home .timeline { border-bottom: 1px solid var(--line); }
+.eywa-home .tl { gap: 36px; }
+.eywa-home .tl li { padding: 0; border: 0; border-radius: 0; background: transparent; }
+.eywa-home .tl-num { display: block; width: auto; height: auto; margin-bottom: 22px; padding-bottom: 24px; border-radius: 0; border-bottom: 1px solid var(--line); background: transparent; color: #75816d; font: 400 3.3rem/1 var(--serif); }
+.eywa-home .tl h3 { font-weight: 500; font-size: 1rem; }
+.eywa-home .tl p { font-size: .9375rem; line-height: 1.75; }
+.eywa-home .event-types { background: var(--cream); }
+.eywa-home .ev-cols { gap: 44px; }
+.eywa-home .ev-col { border: 0; border-top: 1px solid var(--line); border-radius: 0; background: transparent; padding: 30px 0 0; }
+.eywa-home .ev-col-main { border-color: var(--green); }
+.eywa-home .ev-col h3 { font-size: 1.55rem; font-weight: 400; }
+.eywa-home .ev-tag { font-size: .75rem; background: var(--green-soft); padding: 6px 10px; font-weight: 500; letter-spacing: .05em; }
+.eywa-home .ev-col li { font-size: .9375rem; line-height: 1.6; }
+.eywa-home .ev-col li::before { width: 3px; height: 3px; top: 10px; background: #75816d; }
+.eywa-home .reviews { background: #eeefe8; }
+.eywa-home .gallery-teaser { background: var(--cream); }
+.eywa-home .teaser-grid { grid-template-columns: 1.2fr 1fr 1fr 1.2fr; gap: 18px; align-items: center; }
+.eywa-home .teaser-grid figure { border-radius: 4px; aspect-ratio: 3/4; }
+.eywa-home .teaser-grid figure:nth-child(2n) { margin-top: 55px; }
+.eywa-home .teaser-grid img { object-position: center; }
+.eywa-home .faq-home { border-top: 1px solid var(--line); background: white; }
+.eywa-home .faq-list { max-width: 840px; margin-top: 48px; }
+.eywa-home .faq-list summary { font-weight: 500; padding-top: 26px; padding-bottom: 26px; line-height: 1.5; }
+.eywa-home .places { background: var(--cream); }
+.eywa-home .place-list { max-width: none; margin-top: 42px; gap: 32px; }
+.eywa-home .place { padding: 28px 0; border: 0; border-top: 1px solid var(--line); border-radius: 0; background: transparent; }
+.eywa-home .place-pin { display: none; }
+.eywa-home .place h3 { font-size: 1.5rem; font-weight: 400; }
+.eywa-home .place p { font-size: .875rem; margin-top: 10px; }
+.eywa-home .quote-cta { padding: 84px 0; }
+.eywa-home .quote-cta h2 { max-width: 680px; }
+.eywa-home .quote-cta .button { color: var(--green); background: var(--cream); }
+.eywa-home .quote-cta .button:hover { background: white; }
+.eywa-home .button:focus-visible, .nav-button:focus-visible { outline-color: #9e843a; }
+
+@media (max-width: 1100px) {
+  .eywa-home .intro-band .wrap { gap: 0 48px; }
+  .eywa-home .booking-solo { gap: 48px; }
+  .eywa-home .why-grid, .eywa-home .tl { gap: 24px; }
+}
+@media (max-width: 900px) {
+  .eywa-home .intro-band .wrap { grid-template-columns: 1fr; }
+  .eywa-home .intro-band h2 { grid-row: auto; max-width: 580px; margin-bottom: 26px; }
+  .eywa-home .booking-solo { grid-template-columns: 1fr; max-width: 660px; gap: 36px; }
+  .eywa-home .booking h2 { max-width: none; }
+  .eywa-home .booking-sub { max-width: none; }
+  .service-card { gap: 28px; }
+  .service-card figure { aspect-ratio: 4/3; }
+  .eywa-home .ev-cols { grid-template-columns: 1fr; gap: 34px; }
+  .eywa-home .teaser-grid { grid-template-columns: 1fr 1fr; }
+  .eywa-home .teaser-grid figure:nth-child(2n) { margin-top: 28px; }
+}
+@media (max-width: 600px) {
+  .eywa-home :is(.intro-band, .booking, .services, .branding, .why, .timeline, .event-types, .reviews, .gallery-teaser, .faq-home, .places, .cfg) { padding: 64px 0; }
+  .eywa-home .mini-devis { padding: 25px 20px; }
+  .eywa-home :is(.section-title, .intro-band h2, .booking h2, .branding h2, .why h2, .cfg-head h2, .quote-cta h2) { font-size: 2rem !important; }
+  .eywa-home .brand-grid { grid-template-columns: 1fr; }
+  .eywa-home .brand-card { padding: 26px 0; }
+  .eywa-home .brand-card-note { padding: 28px 24px; }
+  .eywa-home .brand-num { margin-bottom: 12px; }
+  .eywa-home .why-grid { gap: 30px; }
+  .eywa-home .tl { gap: 30px; }
+  .eywa-home .tl li { display: grid; grid-template-columns: 48px 1fr; gap: 8px 22px; }
+  .eywa-home .tl-num { grid-row: span 2; margin: 0; padding: 0; border: 0; font-size: 2.8rem; }
+  .eywa-home .tl h3, .eywa-home .tl p { margin: 0; }
+  .eywa-home .teaser-grid { gap: 12px; }
+  .eywa-home .place { display: block; text-align: left; padding: 24px 0; }
+  .eywa-home .place-list { gap: 0; }
+  .eywa-home .quote-cta { padding: 64px 0; }
+}
+
+@media (min-width: 761px) and (max-width: 1190px) {
+  .nav, .navlinks, .nav-group { gap: 16px; }
+  .nav-button { padding: 0 14px; font-size: .8125rem; }
+  .logo { font-size: 1.65rem; }
+}
+@media (max-width: 1100px) and (min-width: 761px) {
+  .wrap, .eywa-home .hero { width: calc(100% - 48px); }
+  .nav, .navlinks, .nav-group { gap: 14px; }
+  .navlinks { font-size: .8125rem; }
+  .nav-button { max-width: 172px; text-align: left; line-height: 1.3; }
+  .eywa-home .hero-events { grid-template-columns: 1fr; gap: 6px; }
+  .eywa-home .carousel-stage { height: 500px !important; }
+}
+@media (max-width: 850px) {
+  .eywa-home .hero { grid-template-columns: 1fr; gap: 28px; padding: 44px 0; }
+  .eywa-home .hero-copy { padding: 0; }
+  .eywa-home .hero h1 { font-size: clamp(2.5rem, 6.6vw, 3.8rem) !important; }
+  .eywa-home .hero-events { grid-template-columns: repeat(2, auto); justify-content: start; }
+  .eywa-home .photo-carousel { width: 100%; max-width: none; }
+  .eywa-home .carousel-stage { height: auto !important; aspect-ratio: 4/3; }
+}
+@media (max-width: 760px) {
+  .wrap, .eywa-home .hero { width: calc(100% - 40px); }
+  .nav { min-height: 72px; }
+  .logo { font-size: 1.75rem; }
+  .navlinks.open { max-height: calc(100dvh - 72px); overflow-y: auto; padding: 12px 20px 24px; }
+  .mobile-menu { width: 44px; height: 44px; }
+  .hero-eyebrow { margin-bottom: 22px; font-size: .75rem; letter-spacing: .11em; }
+  .eywa-home .hero-events { font-size: .8125rem; gap: 8px 14px; }
+  .eywa-home .hero-quote .button { width: 100%; min-height: 54px; }
+  .eywa-home .quote-note { max-width: none; font-size: .8125rem; }
+  .eywa-home .carousel-thumbs { height: 49px !important; gap: 7px; }
+  .eywa-home .carousel-thumb { flex-basis: calc((100% - 28px)/5); }
+  .page-hero { padding: 56px 0 !important; }
+  .footer-grid { gap: 30px; }
+  .footer-links { gap: 20px; }
+}
+@media (max-width: 380px) {
+  .eywa-home .hero h1 { font-size: 2.15rem !important; }
+  .eywa-home .hero-events { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition-duration: 0s !important; animation-duration: 0s !important; }
+}
