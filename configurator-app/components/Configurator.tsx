@@ -7,7 +7,8 @@ import { discoverBrand } from '@/lib/brand-discovery';
 import { curatedPhotos } from '@/lib/photo-catalog';
 import { asset, type Analysis, type Visuals, type Candidate } from '@/lib/types';
 const BarViewer = dynamic(() => import('./BarViewer'), { ssr: false, loading: () => <div className="viewer viewer-placeholder"><span className="fine-spinner" /></div> });
-const QUOTE = 'https://eywwaa.github.io/eywa-site/devis-instantane.html';
+const SITE = process.env.NEXT_PUBLIC_SITE_URL || 'https://eywwaa.github.io/eywa-site/';
+const QUOTE = new URL('devis-instantane.html', SITE).href;
 type Ready = Extract<Analysis, { status: 'ready' }>;
 type Kind = 'scene' | 'cup' | 'latte';
 
@@ -34,7 +35,7 @@ export default function Configurator() {
         if (base && !/^https:\/\//.test(base)) base = '';
         if (process.env.NEXT_PUBLIC_STATIC_EXPORT !== '1' || base) {
           const info = await (await fetch(`${base}/api/status`, { signal: AbortSignal.timeout(8000) })).json();
-          available = info.liveEnabled === true;
+          available = info.liveEnabled === true && info.imagesReady === true;
         }
       } catch { /* The published inspiration and 3D stay accessible. */ }
       if (!disposed) { setApiBase(base); setLive(available); setReady(true); }
@@ -98,7 +99,7 @@ export default function Configurator() {
   const hasPhotos = !!(visuals.scene || visuals.cup || visuals.latte);
   const photoAlt = (kind: Kind) => kind === 'scene' ? `Coffee bar EYWA aux couleurs de ${brand.brand.name} dans son environnement` : kind === 'cup' ? `Gobelet personnalisé ${brand.brand.name}` : `Logo ${brand.brand.name} imprimé dans la mousse du latte`;
   return <div className={`studio ${embedded ? 'embedded' : ''}`}>
-    {!embedded && <header className="studio-header"><a href="https://eywwaa.github.io/eywa-site/" className="wordmark" aria-label="EYWA, retour au site">EYWA<span>COFFEE CATERING</span></a><a href="https://eywwaa.github.io/eywa-site/" className="back-link"><ArrowLeft size={15} /> Retour au site</a><a href={quote.href} className="header-contact">Parlons de votre événement <ArrowUpRight size={16} /></a></header>}
+    {!embedded && <header className="studio-header"><a href={SITE} className="wordmark" aria-label="EYWA, retour au site">EYWA<span>COFFEE CATERING</span></a><a href={SITE} className="back-link"><ArrowLeft size={15} /> Retour au site</a><a href={quote.href} className="header-contact">Parlons de votre événement <ArrowUpRight size={16} /></a></header>}
     <main>
       <section className="studio-intro"><p className="overline"><span /> L’ATELIER DE PERSONNALISATION</p><h1>Visualisez votre coffee bar<br />aux couleurs de <em>votre marque.</em></h1><p className="intro-copy">Votre univers. Notre savoir-faire. Une rencontre sur mesure.</p></section>
       <section className="workspace" aria-label="Personnaliser votre coffee bar">

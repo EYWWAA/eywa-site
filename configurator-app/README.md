@@ -32,6 +32,18 @@ Les références via l’administration historique sont également reconnues. Si
 
 ## Vérifications
 
+### Préparer le domaine professionnel sans couper le site existant
+
+Après installation des dépendances, exécuter depuis `configurator-app` :
+
+```sh
+node scripts/prepare-domain.mjs eywacoffeecatering.com /chemin/vers/un-nouveau-dossier
+```
+
+Le script construit une copie statique complète avec `/configurateur` comme chemin de base, les liens du devis et les métadonnées sur le nouveau domaine, et le fichier `CNAME`. Il ne modifie ni le site publié ni les DNS. Le dossier doit être neuf et extérieur au dépôt. Ne publier cette copie qu’après achat et vérification du domaine. L’export courant reste compatible avec l’adresse GitHub Pages existante.
+
+Le serveur peut être contrôlé avec `node --env-file=.env.local scripts/preflight.mjs`. Ce contrôle vérifie les prérequis locaux sans afficher de secrets ni facturer d’appel API. Le stockage SQLite/fichiers nécessite toujours un volume persistant. Une connexion au compte Vercel, à elle seule, ne rend pas cette architecture compatible avec les fonctions Vercel.
+
 `pnpm check`, `pnpm test`, `pnpm build:pages`.
 
 Les tests photographiques simulent le fournisseur : ils vérifient le passage effectif des références à Astra, le cache et le refus d’un résultat non conforme. Ils ne prouvent pas l’accès API de production ni la qualité de résultats qui n’ont pas été générés.
