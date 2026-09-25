@@ -23,3 +23,9 @@
 .service-pricing-list small { grid-column: 1 / -1; color: var(--mute, #657068); font-size: .8125rem; line-height: 1.45; }
 @media (max-width: 760px) { .travel-pricing { padding: 64px 0; } .travel-pricing-grid { grid-template-columns: 1fr; gap: 32px; } .travel-pricing h2 { font-size: 2.15rem; } }
 @media (max-width: 760px) { .service-pricing { padding: 64px 0; } .service-pricing-grid { grid-template-columns: 1fr; gap: 32px; } .service-pricing h2 { font-size: 2.15rem; } }
+
+/* La page Tarifs explique la méthode de facturation sans exposer de montants unitaires. */
+.service-pricing-list > div { grid-template-columns: 1fr; }
+.service-pricing-list strong { display: none; }
+.travel-pricing-card .travel-pricing-formula { display: none; }
+.travel-pricing-card::before { content: "Le déplacement est facturé selon la distance aller-retour et le temps de conduite nécessaires pour rejoindre votre événement."; display: block; color: #fff; font: 400 1.45rem/1.35 var(--serif, Georgia, serif); }
