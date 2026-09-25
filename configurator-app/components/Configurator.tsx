@@ -5,7 +5,7 @@ import { ArrowUpRight, ArrowLeft, ArrowRight, Check, RotateCcw, Expand, X } from
 import { defaultDesign, designNames, type DesignOptions } from '@/lib/surface-design';
 import { PRESETS, exampleNames } from '@/lib/presets';
 import { discoverBrand } from '@/lib/brand-discovery';
-import { curatedPhotos } from '@/lib/photo-catalog';
+import { curatedPhotos, catalogPhotos, loadPhotoCatalog } from '@/lib/photo-catalog';
 import { asset, type Analysis, type Visuals, type Candidate } from '@/lib/types';
 const BarViewer = dynamic(() => import('./BarViewer'), { ssr: false, loading: () => <div className="viewer viewer-placeholder"><span className="fine-spinner" /></div> });
 const SITE = process.env.NEXT_PUBLIC_SITE_URL || 'https://eywacoffeecatering.com/';
@@ -86,8 +86,10 @@ export default function Configurator() {
       if (current !== sequence.current) return;
       if (data.status === 'ambiguous') { setChoices(data.candidates); setPhase('idle'); return; }
       if (data.status === 'not_found') { setError(data.message); setNeedsDomain(true); setPhase('idle'); return; }
+      const catalog = await loadPhotoCatalog(controller.signal);
+      if (current !== sequence.current) return;
       setResult(data); setDesign(null);
-      const photos = curatedPhotos(data.branding.brand.name, data.branding.brand.domain);
+      const photos = catalogPhotos(catalog, data.branding.brand.name, data.branding.brand.domain);
       setVisuals(photos || {}); setView(photos ? 'photo' : '3d');
       if (!photos && data.mode === 'live' && data.imagesReady) await generateImages(data, current, controller.signal);
       else setPhase('idle');
@@ -126,7 +128,7 @@ export default function Configurator() {
           <div className="design-caption"><div><span className="step-label">{result ? 'VOTRE DIRECTION ARTISTIQUE' : 'UNE INSPIRATION SIGNÉE EYWA'}</span><h2>EYWA <span className="collab-times">×</span> {brand.brand.name}</h2></div><div className="palette" aria-label="Palette de la proposition">{[brand.bar.front_color, brand.bar.logo_color, brand.bar.accent_color, '#493020'].map((color, i) => <span key={i} style={{ background: color }} title={i === 3 ? 'Noyer foncé' : color} />)}</div></div>
           <p className="design-description">{view === '3d' && design ? ({signature:brand.rationale,graphic:"Une composition asymétrique, un aplat de couleur affirmé et une signature déclinée sur les côtés et les gobelets.",minimal:"Une signature plus discrète, des espaces généreux et des détails fins. Le noyer et les matières prennent toute leur place."}[look.layout]) : brand.rationale}</p><div className="proposal-meta"><span><Check size={13} /> Façade lisse</span><span><Check size={13} /> Plan de travail noyer</span><span><Check size={13} /> Identité sur mesure</span></div>
           {view === '3d' && <p className="preview-note">Projection 3D d’après la photo du bar, dimensions à confirmer. Les photos d’inspiration sont indépendantes des réglages 3D.{result?.logoStatus === 'wordmark' ? ' Logo officiel à confirmer.' : ''}</p>}
-          {result && !hasPhotos && phase === 'idle' && <p className="photo-status" role="status">Votre habillage 3D est prêt. Les nouvelles images sur mesure ne sont pas encore disponibles en ligne. <a href={quote.href} target={embedded ? '_top' : undefined}>Demander ma proposition <ArrowUpRight size={13} /></a></p>}
+          {result && !hasPhotos && phase === 'idle' && <p className="photo-status" role="status">Votre habillage 3D est prêt. Les photographies du catalogue sont enrichies progressivement. Pour une image dédiée à votre marque, <a href={quote.href} target={embedded ? '_top' : undefined}>demandez votre proposition <ArrowUpRight size={13} /></a></p>}
           {result && brand.sources.length > 0 && <details className="sources"><summary>Références de cette direction artistique</summary>{brand.sources.map(s => <a key={s.url} href={s.url} target="_blank" rel="noreferrer">{s.title} <ArrowUpRight size={12} /></a>)}</details>}
         </div>
       </section>
