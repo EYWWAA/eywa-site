@@ -1,0 +1,14 @@
+/* Bloc tarifs — coût de déplacement et logistique. */
+.travel-pricing { padding: 82px 0; background: #eeefe8; border-top: 1px solid var(--line, #dcded6); }
+.travel-pricing-grid { display: grid; grid-template-columns: minmax(0, 1.18fr) minmax(300px, .82fr); align-items: center; gap: clamp(38px, 7vw, 105px); }
+.travel-pricing h2 { max-width: 650px; margin: 0 0 22px; color: var(--green, #203d30); font: 400 clamp(2.15rem, 3.65vw, 3.4rem)/1.12 var(--serif, Georgia, serif); letter-spacing: -.035em; }
+.travel-pricing p:not(.eyebrow) { max-width: 625px; margin: 0; color: var(--mute, #657068); font-size: 1rem; line-height: 1.75; }
+.travel-pricing .eyebrow { margin: 0 0 20px; }
+.travel-pricing-detail { margin-top: 15px !important; }
+.travel-pricing-card { padding: clamp(28px, 3vw, 42px); background: var(--green, #203d30); border-radius: 5px; }
+.travel-pricing-card .travel-pricing-label { margin-bottom: 25px; color: var(--gold, #e6ce83); font-size: .75rem; font-weight: 600; letter-spacing: .15em; line-height: 1.4; text-transform: uppercase; }
+.travel-pricing-card .travel-pricing-formula { max-width: none; color: #fff; font: 400 clamp(1.6rem, 2.5vw, 2.3rem)/1.25 var(--serif, Georgia, serif); letter-spacing: -.025em; }
+.travel-pricing-formula strong { color: var(--gold, #e6ce83); font-weight: 400; white-space: nowrap; }
+.travel-pricing-formula span { display: inline-block; margin: 0 .2em; color: #cad3c9; }
+.travel-pricing-card .travel-pricing-note { max-width: none; margin-top: 25px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.22); color: #d6ded4; font-size: .875rem; line-height: 1.65; }
+@media (max-width: 760px) { .travel-pricing { padding: 64px 0; } .travel-pricing-grid { grid-template-columns: 1fr; gap: 32px; } .travel-pricing h2 { font-size: 2.15rem; } }
