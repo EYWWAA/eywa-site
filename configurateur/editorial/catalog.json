@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-25T07:03:41.418Z",
+  "updatedAt": "2026-09-25T09:00:45.179Z",
   "entries": [
     {
       "slug": "celio",
@@ -32,7 +32,9 @@
       "slug": "cupra",
       "name": "CUPRA",
       "domain": "cupraofficial.com",
-      "visuals": {}
+      "visuals": {
+        "scene": "/editorial/cupra/scene-c75069eedab4.webp"
+      }
     },
     {
       "slug": "renault",
