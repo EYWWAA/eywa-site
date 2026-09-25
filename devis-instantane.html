@@ -275,7 +275,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&amp;family=Fraunces:opsz,wght@9..144,400;9..144,600&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="devis-design.css?v=11">
+  <link rel="stylesheet" href="devis-design.css?v=12">
 </head>
 <body class="quote-form">
 
@@ -417,36 +417,22 @@
     <div class="step" id="s4">
       <div class="question">Quel type d'événement&nbsp;?</div>
       <div class="question-sub">Optionnel. Sélectionnez une option ou passez directement à la suite.</div>
+      <div class="event-group-label">Événements professionnels</div>
       <div class="type-grid">
-        <div class="type-opt" data-val="Mariage" onclick="selectType(this)">
-          <div class="type-name">Mariage</div>
-          <div class="type-sub">Cérémonie, cocktail</div>
-        </div>
-        <div class="type-opt" data-val="Anniversaire" onclick="selectType(this)">
-          <div class="type-name">Anniversaire</div>
-          <div class="type-sub">Fête privée, célébration</div>
-        </div>
-        <div class="type-opt" data-val="Entreprise / Bureau" onclick="selectType(this)">
-          <div class="type-name">Entreprise / Bureau</div>
-          <div class="type-sub">Séminaire, team building</div>
-        </div>
-        <div class="type-opt" data-val="Activation de marque" onclick="selectType(this)">
-          <div class="type-name">Activation de marque</div>
-          <div class="type-sub">Lancement, pop-up, stand</div>
-        </div>
-        <div class="type-opt" data-val="Conférence / Expo" onclick="selectType(this)">
-          <div class="type-name">Conférence / Expo</div>
-        </div>
-        <div class="type-opt" data-val="École / Église / Domicile" onclick="selectType(this)">
-          <div class="type-name">École / Église / Domicile</div>
-        </div>
-        <div class="type-opt full-row" data-val="Autre" onclick="selectType(this)">
-          <div class="type-name">Autre événement</div>
-          <div class="type-sub">Décrivez-le ci-dessous</div>
-        </div>
+        <button type="button" class="type-opt" data-val="Événement d’entreprise" aria-pressed="false" onclick="selectType(this)"><span class="type-name">Événement d’entreprise</span></button>
+        <button type="button" class="type-opt" data-val="Activation de marque" aria-pressed="false" onclick="selectType(this)"><span class="type-name">Activation de marque</span></button>
+        <button type="button" class="type-opt" data-val="Séminaire / Congrès" aria-pressed="false" onclick="selectType(this)"><span class="type-name">Séminaire / Congrès</span></button>
+        <button type="button" class="type-opt" data-val="Lancement de produit" aria-pressed="false" onclick="selectType(this)"><span class="type-name">Lancement de produit</span></button>
+        <button type="button" class="type-opt" data-val="Accueil sur mesure" aria-pressed="false" onclick="selectType(this)"><span class="type-name">Accueil sur mesure</span></button>
       </div>
+      <div class="event-group-label">Événements privés</div>
+      <div class="type-grid">
+        <button type="button" class="type-opt" data-val="Mariage" aria-pressed="false" onclick="selectType(this)"><span class="type-name">Mariage</span></button>
+        <button type="button" class="type-opt" data-val="Anniversaire" aria-pressed="false" onclick="selectType(this)"><span class="type-name">Anniversaire</span></button>
+      </div>
+      <button type="button" class="type-opt event-other" data-val="Autre" aria-pressed="false" onclick="selectType(this)"><span class="type-name">Autre événement</span><span class="type-sub">Précisez votre événement</span></button>
       <div class="autre-wrap" id="autre-wrap">
-        <input type="text" id="autre-input" placeholder="Décrivez votre événement en quelques mots…">
+        <input aria-label="Votre événement" type="text" id="autre-input" placeholder="Décrivez votre événement en quelques mots…">
       </div>
       <div style="margin-top: 1rem;">
         <div class="input-label">Détails supplémentaires <span style="font-weight:400;text-transform:none;letter-spacing:0;">(optionnel)</span></div>
@@ -751,12 +737,14 @@
   function selectType(el) {
     if (el.classList.contains('selected')) {
       el.classList.remove('selected');
+      el.setAttribute('aria-pressed', 'false');
       A.type = '';
       document.getElementById('autre-wrap').classList.remove('show');
       return;
     }
-    document.querySelectorAll('.type-opt').forEach(function(c) { c.classList.remove('selected'); });
+    document.querySelectorAll('.type-opt').forEach(function(c) { c.classList.remove('selected'); c.setAttribute('aria-pressed', 'false'); });
     el.classList.add('selected');
+    el.setAttribute('aria-pressed', 'true');
     A.type = el.dataset.val;
     var wrap = document.getElementById('autre-wrap');
     if (A.type === 'Autre') wrap.classList.add('show');

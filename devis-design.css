@@ -264,3 +264,8 @@ body.quote-booking { height:100vh; height:100dvh; min-height:0; overflow:hidden;
 .quote-form .step.active, .quote-form .step-content { flex:0 1 auto; }
 .quote-booking .card { flex:0 1 auto; max-height:100%; }
 .quote-booking .step, .quote-booking .booking-content { flex:0 1 auto; }
+
+.event-group-label { margin:14px 0 9px; font-size:11px; font-weight:600; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; }
+.quote-form button.type-opt { font-family:var(--sans); color:var(--text); background:white; text-align:left; min-height:46px; padding:12px; }
+.quote-form button.type-opt.selected { background:#edf0e9; border-color:var(--green); }
+.quote-form .event-other { width:100%; display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:12px; }
