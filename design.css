@@ -445,3 +445,11 @@ footer { padding: 55px 0 36px; }
 
 /* Editorial photographs keep their intended card proportions. */
 .event-portrait img, .teaser-grid img { height: auto; }
+
+.eywa-home .real-coffee-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.eywa-home .real-coffee-grid img { width: 100%; height: auto; aspect-ratio: auto; }
+.eywa-home .real-coffee-grid figcaption { margin-top: 14px; font-size: .9rem; color: var(--green); }
+@media (max-width: 600px) { .eywa-home .real-coffee-grid { grid-template-columns: 1fr; } }
+
+.eywa-home .real-coffee-grid figure { aspect-ratio: auto; margin: 0; }
+.eywa-home .real-coffee-grid figure:nth-child(2n) { margin-top: 0; }
