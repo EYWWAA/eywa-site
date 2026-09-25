@@ -468,3 +468,9 @@ footer { padding: 55px 0 36px; }
   .event-types-compact .event-portraits { gap: 10px; margin-top: 20px; }
   .event-types-compact .event-portrait { padding: 16px 18px; }
 }
+
+.private-reception { display: flex; align-items: center; gap: 28px; margin-top: 24px; padding-top: 20px; border-top: 1px solid #d8ddd3; }
+.private-reception p { flex: 1; margin: 0; font-size: .875rem; line-height: 1.65; color: var(--mute); }
+.private-reception strong { color: var(--green); }
+.private-reception .text-link { flex-shrink: 0; font-size: .875rem; }
+@media (max-width: 700px) { .private-reception { display: block; } .private-reception .text-link { margin-top: 12px; } }
