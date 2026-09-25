@@ -453,3 +453,18 @@ footer { padding: 55px 0 36px; }
 
 .eywa-home .real-coffee-grid figure { aspect-ratio: auto; margin: 0; }
 .eywa-home .real-coffee-grid figure:nth-child(2n) { margin-top: 0; }
+
+/* Compact audience overview, without repeated event photographs. */
+.eywa-home .event-types-compact { padding: 44px 0; }
+.event-types-compact .section-head { text-align: left; margin-bottom: 0; }
+.event-types-compact .section-title { font-size: clamp(1.6rem, 2.5vw, 2.3rem); }
+.event-types-compact .event-portraits { margin-top: 24px; gap: 16px; }
+.event-types-compact .event-portrait { padding: 20px 22px; border: 1px solid #d8ddd3; border-radius: 4px; }
+.event-types-compact .event-portrait h3 { margin: 0 0 8px; font-size: 1.35rem; }
+.event-types-compact .event-portrait:hover { background: #eeefe8; }
+.event-types-compact .event-portrait:focus-visible { outline: 2px solid #244235; outline-offset: 4px; }
+@media (max-width: 600px) {
+  .eywa-home .event-types-compact { padding: 32px 0; }
+  .event-types-compact .event-portraits { gap: 10px; margin-top: 20px; }
+  .event-types-compact .event-portrait { padding: 16px 18px; }
+}
