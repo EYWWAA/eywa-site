@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-25T09:00:45.179Z",
+  "updatedAt": "2026-09-25T09:06:38.782Z",
   "entries": [
     {
       "slug": "celio",
@@ -40,7 +40,9 @@
       "slug": "renault",
       "name": "Renault",
       "domain": "renault.com",
-      "visuals": {}
+      "visuals": {
+        "scene": "/editorial/renault/scene-27ff1a104e08.webp"
+      }
     }
   ]
 }
