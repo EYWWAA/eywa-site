@@ -4,13 +4,42 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import sharp from 'sharp';
-import { curatedPhotos } from '../lib/photo-catalog';
+import { curatedPhotos, catalogPhotos, PhotoCatalogSchema, loadPhotoCatalog } from '../lib/photo-catalog';
 import { PRESETS } from '../lib/presets';
 
 test('Curated photographs never leak from Celio into another company proposal', () => {
   assert.ok(curatedPhotos('Celio', 'celio.com')?.scene);
   assert.ok(curatedPhotos(' celio* ', 'www.celio.com')?.latte);
   for (const [name, domain] of [['Adidas', 'adidas.com'], ['EYWA Atelier', ''], ['Celio', 'celio-finance.fr']]) assert.equal(curatedPhotos(name, domain), null);
+});
+
+test('Published catalog matches both brand and domain and preserves the offline Celio fallback', () => {
+  const catalog = PhotoCatalogSchema.parse({ version: 1, updatedAt: new Date().toISOString(), entries: [
+    { slug: 'nike', name: 'Nike', domain: 'nike.com', visuals: { scene: '/editorial/nike/scene-v1.webp' } },
+    { slug: 'dior', name: 'Dior', domain: 'dior.com', visuals: {} },
+  ] });
+  assert.ok(catalogPhotos(catalog, ' NIKE ', 'https://www.nike.com/')?.scene?.endsWith('/editorial/nike/scene-v1.webp'));
+  assert.equal(catalogPhotos(catalog, 'Nike', 'nike-finance.fr'), null);
+  assert.equal(catalogPhotos(catalog, 'Adidas', 'nike.com'), null);
+  assert.equal(catalogPhotos(catalog, 'Dior', 'dior.com'), null);
+  assert.ok(catalogPhotos(null, 'Celio', 'celio.com')?.scene);
+});
+
+test('Catalog fetch rejects remote or traversal image paths and fails gracefully without paid fallbacks', async () => {
+  const fetch = globalThis.fetch;
+  const valid = { version: 1, updatedAt: new Date().toISOString(), entries: [{ slug: 'nike', name: 'Nike', domain: 'nike.com', visuals: { scene: '/editorial/nike/scene-v1.webp' } }] };
+  const urls: string[] = [];
+  try {
+    globalThis.fetch = async url => { urls.push(String(url)); return Response.json(valid); };
+    assert.ok(await loadPhotoCatalog());
+    for (const scene of ['https://example.com/tracker.png', '/editorial/../private/photo.png', '/editorial/nike/%2e%2e.png']) {
+      globalThis.fetch = async () => Response.json({ ...valid, entries: [{ ...valid.entries[0], visuals: { scene } }] });
+      assert.equal(await loadPhotoCatalog(), null);
+    }
+    globalThis.fetch = async () => { throw Error('offline'); };
+    assert.equal(await loadPhotoCatalog(), null);
+    assert.ok(urls.every(url => url.endsWith('/editorial/catalog.json')));
+  } finally { globalThis.fetch = fetch; }
 });
 
 test('Actual photograph orchestration uses Astra references, caches successes and withholds failed quality reviews', async () => {

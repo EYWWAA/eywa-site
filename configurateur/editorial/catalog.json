@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "updatedAt": "2026-09-24T21:41:22.456Z",
+  "entries": [
+    {
+      "slug": "celio",
+      "name": "Celio",
+      "domain": "celio.com",
+      "visuals": {
+        "scene": "/editorial/celio/scene-v1.webp",
+        "cup": "/editorial/celio/cup-v1.webp",
+        "latte": "/editorial/celio/latte-v1.webp"
+      }
+    },
+    {
+      "slug": "nike",
+      "name": "Nike",
+      "domain": "nike.com",
+      "visuals": {
+        "scene": "/editorial/nike/scene-9bacdafa091a.webp"
+      }
+    },
+    {
+      "slug": "dior",
+      "name": "Dior",
+      "domain": "dior.com",
+      "visuals": {}
+    },
+    {
+      "slug": "cupra",
+      "name": "CUPRA",
+      "domain": "cupraofficial.com",
+      "visuals": {}
+    },
+    {
+      "slug": "renault",
+      "name": "Renault",
+      "domain": "renault.com",
+      "visuals": {}
+    }
+  ]
+}
