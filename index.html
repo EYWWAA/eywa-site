@@ -160,7 +160,7 @@
   </style>
   <link rel="stylesheet" href="header.css?v=hdr-19">
   <link rel="stylesheet" href="home.css?v=home-21">
-  <link rel="stylesheet" href="design.css?v=editorial-12">
+  <link rel="stylesheet" href="design.css?v=editorial-13">
 </head>
 <body class="eywa-home">
   <header class="wrap nav">
@@ -234,11 +234,24 @@
       </div>
     </section>
 
-    <section class="journey" id="comment-ca-marche" aria-labelledby="journey-title">
+    <section class="journey journey-with-film" id="comment-ca-marche" aria-labelledby="journey-title">
       <div class="wrap journey-grid">
-        <figure class="editorial-photo journey-photo">
-          <img src="assets/gallery-v4/13-sephora.webp" alt="Projection d’un service de café lors d’un événement Sephora" loading="lazy" width="1086" height="1448">
-        </figure>
+        <div class="journey-film">
+          <div class="film-heading"><span>Le film EYWA</span><span>1 min 59</span></div>
+          <video controls playsinline preload="none" poster="assets/video/eywa-animation-v2-poster.webp" aria-label="Comment fonctionne EYWA : le concept, le devis et le jour J" aria-describedby="eywa-film-caption">
+            <source src="assets/video/eywa-animation-v2.mp4" type="video/mp4">
+            <track kind="captions" src="assets/video/eywa-animation-v2.fr.vtt" srclang="fr" label="Français">
+            Votre navigateur ne peut pas lire cette vidéo. <a href="assets/video/eywa-animation-v2.mp4">Ouvrir le film EYWA</a>.
+          </video>
+          <p class="film-caption" id="eywa-film-caption">Le concept, la personnalisation et votre réservation, expliqués en moins de deux minutes.</p>
+          <details class="film-transcript">
+            <summary>Lire le déroulé du film</summary>
+            <p>EYWA installe un coffee bar pour accueillir vos clients, vos collaborateurs et vos invités, à Charleville-Mézières, Reims et au-delà. Un barista prépare sur place cafés, lattes, cappuccinos, matcha et chocolat.</p>
+            <p>Nous définissons ensemble le format et la durée. L’installation a lieu avant l’arrivée de vos invités ; le rangement est compris et ne réduit pas le temps de service. Un emplacement, une prise électrique et un accès adapté sont à prévoir.</p>
+            <p>Le comptoir, les gobelets, la carte et les tenues peuvent être personnalisés. Les options et leur tarif sont précisés avec vous, puis vous validez le visuel avant production.</p>
+            <p>Pour obtenir votre devis, indiquez les informations de l’événement, la durée, le nombre d’invités et vos coordonnées. Contactez-nous si vous avez besoin d’aide pour choisir. Nous validons les détails et la disponibilité avec vous avant de finaliser la réservation en ligne.</p>
+          </details>
+        </div>
         <div class="journey-copy">
           <p class="section-kicker">Comment ça marche ?</p>
           <h2 id="journey-title">Du devis<br>au dernier café.</h2>

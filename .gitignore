@@ -5,3 +5,4 @@ configurator-app/.env*
 configurator-app/data/
 configurator-app/*.tsbuildinfo
 configurator-app/.export-stage/
+video-source/__pycache__/
