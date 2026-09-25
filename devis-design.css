@@ -234,7 +234,7 @@ body.quote-booking { height:100vh; height:100dvh; min-height:0; overflow:hidden;
 .quote-form .picker-trigger { width:100%; min-height:48px; display:flex; justify-content:space-between; align-items:center; gap:8px; padding:12px; background:white; color:var(--green); border:1px solid var(--border); border-radius:4px; font:400 14px var(--sans); cursor:pointer; text-align:left; }
 .quote-form .picker-trigger:hover { border-color:var(--green); background:var(--cream); }
 .quote-picker { position:fixed; inset:0; margin:auto; width:min(420px,calc(100% - 32px)); max-height:calc(100dvh - 32px); padding:24px; overflow:auto; color:var(--green); background:var(--cream); border:1px solid #cbb77b; border-radius:12px; box-shadow:0 20px 70px #152b2233; }
-.quote-picker::backdrop { background:#152b2266; backdrop-filter:blur(3px); }
+.quote-picker::backdrop { background:rgba(21,43,34,.12); backdrop-filter:none; }
 .picker-heading { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:18px; }
 .picker-heading h2 { font:400 25px/1.2 var(--serif); margin:0; }
 .quote-picker button { font-family:var(--sans); cursor:pointer; color:var(--green); }
