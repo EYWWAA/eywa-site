@@ -1,13 +1,13 @@
 {
   "hero": {
-    "sur_titre": "Tarifs coffee catering",
-    "titre": "Plus accessible que vous ne l'imaginez. Plus simple à réserver que vous ne le pensez.",
-    "texte": "Beaucoup d'entreprises imaginent qu'un barista privé et un coffee bar mobile sont hors budget. Obtenez votre tarif personnalisé en moins de 60 secondes, sans appel et sans attente."
+    "sur_titre": "Tarifs EYWA",
+    "titre": "Un coffee bar d’exception, pensé pour votre événement.",
+    "texte": "Votre devis se compose de deux éléments : votre prestation et le déplacement. Chaque montant est expliqué ci-dessous, pour vous permettre de décider simplement."
   },
   "devis": {
-    "titre": "Votre devis en 60 secondes",
-    "texte": "Répondez à quelques questions simples. Vous voyez une estimation et pouvez vérifier la disponibilité de votre date.",
-    "bouton": "Voir mon tarif personnalisé"
+    "titre": "Votre devis instantané",
+    "texte": "Répondez à quelques questions simples. Vous recevez une estimation détaillée, puis nous vérifions votre date.",
+    "bouton": "Obtenir mon devis instantané"
   },
   "appel": {
     "titre": "Connaissez votre prix maintenant.",
