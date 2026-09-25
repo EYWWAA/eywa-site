@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-25T11:00:00.000Z",
+  "updatedAt": "2026-09-25T11:03:56.576Z",
   "entries": [
     {
       "slug": "celio",
@@ -26,7 +26,8 @@
       "name": "Dior",
       "domain": "dior.com",
       "visuals": {
-        "scene": "/editorial/dior/scene-v4.webp"
+        "scene": "/editorial/dior/scene-v4.webp",
+        "cup": "/editorial/dior/cup-3f2008626109.webp"
       }
     },
     {
