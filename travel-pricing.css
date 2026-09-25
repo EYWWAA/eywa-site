@@ -29,3 +29,30 @@
 .service-pricing-list strong { display: none; }
 .travel-pricing-card .travel-pricing-formula { display: none; }
 .travel-pricing-card::before { content: "Le déplacement est facturé selon la distance aller-retour et le temps de conduite nécessaires pour rejoindre votre événement."; display: block; color: #fff; font: 400 1.45rem/1.35 var(--serif, Georgia, serif); }
+
+/* Présentation courte de la page Tarifs. Les anciens blocs sont conservés
+   hors affichage pendant la transition éditoriale. */
+main > .section:has(.price-layout), .service-pricing, .travel-pricing { display: none; }
+.tariff-overview { padding: 96px 0; background: #f8f7f3; }
+.tariff-overview-head { max-width: 720px; margin-bottom: 56px; }
+.tariff-overview .eyebrow { margin: 0 0 20px; }
+.tariff-overview h2 { margin: 0 0 22px; color: var(--green, #203d30); font: 400 clamp(2.15rem, 3.65vw, 3.45rem)/1.12 var(--serif, Georgia, serif); letter-spacing: -.035em; }
+.tariff-overview-head > p:not(.eyebrow) { max-width: 620px; margin: 0; color: var(--mute, #657068); font-size: 1rem; line-height: 1.75; }
+.tariff-overview-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+.tariff-overview-grid article { padding: clamp(30px, 4vw, 46px); border: 1px solid var(--line, #dcded6); border-radius: 5px; background: #fff; }
+.tariff-overview-grid article:last-child { color: #fff; border-color: var(--green, #203d30); background: var(--green, #203d30); }
+.tariff-overview-number { margin: 0 0 42px; color: #75816d; font: 400 3.4rem/1 var(--serif, Georgia, serif); }
+.tariff-overview-grid article:last-child .tariff-overview-number { color: var(--gold, #e6ce83); }
+.tariff-overview-grid h3 { margin: 0 0 16px; color: var(--green, #203d30); font: 400 2rem/1.12 var(--serif, Georgia, serif); letter-spacing: -.025em; }
+.tariff-overview-grid article:last-child h3 { color: #fff; }
+.tariff-overview-grid p:not(.tariff-overview-number) { margin: 0; color: var(--mute, #657068); font-size: .9375rem; line-height: 1.75; }
+.tariff-overview-grid article:last-child p:not(.tariff-overview-number) { color: #d6ded4; }
+.tariff-overview-grid ul { margin: 28px 0 0; padding: 22px 0 0; border-top: 1px solid var(--line, #dcded6); list-style: none; }
+.tariff-overview-grid article:last-child ul { border-color: rgba(255,255,255,.22); }
+.tariff-overview-grid li { position: relative; margin: 11px 0; padding-left: 18px; color: var(--green, #203d30); font-size: .875rem; line-height: 1.45; }
+.tariff-overview-grid li::before { content: "•"; position: absolute; left: 0; color: #897b4e; }
+.tariff-overview-grid article:last-child li { color: #d6ded4; }
+.tariff-overview-cta { display: flex; align-items: center; justify-content: space-between; gap: 36px; margin-top: 38px; padding-top: 34px; border-top: 1px solid var(--line, #dcded6); }
+.tariff-overview-cta p { max-width: 560px; margin: 0; color: var(--mute, #657068); font-size: .9375rem; line-height: 1.65; }
+.tariff-overview-cta .button { flex: 0 0 auto; color: #fff; background: var(--green, #203d30); }
+@media (max-width: 760px) { .tariff-overview { padding: 64px 0; } .tariff-overview-head { margin-bottom: 36px; } .tariff-overview h2 { font-size: 2.15rem; } .tariff-overview-grid { grid-template-columns: 1fr; gap: 16px; } .tariff-overview-grid article { padding: 30px 25px; } .tariff-overview-number { margin-bottom: 26px; font-size: 2.8rem; } .tariff-overview-cta { display: block; margin-top: 30px; } .tariff-overview-cta .button { width: 100%; margin-top: 22px; justify-content: space-between; } }
