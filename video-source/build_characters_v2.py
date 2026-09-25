@@ -1,4 +1,4 @@
-"""EYWA character animation, 114 seconds. Reuses the original editable character rig.
+"""EYWA character animation, under two minutes. Reuses the original editable character rig.
 Run with the workspace Python (Pillow). Sources/audio remain in ../eywa-video-apercu.
 """
 from pathlib import Path
@@ -213,7 +213,7 @@ def poster():
     art.character(a,934,617,.99,'barista','wave',2,.7)
     bar(a,414,440,448,2)
     seconds=int(META['duration'])
-    badge(a,468,632,f'Le film EYWA · {seconds//60} min {seconds%60:02}',343)
+    badge(a,468,632,f'Vidéo explicative · {seconds//60} min {seconds%60:02}',343)
     return a.finish()
 
 def stamp(t):
@@ -221,11 +221,11 @@ def stamp(t):
 
 def main():
     OUT.mkdir(exist_ok=True)
-    poster().save(OUT/'eywa-animation-v2-poster.webp',quality=92)
+    poster().save(OUT/'eywa-animation-v3-poster.webp',quality=92)
     preview=SRC/'animation-v2-controles';preview.mkdir(exist_ok=True)
     for i,ch in enumerate(META['chapters']):draw(i,ch['duration']*.7,ch['duration']).save(preview/f'{i+1}.jpg')
     if '--preview' in sys.argv:return
-    out=OUT/'eywa-animation-v2.mp4'
+    out=OUT/'eywa-animation-v3.mp4'
     proc=subprocess.Popen([FF,'-y','-loglevel','error','-f','rawvideo','-pix_fmt','rgb24','-s','1280x720','-r',str(FPS),'-i','-','-i',str(SRC/'narration-paula.wav'),'-map','0:v','-map','1:a','-c:v','libx264','-preset','fast','-crf','19','-pix_fmt','yuv420p','-c:a','aac','-b:a','160k','-movflags','+faststart',str(out)],stdin=subprocess.PIPE)
     last=None
     for i,ch in enumerate(META['chapters']):
@@ -239,11 +239,11 @@ def main():
     cues=['WEBVTT','']
     for ch in META['chapters']:
         sentences=re.split(r'(?<=[.!?])\s+',ch['narration']);total=sum(len(s) for s in sentences);at=ch['start']+.15
-        speech=ch['duration']-(2.35 if ch is META['chapters'][-1] else .35)
+        speech=ch['speechDuration']
         for sentence in sentences:
             end=at+speech*len(sentence)/total
             cues.extend([f'{stamp(at)} --> {stamp(end)}',sentence,'']);at=end
-    (OUT/'eywa-animation-v2.fr.vtt').write_text('\n'.join(cues))
+    (OUT/'eywa-animation-v3.fr.vtt').write_text('\n'.join(cues))
     print(out,flush=True)
 
 if __name__=='__main__':main()
