@@ -11,4 +11,15 @@
 .travel-pricing-formula strong { color: var(--gold, #e6ce83); font-weight: 400; white-space: nowrap; }
 .travel-pricing-formula span { display: inline-block; margin: 0 .2em; color: #cad3c9; }
 .travel-pricing-card .travel-pricing-note { max-width: none; margin-top: 25px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.22); color: #d6ded4; font-size: .875rem; line-height: 1.65; }
+.service-pricing { padding: 82px 0; background: #f8f7f3; }
+.service-pricing-grid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(380px, 1.2fr); align-items: start; gap: clamp(40px, 7vw, 105px); }
+.service-pricing h2 { max-width: 540px; margin: 0 0 22px; color: var(--green, #203d30); font: 400 clamp(2.15rem, 3.65vw, 3.4rem)/1.12 var(--serif, Georgia, serif); letter-spacing: -.035em; }
+.service-pricing > .wrap > div > p:not(.eyebrow) { max-width: 520px; margin: 0; color: var(--mute, #657068); font-size: 1rem; line-height: 1.75; }
+.service-pricing .eyebrow { margin: 0 0 20px; }
+.service-pricing-list { border-top: 1px solid var(--line, #dcded6); }
+.service-pricing-list > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 5px 28px; padding: 19px 0; border-bottom: 1px solid var(--line, #dcded6); }
+.service-pricing-list span { color: var(--green, #203d30); font-size: .9375rem; font-weight: 600; }
+.service-pricing-list strong { color: var(--green, #203d30); font: 400 1.35rem/1.2 var(--serif, Georgia, serif); white-space: nowrap; }
+.service-pricing-list small { grid-column: 1 / -1; color: var(--mute, #657068); font-size: .8125rem; line-height: 1.45; }
 @media (max-width: 760px) { .travel-pricing { padding: 64px 0; } .travel-pricing-grid { grid-template-columns: 1fr; gap: 32px; } .travel-pricing h2 { font-size: 2.15rem; } }
+@media (max-width: 760px) { .service-pricing { padding: 64px 0; } .service-pricing-grid { grid-template-columns: 1fr; gap: 32px; } .service-pricing h2 { font-size: 2.15rem; } }
