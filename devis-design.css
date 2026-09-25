@@ -259,3 +259,8 @@ body.quote-booking { height:100vh; height:100dvh; min-height:0; overflow:hidden;
 .precise-time input { min-width:0; flex:1; }
 .precise-time button { padding:10px 16px; border:0; background:var(--gold); border-radius:4px; }
 @media(max-width:380px){ .quote-picker { padding:18px; } .picker-heading h2 { font-size:22px; } .calendar-selects select { max-width:105px; } }
+/* Toutes les étapes épousent leur contenu ; la hauteur d’écran reste une limite. */
+.quote-form .form-card { flex:0 1 auto; max-height:100%; }
+.quote-form .step.active, .quote-form .step-content { flex:0 1 auto; }
+.quote-booking .card { flex:0 1 auto; max-height:100%; }
+.quote-booking .step, .quote-booking .booking-content { flex:0 1 auto; }
