@@ -231,3 +231,31 @@ body.quote-booking { height:100vh; height:100dvh; min-height:0; overflow:hidden;
 .quote-form #time-select { width:100%; min-height:48px; padding:12px 10px; border:1px solid var(--border); border-radius:4px; background:white; color:var(--text); font:400 15px var(--sans); }
 .quote-form #custom-time { margin-top:12px; }
 .quote-form #custom-time .input-label { display:block; margin-bottom:6px; }
+.quote-form .picker-trigger { width:100%; min-height:48px; display:flex; justify-content:space-between; align-items:center; gap:8px; padding:12px; background:white; color:var(--green); border:1px solid var(--border); border-radius:4px; font:400 14px var(--sans); cursor:pointer; text-align:left; }
+.quote-form .picker-trigger:hover { border-color:var(--green); background:var(--cream); }
+.quote-picker { position:fixed; inset:0; margin:auto; width:min(420px,calc(100% - 32px)); max-height:calc(100dvh - 32px); padding:24px; overflow:auto; color:var(--green); background:var(--cream); border:1px solid #cbb77b; border-radius:12px; box-shadow:0 20px 70px #152b2233; }
+.quote-picker::backdrop { background:#152b2266; backdrop-filter:blur(3px); }
+.picker-heading { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:18px; }
+.picker-heading h2 { font:400 25px/1.2 var(--serif); margin:0; }
+.quote-picker button { font-family:var(--sans); cursor:pointer; color:var(--green); }
+.picker-close { flex:none; width:36px; height:36px; border:1px solid var(--border); border-radius:50%; background:transparent; font-size:24px; }
+.calendar-nav { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:16px; }
+.calendar-nav > button { width:36px; height:36px; background:white; border:1px solid var(--border); border-radius:4px; font-size:24px; }
+.calendar-selects { display:flex; gap:5px; }
+.calendar-selects select { max-width:130px; padding:8px 4px; border:0; color:var(--green); background:transparent; font:500 14px var(--sans); }
+.calendar-week,.calendar-days { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:5px; }
+.calendar-week { text-align:center; color:var(--muted); font-size:11px; margin-bottom:8px; }
+.calendar-days button { aspect-ratio:1; border:1px solid transparent; border-radius:50%; background:transparent; font-size:14px; }
+.calendar-days button[aria-current] { border-color:#ba953b; }
+.calendar-days button:disabled,.calendar-nav button:disabled { opacity:.25; cursor:default; }
+.calendar-days button:hover:not(:disabled),.time-grid button:hover { background:#edf0e9; border-color:var(--green); }
+.calendar-days button[aria-pressed=true],.time-grid button[aria-pressed=true] { background:var(--green); color:white; }
+.picker-note { color:var(--muted); font:400 12px/1.6 var(--sans); margin:12px 0; }
+.time-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; }
+.time-grid button { padding:10px 4px; min-height:40px; border:1px solid var(--border); border-radius:5px; background:white; font-size:13px; }
+.precise-time { margin-top:18px; border-top:1px solid var(--border); padding-top:14px; font-size:12px; }
+.precise-time summary { cursor:pointer; }
+.precise-time > div { display:flex; gap:10px; margin-top:12px; }
+.precise-time input { min-width:0; flex:1; }
+.precise-time button { padding:10px 16px; border:0; background:var(--gold); border-radius:4px; }
+@media(max-width:380px){ .quote-picker { padding:18px; } .picker-heading h2 { font-size:22px; } .calendar-selects select { max-width:105px; } }

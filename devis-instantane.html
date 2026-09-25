@@ -275,7 +275,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&amp;family=Fraunces:opsz,wght@9..144,400;9..144,600&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="devis-design.css?v=8">
+  <link rel="stylesheet" href="devis-design.css?v=9">
 </head>
 <body class="quote-form">
 
@@ -389,16 +389,14 @@
       <div class="question-sub">Nous vérifierons notre disponibilité pour cette date.</div>
       <div class="input-row">
         <div>
-          <div class="input-label">Date</div>
-          <input type="date" id="date-input" min="2026-08-12" oninput="checkS3()">
+          <label class="input-label" for="date-trigger">Date</label>
+          <button type="button" class="picker-trigger" id="date-trigger" aria-haspopup="dialog"><span>Choisir une date</span><span aria-hidden="true">▦</span></button>
+          <input type="hidden" id="date-input">
         </div>
         <div>
-          <label class="input-label" for="time-select">Heure de début</label>
-          <select id="time-select" onchange="selectStartTime()"><option value="">Choisir une heure</option><option value="08:00">8h00</option><option value="08:30">8h30</option><option value="09:00">9h00</option><option value="09:30">9h30</option><option value="10:00">10h00</option><option value="10:30">10h30</option><option value="11:00">11h00</option><option value="11:30">11h30</option><option value="12:00">12h00</option><option value="12:30">12h30</option><option value="13:00">13h00</option><option value="13:30">13h30</option><option value="14:00">14h00</option><option value="14:30">14h30</option><option value="15:00">15h00</option><option value="15:30">15h30</option><option value="16:00">16h00</option><option value="16:30">16h30</option><option value="17:00">17h00</option><option value="17:30">17h30</option><option value="18:00">18h00</option><option value="18:30">18h30</option><option value="19:00">19h00</option><option value="19:30">19h30</option><option value="20:00">20h00</option><option value="20:30">20h30</option><option value="21:00">21h00</option><option value="21:30">21h30</option><option value="22:00">22h00</option><option value="22:30">22h30</option><option value="23:00">23h00</option><option value="23:30">23h30</option><option value="custom">Autre horaire précis…</option></select>
-          <div id="custom-time" hidden>
-            <label class="input-label" for="time-input">Votre horaire précis</label>
-            <input type="time" id="time-input" oninput="checkS3()">
-          </div>
+          <label class="input-label" for="time-trigger">Heure de début</label>
+          <button type="button" class="picker-trigger" id="time-trigger" aria-haspopup="dialog"><span>Choisir une heure</span><span aria-hidden="true">◷</span></button>
+          <input type="hidden" id="time-input">
         </div>
       </div>
       <div class="days-row">
@@ -739,16 +737,6 @@
   }
 
   /* S3 */
-  function selectStartTime() {
-    var choice = document.getElementById('time-select').value;
-    var custom = choice === 'custom';
-    document.getElementById('custom-time').hidden = !custom;
-    var input = document.getElementById('time-input');
-    if (!custom) input.value = choice;
-    checkS3();
-    if (custom) input.focus();
-  }
-
   function checkS3() {
     var ok = document.getElementById('date-input').value && document.getElementById('time-input').value;
     document.getElementById('btn3').classList[ok ? 'remove' : 'add']('disabled');
@@ -976,5 +964,19 @@
   })();
 
 </script>
+<dialog class="quote-picker" id="date-picker" aria-labelledby="date-picker-title">
+  <div class="picker-heading"><h2 id="date-picker-title">La date de votre événement</h2><button type="button" class="picker-close" data-close aria-label="Fermer le calendrier">×</button></div>
+  <div class="calendar-nav"><button type="button" id="month-prev" aria-label="Mois précédent">‹</button><div class="calendar-selects"><select id="calendar-month" aria-label="Mois"></select><select id="calendar-year" aria-label="Année"></select></div><button type="button" id="month-next" aria-label="Mois suivant">›</button></div>
+  <div class="calendar-week" aria-hidden="true"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span></div>
+  <div class="calendar-days" id="calendar-days"></div>
+  <p class="picker-note">La disponibilité sera confirmée par EYWA.</p>
+</dialog>
+<dialog class="quote-picker" id="time-picker" aria-labelledby="time-picker-title">
+  <div class="picker-heading"><h2 id="time-picker-title">À quelle heure ?</h2><button type="button" class="picker-close" data-close aria-label="Fermer les horaires">×</button></div>
+  <p class="picker-note">Heure de début du service · Toutes les 30 minutes</p>
+  <div class="time-grid" id="time-grid"></div>
+  <details class="precise-time"><summary>Besoin d’un horaire plus précis ?</summary><div><input type="time" id="precise-time" aria-label="Horaire précis"><button type="button" id="apply-time">Choisir</button></div></details>
+</dialog>
+<script src="devis-pickers.js?v=1"></script>
 </body>
 </html>
