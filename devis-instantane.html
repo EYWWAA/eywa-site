@@ -275,7 +275,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&amp;family=Fraunces:opsz,wght@9..144,400;9..144,600&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="devis-design.css?v=7">
+  <link rel="stylesheet" href="devis-design.css?v=8">
 </head>
 <body class="quote-form">
 
@@ -393,8 +393,12 @@
           <input type="date" id="date-input" min="2026-08-12" oninput="checkS3()">
         </div>
         <div>
-          <div class="input-label">Heure de début</div>
-          <input type="time" id="time-input" oninput="checkS3()">
+          <label class="input-label" for="time-select">Heure de début</label>
+          <select id="time-select" onchange="selectStartTime()"><option value="">Choisir une heure</option><option value="00:00">Minuit (00h00)</option><option value="00:15">0h15</option><option value="00:30">0h30</option><option value="00:45">0h45</option><option value="01:00">1h00</option><option value="01:15">1h15</option><option value="01:30">1h30</option><option value="01:45">1h45</option><option value="02:00">2h00</option><option value="02:15">2h15</option><option value="02:30">2h30</option><option value="02:45">2h45</option><option value="03:00">3h00</option><option value="03:15">3h15</option><option value="03:30">3h30</option><option value="03:45">3h45</option><option value="04:00">4h00</option><option value="04:15">4h15</option><option value="04:30">4h30</option><option value="04:45">4h45</option><option value="05:00">5h00</option><option value="05:15">5h15</option><option value="05:30">5h30</option><option value="05:45">5h45</option><option value="06:00">6h00</option><option value="06:15">6h15</option><option value="06:30">6h30</option><option value="06:45">6h45</option><option value="07:00">7h00</option><option value="07:15">7h15</option><option value="07:30">7h30</option><option value="07:45">7h45</option><option value="08:00">8h00</option><option value="08:15">8h15</option><option value="08:30">8h30</option><option value="08:45">8h45</option><option value="09:00">9h00</option><option value="09:15">9h15</option><option value="09:30">9h30</option><option value="09:45">9h45</option><option value="10:00">10h00</option><option value="10:15">10h15</option><option value="10:30">10h30</option><option value="10:45">10h45</option><option value="11:00">11h00</option><option value="11:15">11h15</option><option value="11:30">11h30</option><option value="11:45">11h45</option><option value="12:00">12h00</option><option value="12:15">12h15</option><option value="12:30">12h30</option><option value="12:45">12h45</option><option value="13:00">13h00</option><option value="13:15">13h15</option><option value="13:30">13h30</option><option value="13:45">13h45</option><option value="14:00">14h00</option><option value="14:15">14h15</option><option value="14:30">14h30</option><option value="14:45">14h45</option><option value="15:00">15h00</option><option value="15:15">15h15</option><option value="15:30">15h30</option><option value="15:45">15h45</option><option value="16:00">16h00</option><option value="16:15">16h15</option><option value="16:30">16h30</option><option value="16:45">16h45</option><option value="17:00">17h00</option><option value="17:15">17h15</option><option value="17:30">17h30</option><option value="17:45">17h45</option><option value="18:00">18h00</option><option value="18:15">18h15</option><option value="18:30">18h30</option><option value="18:45">18h45</option><option value="19:00">19h00</option><option value="19:15">19h15</option><option value="19:30">19h30</option><option value="19:45">19h45</option><option value="20:00">20h00</option><option value="20:15">20h15</option><option value="20:30">20h30</option><option value="20:45">20h45</option><option value="21:00">21h00</option><option value="21:15">21h15</option><option value="21:30">21h30</option><option value="21:45">21h45</option><option value="22:00">22h00</option><option value="22:15">22h15</option><option value="22:30">22h30</option><option value="22:45">22h45</option><option value="23:00">23h00</option><option value="23:15">23h15</option><option value="23:30">23h30</option><option value="23:45">23h45</option><option value="custom">Autre horaire précis…</option></select>
+          <div id="custom-time" hidden>
+            <label class="input-label" for="time-input">Votre horaire précis</label>
+            <input type="time" id="time-input" oninput="checkS3()">
+          </div>
         </div>
       </div>
       <div class="days-row">
@@ -735,6 +739,16 @@
   }
 
   /* S3 */
+  function selectStartTime() {
+    var choice = document.getElementById('time-select').value;
+    var custom = choice === 'custom';
+    document.getElementById('custom-time').hidden = !custom;
+    var input = document.getElementById('time-input');
+    if (!custom) input.value = choice;
+    checkS3();
+    if (custom) input.focus();
+  }
+
   function checkS3() {
     var ok = document.getElementById('date-input').value && document.getElementById('time-input').value;
     document.getElementById('btn3').classList[ok ? 'remove' : 'add']('disabled');
