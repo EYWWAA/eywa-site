@@ -844,7 +844,7 @@
       p: A.prenom, t: finalType,
       g: A.guests, h: A.hrs, dy: A.days,
       d: A.date, ti: A.time, l: A.lieu,
-      pr: A.totalPrice
+      pr: A.totalPrice, options: JSON.stringify(A.personalization)
     });
     return base + '?' + params.toString();
   }

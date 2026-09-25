@@ -130,6 +130,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&amp;family=Fraunces:opsz,wght@9..144,400;9..144,600&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="devis-design.css?v=11">
+<link rel="stylesheet" href="quote-details.css?v=1">
 </head>
 <body class="quote-result">
 
@@ -167,7 +168,7 @@
       <div class="devis-card">
 
         <div class="card-head">
-          <div class="card-title" id="card-title">Organisons votre événement.</div>
+          <h1 class="card-title" id="card-title">Organisons votre événement.</h1>
           <div class="meta">
             <span class="meta-icon">📍</span>
             <span id="meta-lieu">—</span>
@@ -187,15 +188,16 @@
           <ul class="incl">
             <li><span class="ck">✓</span><span id="inc-guests">Service pour vos invités</span></li>
             <li><span class="ck">✓</span><span id="inc-hrs">Durée de service</span></li>
-            <li><span class="ck">✓</span>1 barista professionnel(le) EYWA</li>
+            <li><span class="ck">✓</span><span id="inc-staff">Votre équipe barista EYWA</span></li>
             <li><span class="ck">✓</span>Bar mobile installé et rangé par nos soins</li>
             <li><span class="ck">✓</span>Boissons à volonté : café, matcha, chocolat chaud, chai et thé</li>
-            <li><span class="ck">✓</span>Déplacement inclus, sans frais kilométriques</li>
+            <li><span class="ck">✓</span>Installation et rangement hors du temps de service</li>
           </ul>
 
+          <section class="quote-lines" id="quote-lines" aria-labelledby="lines-title"><h2 id="lines-title">Détails du devis</h2><div id="line-items"></div></section>
           <div class="price-box" id="pay">
             <div class="price-num" id="price-main">—</div>
-            <div class="price-lbl">euros TTC</div>
+            <div class="price-lbl">Estimation de la prestation · déplacement à confirmer</div>
           </div>
 
           <a class="btn-pay" id="btn-reserve-main" href="#">
@@ -204,50 +206,7 @@
           <div class="pay-note">Nous confirmons les détails et la disponibilité avec vous avant de finaliser la réservation.</div>
         </div>
 
-        <div class="upsells">
-          <div class="upsell-title">Améliorez votre expérience</div>
-          <div class="upsell-sub">Options supplémentaires — nous vous les détaillerons lors de l'échange.</div>
-
-          <div class="upsell-item" id="up-cups">
-            <img class="upsell-thumb" src="assets/gallery-v4/17-nike-gobelet.webp" alt="">
-            <div class="upsell-info">
-              <div class="upsell-name">Gobelets sur mesure</div>
-              <div class="upsell-price">Sur devis</div>
-              <div class="upsell-desc">Votre logo ou message imprimé sur chaque gobelet</div>
-            </div>
-            <label class="toggle"><input type="checkbox" onchange="toggleUp('up-cups',this)"><span class="slider"></span></label>
-          </div>
-
-          <div class="upsell-item" id="up-deco">
-            <img class="upsell-thumb" src="assets/gallery-v4/01-bar-personnalisable.webp" alt="">
-            <div class="upsell-info">
-              <div class="upsell-name">Décoration du bar</div>
-              <div class="upsell-price">Sur devis</div>
-              <div class="upsell-desc">Thème, fleurs, ambiance sur mesure</div>
-            </div>
-            <label class="toggle"><input type="checkbox" onchange="toggleUp('up-deco',this)"><span class="slider"></span></label>
-          </div>
-
-          <div class="upsell-item" id="up-menu">
-            <img class="upsell-thumb" src="assets/gallery-v4/08-dior-boutique.webp" alt="">
-            <div class="upsell-info">
-              <div class="upsell-name">Menu personnalisé</div>
-              <div class="upsell-price">Sur devis</div>
-              <div class="upsell-desc">Carte aux couleurs de votre événement</div>
-            </div>
-            <label class="toggle"><input type="checkbox" onchange="toggleUp('up-menu',this)"><span class="slider"></span></label>
-          </div>
-
-          <div class="upsell-item" id="up-barista">
-            <img class="upsell-thumb" src="assets/gallery-v4/11-amazon-entreprise.webp" alt="">
-            <div class="upsell-info">
-              <div class="upsell-name">Barista supplémentaire</div>
-              <div class="upsell-price">+200 €</div>
-              <div class="upsell-desc">Recommandé pour les événements de 150+ personnes</div>
-            </div>
-            <label class="toggle"><input type="checkbox" onchange="toggleUp('up-barista',this)"><span class="slider"></span></label>
-          </div>
-        </div>
+        <section class="upsells" aria-labelledby="options-title"><h2 id="options-title" class="upsell-title">Personnalisez votre expérience</h2><p class="upsell-sub">Ajoutez les options qui correspondent à votre événement. Le montant de la prestation se met à jour.</p><div id="quote-options"></div></section>
       </div>
 
       <!-- Avis -->
@@ -281,74 +240,6 @@
   </div>
 </div>
 
-<script>
-  function qp() {
-    var p = {};
-    var s = window.location.search.slice(1) || window.location.hash.slice(1);
-    s.split('&').forEach(function(x) {
-      var kv = x.split('=');
-      if (kv[0]) p[decodeURIComponent(kv[0])] = decodeURIComponent((kv[1]||'').replace(/\+/g,' '));
-    });
-    return p;
-  }
-
-  function swapHero(src) {
-    document.getElementById('hero-img').src = src;
-  }
-
-  function toggleUp(id, cb) {
-    document.getElementById(id).classList[cb.checked ? 'add' : 'remove']('on');
-  }
-
-  var P = qp();
-
-  if (P.p) {
-    document.getElementById('card-title').textContent = 'Organisons votre événement, ' + P.p + '.';
-    document.title = 'Votre devis EYWA — ' + P.p;
-  }
-
-  document.getElementById('meta-lieu').textContent = P.l || '—';
-
-  var dtStr = '';
-  if (P.d) {
-    try {
-      var d = new Date(P.d + 'T12:00');
-      dtStr = 'Le ' + d.toLocaleDateString('fr-FR', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
-    } catch(e) { dtStr = P.d; }
-  }
-  if (P.ti) dtStr += (dtStr ? ', service à ' : 'Début à ') + P.ti;
-  document.getElementById('meta-dt').textContent = dtStr || '—';
-
-  var g = parseInt(P.g) || 0;
-  var h = parseFloat(P.h) || 0;
-  var dy = parseInt(P.dy) || 1;
-  var extraGuests = Math.max(0, g - 50);
-  var extraHrs = Math.max(0, h - 1.5);
-  var extraBaristas = Math.max(0, Math.ceil(g / (h * 50)) - 1);
-  var price = parseInt(P.pr) || ((350 + extraGuests * 5 + Math.round(extraHrs * 70) + extraBaristas * 200) * dy);
-
-  if (g) document.getElementById('inc-guests').textContent = 'Service pour ' + g + ' personne' + (g > 1 ? 's' : '');
-  if (h) {
-    var hLabel = h % 1 === 0 ? h + 'h' : Math.floor(h) + 'h' + Math.round((h % 1) * 60);
-    var hText = hLabel + ' de service';
-    if (dy > 1) hText += ' × ' + dy + ' jours';
-    document.getElementById('inc-hrs').textContent = hText;
-  }
-
-  document.getElementById('price-main').textContent = price + ' €';
-
-  if (P.t) {
-    var typeEl = document.createElement('div');
-    typeEl.style.cssText = 'font-size:13px;color:var(--muted);margin-top:-8px;margin-bottom:14px';
-    typeEl.textContent = P.t;
-    document.getElementById('card-title').after(typeEl);
-  }
-
-  var resBase = window.location.href.replace(/[^/]*$/, '') + 'reservation.html';
-  var resParams = new URLSearchParams({ p: P.p||'', pr: price, t: P.t||'', g: P.g||'', h: P.h||'', dy: dy, d: P.d||'', ti: P.ti||'', l: P.l||'' });
-  var resUrl = resBase + '?' + resParams.toString();
-  document.getElementById('btn-reserve-main').href = resUrl;
-  document.getElementById('btn-reserve-bottom').href = resUrl;
-</script>
-</body>
-</html>
+<div class="quote-dock"><a href="#quote-lines" class="dock-price"><strong id="dock-total">—</strong><span>Voir le détail de la prestation ↓</span></a><a class="btn-pay" id="btn-reserve-dock" href="#">Réserver maintenant</a></div>
+<script src="quote-details.js?v=1"></script>
+</body></html>
