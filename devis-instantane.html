@@ -272,8 +272,12 @@
       .btn-row { bottom: 12px; width: calc(100vw - 24px); }
     }
   </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&amp;family=Fraunces:opsz,wght@9..144,400;9..144,600&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="devis-design.css?v=6">
 </head>
-<body>
+<body class="quote-form">
 
 <!-- Zoho CRM. Chaque demande de devis devient un prospect.
      Le POST part dans l'iframe cachée : le parcours client ne change pas d'un pixel. -->
@@ -299,18 +303,24 @@
   <input type="hidden" name="Description">
 </form>
 
-<header>
-  <div class="brand-logo">EYWA</div>
-  <div class="brand-tagline">Coffee catering événementiel · Devis gratuit et instantané</div>
+<header class="quote-header">
+  <a class="brand-logo" href="index.html" aria-label="EYWA — Accueil">EYWA</a>
+  <a class="quote-home" href="index.html">Retour au site <span aria-hidden="true">↗</span></a>
 </header>
-
+<div class="quote-intro">
+  <p class="quote-eyebrow">VOTRE ÉVÉNEMENT, NOTRE COFFEE BAR</p>
+  <h1>Un moment à partager.<br> Un devis à votre image.</h1>
+  <p>Quelques détails pour imaginer ensemble votre prestation.</p>
+  <ul class="quote-reassurance" aria-label="Votre demande de devis"><li>Gratuit</li><li>Sans engagement</li><li>Réponse sous 24 h</li></ul>
+</div>
+<div class="quote-workspace">
 <main>
   <div class="form-card">
     <div class="dots-nav" id="dots-nav"></div>
 
     <!-- S1 : Flashquotes style -->
     <div class="step active" id="s1">
-      <div class="fq-title">Construisez votre devis instantané</div>
+      <div class="fq-title">Commençons par votre événement</div>
 
       <div class="fq-section">
         <div class="fq-label">
@@ -318,9 +328,9 @@
           Durée du service
         </div>
         <div class="stepper">
-          <button class="step-btn" onclick="changeDur(-0.5)">−</button>
+          <button class="step-btn" aria-label="Réduire la durée" onclick="changeDur(-0.5)">−</button>
           <div class="stepper-center"><span class="stepper-val" id="dur-display">1h30</span></div>
-          <button class="step-btn" onclick="changeDur(+0.5)">+</button>
+          <button class="step-btn" aria-label="Augmenter la durée" onclick="changeDur(+0.5)">+</button>
         </div>
         <div class="fq-hint">Durée de service réelle. Le montage du bar et le rangement ne sont pas décomptés.</div>
       </div>
@@ -331,11 +341,11 @@
           Nombre d'invités
         </div>
         <div class="stepper">
-          <button class="step-btn" onclick="changeGuests(-10)">−</button>
+          <button class="step-btn" aria-label="Réduire le nombre d’invités" onclick="changeGuests(-10)">−</button>
           <div class="stepper-center">
-            <input type="number" class="guest-input" id="guests-input" min="1" max="2000" value="50" oninput="onGuestsType()">
+            <input aria-label="Nombre d’invités" type="number" class="guest-input" id="guests-input" min="1" max="2000" value="50" oninput="onGuestsType()">
           </div>
-          <button class="step-btn" onclick="changeGuests(+10)">+</button>
+          <button class="step-btn" aria-label="Augmenter le nombre d’invités" onclick="changeGuests(+10)">+</button>
         </div>
         <div class="quick-picks" id="qp-row">
           <div class="qp" onclick="setGuests(25)">25</div>
@@ -364,7 +374,7 @@
 
     <!-- S2 : Lieu -->
     <div class="step" id="s2">
-      <div class="question">Où se déroule votre événement ?</div>
+      <div class="question">Où se déroule votre événement&nbsp;?</div>
       <div class="question-sub">Si vous ne connaissez pas l'adresse exacte, indiquez simplement la ville la plus proche.</div>
       <input type="text" id="lieu-input" placeholder="Ex : Charleville-Mézières, salle des fêtes" oninput="checkS2()">
       <div class="btn-row">
@@ -375,7 +385,7 @@
 
     <!-- S3 : Date + Heure + Jours -->
     <div class="step" id="s3">
-      <div class="question">Quand est votre événement ?</div>
+      <div class="question">Quand est votre événement&nbsp;?</div>
       <div class="question-sub">Nous vérifierons notre disponibilité pour cette date.</div>
       <div class="input-row">
         <div>
@@ -403,7 +413,7 @@
 
     <!-- S4 : Type + Détails (optionnel) -->
     <div class="step" id="s4">
-      <div class="question">Quel type d'événement ?</div>
+      <div class="question">Quel type d'événement&nbsp;?</div>
       <div class="question-sub">Optionnel. Sélectionnez une option ou passez directement à la suite.</div>
       <div class="type-grid">
         <div class="type-opt" data-val="Mariage" onclick="selectType(this)">
@@ -448,11 +458,11 @@
 
     <!-- S5 : Personnalisation -->
     <div class="step" id="s5">
-      <div class="question">Des options de personnalisation ?</div>
+      <div class="question">Des options de personnalisation&nbsp;?</div>
       <div class="question-sub">Optionnel. Chaque option choisie s'ajoute à votre estimation.</div>
 
       <div class="perso-card" data-val="Gobelets sur mesure" onclick="togglePerso(this)"
-        style="background-image:url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=75&auto=format')">
+        style="background-image:url('assets/gallery-v4/17-nike-gobelet.webp')">
         <div class="perso-body">
           <div class="perso-info">
             <div class="perso-name">Gobelets sur mesure · 100 €</div>
@@ -467,7 +477,7 @@
       </div>
 
       <div class="perso-card" data-val="Habillage du bar" onclick="togglePerso(this)"
-        style="background-image:url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=800&q=75&auto=format')">
+        style="background-image:url('assets/gallery-v4/01-bar-personnalisable.webp')">
         <div class="perso-body">
           <div class="perso-info">
             <div class="perso-name">Habillage du bar · 250 €</div>
@@ -482,7 +492,7 @@
       </div>
 
       <div class="perso-card" data-val="Logo sur les boissons" onclick="togglePerso(this)"
-        style="background-image:url('https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=800&q=75&auto=format')">
+        style="background-image:url('assets/gallery-v4/08-dior-boutique.webp')">
         <div class="perso-body">
           <div class="perso-info">
             <div class="perso-name">Votre logo sur les boissons · 100 €</div>
@@ -521,7 +531,7 @@
 
     <!-- S6 : Contact -->
     <div class="step" id="s6">
-      <div class="question">À qui envoyer votre devis ?</div>
+      <div class="question">À qui envoyer votre devis&nbsp;?</div>
       <div class="question-sub">Devis gratuit, sans engagement. Réponse sous 24h.</div>
       <div class="fields">
         <div class="input-row">
@@ -576,19 +586,43 @@
     </div>
 
   </div>
+<p class="quote-help">Un détail à préciser ? <a href="tel:+33749902156">Parlons de votre événement <span aria-hidden="true">↗</span></a></p>
 </main>
+</div>
 
 <footer>EYWA © 2026 · Devis gratuit et sans engagement</footer>
 
 <script>
+  // Les actions restent hors de la zone défilante des questions.
+  document.querySelectorAll('.step').forEach(function(step) {
+    var content = document.createElement('div');
+    content.className = 'step-content';
+    while (step.firstChild) content.appendChild(step.firstChild);
+    var actions = document.createElement('div');
+    actions.className = 'step-actions';
+    var row = content.querySelector('.btn-row');
+    if (row) {
+      while (row.firstChild) actions.appendChild(row.firstChild);
+      row.remove();
+    } else {
+      content.querySelectorAll('.btn-fq, .btn-cta, .price-screen > .btn-next, .back-link').forEach(function(button) {
+        actions.appendChild(button);
+      });
+    }
+    step.appendChild(content);
+    if (actions.children.length) step.appendChild(actions);
+  });
+
   var TOTAL_DOTS = 5;
 
   function renderDots(n) {
     var c = document.getElementById('dots-nav');
-    if (!n) { c.style.display = 'none'; return; }
+    n = (n || 0) + 1;
+    c.setAttribute('role', 'img');
+    c.setAttribute('aria-label', 'Étape ' + n + ' sur 6');
     c.style.display = 'flex';
     var html = '';
-    for (var i = 1; i <= TOTAL_DOTS; i++) {
+    for (var i = 1; i <= TOTAL_DOTS + 1; i++) {
       if (i < n) html += '<div class="dot done"></div>';
       else if (i === n) html += '<div class="dot active"></div>';
       else html += '<div class="dot"></div>';
@@ -615,7 +649,10 @@
   function showStep(id) {
     document.querySelectorAll('.step').forEach(function(s) { s.classList.remove('active'); });
     var el = document.getElementById(id);
-    if (el) el.classList.add('active');
+    if (el) {
+      el.classList.add('active');
+      el.querySelector('.step-content').scrollTop = 0;
+    }
     window.scrollTo(0, 0);
   }
 

@@ -88,11 +88,16 @@
     .error-msg { color:var(--red); font-size:13px; margin-top:.5rem; display:none; }
     .error-msg.show { display:block; }
   </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&amp;family=Fraunces:opsz,wght@9..144,400;9..144,600&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="devis-design.css?v=6">
 </head>
-<body>
+<body class="quote-booking">
 
 <div class="top">
-  <a href="#" class="logo">EYWA</a>
+  <a href="index.html" class="logo">EYWA</a>
+  <a class="quote-home" id="back-to-quote" href="devis-instantane.html">Retour au devis ↗</a>
 </div>
 
 <div class="phases" id="phases">
@@ -110,7 +115,7 @@
     <!-- STEP 1: Bienvenue -->
     <div id="s1" class="step active">
       <div class="welcome-box">
-        <div class="welcome-icon">🎉</div>
+        <div class="quote-eyebrow">VOTRE RÉSERVATION EYWA</div>
         <div class="step-title" id="welcome-title">Finalisons votre réservation !</div>
         <div class="step-sub">Cette étape confirme tous les détails opérationnels de votre événement et génère votre facture.</div>
       </div>
@@ -252,6 +257,15 @@
 </div>
 
 <script>
+  document.querySelectorAll('.step').forEach(function(step) {
+    var content = document.createElement('div');
+    content.className = 'booking-content';
+    while (step.firstChild) content.appendChild(step.firstChild);
+    var actions = content.querySelector('.btn-row');
+    step.appendChild(content);
+    if (actions) step.appendChild(actions);
+  });
+  document.getElementById('back-to-quote').href = 'devis.html' + window.location.search;
   var P = {};
   window.location.search.slice(1).split('&').forEach(function(x) {
     var kv = x.split('='); if (kv[0]) P[decodeURIComponent(kv[0])] = decodeURIComponent((kv[1]||'').replace(/\+/g,' '));
@@ -310,7 +324,10 @@
   function goTo(n) {
     for (var i = 1; i <= TOTAL_STEPS; i++) {
       var el = document.getElementById('s' + i);
-      if (el) el.style.display = i === n ? '' : 'none';
+      if (el) {
+        el.style.display = i === n ? 'flex' : 'none';
+        if (i === n) el.querySelector('.booking-content').scrollTop = 0;
+      }
     }
     buildDots(n);
     updatePhases(n);

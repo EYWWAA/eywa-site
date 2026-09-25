@@ -126,13 +126,17 @@
       .top-actions .btn-outline-w { display: none; }
     }
   </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&amp;family=Fraunces:opsz,wght@9..144,400;9..144,600&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="devis-design.css?v=6">
 </head>
-<body>
+<body class="quote-result">
 
 <div class="top-bar">
   <a class="logo" href="index.html">EYWA</a>
   <div class="top-actions">
-    <button class="btn-sm btn-outline-w" onclick="window.print()">🖨️ Imprimer</button>
+    <button class="btn-sm btn-outline-w" onclick="window.print()">Imprimer le devis</button>
     <a class="btn-sm btn-gold" href="#pay">Réservez maintenant</a>
   </div>
 </div>
@@ -142,18 +146,19 @@
 
     <!-- Galerie photos -->
     <div class="gallery">
+      <div class="result-intro"><p class="quote-eyebrow">VOTRE EXPÉRIENCE EYWA</p><h1>Votre devis personnalisé.</h1></div>
       <img class="hero" id="hero-img"
-        src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=900&q=80&auto=format"
+        src="assets/gallery-v4/01-bar-personnalisable.webp"
         alt="EYWA Bar Mobile">
       <div class="thumbs">
         <img class="thumb" onclick="swapHero(this.src)"
-          src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=300&q=75&auto=format" alt="">
+          src="assets/gallery-v4/02-nike-rooftop.webp" alt="">
         <img class="thumb" onclick="swapHero(this.src)"
-          src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=300&q=75&auto=format" alt="">
+          src="assets/gallery-v4/05-mariage-sans-logo.webp" alt="">
         <img class="thumb" onclick="swapHero(this.src)"
-          src="https://images.unsplash.com/photo-1453614512568-c4024d13c247?w=300&q=75&auto=format" alt="">
+          src="assets/gallery-v4/08-dior-boutique.webp" alt="">
         <img class="thumb" onclick="swapHero(this.src)"
-          src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=300&q=75&auto=format" alt="">
+          src="assets/gallery-v4/17-nike-gobelet.webp" alt="">
       </div>
     </div>
 
@@ -172,8 +177,8 @@
             <span id="meta-dt">—</span>
           </div>
           <div class="avail">
-            <span>✅</span>
-            <span>Nous sommes disponibles à cette date.</span>
+            <span aria-hidden="true">○</span>
+            <span>Date et disponibilité à confirmer ensemble.</span>
           </div>
         </div>
 
@@ -184,7 +189,7 @@
             <li><span class="ck">✓</span><span id="inc-hrs">Durée de service</span></li>
             <li><span class="ck">✓</span>1 barista professionnel(le) EYWA</li>
             <li><span class="ck">✓</span>Bar mobile installé et rangé par nos soins</li>
-            <li><span class="ck">✓</span>Carte complète à volonté (café, matcha, chocolat chaud et plus)</li>
+            <li><span class="ck">✓</span>Boissons à volonté : café, matcha, chocolat chaud, chai et thé</li>
             <li><span class="ck">✓</span>Déplacement inclus, sans frais kilométriques</li>
           </ul>
 
@@ -196,7 +201,7 @@
           <a class="btn-pay" id="btn-reserve-main" href="#">
             Réserver maintenant
           </a>
-          <div class="pay-note">En raison de la forte demande, les réservations se font selon le principe du premier arrivé, premier servi.</div>
+          <div class="pay-note">Nous confirmons les détails et la disponibilité avec vous avant de finaliser la réservation.</div>
         </div>
 
         <div class="upsells">
@@ -204,7 +209,7 @@
           <div class="upsell-sub">Options supplémentaires — nous vous les détaillerons lors de l'échange.</div>
 
           <div class="upsell-item" id="up-cups">
-            <img class="upsell-thumb" src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=200&q=75&auto=format" alt="">
+            <img class="upsell-thumb" src="assets/gallery-v4/17-nike-gobelet.webp" alt="">
             <div class="upsell-info">
               <div class="upsell-name">Gobelets sur mesure</div>
               <div class="upsell-price">Sur devis</div>
@@ -214,7 +219,7 @@
           </div>
 
           <div class="upsell-item" id="up-deco">
-            <img class="upsell-thumb" src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=200&q=75&auto=format" alt="">
+            <img class="upsell-thumb" src="assets/gallery-v4/01-bar-personnalisable.webp" alt="">
             <div class="upsell-info">
               <div class="upsell-name">Décoration du bar</div>
               <div class="upsell-price">Sur devis</div>
@@ -224,7 +229,7 @@
           </div>
 
           <div class="upsell-item" id="up-menu">
-            <img class="upsell-thumb" src="https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=200&q=75&auto=format" alt="">
+            <img class="upsell-thumb" src="assets/gallery-v4/08-dior-boutique.webp" alt="">
             <div class="upsell-info">
               <div class="upsell-name">Menu personnalisé</div>
               <div class="upsell-price">Sur devis</div>
@@ -234,7 +239,7 @@
           </div>
 
           <div class="upsell-item" id="up-barista">
-            <img class="upsell-thumb" src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=200&q=75&auto=format" alt="">
+            <img class="upsell-thumb" src="assets/gallery-v4/11-amazon-entreprise.webp" alt="">
             <div class="upsell-info">
               <div class="upsell-name">Barista supplémentaire</div>
               <div class="upsell-price">+200 €</div>
@@ -265,7 +270,7 @@
       <!-- CTA bas de page -->
       <div class="bottom">
         <h2>Prêt(e) à réserver ?</h2>
-        <p>Confirmez votre date maintenant. Notre agenda se remplit vite !</p>
+        <p>Échangeons sur les derniers détails de votre événement.</p>
         <div class="bottom-btns">
           <a class="btn-pay" id="btn-reserve-bottom" href="#" style="flex:1;max-width:240px">Réservez maintenant</a>
           <a class="btn-contact" href="mailto:contact.eywa08@gmail.com">Nous contacter</a>
