@@ -442,3 +442,6 @@ footer { padding: 55px 0 36px; }
 .film-play-label { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .film-error { color: #833b29; font-size: .875rem; }
 .film-error a { text-decoration: underline; }
+
+/* Editorial photographs keep their intended card proportions. */
+.event-portrait img, .teaser-grid img { height: auto; }

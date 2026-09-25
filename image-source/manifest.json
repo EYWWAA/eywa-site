@@ -24,16 +24,6 @@
       "height": 1448
     },
     {
-      "slug": "03-celio-boutique",
-      "title": "Célio · le bar à vos couleurs",
-      "scene": "No people. Same cart in a contemporary menswear boutique, uncluttered background clothing rails. Facade wrapped charcoal black with large clean white celio and one red asterisk, slim red line near base. Keep exact common reference cart geometry, wood top, machine back facing the viewer. Photograph front three-quarter view showing entire cart. Landscape 4:3.",
-      "prompt": "Use case: photorealistic-natural. Asset: one original premium coffee catering website photograph, not a collage. The reference is the LOCKED cart and equipment design. Reproduce precisely this cart, NEVER redesign it: compact single rectangular wheeled white counter, smooth flat customizable facade and sides, four small black casters. VERY DARK CHOCOLATE-BROWN WALNUT WORKTOP, MATCHING THE RENAULT REFERENCE IS A PERFECT FLAT RECTANGULAR SLAB, FRONT EDGE STRAIGHT AND VERTICAL, SQUARE 90-DEGREE CORNERS, NO ROUNDING, NO BULLNOSE, NO CURVED FRONT. Match the Celio-style flat straight worktop in the reference. On left half of worktop the SAME tall compact mirror-polished chrome espresso machine seen from its BACK (controls face barista), grinder immediately behind/left with transparent bean hopper, two white paper cup stacks on machine, small black lid stacks and utensils alongside. Preserve equipment layout and proportions. Small ficus in matte ivory pot at left and compact fern in sand pot at right; no plant draped over machine. Only facade/side wrap, setting, people and camera framing vary as specified. No extra machines, no huge commercial multi-group machine, no loose cables. Premium natural event photograph, detailed materials, realistic anatomy and physics, no screenshot UI, watermarks or text overlays. Avoid making the image look like CGI. Scene: No people. Same cart in a contemporary menswear boutique, uncluttered background clothing rails. Facade wrapped charcoal black with large clean white celio and one red asterisk, slim red line near base. Keep exact common reference cart geometry, wood top, machine back facing the viewer. Photograph front three-quarter view showing entire cart. Landscape 4:3.",
-      "source": "../eywa-visuels-sources/03-celio-boutique.png",
-      "file": "assets/gallery-v4/03-celio-boutique.webp",
-      "width": 1448,
-      "height": 1086
-    },
-    {
       "slug": "04-cupra-showroom",
       "title": "Cupra · lancement automobile",
       "scene": "No people. Same cart in a premium contemporary car showroom with one dark car blurred in background. Facade matte charcoal with restrained copper CUPRA lettering and fine copper border. Entire cart visible, wood top, consistent chrome machine and accessories. Soft daylight and copper architectural accents. Landscape 4:3.",
@@ -84,16 +74,6 @@
       "height": 1448
     },
     {
-      "slug": "09-carte-boissons",
-      "title": "Café, matcha et boissons glacées",
-      "scene": "Landscape 4:3 editorial close-up on the same very dark walnut countertop: a black paper takeaway latte cup with a clear white celio wordmark and red asterisk, restrained thin red line near base. Cup is principal subject occupying center foreground, natural leaf latte art visible at top. Nearby a clear iced matcha and clear iced latte, slightly behind. Chrome machine, lids and plants softly blurred in background. Realistic condensation, appetizing drinks, photorealistic material. No people. Do not show full cart.",
-      "prompt": "Use case: photorealistic-natural. Asset: one original premium coffee catering website photograph, not a collage. The reference is the LOCKED cart and equipment design. Reproduce precisely this cart, NEVER redesign it: compact single rectangular wheeled white counter, smooth flat customizable facade and sides, four small black casters. VERY DARK CHOCOLATE-BROWN WALNUT WORKTOP, MATCHING THE RENAULT REFERENCE IS A PERFECT FLAT RECTANGULAR SLAB, FRONT EDGE STRAIGHT AND VERTICAL, SQUARE 90-DEGREE CORNERS, NO ROUNDING, NO BULLNOSE, NO CURVED FRONT. Match the Celio-style flat straight worktop in the reference. On left half of worktop the SAME tall compact mirror-polished chrome espresso machine seen from its BACK (controls face barista), grinder immediately behind/left with transparent bean hopper, two white paper cup stacks on machine, small black lid stacks and utensils alongside. Preserve equipment layout and proportions. Small ficus in matte ivory pot at left and compact fern in sand pot at right; no plant draped over machine. Only facade/side wrap, setting, people and camera framing vary as specified. No extra machines, no huge commercial multi-group machine, no loose cables. Premium natural event photograph, detailed materials, realistic anatomy and physics, no screenshot UI, watermarks or text overlays. Avoid making the image look like CGI. Scene: Landscape 4:3 editorial close-up on the same very dark walnut countertop: a black paper takeaway latte cup with a clear white celio wordmark and red asterisk, restrained thin red line near base. Cup is principal subject occupying center foreground, natural leaf latte art visible at top. Nearby a clear iced matcha and clear iced latte, slightly behind. Chrome machine, lids and plants softly blurred in background. Realistic condensation, appetizing drinks, photorealistic material. No people. Do not show full cart.",
-      "source": "../eywa-visuels-sources/09-carte-boissons.png",
-      "file": "assets/gallery-v4/09-carte-boissons.webp",
-      "width": 1448,
-      "height": 1086
-    },
-    {
       "slug": "11-amazon-entreprise",
       "title": "Amazon · événement d’entreprise",
       "scene": "Use case: photorealistic-natural. Create one original premium coffee catering event photograph, portrait 3:4. Reference image ONLY locks the exact cart geometry, very dark chocolate walnut rectangular flat worktop with straight vertical front edge and sharp square corners, chrome espresso machine seen from back, grinder behind left, two white cup stacks, black lids and utensils, small ficus left and fern right, little black caster wheels. Preserve all that hardware precisely. NEW SCENE: Amazon corporate innovation day in an airy modern office atrium with glass, pale concrete, warm oak and soft greenery. Same cart has a matte white front with a large accurate lowercase black 'amazon' wordmark and orange smile-arrow beneath, clean minimal wrap. Male barista in plain dark navy apron prepares a latte behind counter, two colleagues in smart casual clothing chatting to side holding cups. Entire cart visible unobstructed, no EYWA text anywhere, no slogans, no extra signs, no warehouse packaging, no staged corporate stock-photo handshake. Natural daylight, premium believable editorial photograph, realistic anatomy, materials and reflections. This is a concept projection, not documentation of a real event. No rounded worktop edge, no redesign of coffee machine.",
@@ -142,16 +122,6 @@
       "file": "assets/gallery-v4/15-taittinger.webp",
       "width": 1086,
       "height": 1448
-    },
-    {
-      "slug": "16-latte-art",
-      "title": "Le geste du barista",
-      "scene": "Landscape 4:3 close-up of a creamy latte in a black celio takeaway cup on the same very dark walnut countertop, neat white milk foam with precise edible cocoa stencil that reads celio and an asterisk. A barista's hands gently place the cup beside a stainless steel milk pitcher; machine soft blurred background. Realistic tactile cup, natural foam, appetizing editorial photography. No full cart, no face.",
-      "prompt": "Use case: photorealistic-natural. Asset: one original premium coffee catering website photograph, not a collage. The reference is the LOCKED cart and equipment design. Reproduce precisely this cart, NEVER redesign it: compact single rectangular wheeled white counter, smooth flat customizable facade and sides, four small black casters. VERY DARK CHOCOLATE-BROWN WALNUT WORKTOP, MATCHING THE RENAULT REFERENCE IS A PERFECT FLAT RECTANGULAR SLAB, FRONT EDGE STRAIGHT AND VERTICAL, SQUARE 90-DEGREE CORNERS, NO ROUNDING, NO BULLNOSE, NO CURVED FRONT. Match the Celio-style flat straight worktop in the reference. On left half of worktop the SAME tall compact mirror-polished chrome espresso machine seen from its BACK (controls face barista), grinder immediately behind/left with transparent bean hopper, two white paper cup stacks on machine, small black lid stacks and utensils alongside. Preserve equipment layout and proportions. Small ficus in matte ivory pot at left and compact fern in sand pot at right; no plant draped over machine. Only facade/side wrap, setting, people and camera framing vary as specified. No extra machines, no huge commercial multi-group machine, no loose cables. Premium natural event photograph, detailed materials, realistic anatomy and physics, no screenshot UI, watermarks or text overlays. Avoid making the image look like CGI. Scene: Landscape 4:3 close-up of a creamy latte in a black celio takeaway cup on the same very dark walnut countertop, neat white milk foam with precise edible cocoa stencil that reads celio and an asterisk. A barista's hands gently place the cup beside a stainless steel milk pitcher; machine soft blurred background. Realistic tactile cup, natural foam, appetizing editorial photography. No full cart, no face. Keep background signage minimal; no invented advertising slogans.",
-      "source": "../eywa-visuels-sources/16-latte-art.png",
-      "file": "assets/gallery-v4/16-latte-art.webp",
-      "width": 1448,
-      "height": 1086
     },
     {
       "slug": "17-nike-gobelet",
