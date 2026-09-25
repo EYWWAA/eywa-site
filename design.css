@@ -474,3 +474,23 @@ footer { padding: 55px 0 36px; }
 .private-reception strong { color: var(--green); }
 .private-reception .text-link { flex-shrink: 0; font-size: .875rem; }
 @media (max-width: 700px) { .private-reception { display: block; } .private-reception .text-link { margin-top: 12px; } }
+
+/* A concise explanation until the narrated film is ready. */
+.eywa-home .journey { padding: 48px 0; }
+.journey .journey-grid { max-width: 1100px; grid-template-columns: 280px minmax(0, 1fr); gap: 48px; }
+.journey .journey-photo { width: 100%; aspect-ratio: 3/4; }
+.journey .journey-copy .section-kicker { margin-bottom: 12px; }
+.journey .journey-copy h2 { font-size: clamp(1.8rem, 2.7vw, 2.5rem); margin-bottom: 24px; }
+.journey .journey-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 26px; margin-bottom: 16px; }
+.journey .journey-steps li { gap: 10px; grid-template-columns: 22px 1fr; }
+.journey .practical-note { font-size: .8rem; line-height: 1.6; color: var(--mute); margin: 0 0 12px; }
+@media (max-width: 800px) {
+  .journey .journey-grid { grid-template-columns: 180px minmax(0, 1fr); gap: 28px; }
+  .journey .journey-steps { grid-template-columns: 1fr; gap: 14px; }
+}
+@media (max-width: 600px) {
+  .eywa-home .journey { padding: 32px 0; }
+  .journey .journey-grid { grid-template-columns: 1fr; gap: 20px; }
+  .journey .journey-photo { width: 120px; justify-self: start; }
+  .journey .journey-copy h2 { margin-bottom: 20px; }
+}
