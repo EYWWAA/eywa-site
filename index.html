@@ -166,14 +166,7 @@
   <header class="wrap nav">
     <a class="logo" href="#accueil" aria-label="EYWA, accueil">EYWA</a>
     <button class="mobile-menu" type="button" aria-expanded="false" aria-controls="navlinks" aria-label="Ouvrir le menu"><span></span><span></span><span></span></button>
-    <nav class="navlinks" id="navlinks" aria-label="Navigation principale"><span class="nav-group nav-group-left"><a href="services.html">Services</a><a href="galerie.html">Galerie</a><a href="menu.html">Menu</a><a href="tarifs.html">Tarifs</a><div class="nav-places">
-        <button class="nav-places-trigger" type="button" aria-expanded="false">Lieux</button>
-        <div class="nav-places-menu" aria-label="Villes desservies">
-          <a href="faq.html#lieux">Charleville-Mézières</a>
-          <a href="faq.html#lieux">Reims</a>
-          <a href="faq.html#lieux">Sedan</a>
-        </div>
-      </div></span><span class="nav-group nav-group-right"><a href="faq.html">Questions</a><a href="avis.html">Avis</a><a href="contact.html">Contact</a><a class="nav-button" href="devis-instantane.html?v=20260925-2">Obtenir mon devis instantané<span aria-hidden="true">→</span></a></span></nav>
+    <nav class="navlinks" id="navlinks" aria-label="Navigation principale"><span class="nav-group nav-group-left"><a href="services.html">Services</a><a href="galerie.html">Galerie</a><a href="menu.html">Menu</a><a href="tarifs.html">Tarifs</a><a href="pourquoi-eywa.html">Pourquoi EYWA</a></span><span class="nav-group nav-group-right"><a href="faq.html">Questions</a><a href="avis.html">Avis</a><a href="contact.html">Contact</a><a class="nav-button" href="devis-instantane.html?v=20260925-2">Obtenir mon devis instantané<span aria-hidden="true">→</span></a></span></nav>
   </header>
 
   <main>
@@ -415,9 +408,9 @@
         placesTrigger.setAttribute('aria-expanded', 'false');
       }, 220);
     };
-    placesNav.addEventListener('mouseenter', openPlaces);
-    placesNav.addEventListener('mouseleave', closePlaces);
-    placesTrigger.addEventListener('click', () => {
+    placesNav?.addEventListener('mouseenter', openPlaces);
+    placesNav?.addEventListener('mouseleave', closePlaces);
+    placesTrigger?.addEventListener('click', () => {
       if (!isMobileNav()) {
         placesTrigger.blur();
         return;
