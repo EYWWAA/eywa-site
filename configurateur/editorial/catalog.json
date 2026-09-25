@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-25T09:06:38.782Z",
+  "updatedAt": "2026-09-25T10:05:10.994Z",
   "entries": [
     {
       "slug": "celio",
@@ -17,7 +17,8 @@
       "name": "Nike",
       "domain": "nike.com",
       "visuals": {
-        "scene": "/editorial/nike/scene-9bacdafa091a.webp"
+        "scene": "/editorial/nike/scene-9bacdafa091a.webp",
+        "cup": "/editorial/nike/cup-ae224311709f.webp"
       }
     },
     {
