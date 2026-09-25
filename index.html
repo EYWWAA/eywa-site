@@ -161,7 +161,7 @@
   <link rel="stylesheet" href="header.css?v=hdr-19">
   <link rel="stylesheet" href="home.css?v=home-21">
   <link rel="stylesheet" href="configurateur.css?v=cfg-1">
-  <link rel="stylesheet" href="design.css?v=editorial-3">
+  <link rel="stylesheet" href="design.css?v=editorial-4">
 </head>
 <body class="eywa-home">
   <header class="wrap nav">
@@ -186,7 +186,7 @@
         <div class="hero-quote">
           <a class="button button-gold" href="devis-instantane.html">Obtenir mon devis<span aria-hidden="true">↗</span></a>
           <p class="quote-note">Devis gratuit &amp; sans engagement</p>
-          <a class="hero-film-link" href="#comment-ca-marche"><span aria-hidden="true">▷</span> Comment ça marche ?</a>
+          <a class="hero-film-link" href="#comment-ca-marche"><span aria-hidden="true">↓</span> Comment ça marche ?</a>
           <!-- Bloc note et avis retire le 14/08/2026 : aucun avis Google n'existe
                encore. A remettre des que la fiche Google Business est en ligne
                et que les premiers avis reels sont publies. -->
@@ -238,23 +238,12 @@
 
     <section class="journey" id="comment-ca-marche" aria-labelledby="journey-title">
       <div class="wrap journey-grid">
-        <div class="journey-film">
-          <div class="film-heading"><span>EYWA, du premier clic au dernier café</span><span>Le film</span></div>
-          <div class="film-stage">
-          <video id="eywa-film" controls playsinline preload="none" poster="assets/video/eywa-parcours-poster.jpg?v=43a5d33286" aria-label="Comment réserver EYWA : dessin animé avec narration en français" aria-describedby="film-caption">
-            <source src="assets/video/eywa-parcours.mp4?v=43a5d33286" type="video/mp4">
-            <track kind="captions" src="assets/video/eywa-parcours.fr.vtt?v=43a5d33286" srclang="fr" label="Français" default>
-            Votre navigateur ne peut pas lire cette vidéo. <a href="assets/video/eywa-parcours.mp4?v=43a5d33286">Télécharger la vidéo</a>.
-          </video>
-          <button class="film-play" type="button" aria-label="Lire le film EYWA avec narration" aria-controls="eywa-film" hidden><span class="film-play-label">Lire le film EYWA</span></button>
-          </div>
-          <p class="film-error" role="status" hidden>La lecture n’a pas démarré. <a href="assets/video/eywa-parcours.mp4?v=43a5d33286">Ouvrir la vidéo</a>.</p>
-          <p class="film-caption" id="film-caption">Un dessin animé de 57 secondes, du premier clic au jour J. Voix de synthèse française.</p>
-          <details class="film-transcript"><summary>Lire la version texte</summary><div id="film-transcript-body"><p><strong>L’événement de Camille.</strong> Voici Camille. Elle organise un événement et veut offrir à ses invités une vraie pause café.</p><p><strong>Le concept EYWA.</strong> Avec Eywa, un coffee bar et son barista viennent sur place. Café, latte ou matcha : tout est préparé à la demande.</p><p><strong>Le devis.</strong> Sur le site, Camille choisit ses invités, la durée, le lieu et la date. Elle personnalise son bar et découvre son devis gratuit.</p><p><strong>La réservation.</strong> Le devis lui convient ? Elle réserve en ligne, précise l&#x27;installation et finalise le paiement.</p><p><strong>La confirmation.</strong> Une confirmation automatique lui récapitule sa réservation par e-mail. Si nécessaire, nous échangeons pour préparer les derniers détails.</p><p><strong>Le jour J.</strong> Le jour J, nous arrivons en avance. Nous installons le bar, puis servons chaque invité pendant la durée réservée.</p><p><strong>Le moment à partager.</strong> À la fin, nous rangeons. Camille profite de ses invités. Eywa, du premier clic au dernier café.</p></div></details>
-        </div>
+        <figure class="editorial-photo journey-photo">
+          <img src="assets/photos-reelles/reelle-0776.jpg" alt="Un échange autour du coffee bar EYWA lors d’un événement en extérieur" loading="lazy" width="900" height="1600">
+        </figure>
         <div class="journey-copy">
           <p class="section-kicker">Comment ça marche ?</p>
-          <h2 id="journey-title">C’est simple.<br>On vous montre.</h2>
+          <h2 id="journey-title">Du devis<br>au dernier café.</h2>
           <ol class="journey-steps">
             <li><span>01</span><div><h3>Vous imaginez.</h3><p>La date, le lieu, les invités et vos envies.</p></div></li>
             <li><span>02</span><div><h3>Vous réservez.</h3><p>Votre devis, les détails pratiques, puis le paiement en ligne.</p></div></li>
@@ -552,6 +541,5 @@
       });
     })();
   </script>
-  <script src="eywa-film.js?v=1" defer></script>
 </body>
 </html>
