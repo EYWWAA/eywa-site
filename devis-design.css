@@ -222,3 +222,8 @@ body.quote-booking { height:100vh; height:100dvh; min-height:0; overflow:hidden;
   .quote-result .top-actions { gap:6px; }
   .quote-result .top-actions .btn-sm { min-height:40px; padding:8px; font-size:10px; }
 }
+/* Première étape : la carte épouse le contenu sans vide avant le bouton. */
+.quote-form .form-card:has(#s1.active) { flex:0 1 auto; max-height:100%; }
+.quote-form #s1.active { flex:0 1 auto; }
+.quote-form #s1 .step-content { flex:0 1 auto; }
+.quote-form #s1 .fq-barista { margin-bottom:0; }
