@@ -38,9 +38,9 @@ export function curatedPhotos(name: string, domain = ''): Visuals | null {
   const exactDomain = cleanDomain(domain);
   if (exactName !== 'celio' || (exactDomain && exactDomain !== 'celio.com')) return null;
   return {
-    scene: asset('/editorial/celio/scene-v1.webp'),
-    cup: asset('/editorial/celio/cup-v1.webp'),
-    latte: asset('/editorial/celio/latte-v1.webp'),
+    scene: asset('/editorial/celio/scene-v4.webp'),
+    cup: asset('/editorial/celio/cup-v4.webp'),
+    latte: asset('/editorial/celio/latte-v4.webp'),
     provenance: 'curated',
   };
 }

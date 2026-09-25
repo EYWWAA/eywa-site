@@ -1,15 +1,15 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-25T10:05:10.994Z",
+  "updatedAt": "2026-09-25T11:00:00.000Z",
   "entries": [
     {
       "slug": "celio",
       "name": "Celio",
       "domain": "celio.com",
       "visuals": {
-        "scene": "/editorial/celio/scene-v1.webp",
-        "cup": "/editorial/celio/cup-v1.webp",
-        "latte": "/editorial/celio/latte-v1.webp"
+        "scene": "/editorial/celio/scene-v4.webp",
+        "cup": "/editorial/celio/cup-v4.webp",
+        "latte": "/editorial/celio/latte-v4.webp"
       }
     },
     {
@@ -17,8 +17,8 @@
       "name": "Nike",
       "domain": "nike.com",
       "visuals": {
-        "scene": "/editorial/nike/scene-9bacdafa091a.webp",
-        "cup": "/editorial/nike/cup-ae224311709f.webp"
+        "scene": "/editorial/nike/scene-v4.webp",
+        "cup": "/editorial/nike/cup-v4.webp"
       }
     },
     {
@@ -26,7 +26,7 @@
       "name": "Dior",
       "domain": "dior.com",
       "visuals": {
-        "scene": "/editorial/dior/scene-1500eda5d6d0.webp"
+        "scene": "/editorial/dior/scene-v4.webp"
       }
     },
     {
@@ -34,7 +34,7 @@
       "name": "CUPRA",
       "domain": "cupraofficial.com",
       "visuals": {
-        "scene": "/editorial/cupra/scene-c75069eedab4.webp"
+        "scene": "/editorial/cupra/scene-v4.webp"
       }
     },
     {
@@ -42,7 +42,7 @@
       "name": "Renault",
       "domain": "renault.com",
       "visuals": {
-        "scene": "/editorial/renault/scene-27ff1a104e08.webp"
+        "scene": "/editorial/renault/scene-v4.webp"
       }
     }
   ]

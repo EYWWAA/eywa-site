@@ -1,8 +1,8 @@
 # EYWA — configurateur photographique et bar 3D
 
-Le site public GitHub Pages présente désormais la photographie Celio fournie par Louis, avec ses deux détails (gobelet et latte) réellement créés par l’outil de génération d’images OpenAI. Aucun montage Canvas n’est affiché. La photo complète est la vue principale ; « Explorer en 3D » charge à la demande le modèle GLB fixe. Les trois photographies peuvent être agrandies et sont conservées sans recadrage.
+Le site public GitHub Pages présente la nouvelle série de projections créée avec l’outil de génération d’images OpenAI, à partir du comptoir retenu par Louis : plateau en noyer foncé à bord droit, machine et accessoires communs. Aucun montage Canvas n’est affiché. La photo complète est la vue principale ; « Explorer en 3D » charge à la demande le modèle GLB fixe. Les trois photographies peuvent être agrandies et sont conservées sans recadrage.
 
-Les autres noms restent acceptés pour l’aperçu 3D. En l’absence de serveur OpenAI actif, l’interface annonce clairement que leurs photographies sur mesure ne sont pas encore disponibles. Elle ne substitue ni un montage, ni l’image d’une autre entreprise. Le catalogue photographique couvre actuellement **Celio uniquement**.
+Les autres noms restent acceptés pour l’aperçu 3D. En l’absence de serveur OpenAI actif, l’interface annonce clairement que leurs photographies sur mesure ne sont pas encore disponibles. Elle ne substitue ni un montage, ni l’image d’une autre entreprise. Le catalogue photographique couvre **Celio, Nike, Dior, Cupra et Renault**. Celio dispose des détails gobelet et latte ; Nike dispose du détail gobelet. Les chemins `v4` assurent le renouvellement des images affichées.
 
 ## Génération à la demande — code préparé, accès de production requis
 
