@@ -1,35 +1,36 @@
 {
-  "duration": 93.0,
+  "duration": 57.041666666666664,
+  "version": "Animation 2D — Camille",
   "chapters": [
     {
+      "id": "camille",
+      "duration": 6.333333333333333
+    },
+    {
       "id": "concept",
-      "duration": 12.583333333333334
+      "duration": 8.625
     },
     {
       "id": "devis",
-      "duration": 13.5
-    },
-    {
-      "id": "personnalisation",
-      "duration": 13.208333333333334
+      "duration": 9.583333333333334
     },
     {
       "id": "reservation",
-      "duration": 14.416666666666666
+      "duration": 6.5
     },
     {
       "id": "confirmation",
-      "duration": 13.541666666666666
-    },
-    {
-      "id": "preparation",
-      "duration": 12.208333333333334
+      "duration": 9.791666666666666
     },
     {
       "id": "jour-j",
-      "duration": 13.541666666666666
+      "duration": 8.375
+    },
+    {
+      "id": "profitez",
+      "duration": 7.833333333333333
     }
   ],
   "voice": "Thomas — synthèse macOS",
-  "status": "Version de travail ; confirmation automatique à valider avant diffusion"
+  "status": "Confirmation automatique illustrative, à valider avant diffusion"
 }

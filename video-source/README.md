@@ -1,6 +1,8 @@
-# Film du parcours EYWA — première version de travail
+# Film du parcours EYWA — animation 2D
 
-Vidéo locale avec narration française de synthèse (voix macOS Thomas), sous-titres et vues du site. Les images proviennent des éléments déjà présents dans le site ; les captures utilisent des exemples et aucune demande n’a été envoyée.
+Film explicatif de 57 secondes : Camille organise un événement, découvre EYWA, fait son devis, réserve en ligne puis accueille le coffee bar. Personnages, gestes, accessoires, boissons et véhicule sont dessinés et animés dans le code. Les écrans du devis et de la réservation sont des captures locales du site. Narration française de synthèse (voix macOS Thomas) et sous-titres. Aucune demande n’a été envoyée.
+
+Direction visuelle demandée : [TOSIZE.fr | la scierie en ligne](https://youtu.be/KT9ZVO88zQc), un récit illustré en 2D avec un personnage, des objets animés et une démonstration du site. Les dessins EYWA sont originaux et utilisent la palette vert, crème et sauge de la marque.
 
 Le parcours de réservation en ligne suivi d’une confirmation automatique est celui demandé pour cette version. La scène de confirmation est une illustration du message souhaité, pas la capture d’un e-mail réellement envoyé.
 
@@ -14,7 +16,7 @@ Avant de publier le film, valider en environnement de test : disponibilité de l
 
 - `narration.json` : texte et scènes modifiables.
 - `screens/` : écrans locaux du site, sans coordonnées client.
-- `build_video.py` : composition 1280 × 720 à 24 images/seconde ; dépend de Pillow, FFmpeg et de `say` (macOS) pour régénérer la voix.
+- `build_video.py` : illustrations et animation à 24 images/seconde, export 1280 × 720 avec anticrénelage. Dépend de Pillow, FFmpeg et de `say` (macOS) pour régénérer la voix. L’option `--preview` produit les vues de contrôle dans `/private/tmp/eywa-animation-preview`.
 - `../assets/video/eywa-parcours.mp4` : vidéo intégrée à l’accueil, sans lecture automatique.
 - `../assets/video/eywa-parcours.fr.vtt` : sous-titres français.
 
