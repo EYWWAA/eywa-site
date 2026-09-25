@@ -264,6 +264,7 @@ footer { padding: 55px 0 36px; }
 }
 
 /* Accueil : la palette éditoriale, davantage de place pour les images. */
+.eywa-home .nav { min-height: 64px; }
 .eywa-home .hero { width: 100%; grid-template-columns: 1fr 1.08fr; padding: 0; gap: 0; }
 .eywa-home .hero-copy { padding: 70px clamp(32px, 5vw, 88px) 70px max(48px, calc((100vw - 1280px)/2)); }
 .eywa-home .hero h1 { font-size: clamp(3rem, 4.8vw, 4.6rem) !important; line-height: 1.08; }
@@ -347,6 +348,8 @@ footer { padding: 55px 0 36px; }
   .event-portrait h3 { font-size: 1.3rem; }
 }
 @media (max-width: 760px) {
+  .eywa-home .nav { min-height: 60px; }
+  .eywa-home .navlinks.open { max-height: calc(100dvh - 60px); }
   .eywa-home .hero { grid-template-columns: 1fr; }
   .eywa-home .hero-copy { padding: 44px 24px 40px; }
   .eywa-home .hero h1 { font-size: clamp(2.8rem, 8.8vw, 4rem) !important; }
@@ -368,6 +371,31 @@ footer { padding: 55px 0 36px; }
   .event-portrait h3 { font-size: 1.55rem; margin-top: 18px; }
   .event-portrait:last-child img { object-position: center 42%; }
   .eywa-home .visual-timeline .editorial-photo { aspect-ratio: 4/3; }
+}
+/* Le bandeau fait partie du premier écran. La hauteur minimale laisse le
+   contenu grandir naturellement en cas de zoom ou de fenêtre très basse. */
+@media (min-width: 1024px) {
+  .eywa-home .home-opening {
+    display: grid;
+    grid-template-rows: 1fr auto;
+    min-height: min(740px, calc(100vh - 80px));
+    min-height: min(740px, calc(100svh - 80px));
+  }
+  .eywa-home .hero-copy {
+    padding-top: clamp(24px, 4svh, 56px);
+    padding-bottom: clamp(24px, 4svh, 56px);
+  }
+  .eywa-home .hero h1 { font-size: clamp(2.5rem, min(4.8vw, 8svh), 4.6rem) !important; }
+  .eywa-home .photo-carousel { min-height: 0; }
+  .eywa-home .carousel-stage { position: absolute; inset: 0; height: 100% !important; }
+  .eywa-home .event-ribbon { padding: 16px 24px; }
+  .eywa-home .event-ribbon .hero-events { gap: 10px 28px; }
+}
+@media (min-width: 1024px) and (max-height: 700px) {
+  .eywa-home .hero h1 { margin-bottom: 18px !important; font-size: clamp(2.5rem, 3.8vw, 3rem) !important; }
+  .eywa-home .hero-eyebrow { margin-bottom: 16px; }
+  .eywa-home .hero-location { margin-bottom: 20px; }
+  .eywa-home .hero-film-link { margin-top: 20px; }
 }
 @media (max-width: 420px) {
   .eywa-home .carousel-stage { height: 390px !important; }
