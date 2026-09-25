@@ -24,7 +24,8 @@
     const bubble = document.getElementById('chatbase-bubble-button');
     const panel = document.getElementById('chatbase-bubble-window');
     const opened = panel && getComputedStyle(panel).display !== 'none' && panel.getBoundingClientRect().height > 0;
-    launcher.hidden = !bubble || !!opened;
+    const hidden = !bubble || !!opened;
+    if (launcher.hidden !== hidden) launcher.hidden = hidden;
   };
   new MutationObserver(sync).observe(document.body, {childList:true,subtree:true,attributes:true,attributeFilter:['style','aria-expanded']});
   if (!window.chatbase || window.chatbase('getState') !== 'initialized') {
