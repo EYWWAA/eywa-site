@@ -36,7 +36,7 @@ main > .section:has(.price-layout), .service-pricing, .travel-pricing { display:
 .tariff-overview { padding: 96px 0; background: #f8f7f3; }
 .tariff-overview-head { max-width: 720px; margin-bottom: 56px; }
 .tariff-overview .eyebrow { margin: 0 0 20px; }
-.tariff-overview h2 { margin: 0 0 22px; color: var(--green, #203d30); font: 400 clamp(2.15rem, 3.65vw, 3.45rem)/1.12 var(--serif, Georgia, serif); letter-spacing: -.035em; }
+.tariff-overview h1 { margin: 0 0 22px; color: var(--green, #203d30); font: 400 clamp(2.15rem, 3.65vw, 3.45rem)/1.12 var(--serif, Georgia, serif); letter-spacing: -.035em; }
 .tariff-overview-head > p:not(.eyebrow) { max-width: 620px; margin: 0; color: var(--mute, #657068); font-size: 1rem; line-height: 1.75; }
 .tariff-overview-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
 .tariff-overview-grid article { padding: clamp(30px, 4vw, 46px); border: 1px solid var(--line, #dcded6); border-radius: 5px; background: #fff; }
@@ -55,4 +55,4 @@ main > .section:has(.price-layout), .service-pricing, .travel-pricing { display:
 .tariff-overview-cta { display: flex; align-items: center; justify-content: space-between; gap: 36px; margin-top: 38px; padding-top: 34px; border-top: 1px solid var(--line, #dcded6); }
 .tariff-overview-cta p { max-width: 560px; margin: 0; color: var(--mute, #657068); font-size: .9375rem; line-height: 1.65; }
 .tariff-overview-cta .button { flex: 0 0 auto; color: #fff; background: var(--green, #203d30); }
-@media (max-width: 760px) { .tariff-overview { padding: 64px 0; } .tariff-overview-head { margin-bottom: 36px; } .tariff-overview h2 { font-size: 2.15rem; } .tariff-overview-grid { grid-template-columns: 1fr; gap: 16px; } .tariff-overview-grid article { padding: 30px 25px; } .tariff-overview-number { margin-bottom: 26px; font-size: 2.8rem; } .tariff-overview-cta { display: block; margin-top: 30px; } .tariff-overview-cta .button { width: 100%; margin-top: 22px; justify-content: space-between; } }
+@media (max-width: 760px) { .tariff-overview { padding: 64px 0; } .tariff-overview-head { margin-bottom: 36px; } .tariff-overview h1 { font-size: 2.15rem; } .tariff-overview-grid { grid-template-columns: 1fr; gap: 16px; } .tariff-overview-grid article { padding: 30px 25px; } .tariff-overview-number { margin-bottom: 26px; font-size: 2.8rem; } .tariff-overview-cta { display: block; margin-top: 30px; } .tariff-overview-cta .button { width: 100%; margin-top: 22px; justify-content: space-between; } }
