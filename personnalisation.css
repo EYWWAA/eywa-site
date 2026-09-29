@@ -39,3 +39,9 @@
 @media (prefers-reduced-motion: reduce) {
   .personal-project, .personal-project:nth-child(2), .personal-project:nth-child(3) { position: relative; top: auto; }
 }
+
+/* Give each pinned card more reading time before the next one arrives. */
+@media (min-width: 701px) and (prefers-reduced-motion: no-preference) {
+  .personal-project:not(:last-child) { margin-bottom: clamp(160px, 30vh, 300px); }
+  .personal-catalog-list { padding-bottom: clamp(120px, 20vh, 200px); }
+}
