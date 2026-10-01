@@ -1,0 +1,6 @@
+/* Sections adaptées après le retrait des photos personnelles de café. */
+.menu-editorial .menu-spread,
+.menu-editorial .flavour-layout,
+.why-page .value-expertise {
+  grid-template-columns: minmax(0, 1fr);
+}
