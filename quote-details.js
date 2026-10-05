@@ -44,10 +44,12 @@
   let disclosureId=0;
   const makeDescription=(description,title)=>{
     const wrapper=document.createElement('div');wrapper.className='quote-description';
-    const copy=document.createElement('p');copy.className='quote-description-copy';copy.id='quote-description-'+(++disclosureId);copy.textContent=description;
-    const button=document.createElement('button');button.type='button';button.className='quote-description-toggle';button.textContent='…';button.setAttribute('aria-expanded','false');button.setAttribute('aria-controls',copy.id);button.setAttribute('aria-label','Afficher la description complète : '+title);
-    button.addEventListener('click',()=>{const expanded=button.getAttribute('aria-expanded')!=='true';button.setAttribute('aria-expanded',String(expanded));wrapper.classList.toggle('expanded',expanded);button.setAttribute('aria-label',(expanded?'Réduire la description : ':'Afficher la description complète : ')+title);});
-    wrapper.append(copy,button);return wrapper;
+    const copy=document.createElement('span');copy.className='quote-description-copy';copy.id='quote-description-'+(++disclosureId);copy.textContent=description;
+    const button=document.createElement('button');button.type='button';button.className='quote-description-toggle';button.setAttribute('aria-expanded','false');button.setAttribute('aria-controls',copy.id);
+    const hint=document.createElement('span');hint.className='quote-description-hint';hint.textContent='Voir le détail';
+    button.append(copy,hint);
+    button.addEventListener('click',()=>{const expanded=button.getAttribute('aria-expanded')!=='true';button.setAttribute('aria-expanded',String(expanded));wrapper.classList.toggle('expanded',expanded);hint.textContent=expanded?'Réduire':'Voir le détail';});
+    wrapper.append(button);return wrapper;
   };
   let serviceTime='Horaire à préciser';
   if (/^([01]\d|2[0-3]):[0-5]\d$/.test(p.get('ti')||'')) {
@@ -69,7 +71,7 @@
     if(staff>1)lines.append(makeLine('Renfort barista',money((staff-1)*200*days),(staff-1)+' barista(s) supplémentaire(s) pour adapter l’équipe au nombre d’invités et à la durée du service.'));
     if(adjustment)lines.append(makeLine('Ajustement du devis initial',money(adjustment),'Montant déjà compris dans votre estimation transmise. Le détail de cet ajustement sera confirmé avec EYWA.'));
     options.filter(o=>o.selected).forEach(o=>lines.append(makeLine(o.name,money(o.price*days),o.description)));
-    lines.append(makeLine('Déplacement aller-retour',hasTravel?money(travel):'À confirmer',hasTravel?km.toFixed(1)+' km et '+Math.round(minutes)+' min de conduite depuis Montcy-Notre-Dame, près de Charleville-Mézières. Barème : 0,25 €/km + 14 €/h, péages inclus. Un aller-retour pour la prestation ; hébergement et trajets supplémentaires éventuels à préciser.'+(p.get('ta')==='1'?' Trajet estimatif à affiner avec l’adresse exacte.':''):'Le trajet doit être calculé depuis le formulaire de devis.'));
+    lines.append(makeLine('Déplacement aller-retour',hasTravel?money(travel):'À confirmer','Depuis Charleville-Mézières.'));
     if(lodging)lines.append(makeLine('Hébergement du barista','À confirmer','Le trajet aller dépasse quatre heures. Un logement sur place est à prévoir pour le ou les baristas. Le nombre de nuits et le montant seront précisés avec vous avant réservation. Ce coût n’est pas inclus dans le total affiché.'));
     const total=Math.round((service+adjustment+travel+options.filter(o=>o.selected).reduce((n,o)=>n+o.price*days,0))*100)/100;
     if(hasTravel)document.querySelector('.price-lbl').textContent='Prestation et trajet aller-retour · hébergement éventuel non compris';

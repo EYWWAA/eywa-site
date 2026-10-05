@@ -1,0 +1,14 @@
+/* Typographie fonctionnelle du devis et de la réservation. */
+:root,body{--sans:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--serif:var(--sans)}
+body{font-family:var(--sans);font-weight:400;color:#182234}
+body :is(h1,h2,h3,h4,h5,h6,.question,.card-title,.sect-label,.upsell-title,.upsell-name){font-family:var(--sans)!important;font-weight:650!important;letter-spacing:normal}
+body :is(p,li,label,summary,input,select,textarea,button,a){font-family:var(--sans)}
+body :is(p,li,input,select,textarea){font-weight:400}
+body :is(button,.btn-pay,.btn-next,.btn-fq,.btn-cta){font-weight:600}
+.quote-result .quote-description{color:#354052;font-size:16px;padding-right:0}
+.quote-result .quote-description-toggle{position:static;display:block;width:100%;min-height:44px;padding:0;border:0;background:transparent;color:inherit;text-align:left;font:400 16px/1.65 var(--sans);cursor:pointer}
+.quote-result .quote-description-copy{font-size:inherit;line-height:inherit}
+.quote-description-hint{display:block;font-size:14px;font-weight:600;text-decoration:underline;text-underline-offset:3px;margin-top:5px;color:#203d30}
+.quote-result .quote-line h3,.quote-result .upsell-name{font-size:18px;font-weight:650}
+.quote-result .price-num,.quote-result .quote-line strong{font-weight:700}
+@media print{.quote-result .quote-description-toggle{display:block}.quote-description-hint{display:none}}
