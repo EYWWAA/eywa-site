@@ -279,7 +279,7 @@
     var kv = x.split('='); if (kv[0]) P[decodeURIComponent(kv[0])] = decodeURIComponent((kv[1]||'').replace(/\+/g,' '));
   });
 
-  var price = parseInt(P.pr) || 350;
+  var price = Math.round((parseFloat(P.pr) || 350)*100)/100;
   document.getElementById('total-display').textContent = price + ' €';
 
   if (P.p) document.getElementById('welcome-title').textContent = 'Parfait ' + P.p + ' ! Finalisons votre réservation.';
@@ -409,7 +409,7 @@
     var cgv = document.getElementById('cgv').checked;
     if (!bn || !cgv) { showErr('err8', true); return false; }
     showErr('err8', false);
-    var amountCents = price * 100;
+    var amountCents = Math.round(price * 100);
     var label = encodeURIComponent('Réservation EYWA — ' + (P.t || 'Événement') + ' · ' + price + ' €');
     var checkoutUrl = 'https://tubular-granita-827569.netlify.app/.netlify/functions/checkout';
     window.location.href = checkoutUrl + '?amount=' + amountCents + '&label=' + label + '&cancel=reservation.html';

@@ -284,6 +284,7 @@
 <link rel="stylesheet" href="https://use.typekit.net/siv0vng.css">
 <script src="https://use.typekit.net/ik/sR9C6s2CmtklvGmHOBiU86tItp94UbAjJee13bWbCFSfe0wgfFHN4UJLFRbh52jhWDjhw29h5esKwemKFD9aFRB8FcsR5Q8K5gGMJ6iyd1TTjAozJyBKScB0ZeN0OAikdas8SaBuZPJbZ148-AiGifuDjAoDOWgkdkGHfOEOMyMMeMb6MKGHfOrOMyMMeMS6MKGHfOhOMyMMeMt6MKG4fOUbIMIjMkMfH6qJl8MbMs6IJMJ7fbKt9gMgeMS6MKG4fOubIMIj2PMfH6qJ0mMbMs6sJMJ7fbRHmsMfeMb6MKG4fJoTIMJjgkMfH6qJRAqbMy65JMJ7fbKV-sMfegI6MTMghwd333j.js" async onload="try{Typekit.load({async:true});}catch(e){}"></script>
 <link rel="stylesheet" href="typography.css?v=20261005-2">
+<style>.travel-result{display:block;width:100%;text-align:left;padding:12px;margin:8px 0;background:#fff;border:1px solid #ccc;border-radius:6px;font:inherit;cursor:pointer}#travel-status{font-size:16px;line-height:1.5}</style>
 </head>
 <body class="quote-form">
 
@@ -383,8 +384,11 @@
     <!-- S2 : Lieu -->
     <div class="step" id="s2">
       <div class="question">Où se déroule votre événement&nbsp;?</div>
-      <div class="question-sub">Si vous ne connaissez pas l'adresse exacte, indiquez simplement la ville la plus proche.</div>
-      <input type="text" id="lieu-input" placeholder="Ex : Charleville-Mézières, salle des fêtes" oninput="checkS2()">
+      <div class="question-sub">Recherchez votre adresse et sélectionnez le lieu pour calculer le déplacement. Si vous choisissez seulement une ville, le trajet restera estimatif.</div>
+      <input type="text" id="lieu-input" placeholder="Rue, code postal et ville" oninput="checkS2()">
+      <button type="button" class="btn-fq" onclick="findEventAddress()">Rechercher le lieu</button>
+      <div id="travel-results"></div><p id="travel-status" role="status" aria-live="polite"></p>
+      <p style="font-size:13px">Recherche d’adresses et itinéraires : IGN / Géoplateforme. Votre lieu est transmis à ce service pour calculer le trajet.</p>
       <div class="btn-row">
         <button class="btn-back" onclick="go('s2','s1',0)">← Retour</button>
         <button class="btn-next disabled" id="btn2" onclick="go('s2','s3',2)">Continuer →</button>
@@ -653,6 +657,7 @@
   }
 
   function go(from, to, dotN) {
+    if(from==='s2' && to==='s3' && !window.eywaTravel)return;
     collect();
     showStep(to);
     renderDots(dotN);
@@ -802,17 +807,18 @@
     var baristasNeeded = Math.ceil(A.guests / (A.hrs * 50));
     var extraBaristas = Math.max(0, baristasNeeded - 1);
     var pricePerDay = 650 + (extraGuests * 5) + Math.round(extraHrs * 70) + (extraBaristas * 200) + persoTotal();
-    return pricePerDay * A.days;
+    return Math.round((pricePerDay * A.days + window.eywaTravel.total)*100)/100;
   }
 
   function showPrice() {
+    if(!window.eywaTravel){showStep('s2');return;}
     collect();
     var extraGuests = Math.max(0, A.guests - 50);
     var extraHrs = Math.max(0, A.hrs - 1.5);
     var baristasNeeded = Math.ceil(A.guests / (A.hrs * 50));
     var extraBaristas = Math.max(0, baristasNeeded - 1);
     var pricePerDay = 650 + (extraGuests * 5) + Math.round(extraHrs * 70) + (extraBaristas * 200) + persoTotal();
-    A.totalPrice = pricePerDay * A.days;
+    A.totalPrice = calcPrice();
 
     document.getElementById('priceDisplay').textContent = A.totalPrice + ' €';
 
@@ -834,10 +840,12 @@
     }
     if (A.days > 1) {
       bd += '<div class="brow total"><span>Par jour</span><span>' + pricePerDay + ' €</span></div>';
-      bd += '<div class="brow"><span>× ' + A.days + ' jours</span><span>' + A.totalPrice + ' €</span></div>';
+      bd += '<div class="brow"><span>× ' + A.days + ' jours</span><span>' + (pricePerDay*A.days) + ' €</span></div>';
     }
+    bd += '<div class="brow"><span>Déplacement aller-retour (' + window.eywaTravel.roundTripKm.toFixed(1) + ' km)</span><span>' + window.eywaTravel.total.toFixed(2) + ' €</span></div>';
+    if(window.eywaTravel.lodgingRequired)bd += '<div class="brow"><span>Hébergement (trajet aller supérieur à 4 h)</span><span>À confirmer</span></div>';
     bd += '<div class="brow total"><span>Estimation totale</span><span>' + A.totalPrice + ' €</span></div>';
-    bd += '<div class="brow note"><span>Déplacement inclus, sans frais kilométriques</span></div>';
+    bd += '<div class="brow note"><span>Trajet : 0,25 €/km + 14 €/h de conduite aller-retour. Péages inclus. Hébergement éventuel non compris.</span></div>';
     document.getElementById('breakdown').innerHTML = bd;
 
     showStep('sPrix');
@@ -852,12 +860,13 @@
       p: A.prenom, t: finalType,
       g: A.guests, h: A.hrs, dy: A.days,
       d: A.date, ti: A.time, l: A.lieu,
-      pr: A.totalPrice, options: JSON.stringify(A.personalization)
+      to: window.eywaTravel.outwardMinutes, tk: window.eywaTravel.roundTripKm, tm: window.eywaTravel.roundTripMinutes, ta: window.eywaTravel.approximate ? 1 : 0, pr: A.totalPrice, options: JSON.stringify(A.personalization)
     });
     return base + '?' + params.toString();
   }
 
   function submitForm() {
+    if(!window.eywaTravel){showStep('s2');return;}
     collect();
     A.totalPrice = calcPrice();
 
@@ -895,6 +904,8 @@
         'Date : ' + dateStr,
         'Heure : ' + (A.time || '—'),
         'Lieu : ' + A.lieu,
+        'Déplacement A/R : ' + window.eywaTravel.roundTripKm.toFixed(1) + ' km / ' + Math.round(window.eywaTravel.roundTripMinutes) + ' min / ' + window.eywaTravel.total.toFixed(2) + ' €',
+        'Hébergement : ' + (window.eywaTravel.lodgingRequired ? 'À prévoir : aller supérieur à 4 h. Montant à confirmer.' : 'Non déclenché par la durée du trajet'),
         'Personnalisation : ' + (A.personalization.join(', ') || 'Aucune'),
         'Détails : ' + (A.details || '—'),
         'Estimation : ' + A.totalPrice + ' €',
@@ -917,7 +928,9 @@
         'Durée': hrsLabel(A.hrs),
         'Nombre de jours': A.days,
         'Date': dateStr, 'Heure': A.time || '—',
+        'Déplacement aller-retour': window.eywaTravel.total.toFixed(2) + ' € · ' + window.eywaTravel.roundTripKm.toFixed(1) + ' km · ' + Math.round(window.eywaTravel.roundTripMinutes) + ' min',
         'Lieu': A.lieu, 'Détails': A.details || '—',
+        'Hébergement': window.eywaTravel.lodgingRequired ? 'À prévoir, montant à confirmer' : 'Non déclenché par le trajet',
         'Personnalisation': A.personalization.join(', ') || 'Aucune',
         'Prénom': A.prenom, 'Nom': A.nom, 'Société': A.societe || '—', 'Téléphone': A.tel,
         'Estimation': A.totalPrice + ' €',
@@ -974,5 +987,6 @@
   <details class="precise-time"><summary>Besoin d’un horaire plus précis ?</summary><div><input type="time" id="precise-time" aria-label="Horaire précis"><button type="button" id="apply-time">Choisir</button></div></details>
 </dialog>
 <script src="devis-pickers.js?v=1"></script>
+<script src="travel-pricing.js"></script><script src="travel-route.js"></script><script src="travel-origin.js"></script><script src="travel-form.js"></script>
 </body>
 </html>

@@ -17,9 +17,13 @@
   options.forEach(o => o.selected = selected.includes(o.name));
   const service = (650 + Math.max(0,guests-50)*5 + Math.round(Math.max(0,hours-1.5)*70) + (staff-1)*200)*days;
   const initialOptions = options.filter(o=>o.selected).reduce((sum,o)=>sum+o.price*days,0);
+  const km=Number(p.get('tk')), minutes=Number(p.get('tm'));
+  const hasTravel=p.has('tk')&&p.has('tm')&&Number.isFinite(km)&&Number.isFinite(minutes)&&km>=0&&minutes>=0&&km<20000&&minutes<30000;
+  const lodging=hasTravel&&Number(p.get('to'))>240;
+  const travel=hasTravel?EywaTravelPricing.calculate(km,minutes).total:0;
   const supplied = number('pr',service+initialOptions,10000000);
   // Un ancien lien peut contenir un forfait ajusté sans le détail des options.
-  const adjustment = supplied-service-initialOptions;
+  const adjustment = supplied-service-initialOptions-travel;
   const text = (id,value) => document.getElementById(id).textContent=value;
   text('card-title',p.get('p') ? 'Organisons votre événement, '+p.get('p')+'.' : 'Organisons votre événement.');
   text('meta-lieu',p.get('l') || 'Lieu à préciser');
@@ -65,12 +69,14 @@
     if(staff>1)lines.append(makeLine('Renfort barista',money((staff-1)*200*days),(staff-1)+' barista(s) supplémentaire(s) pour adapter l’équipe au nombre d’invités et à la durée du service.'));
     if(adjustment)lines.append(makeLine('Ajustement du devis initial',money(adjustment),'Montant déjà compris dans votre estimation transmise. Le détail de cet ajustement sera confirmé avec EYWA.'));
     options.filter(o=>o.selected).forEach(o=>lines.append(makeLine(o.name,money(o.price*days),o.description)));
-    lines.append(makeLine('Déplacement et logistique','À confirmer','Intervention partout en France. Le déplacement est établi selon la distance aller-retour et le temps de conduite depuis Charleville-Mézières. Il sera détaillé dans votre devis final avant confirmation.'));
-    const total=service+adjustment+options.filter(o=>o.selected).reduce((n,o)=>n+o.price*days,0);
+    lines.append(makeLine('Déplacement aller-retour',hasTravel?money(travel):'À confirmer',hasTravel?km.toFixed(1)+' km et '+Math.round(minutes)+' min de conduite depuis Montcy-Notre-Dame, près de Charleville-Mézières. Barème : 0,25 €/km + 14 €/h, péages inclus. Un aller-retour pour la prestation ; hébergement et trajets supplémentaires éventuels à préciser.'+(p.get('ta')==='1'?' Trajet estimatif à affiner avec l’adresse exacte.':''):'Le trajet doit être calculé depuis le formulaire de devis.'));
+    if(lodging)lines.append(makeLine('Hébergement du barista','À confirmer','Le trajet aller dépasse quatre heures. Un logement sur place est à prévoir pour le ou les baristas. Le nombre de nuits et le montant seront précisés avec vous avant réservation. Ce coût n’est pas inclus dans le total affiché.'));
+    const total=Math.round((service+adjustment+travel+options.filter(o=>o.selected).reduce((n,o)=>n+o.price*days,0))*100)/100;
+    if(hasTravel)document.querySelector('.price-lbl').textContent='Prestation et trajet aller-retour · hébergement éventuel non compris';
     text('price-main',money(total));text('dock-total',money(total));
     const next=new URLSearchParams(p);next.set('pr',total);next.set('options',JSON.stringify(options.filter(o=>o.selected).map(o=>o.name)));next.set('dy',days);
     history.replaceState(null,'',location.pathname+'?'+next.toString()+location.hash);
-    ['main','bottom','dock'].forEach(id=>document.getElementById('btn-reserve-'+id).href='reservation.html?'+next.toString());
+    ['main','bottom','dock'].forEach(id=>{const button=document.getElementById('btn-reserve-'+id);button.href=lodging?'contact.html':'reservation.html?'+next.toString();if(lodging)button.textContent='Finaliser avec EYWA';});
   }
   options.forEach(o=>{
     const card=document.createElement('article');card.className='upsell-item'+(o.selected?' on':'');
