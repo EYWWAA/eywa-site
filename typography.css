@@ -16,3 +16,7 @@ body .reference-craft-grid h3{font-size:clamp(32px,2.5vw,38px)!important;line-he
 body .reference-craft-grid p,body .reference-drink-bar p{opacity:1}
 body footer p,body footer a{font-size:16px!important;line-height:1.6!important}
 @media(max-width:700px){body .navlinks a{font-size:20px!important}body .reference-coffee-cta .button{font-size:16px!important}body main :is(.kicker,.eyebrow,.section-kicker){font-size:13px!important}}
+/* Le titre d’accueil porte la hiérarchie visuelle. */
+body.eywa-home .hero h1#title{font-size:clamp(72px,7.5vw,112px)!important;line-height:1.02;max-width:none;margin-bottom:28px}
+@media(max-width:900px){body.eywa-home .hero h1#title{font-size:clamp(58px,10vw,88px)!important}}
+@media(max-width:480px){body.eywa-home .hero h1#title{font-size:clamp(48px,12vw,60px)!important}}
