@@ -58,3 +58,16 @@
 .reference-menu-link:focus-visible{outline:3px solid currentColor;outline-offset:5px}
 @media(max-width:900px){.reference-craft .wrap{width:calc(100% - 48px)}.reference-craft-grid{gap:32px}.reference-drink-bar{align-items:flex-start;flex-direction:column}}
 @media(max-width:700px){.reference-craft .wrap{width:calc(100% - 40px)}.reference-craft-hero{min-height:390px;padding:60px 0}.eywa-home .reference-craft h2{font-size:clamp(38px,8vw,54px)}.eywa-home .reference-craft .kicker{font-size:11px}.reference-craft-grid{grid-template-columns:1fr;gap:36px}.reference-craft-grid article:nth-child(2){padding-top:0}.reference-craft-lower{padding:40px 0 55px}.reference-drink-bar{margin-top:36px}.eywa-home .reference-craft .reference-drink-list{font-size:32px}}
+
+/* Explication courte reliée au lien de l’accueil. */
+.eywa-home .how-it-works{padding:58px 0;background:#f2eee3;color:#263c30;scroll-margin-top:100px}
+.eywa-home .how-it-works h2{font-size:clamp(40px,4vw,58px);line-height:1.1;margin:0 0 30px;color:#263c30}
+.how-it-works .section-kicker{margin:0 0 16px}
+.how-steps{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px;padding:0;margin:0 0 24px;counter-reset:none}
+.how-steps li{border-top:1px solid #263c3033;padding-top:18px}
+.how-number{display:block;font-size:16px;color:#776346;margin-bottom:12px}
+.eywa-home .how-steps h3{font-size:30px;line-height:1.15;margin:0 0 12px;color:#263c30}
+.how-steps p{margin:0;max-width:36ch}
+.how-it-works .text-link{display:inline-flex;gap:20px;align-items:center;padding:10px 0;border-bottom:1px solid currentColor;text-decoration:none;color:#263c30}
+.how-it-works .text-link:focus-visible{outline:2px solid currentColor;outline-offset:5px}
+@media(max-width:700px){.eywa-home .how-it-works{padding:40px 0}.how-steps{grid-template-columns:1fr;gap:24px}.how-steps p{max-width:none}}
