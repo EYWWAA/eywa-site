@@ -71,3 +71,13 @@
 .how-it-works .text-link{display:inline-flex;gap:20px;align-items:center;padding:10px 0;border-bottom:1px solid currentColor;text-decoration:none;color:#263c30}
 .how-it-works .text-link:focus-visible{outline:2px solid currentColor;outline-offset:5px}
 @media(max-width:700px){.eywa-home .how-it-works{padding:40px 0}.how-steps{grid-template-columns:1fr;gap:24px}.how-steps p{max-width:none}}
+
+.how-followup{margin:38px 0 26px;padding-top:30px;border-top:1px solid #263c3033;max-width:960px}
+.eywa-home .how-followup>h3{font-size:clamp(32px,3vw,44px);line-height:1.15;margin:0 0 18px;color:#263c30;scroll-margin-top:100px}
+.how-followup>p{max-width:70ch;margin-bottom:26px}
+.how-followup-details details{border-bottom:1px solid #263c3033;padding:20px 0}
+.how-followup-details summary{font-size:22px;line-height:1.4;cursor:pointer;color:#263c30}
+.how-followup-details details p{margin:18px 0 0;max-width:75ch}
+.how-followup-details ul{padding-left:24px;margin:18px 0}
+.how-followup-details li{margin:8px 0}
+.how-followup-details summary:focus-visible{outline:2px solid currentColor;outline-offset:6px}
