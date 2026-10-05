@@ -70,15 +70,36 @@
   .personal-image-cell, .personal-project-body figure { border-radius: 12px; }
 }
 
-/* Laisser la dernière carte atteindre son cran sous la deuxième. */
-@media(prefers-reduced-motion:no-preference){.personal-catalog-list{padding-bottom:70svh}}
-@media(max-width:700px) and (max-height:550px){.personal-catalog-list{padding-bottom:0}}
 .foam-examples .personal-project-thumbs{grid-template-rows:1fr 1fr}
 .foam-examples .personal-project-thumbs img{object-position:center 65%}
 .foam-examples figure img{object-position:center 45%}
 body.eywa-home main p.foam-credit{font-size:12px!important;line-height:1.5!important}
 .foam-credit a{text-decoration:underline;text-underline-offset:2px}
-/* Un espace dans le flux prolonge réellement la zone des cartes collantes. */
-@media(prefers-reduced-motion:no-preference){.personal-catalog-list{padding-bottom:0}.personal-catalog-list::after{content:'';display:block;height:70svh}}
-@media(max-width:700px) and (max-height:550px){.personal-catalog-list::after{display:none}}
 #personnalisation p.foam-credit{font-size:12px!important;line-height:1.5!important}
+
+/* Un même bord inférieur fait sortir les trois cartes ensemble, sans temps mort. */
+.personal-catalog-list { padding-bottom: 0; }
+.personal-project { --stack-offset: 0px; }
+.personal-project:nth-child(2) { --stack-offset: 18px; }
+.personal-project:nth-child(3) { --stack-offset: 36px; margin-bottom: 0; }
+@media (max-width: 700px) {
+  .personal-project:nth-child(2) { --stack-offset: 12px; }
+  .personal-project:nth-child(3) { --stack-offset: 24px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .personal-project { box-sizing: border-box; min-height: calc(var(--stack-height, 0px) - var(--stack-offset)); }
+}
+@media (max-width: 700px) and (max-height: 550px) {
+  .personal-project { min-height: 0; }
+}
+.personal-catalog-list { display: flex; flex-direction: column; gap: 24px; }
+.personal-catalog-list > .personal-project { flex-shrink: 0; margin-bottom: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .personal-catalog-list { gap: clamp(160px, 30vh, 300px); }
+}
+@media (max-width: 700px) and (prefers-reduced-motion: no-preference) {
+  .personal-catalog-list { gap: clamp(150px, 30svh, 260px); }
+}
+@media (max-width: 700px) and (max-height: 550px) {
+  .personal-catalog-list { gap: 24px; }
+}
