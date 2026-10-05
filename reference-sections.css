@@ -85,3 +85,6 @@
 .how-steps{grid-template-columns:repeat(2,minmax(0,1fr))}
 .how-quote-link{display:inline-block;color:inherit;font-size:18px;margin:0 0 14px;text-underline-offset:4px}
 @media(max-width:700px){.how-steps{grid-template-columns:1fr}}
+
+.eywa-home .event-ribbon{background:#dcb3a0;border-color:#c4937f}
+.eywa-home .event-ribbon .hero-events{color:#263c30}
