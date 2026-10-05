@@ -350,3 +350,9 @@
 body header.nav,body header.nav::before{background:#e9e9e5!important}
 body header.nav::before{border-bottom:1px solid #d1d3ce!important;box-shadow:0 2px 8px rgb(0 0 0 / 4%)}
 @media(max-width:760px){body header.nav .navlinks.open{background:#e9e9e5!important}}
+
+/* Signature complète dans la navigation. */
+body header.nav .logo{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;flex-shrink:0;text-decoration:none;line-height:1;letter-spacing:0;text-indent:0}
+body header.nav .logo .brand-eywa{font-family:'ivybodoni-condensed',Georgia,serif!important;font-size:30px;font-weight:300!important;letter-spacing:.18em;text-indent:.18em;line-height:1}
+body header.nav .logo .brand-descriptor{font-family:'brandon-grotesque',Arial,sans-serif!important;font-size:12px;font-weight:400!important;letter-spacing:.08em;line-height:1.2;white-space:nowrap}
+@media(max-width:760px){body header.nav .logo .brand-eywa{font-size:25px}body header.nav .logo .brand-descriptor{font-size:11px}}
