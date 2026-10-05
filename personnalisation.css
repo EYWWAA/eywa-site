@@ -78,3 +78,7 @@
 .foam-examples figure img{object-position:center 45%}
 body.eywa-home main p.foam-credit{font-size:12px!important;line-height:1.5!important}
 .foam-credit a{text-decoration:underline;text-underline-offset:2px}
+/* Un espace dans le flux prolonge réellement la zone des cartes collantes. */
+@media(prefers-reduced-motion:no-preference){.personal-catalog-list{padding-bottom:0}.personal-catalog-list::after{content:'';display:block;height:70svh}}
+@media(max-width:700px) and (max-height:550px){.personal-catalog-list::after{display:none}}
+#personnalisation p.foam-credit{font-size:12px!important;line-height:1.5!important}
