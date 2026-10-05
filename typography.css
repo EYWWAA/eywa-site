@@ -4,3 +4,15 @@ body,body :where(p,a,span,div,li,dt,dd,label,legend,summary,button,input,select,
 body :is(h1,h2,h3,h4,h5,h6,.section-title,.personal-name,.logo,.footer-brand,.footer-wordmark),body :is(h1,h2,h3,h4,h5,h6,.section-title,.personal-name,.logo,.footer-brand,.footer-wordmark) *{font-family:'ivybodoni-condensed',Georgia,serif!important;font-weight:300!important;letter-spacing:0}
 body :is(.kicker,.eyebrow,.section-kicker,.navlinks,.button,.nav-button,.text-link,.faq-list summary){font-family:'brandon-grotesque','DM Sans',Arial,sans-serif!important;font-weight:300!important}
 body :is(strong,b){font-family:inherit;font-weight:400!important}
+
+/* Lecture confortable, sur les proportions du site Miel Coffee. */
+body{--reading-size:clamp(18px,1.5vw,21px)}
+body main p:not(.kicker):not(.eyebrow):not(.section-kicker):not(.reference-drink-list):not([class*="price"]):not([class*="rating"]),body main li,body .faq-list p,body .faq-list li{font-size:var(--reading-size)!important;line-height:1.6!important}
+body .faq-list summary,body .faq-home summary{font-size:clamp(20px,1.6vw,23px)!important;line-height:1.4!important}
+body :is(.button,.nav-button,.text-link,.reference-menu-link){font-size:18px!important;line-height:1.35!important}
+body .navlinks a{font-size:18px!important}
+body main :is(.kicker,.eyebrow,.section-kicker){font-size:14px!important;line-height:1.5!important}
+body .reference-craft-grid h3{font-size:clamp(32px,2.5vw,38px)!important;line-height:1.2!important}
+body .reference-craft-grid p,body .reference-drink-bar p{opacity:1}
+body footer p,body footer a{font-size:16px!important;line-height:1.6!important}
+@media(max-width:700px){body .navlinks a{font-size:20px!important}body .reference-coffee-cta .button{font-size:16px!important}body main :is(.kicker,.eyebrow,.section-kicker){font-size:13px!important}}
