@@ -81,3 +81,7 @@
 .how-followup-details ul{padding-left:24px;margin:18px 0}
 .how-followup-details li{margin:8px 0}
 .how-followup-details summary:focus-visible{outline:2px solid currentColor;outline-offset:6px}
+
+.how-steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+.how-quote-link{display:inline-block;color:inherit;font-size:18px;margin:0 0 14px;text-underline-offset:4px}
+@media(max-width:700px){.how-steps{grid-template-columns:1fr}}
