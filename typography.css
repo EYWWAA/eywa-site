@@ -1,0 +1,6 @@
+/* Typographies de la référence Miel, avec une graisse de base de 300. */
+:root,body{--sans:'brandon-grotesque','DM Sans',Arial,sans-serif;--serif:'ivybodoni-condensed',Georgia,serif}
+body,body :where(p,a,span,div,li,dt,dd,label,legend,summary,button,input,select,textarea,small,figcaption,th,td){font-family:var(--sans)!important;font-weight:300!important}
+body :is(h1,h2,h3,h4,h5,h6,.section-title,.personal-name,.logo,.footer-brand,.footer-wordmark),body :is(h1,h2,h3,h4,h5,h6,.section-title,.personal-name,.logo,.footer-brand,.footer-wordmark) *{font-family:'ivybodoni-condensed',Georgia,serif!important;font-weight:300!important;letter-spacing:0}
+body :is(.kicker,.eyebrow,.section-kicker,.navlinks,.button,.nav-button,.text-link,.faq-list summary){font-family:'brandon-grotesque','DM Sans',Arial,sans-serif!important;font-weight:300!important}
+body :is(strong,b){font-family:inherit;font-weight:400!important}
