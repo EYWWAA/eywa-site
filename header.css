@@ -345,3 +345,8 @@
   .nav-button { padding: 0 15px; font-size: 14px; }
   .logo { font-size: 29px; }
 }
+
+/* Fond distinct de l’accueil crème, sur toute la largeur. */
+body header.nav,body header.nav::before{background:#e9e9e5!important}
+body header.nav::before{border-bottom:1px solid #d1d3ce!important;box-shadow:0 2px 8px rgb(0 0 0 / 4%)}
+@media(max-width:760px){body header.nav .navlinks.open{background:#e9e9e5!important}}
