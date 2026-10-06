@@ -1,8 +1,8 @@
 {
   "hero": {
-    "sur_titre": "Tarifs EYWA",
-    "titre": "Un coffee bar d’exception, pensé pour votre événement.",
-    "texte": "Un devis clair, construit autour de votre besoin et de la logistique nécessaire pour vous rejoindre."
+    "sur_titre": "Comprendre votre tarif",
+    "titre": "Un tarif adapté à votre événement.",
+    "texte": "Votre devis repose sur quatre critères, détaillés avant votre réservation."
   },
   "devis": {
     "titre": "Votre devis instantané",
@@ -11,7 +11,7 @@
   },
   "appel": {
     "titre": "Connaissez votre prix maintenant.",
-    "texte": "Obtenez votre estimation personnalisée et vérifiez votre date.",
-    "bouton": "Obtenir mon devis"
+    "texte": "Décrivez votre événement et obtenez votre estimation.",
+    "bouton": "Obtenir mon devis instantané"
   }
 }
