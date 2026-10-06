@@ -24,3 +24,6 @@ body[data-eywa-logo="sans"] header.nav .logo .brand-eywa{font-family:'EYWA Sans'
 body[data-eywa-logo="playfair"] header.nav .logo .brand-eywa{font-family:'Playfair Display',Georgia,serif!important;font-weight:400!important;letter-spacing:.08em;text-indent:.08em}
 body[data-eywa-logo="classic"] header.nav .logo .brand-eywa{font-family:'EYWA Classic',Georgia,serif!important;font-weight:500!important;letter-spacing:.2em;text-indent:.2em;font-size:34px}
 @media(max-width:760px){body[data-eywa-logo="classic"] header.nav .logo .brand-eywa{font-size:28px}}
+
+/* Le lien actif reste lisible dans la barre de navigation noire. */
+body header.nav .nav-group>a[aria-current="page"]:not(.nav-button){background:transparent!important;color:#fafaf8!important;box-shadow:inset 0 -2px 0 #1c8059;border-radius:0}
