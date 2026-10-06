@@ -44,6 +44,19 @@
       body .eywa-help-bar :is(button,a):focus-visible{outline:2px solid #1c8059;outline-offset:2px}
     }
     @media(max-width:350px){body .eywa-help-bar .eywa-assistant-launcher,body .eywa-help-bar .eywa-help-contact{font-size:11px!important;padding:8px 6px;gap:5px}body .eywa-help-bar .eywa-help-avatar{width:26px;height:26px}}
+
+    @media(min-width:601px){
+      body .eywa-help-inner{gap:12px}
+      body .eywa-help-divider{display:none}
+      body .eywa-help-bar .eywa-assistant-launcher,body .eywa-help-bar .eywa-help-contact{min-height:46px;border-radius:100px;padding:7px 20px}
+      body .eywa-help-bar .eywa-assistant-launcher{background:#fafaf8;color:#0a0a0a;border:1px solid #d8d7d2}
+      body .eywa-help-bar .eywa-assistant-launcher:disabled{opacity:1}
+      body .eywa-help-bar .eywa-assistant-launcher:hover{color:#0a0a0a;border-color:#1c8059}
+      body .eywa-help-bar .eywa-help-contact{min-width:140px;justify-content:center;background:#1c8059;color:#ffffff;border:1px solid #1c8059}
+      body .eywa-help-bar .eywa-help-contact:hover{color:#ffffff;background:#176b4b}
+      body .eywa-help-bar .eywa-help-title{font-weight:600!important}
+      body .eywa-help-bar small{color:#60605c}
+    }
   `;
   document.head.appendChild(style);
   const bar = document.createElement('nav');
