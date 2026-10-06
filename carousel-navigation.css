@@ -1,0 +1,11 @@
+:root{--steel:#b8bec2}
+body.eywa-home #carousel-stage{touch-action:pan-y pinch-zoom;overscroll-behavior-x:contain}
+body.eywa-home #carousel-stage img{user-select:none;-webkit-user-drag:none}
+body.eywa-home #carousel-stage .carousel-arrow{top:50%;bottom:auto;transform:translateY(-50%);width:44px;height:44px;border:1px solid #b8bec2cc;background:#0a0a0a;color:var(--accent);font-size:28px;line-height:1;border-radius:50%;z-index:5}
+body.eywa-home #carousel-stage .carousel-arrow.prev{left:18px;right:auto}
+body.eywa-home #carousel-stage .carousel-arrow.next{right:18px;left:auto}
+body.eywa-home #carousel-stage .carousel-arrow:hover{background:#0a0a0a;border-color:var(--accent);transform:translateY(-50%)}
+body.eywa-home #carousel-stage .carousel-arrow:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+body.eywa-home #reservation .mini-devis,body.eywa-home #reservation .md-btn{border-color:#b8bec280}
+.carousel-announcement{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+@media(max-width:760px){body.eywa-home #carousel-stage .carousel-arrow.prev{left:12px}body.eywa-home #carousel-stage .carousel-arrow.next{right:12px}}

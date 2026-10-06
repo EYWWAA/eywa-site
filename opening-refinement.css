@@ -1,0 +1,26 @@
+/* Premier écran sombre et mise en page du bouton sans flèche. */
+body.eywa-home #accueil .hero-quote .button{margin-left:12px;width:calc(100% - 12px);max-width:356px;justify-content:center;text-align:center;gap:0;padding-inline:20px}
+body.eywa-home #accueil .quote-note{margin-left:12px}
+body.eywa-home #accueil .hero-description{margin-bottom:16px}
+body.eywa-home #accueil .hero-location{margin-bottom:24px}
+body.eywa-home #accueil .hero-secondary{margin-top:22px}
+body header.nav .nav-button{justify-content:center;text-align:center}
+@media(min-width:761px){
+ body.eywa-home .home-opening{display:grid;grid-template-rows:minmax(0,1fr) auto;min-height:calc(100svh - 64px - var(--eywa-help-height,61px));background:#0a0a0a}
+ body.eywa-home #accueil.hero{min-height:0}
+ body.eywa-home #accueil .hero-copy{padding-block:clamp(26px,4.5svh,58px)}
+ body header.nav .nav-button{transform:translateX(10px)}
+ body header.nav .nav-button:hover{transform:translateX(10px)}
+}
+@media(max-width:760px){body.eywa-home #accueil .hero-copy{padding-top:38px;padding-bottom:38px}body.eywa-home #accueil .hero-secondary{margin-top:20px}}
+/* Survol discret, sans donner l’apparence d’un bouton aux étapes. */
+body.eywa-home .how-steps li{transition:transform .2s ease,border-color .2s ease}
+body.eywa-home .how-number{transition:color .2s ease}
+@media(hover:hover){body.eywa-home .how-steps li:hover{transform:translateY(-3px);border-color:var(--accent)}body.eywa-home .how-steps li:hover .how-number{color:var(--accent)}}
+@media(prefers-reduced-motion:reduce){body.eywa-home .how-steps li,body.eywa-home .how-number{transition:none}body.eywa-home .how-steps li:hover{transform:none}}
+/* Quatre essais de signature ; la comparaison ne modifie pas la palette. */
+body[data-eywa-logo="jost"] header.nav .logo .brand-eywa{font-family:'Jost',Arial,sans-serif!important;font-weight:500!important;letter-spacing:.16em;text-indent:.16em}
+body[data-eywa-logo="sans"] header.nav .logo .brand-eywa{font-family:'EYWA Sans',Arial,sans-serif!important;font-weight:650!important;letter-spacing:.07em;text-indent:.07em}
+body[data-eywa-logo="playfair"] header.nav .logo .brand-eywa{font-family:'Playfair Display',Georgia,serif!important;font-weight:400!important;letter-spacing:.08em;text-indent:.08em}
+body[data-eywa-logo="classic"] header.nav .logo .brand-eywa{font-family:'EYWA Classic',Georgia,serif!important;font-weight:500!important;letter-spacing:.2em;text-indent:.2em;font-size:34px}
+@media(max-width:760px){body[data-eywa-logo="classic"] header.nav .logo .brand-eywa{font-size:28px}}

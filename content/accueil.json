@@ -1,12 +1,12 @@
 {
   "hero": {
     "titre": "Service de café événementiel, baristas et bars à café mobiles.",
-    "texte": "Un coffee bar à votre image et un barista dédié pour accueillir vos clients, collaborateurs et invités avec attention.",
+    "texte": "Un coffee bar à votre image et un barista dédié pour accueillir vos clients, collaborateurs et partenaires lors de vos événements d’entreprise.",
     "bouton": "Obtenir mon devis instantané",
     "sous_bouton": "Tarif personnalisé gratuit · Vérifiez la disponibilité de votre date.",
     "avis": "5/5 · 2 avis clients",
     "photo": "assets/gallery-v4/02-nike-rooftop.webp",
-    "alt_photo": "Exemple de coffee bar personnalisé aux couleurs d'une marque lors d'un événement",
+    "alt_photo": "Projection de personnalisation d’un coffee bar pour un événement d’entreprise",
     "etiquette_photo": "Café, matcha, chocolat chaud et bien d'autres boissons préparés à la demande, chauds ou glacés."
   },
   "presentation": {
@@ -15,7 +15,7 @@
   },
   "zone": {
     "titre": "Coffee catering à Charleville-Mézières et dans les Ardennes.",
-    "texte": "EYWA accompagne les entreprises, agences et marques qui souhaitent offrir une expérience café soignée à leurs équipes, clients et invités. Pour un séminaire, un lancement de produit, un salon ou une activation de marque, notre coffee bar mobile vient directement sur votre lieu d'événement."
+    "texte": "EYWA accompagne les entreprises qui souhaitent offrir une expérience café soignée à leurs équipes, clients et partenaires. Pour un séminaire, un congrès, un salon professionnel ou une journée d’équipe, notre coffee bar mobile vient directement sur votre lieu d’événement."
   },
   "appel": {
     "titre": "Préparez votre événement sans perdre de temps.",

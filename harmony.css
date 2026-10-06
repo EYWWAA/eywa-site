@@ -1,0 +1,48 @@
+/* EYWA : trois couleurs pour l’interface, photos et marques conservées. */
+@font-face{font-family:'EYWA Sans';src:url('configurateur/fonts/dm-sans-variable.woff2') format('woff2');font-weight:100 1000;font-display:swap}
+:root,body{--green:#0a0a0a;--green-dark:#0a0a0a;--green-soft:#fafaf8;--cream:#fafaf8;--ivory:#fafaf8;--ink:#0a0a0a;--mute:#0a0a0a;--gold:#fafaf8;--rose:#fafaf8;--ochre:#0a0a0a;--line:#fafaf8}
+body header.nav .logo,body .site-header .logo{color:var(--ink)}
+body header.nav .logo .brand-eywa,body .site-header .logo{font-family:'EYWA Sans',Arial,sans-serif!important;font-size:29px;font-weight:650!important;letter-spacing:.08em;text-indent:.08em;line-height:1}
+body header.nav .logo .brand-descriptor{font-family:'EYWA Sans',Arial,sans-serif!important;font-size:10px;font-weight:450!important;letter-spacing:.045em;text-indent:0}
+/* Les textes secondaires cèdent leur place au titre. */
+body.eywa-home .hero h1#title{font-size:clamp(60px,6.7vw,96px)!important;line-height:1.02;margin:0 0 16px!important}
+body.eywa-home #accueil .hero-description{font-size:16px!important;line-height:1.4!important;max-width:44ch;margin:0 0 10px}
+body.eywa-home #accueil .hero-location{font-size:15px!important;line-height:1.4!important;margin:0 0 16px}
+body.eywa-home .hero-location strong{font-family:inherit!important;font-weight:650!important}
+body.eywa-home #accueil .quote-note{font-size:12px!important;line-height:1.4!important;margin-top:9px}
+body.eywa-home .hero .hero-secondary{font-size:13px;line-height:1.4;margin-top:12px}
+body.eywa-home .hero .hero-secondary :is(a,span){font-size:inherit!important}
+body.eywa-home .hero-copy{padding-block:24px}
+/* La géométrie du bandeau des événements est conservée. */
+body.eywa-home :is(.intro-band,.how-it-works,.video-section,.reviews,.faq-home){background:var(--cream);color:var(--ink)}
+body.eywa-home :is(.reference-craft,.booking,.reference-coffee-cta,#personnalisation.personal-catalog){background:var(--ink);color:var(--cream)}
+body.eywa-home .reference-benefits{background:var(--rose);color:var(--ink)}
+body.eywa-home .faq-home details,body.eywa-home .faq-home details:nth-child(even){background:var(--cream);border-color:var(--rose)}
+body.eywa-home .faq-home details[open]{background:var(--rose)}
+body.eywa-home .concept-actions .text-link{background:var(--cream);border-color:var(--green);color:var(--green)}
+body.eywa-home .concept-actions .text-link:hover{background:var(--rose);color:var(--ink)}
+body.eywa-home :is(.hero-location,.quote-note,.hero-secondary,.reference-craft-grid p,.reference-drink-bar p,.booking-help){color:var(--cream)}
+@media(min-width:1024px){body.eywa-home .hero{min-height:510px}}
+@media(min-width:1024px) and (max-height:740px){body.eywa-home .hero h1#title{font-size:clamp(52px,min(6.2vw,10svh),72px)!important;margin-bottom:12px!important}body.eywa-home .hero-copy{padding-block:18px}}
+@media(max-width:1023px){body.eywa-home .hero h1#title{font-size:clamp(48px,6.7vw,68px)!important}}
+@media(max-width:760px){body header.nav .logo .brand-eywa{font-size:25px}body header.nav .logo .brand-descriptor{font-size:9px}body.eywa-home .hero h1#title{font-size:clamp(44px,10.8vw,68px)!important}body.eywa-home #accueil .hero-description{font-size:15px!important}body.eywa-home #accueil .hero-location{font-size:14px!important}}
+/* Le fond clair de l’accueil exige des petites mentions foncées. */
+body.eywa-home .hero :is(.hero-location,.quote-note,.hero-secondary){color:var(--green)}
+
+/* Même taille et position pour la barre d’aide, palette commune. */
+body .eywa-help-bar{background:var(--cream);color:var(--green);border-color:var(--rose)}
+body .eywa-help-divider{background:var(--rose)}
+body .eywa-assistant-launcher small::before{background:var(--green)}
+body .eywa-help-bar :is(button,a):hover{color:var(--ink)}
+
+/* Palette limitée à crème, espresso et olive. */
+body.eywa-home .event-ribbon{background:var(--green);border-color:var(--green)}
+body.eywa-home .event-ribbon .hero-events{color:var(--cream)}
+body.eywa-home .event-ribbon .hero-events li::before{background:var(--cream)}
+body.eywa-home .reference-benefits{background:var(--green);color:var(--cream)}
+body.eywa-home .reference-benefits :is(h2,h3,.kicker,.text-link){color:var(--cream)}
+body.eywa-home .reference-benefits .button{background:var(--cream);color:var(--ink)}
+body.eywa-home .faq-home details[open]{background:var(--cream);border-color:var(--green)}
+body.eywa-home .concept-actions .text-link:hover{background:var(--green);color:var(--cream)}
+body .eywa-help-bar{border-color:var(--green)}
+body .eywa-help-divider{background:var(--green)}

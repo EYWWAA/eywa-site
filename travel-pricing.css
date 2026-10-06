@@ -1,26 +1,26 @@
 /* Bloc tarifs — coût de déplacement et logistique. */
-.travel-pricing { padding: 82px 0; background: #eeefe8; border-top: 1px solid var(--line, #dcded6); }
+.travel-pricing { padding: 82px 0; background: #fafaf8; border-top: 1px solid var(--line, #fafaf8); }
 .travel-pricing-grid { display: grid; grid-template-columns: minmax(0, 1.18fr) minmax(300px, .82fr); align-items: center; gap: clamp(38px, 7vw, 105px); }
-.travel-pricing h2 { max-width: 650px; margin: 0 0 22px; color: var(--green, #203d30); font: 400 clamp(2.15rem, 3.65vw, 3.4rem)/1.12 var(--serif, Georgia, serif); letter-spacing: -.035em; }
-.travel-pricing p:not(.eyebrow) { max-width: 625px; margin: 0; color: var(--mute, #657068); font-size: 1rem; line-height: 1.75; }
+.travel-pricing h2 { max-width: 650px; margin: 0 0 22px; color: var(--green, #0a0a0a); font: 400 clamp(2.15rem, 3.65vw, 3.4rem)/1.12 var(--serif, Georgia, serif); letter-spacing: -.035em; }
+.travel-pricing p:not(.eyebrow) { max-width: 625px; margin: 0; color: var(--mute, #0a0a0a); font-size: 1rem; line-height: 1.75; }
 .travel-pricing .eyebrow { margin: 0 0 20px; }
 .travel-pricing-detail { margin-top: 15px !important; }
-.travel-pricing-card { padding: clamp(28px, 3vw, 42px); background: var(--green, #203d30); border-radius: 5px; }
-.travel-pricing-card .travel-pricing-label { margin-bottom: 25px; color: var(--gold, #e6ce83); font-size: .75rem; font-weight: 600; letter-spacing: .15em; line-height: 1.4; text-transform: uppercase; }
-.travel-pricing-card .travel-pricing-formula { max-width: none; color: #fff; font: 400 clamp(1.6rem, 2.5vw, 2.3rem)/1.25 var(--serif, Georgia, serif); letter-spacing: -.025em; }
-.travel-pricing-formula strong { color: var(--gold, #e6ce83); font-weight: 400; white-space: nowrap; }
-.travel-pricing-formula span { display: inline-block; margin: 0 .2em; color: #cad3c9; }
-.travel-pricing-card .travel-pricing-note { max-width: none; margin-top: 25px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.22); color: #d6ded4; font-size: .875rem; line-height: 1.65; }
-.service-pricing { padding: 82px 0; background: #f8f7f3; }
+.travel-pricing-card { padding: clamp(28px, 3vw, 42px); background: var(--green, #0a0a0a); border-radius: 5px; }
+.travel-pricing-card .travel-pricing-label { margin-bottom: 25px; color: var(--gold, #fafaf8); font-size: .75rem; font-weight: 600; letter-spacing: .15em; line-height: 1.4; text-transform: uppercase; }
+.travel-pricing-card .travel-pricing-formula { max-width: none; color: #fafaf8; font: 400 clamp(1.6rem, 2.5vw, 2.3rem)/1.25 var(--serif, Georgia, serif); letter-spacing: -.025em; }
+.travel-pricing-formula strong { color: var(--gold, #fafaf8); font-weight: 400; white-space: nowrap; }
+.travel-pricing-formula span { display: inline-block; margin: 0 .2em; color: #fafaf8; }
+.travel-pricing-card .travel-pricing-note { max-width: none; margin-top: 25px; padding-top: 22px; border-top: 1px solid #fafaf838; color: #fafaf8; font-size: .875rem; line-height: 1.65; }
+.service-pricing { padding: 82px 0; background: #fafaf8; }
 .service-pricing-grid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(380px, 1.2fr); align-items: start; gap: clamp(40px, 7vw, 105px); }
-.service-pricing h2 { max-width: 540px; margin: 0 0 22px; color: var(--green, #203d30); font: 400 clamp(2.15rem, 3.65vw, 3.4rem)/1.12 var(--serif, Georgia, serif); letter-spacing: -.035em; }
-.service-pricing > .wrap > div > p:not(.eyebrow) { max-width: 520px; margin: 0; color: var(--mute, #657068); font-size: 1rem; line-height: 1.75; }
+.service-pricing h2 { max-width: 540px; margin: 0 0 22px; color: var(--green, #0a0a0a); font: 400 clamp(2.15rem, 3.65vw, 3.4rem)/1.12 var(--serif, Georgia, serif); letter-spacing: -.035em; }
+.service-pricing > .wrap > div > p:not(.eyebrow) { max-width: 520px; margin: 0; color: var(--mute, #0a0a0a); font-size: 1rem; line-height: 1.75; }
 .service-pricing .eyebrow { margin: 0 0 20px; }
-.service-pricing-list { border-top: 1px solid var(--line, #dcded6); }
-.service-pricing-list > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 5px 28px; padding: 19px 0; border-bottom: 1px solid var(--line, #dcded6); }
-.service-pricing-list span { color: var(--green, #203d30); font-size: .9375rem; font-weight: 600; }
-.service-pricing-list strong { color: var(--green, #203d30); font: 400 1.35rem/1.2 var(--serif, Georgia, serif); white-space: nowrap; }
-.service-pricing-list small { grid-column: 1 / -1; color: var(--mute, #657068); font-size: .8125rem; line-height: 1.45; }
+.service-pricing-list { border-top: 1px solid var(--line, #fafaf8); }
+.service-pricing-list > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 5px 28px; padding: 19px 0; border-bottom: 1px solid var(--line, #fafaf8); }
+.service-pricing-list span { color: var(--green, #0a0a0a); font-size: .9375rem; font-weight: 600; }
+.service-pricing-list strong { color: var(--green, #0a0a0a); font: 400 1.35rem/1.2 var(--serif, Georgia, serif); white-space: nowrap; }
+.service-pricing-list small { grid-column: 1 / -1; color: var(--mute, #0a0a0a); font-size: .8125rem; line-height: 1.45; }
 @media (max-width: 760px) { .travel-pricing { padding: 64px 0; } .travel-pricing-grid { grid-template-columns: 1fr; gap: 32px; } .travel-pricing h2 { font-size: 2.15rem; } }
 @media (max-width: 760px) { .service-pricing { padding: 64px 0; } .service-pricing-grid { grid-template-columns: 1fr; gap: 32px; } .service-pricing h2 { font-size: 2.15rem; } }
 
@@ -28,31 +28,31 @@
 .service-pricing-list > div { grid-template-columns: 1fr; }
 .service-pricing-list strong { display: none; }
 .travel-pricing-card .travel-pricing-formula { display: none; }
-.travel-pricing-card::before { content: "Le déplacement est facturé selon la distance aller-retour et le temps de conduite nécessaires pour rejoindre votre événement."; display: block; color: #fff; font: 400 1.45rem/1.35 var(--serif, Georgia, serif); }
+.travel-pricing-card::before { content: "Le déplacement est facturé selon la distance aller-retour et le temps de conduite nécessaires pour rejoindre votre événement."; display: block; color: #fafaf8; font: 400 1.45rem/1.35 var(--serif, Georgia, serif); }
 
 /* Présentation courte de la page Tarifs. Les anciens blocs sont conservés
    hors affichage pendant la transition éditoriale. */
 main > .section:has(.price-layout), .service-pricing, .travel-pricing { display: none; }
-.tariff-overview { padding: 96px 0; background: #f8f7f3; }
+.tariff-overview { padding: 96px 0; background: #fafaf8; }
 .tariff-overview-head { max-width: 720px; margin-bottom: 56px; }
 .tariff-overview .eyebrow { margin: 0 0 20px; }
-.tariff-overview h1 { margin: 0 0 22px; color: var(--green, #203d30); font: 400 clamp(2.15rem, 3.65vw, 3.45rem)/1.12 var(--serif, Georgia, serif); letter-spacing: -.035em; }
-.tariff-overview-head > p:not(.eyebrow) { max-width: 620px; margin: 0; color: var(--mute, #657068); font-size: 1rem; line-height: 1.75; }
+.tariff-overview h1 { margin: 0 0 22px; color: var(--green, #0a0a0a); font: 400 clamp(2.15rem, 3.65vw, 3.45rem)/1.12 var(--serif, Georgia, serif); letter-spacing: -.035em; }
+.tariff-overview-head > p:not(.eyebrow) { max-width: 620px; margin: 0; color: var(--mute, #0a0a0a); font-size: 1rem; line-height: 1.75; }
 .tariff-overview-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
-.tariff-overview-grid article { padding: clamp(30px, 4vw, 46px); border: 1px solid var(--line, #dcded6); border-radius: 5px; background: #fff; }
-.tariff-overview-grid article:last-child { color: #fff; border-color: var(--green, #203d30); background: var(--green, #203d30); }
-.tariff-overview-number { margin: 0 0 42px; color: #75816d; font: 400 3.4rem/1 var(--serif, Georgia, serif); }
-.tariff-overview-grid article:last-child .tariff-overview-number { color: var(--gold, #e6ce83); }
-.tariff-overview-grid h3 { margin: 0 0 16px; color: var(--green, #203d30); font: 400 2rem/1.12 var(--serif, Georgia, serif); letter-spacing: -.025em; }
-.tariff-overview-grid article:last-child h3 { color: #fff; }
-.tariff-overview-grid p:not(.tariff-overview-number) { margin: 0; color: var(--mute, #657068); font-size: .9375rem; line-height: 1.75; }
-.tariff-overview-grid article:last-child p:not(.tariff-overview-number) { color: #d6ded4; }
-.tariff-overview-grid ul { margin: 28px 0 0; padding: 22px 0 0; border-top: 1px solid var(--line, #dcded6); list-style: none; }
-.tariff-overview-grid article:last-child ul { border-color: rgba(255,255,255,.22); }
-.tariff-overview-grid li { position: relative; margin: 11px 0; padding-left: 18px; color: var(--green, #203d30); font-size: .875rem; line-height: 1.45; }
-.tariff-overview-grid li::before { content: "•"; position: absolute; left: 0; color: #897b4e; }
-.tariff-overview-grid article:last-child li { color: #d6ded4; }
-.tariff-overview-cta { display: flex; align-items: center; justify-content: space-between; gap: 36px; margin-top: 38px; padding-top: 34px; border-top: 1px solid var(--line, #dcded6); }
-.tariff-overview-cta p { max-width: 560px; margin: 0; color: var(--mute, #657068); font-size: .9375rem; line-height: 1.65; }
-.tariff-overview-cta .button { flex: 0 0 auto; color: #fff; background: var(--green, #203d30); }
+.tariff-overview-grid article { padding: clamp(30px, 4vw, 46px); border: 1px solid var(--line, #fafaf8); border-radius: 5px; background: #fafaf8; }
+.tariff-overview-grid article:last-child { color: #fafaf8; border-color: var(--green, #0a0a0a); background: var(--green, #0a0a0a); }
+.tariff-overview-number { margin: 0 0 42px; color: #0a0a0a; font: 400 3.4rem/1 var(--serif, Georgia, serif); }
+.tariff-overview-grid article:last-child .tariff-overview-number { color: var(--gold, #fafaf8); }
+.tariff-overview-grid h3 { margin: 0 0 16px; color: var(--green, #0a0a0a); font: 400 2rem/1.12 var(--serif, Georgia, serif); letter-spacing: -.025em; }
+.tariff-overview-grid article:last-child h3 { color: #fafaf8; }
+.tariff-overview-grid p:not(.tariff-overview-number) { margin: 0; color: var(--mute, #0a0a0a); font-size: .9375rem; line-height: 1.75; }
+.tariff-overview-grid article:last-child p:not(.tariff-overview-number) { color: #fafaf8; }
+.tariff-overview-grid ul { margin: 28px 0 0; padding: 22px 0 0; border-top: 1px solid var(--line, #fafaf8); list-style: none; }
+.tariff-overview-grid article:last-child ul { border-color: #fafaf838; }
+.tariff-overview-grid li { position: relative; margin: 11px 0; padding-left: 18px; color: var(--green, #0a0a0a); font-size: .875rem; line-height: 1.45; }
+.tariff-overview-grid li::before { content: "•"; position: absolute; left: 0; color: #0a0a0a; }
+.tariff-overview-grid article:last-child li { color: #fafaf8; }
+.tariff-overview-cta { display: flex; align-items: center; justify-content: space-between; gap: 36px; margin-top: 38px; padding-top: 34px; border-top: 1px solid var(--line, #fafaf8); }
+.tariff-overview-cta p { max-width: 560px; margin: 0; color: var(--mute, #0a0a0a); font-size: .9375rem; line-height: 1.65; }
+.tariff-overview-cta .button { flex: 0 0 auto; color: #fafaf8; background: var(--green, #0a0a0a); }
 @media (max-width: 760px) { .tariff-overview { padding: 64px 0; } .tariff-overview-head { margin-bottom: 36px; } .tariff-overview h1 { font-size: 2.15rem; } .tariff-overview-grid { grid-template-columns: 1fr; gap: 16px; } .tariff-overview-grid article { padding: 30px 25px; } .tariff-overview-number { margin-bottom: 26px; font-size: 2.8rem; } .tariff-overview-cta { display: block; margin-top: 30px; } .tariff-overview-cta .button { width: 100%; margin-top: 22px; justify-content: space-between; } }

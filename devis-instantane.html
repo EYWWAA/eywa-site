@@ -280,13 +280,27 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&amp;family=Fraunces:opsz,wght@9..144,400;9..144,600&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="devis-design.css?v=12">
+  <link rel="stylesheet" href="devis-design.css?v=20261006-publication">
+
 <link rel="stylesheet" href="https://use.typekit.net/siv0vng.css">
 <script src="https://use.typekit.net/ik/sR9C6s2CmtklvGmHOBiU86tItp94UbAjJee13bWbCFSfe0wgfFHN4UJLFRbh52jhWDjhw29h5esKwemKFD9aFRB8FcsR5Q8K5gGMJ6iyd1TTjAozJyBKScB0ZeN0OAikdas8SaBuZPJbZ148-AiGifuDjAoDOWgkdkGHfOEOMyMMeMb6MKGHfOrOMyMMeMS6MKGHfOhOMyMMeMt6MKG4fOUbIMIjMkMfH6qJl8MbMs6IJMJ7fbKt9gMgeMS6MKG4fOubIMIj2PMfH6qJ0mMbMs6sJMJ7fbRHmsMfeMb6MKG4fJoTIMJjgkMfH6qJRAqbMy65JMJ7fbKV-sMfegI6MTMghwd333j.js" async onload="try{Typekit.load({async:true});}catch(e){}"></script>
-<link rel="stylesheet" href="quote-readable.css?v=1">
+<link rel="stylesheet" href="reference-theme.css?v=20261006-publication">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&amp;family=Playfair+Display:ital,wght@0,400;0,500;1,400&amp;display=swap"><link rel="stylesheet" href="arc-inspired.css?v=20261006-publication">
+<link rel="stylesheet" href="arc-surfaces.css?v=20261006-publication">
+<link rel="stylesheet" href="opening-refinement.css?v=20261006-publication">
+<style>
+.onsite-contact{margin:24px 0 0;padding:20px 0 0;border:0;border-top:1px solid var(--border)}
+.onsite-contact legend{padding:0;font-size:16px;font-weight:500}
+.onsite-help{font-size:13px;line-height:1.5;color:var(--muted);margin:10px 0 16px}
+.onsite-same{display:flex;align-items:center;gap:10px;margin:0 0 18px;font-size:14px;line-height:1.5}
+body.quote-form .onsite-same input{width:18px;height:18px;padding:0;accent-color:var(--accent);flex:none}
+.onsite-contact .field-block+.field-block{margin-top:14px}
+.onsite-contact .optional-label{font-weight:400;color:var(--muted)}
+.onsite-contact input:disabled{opacity:1;background:var(--surface-soft);color:var(--text)}
+</style>
 <style>.travel-result{display:block;width:100%;text-align:left;padding:12px;margin:8px 0;background:#fff;border:1px solid #ccc;border-radius:6px;font:inherit;cursor:pointer}#travel-status{font-size:16px;line-height:1.5}</style>
 </head>
-<body class="quote-form">
+<body data-eywa-page="quote" class="quote-form">
 
 <!-- Zoho CRM. Chaque demande de devis devient un prospect.
      Le POST part dans l'iframe cachée : le parcours client ne change pas d'un pixel. -->
@@ -432,23 +446,18 @@
       <div class="event-group-label">Événements professionnels</div>
       <div class="type-grid">
         <button type="button" class="type-opt" data-val="Événement d’entreprise" aria-pressed="false" onclick="selectType(this)"><span class="type-name">Événement d’entreprise</span></button>
-        <button type="button" class="type-opt" data-val="Activation de marque" aria-pressed="false" onclick="selectType(this)"><span class="type-name">Activation de marque</span></button>
+        <button type="button" class="type-opt" data-val="Salon professionnel" aria-pressed="false" onclick="selectType(this)"><span class="type-name">Salon professionnel</span></button>
         <button type="button" class="type-opt" data-val="Séminaire / Congrès" aria-pressed="false" onclick="selectType(this)"><span class="type-name">Séminaire / Congrès</span></button>
         <button type="button" class="type-opt" data-val="Lancement de produit" aria-pressed="false" onclick="selectType(this)"><span class="type-name">Lancement de produit</span></button>
-        <button type="button" class="type-opt" data-val="Accueil sur mesure" aria-pressed="false" onclick="selectType(this)"><span class="type-name">Accueil sur mesure</span></button>
+        <button type="button" class="type-opt" data-val="Journée d’équipe" aria-pressed="false" onclick="selectType(this)"><span class="type-name">Journée d’équipe</span></button>
       </div>
-      <div class="event-group-label">Événements privés</div>
-      <div class="type-grid">
-        <button type="button" class="type-opt" data-val="Mariage" aria-pressed="false" onclick="selectType(this)"><span class="type-name">Mariage</span></button>
-        <button type="button" class="type-opt" data-val="Anniversaire" aria-pressed="false" onclick="selectType(this)"><span class="type-name">Anniversaire</span></button>
-      </div>
-      <button type="button" class="type-opt event-other" data-val="Autre" aria-pressed="false" onclick="selectType(this)"><span class="type-name">Autre événement</span><span class="type-sub">Précisez votre événement</span></button>
+<button type="button" class="type-opt event-other" data-val="Autre" aria-pressed="false" onclick="selectType(this)"><span class="type-name">Autre événement</span><span class="type-sub">Précisez votre événement</span></button>
       <div class="autre-wrap" id="autre-wrap">
         <input aria-label="Votre événement" type="text" id="autre-input" placeholder="Décrivez votre événement en quelques mots…">
       </div>
       <div style="margin-top: 1rem;">
         <div class="input-label">Détails supplémentaires <span style="font-weight:400;text-transform:none;letter-spacing:0;">(optionnel)</span></div>
-        <textarea id="details-input" placeholder="Thème, lieu de réception, demandes particulières…"></textarea>
+        <textarea id="details-input" placeholder="Thème, lieu de l’événement, besoins de votre entreprise…"></textarea>
       </div>
       <div class="btn-row">
         <button class="btn-back" onclick="go('s4','s3',2)">← Retour</button>
@@ -556,6 +565,13 @@
           <div class="input-label">Téléphone</div>
           <input type="tel" id="tel-input" placeholder="+33 6 XX XX XX XX" oninput="checkS6()">
         </div>
+        <fieldset class="onsite-contact">
+          <legend>La personne qui nous accueillera sur place</legend>
+          <p class="onsite-help">Un numéro joignable le jour J, pour organiser notre arrivée.</p>
+          <label class="onsite-same"><input type="checkbox" id="onsite-same" checked onchange="checkS6()"><span>Je serai le contact sur place.</span></label>
+          <div class="field-block"><label class="input-label" for="onsite-name">Nom du contact <span class="optional-label">(facultatif)</span></label><input type="text" id="onsite-name" placeholder="Nom de la personne qui nous accueillera" oninput="checkS6()"></div>
+          <div class="field-block"><label class="input-label" for="onsite-tel">Téléphone du contact sur place</label><input type="tel" id="onsite-tel" placeholder="Numéro joignable le jour J" oninput="checkS6()" aria-required="true" required></div>
+        </fieldset>
       </div>
       <button class="btn-cta disabled" id="btn6" onclick="submitForm()">Obtenir mon devis →</button>
       <div style="font-size:11.5px;color:var(--muted);text-align:center;margin-top:10px;line-height:1.6">
@@ -639,6 +655,7 @@
     personalization: [],
     design: '',
     prenom: '', nom: '', societe: '', email: '', tel: '',
+    onsiteName: '', onsiteTel: '',
     totalPrice: 0
   };
 
@@ -657,7 +674,6 @@
   }
 
   function go(from, to, dotN) {
-    if(from==='s2' && to==='s3' && !window.eywaTravel)return;
     collect();
     showStep(to);
     renderDots(dotN);
@@ -676,6 +692,9 @@
     var so = document.getElementById('societe-input'); if (so) A.societe = so.value.trim();
     var e = document.getElementById('email-input'); if (e) A.email = e.value.trim();
     var tel = document.getElementById('tel-input'); if (tel) A.tel = tel.value.trim();
+    syncOnsiteContact();
+    A.onsiteName = document.getElementById('onsite-name').value.trim();
+    A.onsiteTel = document.getElementById('onsite-tel').value.trim();
   }
 
   /* S1 */
@@ -774,19 +793,32 @@
   }
 
   /* S6 */
+  function syncOnsiteContact() {
+    var same = document.getElementById('onsite-same').checked;
+    var name = document.getElementById('onsite-name');
+    var phone = document.getElementById('onsite-tel');
+    name.disabled = same;
+    phone.disabled = same;
+    if (same) {
+      name.value = [document.getElementById('prenom-input').value.trim(), document.getElementById('nom-input').value.trim()].filter(Boolean).join(' ');
+      phone.value = document.getElementById('tel-input').value.trim();
+    }
+  }
   function checkS6() {
+    syncOnsiteContact();
     var p = document.getElementById('prenom-input').value.trim();
     var n = document.getElementById('nom-input').value.trim();
     var e = document.getElementById('email-input').value.trim();
     var t = document.getElementById('tel-input').value.trim();
-    var ok = p.length >= 2 && n.length >= 2 && e.includes('@') && e.includes('.') && t.length >= 6;
-    document.getElementById('btn6').classList[ok ? 'remove' : 'add']('disabled');
+    var onsite = document.getElementById('onsite-tel').value.trim();
+    var ok = p.length >= 2 && n.length >= 2 && e.includes('@') && e.includes('.') && t.length >= 6 && onsite.replace(/\D/g, '').length >= 8;
+    var button = document.getElementById('btn6');
+    button.classList[ok ? 'remove' : 'add']('disabled');
+    button.disabled = !ok;
+    return ok;
   }
 
   /* Prix */
-  /* Personnalisation incluse d'office sur les formats a fort enjeu :
-     activation de marque et mariage. Ailleurs elle reste en option.
-     Reference : fourchettes Flashquotes par type d'evenement (22/08/2026). */
   /* Options de personnalisation, facturees a la carte quel que soit le type
      d'evenement. Decision de Louis du 22/08/2026 : meme tarif de base pour
      tous, c'est la personnalisation qui fait monter le panier. */
@@ -867,6 +899,7 @@
 
   function submitForm() {
     if(!window.eywaTravel){showStep('s2');return;}
+    if (!checkS6()) return;
     collect();
     A.totalPrice = calcPrice();
 
@@ -906,6 +939,8 @@
         'Lieu : ' + A.lieu,
         'Déplacement A/R : ' + window.eywaTravel.roundTripKm.toFixed(1) + ' km / ' + Math.round(window.eywaTravel.roundTripMinutes) + ' min / ' + window.eywaTravel.total.toFixed(2) + ' €',
         'Hébergement : ' + (window.eywaTravel.lodgingRequired ? 'À prévoir : aller supérieur à 4 h. Montant à confirmer.' : 'Non déclenché par la durée du trajet'),
+        'Contact sur place : ' + (A.onsiteName || 'Non précisé'),
+        'Téléphone du contact sur place : ' + A.onsiteTel,
         'Personnalisation : ' + (A.personalization.join(', ') || 'Aucune'),
         'Détails : ' + (A.details || '—'),
         'Estimation : ' + A.totalPrice + ' €',
@@ -928,11 +963,13 @@
         'Durée': hrsLabel(A.hrs),
         'Nombre de jours': A.days,
         'Date': dateStr, 'Heure': A.time || '—',
-        'Déplacement aller-retour': window.eywaTravel.total.toFixed(2) + ' € · ' + window.eywaTravel.roundTripKm.toFixed(1) + ' km · ' + Math.round(window.eywaTravel.roundTripMinutes) + ' min',
         'Lieu': A.lieu, 'Détails': A.details || '—',
-        'Hébergement': window.eywaTravel.lodgingRequired ? 'À prévoir, montant à confirmer' : 'Non déclenché par le trajet',
         'Personnalisation': A.personalization.join(', ') || 'Aucune',
         'Prénom': A.prenom, 'Nom': A.nom, 'Société': A.societe || '—', 'Téléphone': A.tel,
+        'Déplacement aller-retour': window.eywaTravel.total.toFixed(2) + ' € · ' + window.eywaTravel.roundTripKm.toFixed(1) + ' km · ' + Math.round(window.eywaTravel.roundTripMinutes) + ' min',
+        'Hébergement': window.eywaTravel.lodgingRequired ? 'À prévoir, montant à confirmer' : 'Non déclenché par le trajet',
+        'Contact sur place': A.onsiteName || 'Non précisé',
+        'Téléphone du contact sur place': A.onsiteTel,
         'Estimation': A.totalPrice + ' €',
         'Lien devis client': devisUrl
       })
@@ -945,6 +982,7 @@
   }
 
   renderDots(0);
+  checkS6();
 
   /* Reprise des valeurs du mini-simulateur de la page d'accueil.
      index.html envoie ?invites=80&heures=2 : on prerempli l'etape 1, puis
@@ -986,7 +1024,8 @@
   <div class="time-grid" id="time-grid"></div>
   <details class="precise-time"><summary>Besoin d’un horaire plus précis ?</summary><div><input type="time" id="precise-time" aria-label="Horaire précis"><button type="button" id="apply-time">Choisir</button></div></details>
 </dialog>
-<script src="devis-pickers.js?v=1"></script>
-<script src="travel-pricing.js"></script><script src="travel-route.js"></script><script src="travel-origin.js"></script><script src="travel-form.js"></script>
+<script src="devis-pickers.js?v=20261006-publication"></script>
+<script src="brand-options.js?v=20261006-publication" defer></script>
+<script src="travel-pricing.js?v=20261006-publication"></script><script src="travel-route.js?v=20261006-publication"></script><script src="travel-origin.js?v=20261006-publication"></script><script src="travel-form.js?v=20261006-publication"></script>
 </body>
 </html>

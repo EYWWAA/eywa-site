@@ -1,0 +1,21 @@
+@font-face{font-family:'EYWA Fraunces';src:url('configurateur/fonts/fraunces-variable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+:root,body{--sans:'EYWA Sans','DM Sans',Arial,sans-serif;--serif:'EYWA Fraunces',Georgia,serif;--green:#0a0a0a;--ink:#0a0a0a;--green-dark:#0a0a0a;--cream:#fafaf8;--gold:#1c8059;--rose:#1c8059;--line:#1c8059}
+body,body :where(p,a,span,div,li,dt,dd,label,legend,summary,button,input,select,textarea,small,figcaption,th,td){font-family:var(--sans)!important;font-weight:400!important}
+body :is(h1,h2,h3,h4,h5,h6,.section-title,.personal-name),body :is(h1,h2,h3,h4,h5,h6,.section-title,.personal-name) *{font-family:var(--serif)!important;font-weight:500!important;letter-spacing:-.035em}
+body.eywa-home .hero h1#title{font-family:var(--serif)!important;font-size:clamp(48px,4.8vw,70px)!important;line-height:1.08;letter-spacing:-.045em}
+body.eywa-home .hero h1#title em{font-style:normal;font-weight:500!important}
+body.eywa-home .hero-quote .button{background:var(--gold);color:var(--green);font-weight:600!important;border-radius:6px}
+body.eywa-home .hero-quote .button:hover{background:var(--green);color:var(--cream)}
+body header.nav .logo .brand-eywa{font-family:var(--sans)!important;font-weight:650!important}
+body header.nav .logo .brand-descriptor{font-family:var(--sans)!important;font-weight:400!important}
+body.eywa-home .hero-location strong{font-weight:650!important}
+body.eywa-home #personnalisation.personal-catalog{background:var(--cream);color:var(--green)}
+body.eywa-home .personal-project,body.eywa-home .personal-project-heading,body.eywa-home .personal-label p,body.eywa-home .personal-link,body.eywa-home .personal-project .personal-name,body.eywa-home .personal-caption{background:transparent;color:var(--green)}
+body.eywa-home .reference-craft,body.eywa-home .booking,body.eywa-home .reference-coffee-cta{background:var(--green);color:var(--cream)}
+body.eywa-home .reference-craft h2 em,body.eywa-home .reference-craft .reference-drink-list,body.eywa-home .reference-coffee-cta h2 em{color:var(--gold)}
+body.eywa-home .reference-benefits{background:var(--green);color:var(--cream)}
+body.eywa-home .reference-benefits .button{background:var(--gold);color:var(--green)}
+body.eywa-home .faq-home details{border-color:var(--green)}
+body.eywa-home .hero-secondary .rating-stars{color:var(--green)}
+@media(min-width:1024px) and (max-height:740px){body.eywa-home .hero h1#title{font-size:clamp(46px,4.8vw,62px)!important}}
+@media(max-width:760px){body.eywa-home .hero h1#title{font-size:clamp(36px,8.7vw,58px)!important}body.eywa-home .hero h1#title em{white-space:normal}}

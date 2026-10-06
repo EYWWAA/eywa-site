@@ -1,0 +1,67 @@
+/* EYWA — couleurs et typographies de la référence uniquement.
+   Textes, structure, dimensions et fonctionnalités d’origine conservés. */
+@font-face{font-family:'DM Sans';src:url('configurateur/fonts/dm-sans-variable.woff2') format('woff2');font-weight:100 1000;font-display:swap}
+@font-face{font-family:'Cormorant Garamond';src:url('assets/fonts/cormorant-garamond-medium.ttf') format('truetype');font-weight:300 600;font-display:swap}
+:root{--green:#0a0a0a;--green-dark:#0a0a0a;--green-soft:#eee9da;--cream:#fafaf8;--ivory:#fff6e0;--ink:#0a0a0a;--mute:#67584d;--gold:#d9c25a;--rose:#c4937f;--ochre:#9b6c36;--line:#d8ceb8;--serif:'ivybodoni-condensed','Cormorant Garamond',Georgia,serif;--sans:'brandon-grotesque','DM Sans',sans-serif;--hand:'adobe-handwriting-ernie',cursive}
+body{background:var(--cream);color:var(--ink);font-family:var(--sans);font-weight:300}
+h1,h2,h3,.section-title,.personal-name{font-family:var(--serif)!important;font-weight:300!important;letter-spacing:-.015em!important}
+h1 strong,h2 strong,h3 strong{font-family:var(--serif);font-weight:600}
+h1 em,h2 em,h3 em{font-family:var(--serif);font-weight:600!important;font-style:normal}
+button,input,select,textarea,.button,.nav-button,.navlinks,.kicker,.eyebrow{font-family:var(--sans)}
+.button,.nav-button{background:var(--rose);color:var(--ink);box-shadow:none}
+.button:hover,.nav-button:hover{background:var(--gold);color:var(--ink)}
+.button-gold{background:var(--gold);color:var(--ink)}
+.site-header,header.nav,header.nav:before{background:#030403!important;color:var(--cream);border-color:#fafaf826}
+.site-header .logo,header.nav .logo,.footer-wordmark{font-family:var(--serif)!important;color:var(--cream)}
+.site-header .nav-button,header.nav .nav-button{background:var(--rose);color:var(--ink)}
+.site-header .navlinks a:not(.nav-button):hover,header.nav .navlinks a:hover{color:var(--gold)}
+.site-header .mobile-menu,header.nav .mobile-menu{color:var(--cream)}
+.site-header .mobile-menu span,header.nav .mobile-menu span{background:var(--cream)}
+.site-header .navlinks.open,header.nav .navlinks.open{background:#030403;color:var(--cream);border-color:#fafaf826}
+.eywa-home .home-opening,.eywa-home .hero.hero-split{background:var(--ink);color:var(--cream)}
+.eywa-home .hero.hero-split h1{font-family:var(--serif)!important;font-weight:300;color:var(--cream)}
+.eywa-home .hero.hero-split h1 em{color:var(--cream);font-weight:600}
+.eywa-home .hero-split .hero-eyebrow{color:var(--gold);font-weight:400}
+.eywa-home .hero-split .hero-description{color:var(--cream)}
+.eywa-home .hero-split .hero-location,.eywa-home .hero-split .quote-note,.eywa-home .hero-split .hero-secondary{color:#e8ddcc}
+.eywa-home .hero-split .hero-quote .button{background:var(--rose);color:var(--ink)}
+.eywa-home .hero-split .hero-quote .button:hover{background:var(--gold)}
+.eywa-home .hero-split .rating-stars{color:var(--gold)}
+.eywa-home .hero-split .hero-film-link>span{border-color:#fafaf880}
+.eywa-home .home-opening .event-ribbon{background:#030403;color:var(--cream);border-color:#fafaf826}
+.eywa-home .concept{background:var(--cream);color:var(--green)}
+.eywa-home .concept-visual:before{background:var(--ochre)}
+.eywa-home .photo-note{color:var(--cream);font-family:var(--hand);letter-spacing:0}
+.eywa-home .concept-copy>p:not(.kicker){color:var(--ink)}
+.eywa-home .coffee-craft,.eywa-home .benefits,.eywa-home .faq-home{--serif:'ivybodoni-condensed','Cormorant Garamond',Georgia,serif}
+.eywa-home .coffee-craft{background:var(--ink);color:var(--cream)}
+.eywa-home .craft-heading h2 em,.eywa-home .drink-list{color:var(--gold)}
+.eywa-home .craft-heading>p,.eywa-home .craft-grid p,.eywa-home .drink-bar>p{color:#e8ddcc}
+.eywa-home #personnalisation.personal-catalog{background:var(--ink);color:var(--cream)}
+.eywa-home .personal-project{background:var(--ink);border-color:#fafaf855;box-shadow:none}
+.eywa-home .personal-project-heading,.eywa-home .personal-label p,.eywa-home .personal-link,.eywa-home .personal-project .personal-name{color:var(--cream)}
+.eywa-home .personal-caption{color:#e8ddcc}
+.eywa-home .personal-number{font-family:var(--serif);color:var(--gold);font-weight:600}
+.eywa-home .personal-project:nth-child(2) .personal-number{color:var(--rose)}
+.eywa-home .personal-project:nth-child(3) .personal-number{color:#c3955b}
+.eywa-home .personal-link:hover{background:var(--green)}
+.eywa-home .benefits{background:var(--green);color:var(--cream)}
+.eywa-home .benefits .kicker,.eywa-home .benefits h2,.eywa-home .benefits h3,.eywa-home .benefit-reasons p,.eywa-home .benefits .section-label:before{color:var(--cream)}
+.eywa-home .benefit-reasons article{border-color:#fafaf855}
+.eywa-home .video-section{background:var(--cream)}
+.eywa-home .booking{background:var(--ink);color:var(--cream)}
+.eywa-home .booking .section-kicker{color:var(--gold)}
+.eywa-home .mini-devis{background:var(--cream);box-shadow:10px 10px 0 var(--rose)}
+.eywa-home .reviews{background:var(--gold);color:var(--ink)}
+.eywa-home .reviews .rating-stars{color:var(--ink)}
+.eywa-home .faq-home{background:var(--cream);color:var(--green)}
+.eywa-home .faq-list details p{color:var(--ink)}
+.eywa-home .quote-cta{background:var(--ink);color:var(--cream)}
+.eywa-home .quote-cta h2 em{color:var(--gold)}
+.eywa-home .site-footer,footer.footer{background:#030403;color:var(--cream)}
+.eywa-home .footer-top p,.eywa-home .footer-bottom{color:#e8ddcc}
+/* Le manuscrit habille quelques libellés existants, sans changer un mot. */
+.eywa-home .video-section>.wrap>.kicker,.eywa-home .quote-cta .kicker{font-family:var(--hand);font-weight:400;text-transform:none;letter-spacing:0}
+body:not(.eywa-home) .svc-hero{background:var(--ink)}
+body:not(.eywa-home) .svc-hero h1,body:not(.eywa-home) .svc-hero p{color:var(--cream)}
+body:not(.eywa-home) .svc-body,body:not(.eywa-home) .svc-menu{background:var(--cream)}

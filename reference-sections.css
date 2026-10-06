@@ -1,82 +1,82 @@
 @font-face{font-family:'EYWA Cormorant';src:url('assets/fonts/cormorant-garamond-medium.ttf') format('truetype');font-weight:500;font-style:normal;font-display:swap}
 @font-face{font-family:'EYWA Cormorant';src:url('assets/fonts/cormorant-garamond-italic.ttf') format('truetype');font-weight:400;font-style:italic;font-display:swap}
-.eywa-home .reference-benefits{background:#dcb3a0;color:#263c30;padding:100px 0 115px}
+.eywa-home .reference-benefits{background:#fafaf8;color:#0a0a0a;padding:100px 0 115px}
 .reference-benefits .wrap,.reference-coffee-cta .wrap{width:min(1280px,calc(100% - 104px));margin-inline:auto}
 .reference-benefits .benefit-layout{display:grid;grid-template-columns:1.1fr 1fr;gap:90px;align-items:start}
 .reference-benefits .kicker,.reference-coffee-cta .kicker{font:600 11px/1.5 'DM Sans',sans-serif;letter-spacing:.18em;text-transform:uppercase;margin:0 0 30px}
 .reference-benefits .section-label{display:flex;gap:16px;align-items:center;margin-bottom:38px}
 .reference-benefits .section-label:before{content:'✳';font-size:22px;font-weight:400}
-.eywa-home .reference-benefits h2{font-family:Fraunces,Georgia,serif;font-size:clamp(38px,4.6vw,68px);line-height:1.08;letter-spacing:-.045em;font-weight:500;color:#263c30;margin:0 0 45px}
+.eywa-home .reference-benefits h2{font-family:Fraunces,Georgia,serif;font-size:clamp(38px,4.6vw,68px);line-height:1.08;letter-spacing:-.045em;font-weight:500;color:#0a0a0a;margin:0 0 45px}
 .reference-benefits h2 em{font-weight:400}
-.eywa-home .reference-benefits h3{font-family:Fraunces,Georgia,serif;font-size:30px;line-height:1.08;letter-spacing:-.045em;font-weight:400;color:#263c30;margin:0 0 18px}
-.reference-benefits .benefit-reasons p:not(.kicker){font-size:15px;line-height:1.7;color:#263c30;margin:0;max-width:65ch}
+.eywa-home .reference-benefits h3{font-family:Fraunces,Georgia,serif;font-size:30px;line-height:1.08;letter-spacing:-.045em;font-weight:400;color:#0a0a0a;margin:0 0 18px}
+.reference-benefits .benefit-reasons p:not(.kicker){font-size:15px;line-height:1.7;color:#0a0a0a;margin:0;max-width:65ch}
 .reference-benefits .benefit-reasons .kicker{margin-bottom:18px}
-.reference-benefits .benefit-reasons article+article{border-top:1px solid #263c3033;margin-top:28px;padding-top:28px}
-.reference-benefits .text-link{display:inline-flex;align-items:center;gap:24px;padding:9px 0 16px;border-bottom:1px solid currentColor;font-size:14px;font-weight:600;color:#263c30;text-decoration:none}
+.reference-benefits .benefit-reasons article+article{border-top:1px solid #0a0a0a33;margin-top:28px;padding-top:28px}
+.reference-benefits .text-link{display:inline-flex;align-items:center;gap:24px;padding:9px 0 16px;border-bottom:1px solid currentColor;font-size:14px;font-weight:600;color:#0a0a0a;text-decoration:none}
 .reference-benefits .text-link span{font-size:24px;font-weight:400}
-.eywa-home .reference-coffee-cta{position:relative;isolation:isolate;overflow:hidden;text-align:center;background:#271717;color:#fff6e0;padding:95px 0 100px;min-height:440px}
+.eywa-home .reference-coffee-cta{position:relative;isolation:isolate;overflow:hidden;text-align:center;background:#0a0a0a;color:#fafaf8;padding:95px 0 100px;min-height:440px}
 .reference-coffee-photo{position:absolute;inset:0;z-index:-2;width:100%;height:100%;max-width:none;object-fit:cover;object-position:center 42%;filter:blur(1px) brightness(.55);transform:scale(1.01)}
-.reference-coffee-cta:before{content:'';position:absolute;inset:0;z-index:-1;background:#27171773}
-.reference-coffee-cta .kicker{color:#fff6e0;margin:0 0 26px;max-width:none}
-.eywa-home .reference-coffee-cta h2{font-family:'EYWA Cormorant',Georgia,serif;font-size:clamp(48px,6vw,84px);line-height:1.08;font-weight:500;letter-spacing:-.045em;color:#fff6e0;margin:0 0 36px}
+.reference-coffee-cta:before{content:'';position:absolute;inset:0;z-index:-1;background:#0a0a0a73}
+.reference-coffee-cta .kicker{color:#fafaf8;margin:0 0 26px;max-width:none}
+.eywa-home .reference-coffee-cta h2{font-family:'EYWA Cormorant',Georgia,serif;font-size:clamp(48px,6vw,84px);line-height:1.08;font-weight:500;letter-spacing:-.045em;color:#fafaf8;margin:0 0 36px}
 .reference-coffee-cta h2 em{font-weight:400;color:inherit}
-.eywa-home .reference-coffee-cta .button{display:inline-flex;align-items:center;justify-content:center;gap:28px;min-height:64px;padding:20px 26px;border:1px solid transparent;border-radius:100px;background:#c4937f;color:#271717;font-size:14px;font-weight:600;text-decoration:none;box-shadow:none}
+.eywa-home .reference-coffee-cta .button{display:inline-flex;align-items:center;justify-content:center;gap:28px;min-height:64px;padding:20px 26px;border:1px solid transparent;border-radius:100px;background:#fafaf8;color:#0a0a0a;font-size:14px;font-weight:600;text-decoration:none;box-shadow:none}
 .reference-coffee-cta .button span{font-size:24px;font-weight:400}
-.reference-coffee-cta .button:hover{background:#d5ac99}
+.reference-coffee-cta .button:hover{background:#fafaf8}
 .reference-benefits a:focus-visible,.reference-coffee-cta a:focus-visible{outline:3px solid currentColor;outline-offset:5px}
 @media(max-width:900px){.reference-benefits .benefit-layout{gap:35px}.reference-benefits .wrap,.reference-coffee-cta .wrap{width:calc(100% - 48px)}}
 @media(max-width:700px){.eywa-home .reference-benefits{padding:62px 0}.reference-benefits .benefit-layout{grid-template-columns:1fr;gap:40px}.reference-benefits .wrap,.reference-coffee-cta .wrap{width:calc(100% - 40px)}.eywa-home .reference-benefits h2{font-size:42px;margin-bottom:25px}.eywa-home .reference-benefits h3{font-size:29px}.eywa-home .reference-coffee-cta{min-height:420px;padding:75px 0}.eywa-home .reference-coffee-cta h2{font-size:47px}.reference-coffee-photo{object-position:55% center}}
 /* Invitation finale : composition de la capture validée. */
 .eywa-home .reference-coffee-cta .kicker{font-family:'adobe-handwriting-ernie',cursive!important;font-weight:400!important;text-transform:none;letter-spacing:0;font-size:clamp(11px,1vw,14px);line-height:1.6;margin:0 0 30px}
 .eywa-home .reference-coffee-cta h2{font-family:'ivybodoni-condensed',Georgia,serif!important;font-weight:300!important;font-size:clamp(48px,6vw,84px);line-height:1.12;letter-spacing:0;margin:0 0 36px}
-.eywa-home .reference-coffee-cta h2 em{display:inline-block;font-family:'ivybodoni-condensed',Georgia,serif!important;font-style:normal;font-weight:600!important;color:#d9c25a;margin-top:14px}
-.eywa-home .reference-coffee-cta .button{font-family:'brandon-grotesque','DM Sans',sans-serif!important;font-weight:600!important;font-size:14px;padding:18px 26px;min-height:64px;gap:28px;background:#c4937f}
+.eywa-home .reference-coffee-cta h2 em{display:inline-block;font-family:'ivybodoni-condensed',Georgia,serif!important;font-style:normal;font-weight:600!important;color:#fafaf8;margin-top:14px}
+.eywa-home .reference-coffee-cta .button{font-family:'brandon-grotesque','DM Sans',sans-serif!important;font-weight:600!important;font-size:14px;padding:18px 26px;min-height:64px;gap:28px;background:#fafaf8}
 .eywa-home .reference-coffee-cta .button span{font-weight:300!important;font-size:26px}
 @media(max-width:700px){.eywa-home .reference-coffee-cta{padding:60px 0}.eywa-home .reference-coffee-cta h2{font-size:clamp(40px,8vw,54px);margin-bottom:30px}.eywa-home .reference-coffee-cta .kicker{margin-bottom:32px}.eywa-home .reference-coffee-cta .button{min-height:56px;padding:16px 22px;gap:22px;max-width:100%;font-size:14px}.eywa-home .reference-coffee-cta .button span{font-size:24px}}
 
 /* Le café et les boissons : composition des captures de référence. */
-.eywa-home .reference-craft{background:#291817;color:#fff6e0;padding:0}
+.eywa-home .reference-craft{background:#0a0a0a;color:#fafaf8;padding:0}
 .reference-craft .wrap{width:min(1280px,calc(100% - 104px));margin-inline:auto}
 .reference-craft-hero{position:relative;isolation:isolate;overflow:hidden;min-height:480px;display:flex;align-items:center;text-align:center;padding:75px 0}
 .reference-craft-photo{position:absolute;inset:0;z-index:-2;width:100%;height:100%;max-width:none;object-fit:cover;object-position:center 58%;filter:blur(1.2px) brightness(.68);transform:scale(1.015)}
-.reference-craft-hero:before{content:'';position:absolute;inset:0;z-index:-1;background:#27171780}
-.eywa-home .reference-craft .kicker{color:#fff6e0;text-transform:uppercase;letter-spacing:.18em;font-size:14px;font-weight:600!important;margin:0 0 30px}
-.eywa-home .reference-craft h2{color:#fff6e0;font-size:clamp(42px,5.5vw,78px);line-height:1.1;margin:0}
-.eywa-home .reference-craft h2 em{color:#d9c25a;font-style:normal;font-weight:600!important}
-.reference-craft-hero .wrap>p:last-child{max-width:550px;margin:30px auto 0;font-size:15px;line-height:1.7;color:#e8ddcc}
+.reference-craft-hero:before{content:'';position:absolute;inset:0;z-index:-1;background:#0a0a0a80}
+.eywa-home .reference-craft .kicker{color:#fafaf8;text-transform:uppercase;letter-spacing:.18em;font-size:14px;font-weight:600!important;margin:0 0 30px}
+.eywa-home .reference-craft h2{color:#fafaf8;font-size:clamp(42px,5.5vw,78px);line-height:1.1;margin:0}
+.eywa-home .reference-craft h2 em{color:#fafaf8;font-style:normal;font-weight:600!important}
+.reference-craft-hero .wrap>p:last-child{max-width:550px;margin:30px auto 0;font-size:15px;line-height:1.7;color:#fafaf8}
 .reference-craft-lower{padding:64px 0 90px}
 .reference-craft-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:56px;align-items:start}
 .reference-craft-grid img{display:block;width:100%;height:auto;aspect-ratio:1.6;object-fit:cover;border-radius:0}
 .reference-craft-grid article:nth-child(2){padding-top:26px}
-.eywa-home .reference-craft h3{color:#fff6e0;font-size:28px;line-height:1.2;margin:24px 0 14px}
-.reference-craft-grid p{max-width:52ch;color:#e8ddcc;font-size:14px;line-height:1.7;margin:0;opacity:.8}
-.reference-drink-bar{display:flex;justify-content:space-between;align-items:center;gap:30px;border-top:1px solid #fff6e036;margin-top:54px;padding-top:28px}
-.eywa-home .reference-craft .reference-drink-list{font-family:'ivybodoni-condensed',Georgia,serif!important;font-weight:300!important;font-style:italic;font-size:clamp(30px,3vw,42px);line-height:1.4;color:#d9c25a;margin:0 0 18px}
-.reference-drink-bar p:last-child:not(.reference-drink-list){color:#e8ddcc;font-size:12px;line-height:1.7;margin:0;opacity:.8}
-.eywa-home .reference-menu-link{display:inline-flex;align-items:center;gap:24px;white-space:nowrap;color:#fff6e0;text-decoration:none;border-bottom:1px solid currentColor;padding:12px 0 16px;font-size:14px;font-weight:600!important}
+.eywa-home .reference-craft h3{color:#fafaf8;font-size:28px;line-height:1.2;margin:24px 0 14px}
+.reference-craft-grid p{max-width:52ch;color:#fafaf8;font-size:14px;line-height:1.7;margin:0;opacity:.8}
+.reference-drink-bar{display:flex;justify-content:space-between;align-items:center;gap:30px;border-top:1px solid #fafaf836;margin-top:54px;padding-top:28px}
+.eywa-home .reference-craft .reference-drink-list{font-family:'ivybodoni-condensed',Georgia,serif!important;font-weight:300!important;font-style:italic;font-size:clamp(30px,3vw,42px);line-height:1.4;color:#fafaf8;margin:0 0 18px}
+.reference-drink-bar p:last-child:not(.reference-drink-list){color:#fafaf8;font-size:12px;line-height:1.7;margin:0;opacity:.8}
+.eywa-home .reference-menu-link{display:inline-flex;align-items:center;gap:24px;white-space:nowrap;color:#fafaf8;text-decoration:none;border-bottom:1px solid currentColor;padding:12px 0 16px;font-size:14px;font-weight:600!important}
 .reference-menu-link span{font-size:26px}
 .reference-menu-link:focus-visible{outline:3px solid currentColor;outline-offset:5px}
 @media(max-width:900px){.reference-craft .wrap{width:calc(100% - 48px)}.reference-craft-grid{gap:32px}.reference-drink-bar{align-items:flex-start;flex-direction:column}}
 @media(max-width:700px){.reference-craft .wrap{width:calc(100% - 40px)}.reference-craft-hero{min-height:390px;padding:60px 0}.eywa-home .reference-craft h2{font-size:clamp(38px,8vw,54px)}.eywa-home .reference-craft .kicker{font-size:11px}.reference-craft-grid{grid-template-columns:1fr;gap:36px}.reference-craft-grid article:nth-child(2){padding-top:0}.reference-craft-lower{padding:40px 0 55px}.reference-drink-bar{margin-top:36px}.eywa-home .reference-craft .reference-drink-list{font-size:32px}}
 
 /* Explication courte reliée au lien de l’accueil. */
-.eywa-home .how-it-works{padding:58px 0;background:#f2eee3;color:#263c30;scroll-margin-top:100px}
-.eywa-home .how-it-works h2{font-size:clamp(40px,4vw,58px);line-height:1.1;margin:0 0 30px;color:#263c30}
+.eywa-home .how-it-works{padding:58px 0;background:#fafaf8;color:#0a0a0a;scroll-margin-top:100px}
+.eywa-home .how-it-works h2{font-size:clamp(40px,4vw,58px);line-height:1.1;margin:0 0 30px;color:#0a0a0a}
 .how-it-works .section-kicker{margin:0 0 16px}
 .how-steps{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px;padding:0;margin:0 0 24px;counter-reset:none}
-.how-steps li{border-top:1px solid #263c3033;padding-top:18px}
-.how-number{display:block;font-size:16px;color:#776346;margin-bottom:12px}
-.eywa-home .how-steps h3{font-size:30px;line-height:1.15;margin:0 0 12px;color:#263c30}
+.how-steps li{border-top:1px solid #0a0a0a33;padding-top:18px}
+.how-number{display:block;font-size:16px;color:#0a0a0a;margin-bottom:12px}
+.eywa-home .how-steps h3{font-size:30px;line-height:1.15;margin:0 0 12px;color:#0a0a0a}
 .how-steps p{margin:0;max-width:36ch}
-.how-it-works .text-link{display:inline-flex;gap:20px;align-items:center;padding:10px 0;border-bottom:1px solid currentColor;text-decoration:none;color:#263c30}
+.how-it-works .text-link{display:inline-flex;gap:20px;align-items:center;padding:10px 0;border-bottom:1px solid currentColor;text-decoration:none;color:#0a0a0a}
 .how-it-works .text-link:focus-visible{outline:2px solid currentColor;outline-offset:5px}
 @media(max-width:700px){.eywa-home .how-it-works{padding:40px 0}.how-steps{grid-template-columns:1fr;gap:24px}.how-steps p{max-width:none}}
 
-.how-followup{margin:38px 0 26px;padding-top:30px;border-top:1px solid #263c3033;max-width:960px}
-.eywa-home .how-followup>h3{font-size:clamp(32px,3vw,44px);line-height:1.15;margin:0 0 18px;color:#263c30;scroll-margin-top:100px}
+.how-followup{margin:38px 0 26px;padding-top:30px;border-top:1px solid #0a0a0a33;max-width:960px}
+.eywa-home .how-followup>h3{font-size:clamp(32px,3vw,44px);line-height:1.15;margin:0 0 18px;color:#0a0a0a;scroll-margin-top:100px}
 .how-followup>p{max-width:70ch;margin-bottom:26px}
-.how-followup-details details{border-bottom:1px solid #263c3033;padding:20px 0}
-.how-followup-details summary{font-size:22px;line-height:1.4;cursor:pointer;color:#263c30}
+.how-followup-details details{border-bottom:1px solid #0a0a0a33;padding:20px 0}
+.how-followup-details summary{font-size:22px;line-height:1.4;cursor:pointer;color:#0a0a0a}
 .how-followup-details details p{margin:18px 0 0;max-width:75ch}
 .how-followup-details ul{padding-left:24px;margin:18px 0}
 .how-followup-details li{margin:8px 0}
@@ -86,5 +86,5 @@
 .how-quote-link{display:inline-block;color:inherit;font-size:18px;margin:0 0 14px;text-underline-offset:4px}
 @media(max-width:700px){.how-steps{grid-template-columns:1fr}}
 
-.eywa-home .event-ribbon{background:#dcb3a0;border-color:#c4937f}
-.eywa-home .event-ribbon .hero-events{color:#263c30}
+.eywa-home .event-ribbon{background:#fafaf8;border-color:#fafaf8}
+.eywa-home .event-ribbon .hero-events{color:#0a0a0a}

@@ -22,7 +22,7 @@
 
 .topbar {
   padding: 9px 18px;
-  color: #fff;
+  color: #fafaf8;
   background: var(--green-dark);
   text-align: center;
   font: 600 12px/1.35 var(--sans);
@@ -128,7 +128,7 @@
   display: grid; grid-template-columns: repeat(2, auto);
   justify-content: start; gap: 10px 34px;
   margin: 22px 0 26px; padding: 0; list-style: none;
-  color: #34483c; font-size: 14.5px; font-weight: 600;
+  color: #0a0a0a; font-size: 14.5px; font-weight: 600;
 }
 .hero-events li { display: flex; align-items: center; gap: 10px; }
 .hero-events li::before {
@@ -169,7 +169,7 @@
 .reviews-score .note { color: var(--ink); font: 700 30px var(--sans); }
 .reviews-score .ticks { font-size: 22px; }
 .reviews-score .src { color: var(--mute); font-size: 14px; }
-.reviews-line { max-width: 620px; margin: 0 auto 26px; color: #425147; font-size: 16px; line-height: 1.6; text-align: center; }
+.reviews-line { max-width: 620px; margin: 0 auto 26px; color: #0a0a0a; font-size: 16px; line-height: 1.6; text-align: center; }
 .reviews .button { display: inline-flex; }
 
 .trust-row { gap: 8px; }
@@ -199,8 +199,8 @@
    les liens ne sont plus enfants directs de .navlinks, donc l'ancien
    selecteur .navlinks > a ne les atteignait plus (aucun survol). */
 .nav-group > a:not(.nav-button) { margin: -6px -9px; padding: 6px 9px; border-radius: 7px; transition: background .15s; }
-.nav-group > a:not(.nav-button):hover { background: var(--green-soft, #eaf2ec); text-decoration: none; }
-.nav-group > a[aria-current="page"] { background: var(--green-soft, #eaf2ec); }
+.nav-group > a:not(.nav-button):hover { background: var(--green-soft, #fafaf8); text-decoration: none; }
+.nav-group > a[aria-current="page"] { background: var(--green-soft, #fafaf8); }
 
 /* Menu deroulant Lieux */
 .nav-places { position: relative; }
@@ -215,12 +215,12 @@
 .nav-places-trigger::after { content: '⌄'; font-size: 13px; transform: translateY(-1px); }
 .nav-places:hover .nav-places-trigger,
 .nav-places:focus-within .nav-places-trigger,
-.nav-places.open .nav-places-trigger { background: var(--green-soft, #eaf2ec); }
+.nav-places.open .nav-places-trigger { background: var(--green-soft, #fafaf8); }
 .nav-places-menu {
   position: absolute; z-index: 30; top: 100%; left: 50%;
   display: grid; min-width: 190px; padding: 8px;
   border: 1px solid var(--line); border-radius: 12px;
-  background: #fff; box-shadow: 0 14px 32px rgba(23, 61, 45, .13);
+  background: #fafaf8; box-shadow: 0 14px 32px #0a0a0a21;
   opacity: 0; pointer-events: none;
   transform: translate(-50%, -5px);
   transition: opacity .15s, transform .15s;
@@ -229,13 +229,13 @@
 .nav-places:focus-within .nav-places-menu,
 .nav-places.open .nav-places-menu { opacity: 1; pointer-events: auto; transform: translate(-50%, 0); }
 .nav-places-menu a { padding: 9px 11px; border-radius: 7px; color: var(--green); font-size: 13px; font-weight: 600; }
-.nav-places-menu a:hover { background: var(--green-soft, #eaf2ec); text-decoration: none; }
+.nav-places-menu a:hover { background: var(--green-soft, #fafaf8); text-decoration: none; }
 
 /* Bouton devis */
 .nav-button {
   min-height: 50px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   padding: 0 22px; border: 0; border-radius: 10px;
-  color: #fff; background: var(--green); cursor: pointer;
+  color: #fafaf8; background: var(--green); cursor: pointer;
   font: 700 15.5px var(--sans); letter-spacing: .01em;
   transition: background .16s, transform .16s;
 }
@@ -272,9 +272,9 @@
     display: flex !important;
     flex-direction: column; align-items: stretch; gap: 0;
     padding: 10px 21px 20px;
-    background: #fff;
+    background: #fafaf8;
     border-bottom: 1px solid var(--line);
-    box-shadow: 0 16px 24px rgba(23, 61, 45, .1);
+    box-shadow: 0 16px 24px #0a0a0a1a;
   }
   .navlinks.open a:not(.nav-button):not(.nav-places-menu a) { margin: 0; padding: 13px 0; border-radius: 0; }
   .navlinks.open .nav-button { margin-top: 10px; min-height: 52px; font-size: 15px; }
@@ -325,8 +325,8 @@
 /* ------------------------------------------------------------------
    Bouton WhatsApp de la page contact (14/08/2026)
    ------------------------------------------------------------------ */
-.button-whatsapp { gap: 10px; color: #fff; background: #25D366; }
-.button-whatsapp:hover { color: #fff; background: #1da851; }
+.button-whatsapp { gap: 10px; color: #fafaf8; background: #0a0a0a; }
+.button-whatsapp:hover { color: #fafaf8; background: #0a0a0a; }
 .button-whatsapp .wa-icon { width: 19px; height: 19px; flex: none; fill: currentColor; }
 .contact-card .button + .button { margin-top: 10px; }
 
@@ -347,9 +347,9 @@
 }
 
 /* Fond distinct de l’accueil crème, sur toute la largeur. */
-body header.nav,body header.nav::before{background:#e9e9e5!important}
-body header.nav::before{border-bottom:1px solid #d1d3ce!important;box-shadow:0 2px 8px rgb(0 0 0 / 4%)}
-@media(max-width:760px){body header.nav .navlinks.open{background:#e9e9e5!important}}
+body header.nav,body header.nav::before{background:#fafaf8!important}
+body header.nav::before{border-bottom:1px solid #fafaf8!important;box-shadow:0 2px 8px rgb(0 0 0 / 4%)}
+@media(max-width:760px){body header.nav .navlinks.open{background:#fafaf8!important}}
 
 /* Signature complète dans la navigation. */
 body header.nav .logo{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;flex-shrink:0;text-decoration:none;line-height:1;letter-spacing:0;text-indent:0}

@@ -1,0 +1,36 @@
+/* Deux moitiés bord à bord : photographie / fond noir et texte blanc. */
+body.eywa-home #services.intro-band{padding:0;background:#0a0a0a;color:#fafaf8}
+body.eywa-home #services .wrap.visual-split{width:100%;max-width:none;display:grid;grid-template-columns:1fr 1fr;align-items:stretch;gap:0;margin:0}
+body.eywa-home #services .editorial-photo{margin:0;border-radius:0;aspect-ratio:auto;min-height:600px}
+body.eywa-home #services .editorial-photo img{width:100%;height:100%;object-fit:cover;object-position:center}
+body.eywa-home #services .editorial-copy{padding:64px clamp(36px,5vw,80px);background:#0a0a0a;color:#fafaf8;display:flex;flex-direction:column;justify-content:center;min-width:0}
+body.eywa-home #services .editorial-copy :is(h2,p,li,a){color:#fafaf8}
+body.eywa-home #services .editorial-copy>p:not(.section-kicker){font-size:16px!important;line-height:1.6!important}
+body.eywa-home #services .editorial-copy .section-kicker{font-size:12px!important;line-height:1.5!important;letter-spacing:.15em}
+body.eywa-home #services .simple-points{gap:14px;margin:24px 0 28px}
+body.eywa-home #services .simple-points li{font-size:16px!important;line-height:1.55!important}
+body.eywa-home #services .simple-points li::before{content:'';width:5px;height:5px;flex:none;border-radius:50%;background:var(--accent);margin-top:10px}
+body.eywa-home #services .concept-actions{margin-top:0;gap:10px}
+body.eywa-home #services .concept-actions .text-link{background:transparent;color:#fafaf8;border-color:#fafaf844;padding:12px 14px;font-size:16px!important;line-height:1.4!important}
+body.eywa-home #services .concept-actions .text-link:hover{background:#fafaf812;border-color:var(--accent)}
+/* La seconde grande photo occupe elle aussi exactement la moitié. */
+body.eywa-home #savoir-faire.reference-craft .reference-craft-lower{width:100%;max-width:none;padding:0;margin:0;background:#0a0a0a}
+body.eywa-home #savoir-faire .craft-editorial-split{grid-template-columns:1fr 1fr;gap:0;align-items:stretch}
+body.eywa-home #savoir-faire .craft-editorial-photo{min-height:640px;margin:0}
+body.eywa-home #savoir-faire .craft-editorial-photo img{aspect-ratio:auto;width:100%;height:100%;object-fit:cover;object-position:66% center}
+body.eywa-home #savoir-faire .craft-editorial-copy{background:#0a0a0a;color:#fafaf8;padding:64px clamp(36px,5vw,80px);display:flex;flex-direction:column;justify-content:center}
+body.eywa-home #savoir-faire .craft-editorial-copy :is(h3,p,.section-kicker,.reference-menu-link){color:#fafaf8}
+body.eywa-home #savoir-faire .craft-editorial-copy>p{font-size:16px!important;line-height:1.65!important;margin-bottom:22px}
+body.eywa-home #savoir-faire .craft-editorial-copy h3{font-size:clamp(28px,2.7vw,38px)!important}
+.craft-points{list-style:none;margin:0 0 30px;padding:0;display:grid;gap:12px}
+body.eywa-home #savoir-faire .craft-points li{display:flex;gap:12px;color:#fafaf8;font-size:16px!important;line-height:1.5!important}
+.craft-points li::before{content:'';width:5px;height:5px;flex:none;border-radius:50%;background:var(--accent);margin-top:9px}
+body.eywa-home #savoir-faire .craft-menu-note{border-color:#fafaf833;margin-top:4px}
+body.eywa-home #savoir-faire .craft-menu-note p{color:#fafaf8}
+body.eywa-home #savoir-faire .reference-menu-link{border-color:#fafaf866}
+@media(max-width:760px){
+ body.eywa-home #services .wrap.visual-split,body.eywa-home #savoir-faire .craft-editorial-split{grid-template-columns:1fr}
+ body.eywa-home #services .editorial-photo,body.eywa-home #savoir-faire .craft-editorial-photo{min-height:0;aspect-ratio:4/3}
+ body.eywa-home #services .editorial-copy,body.eywa-home #savoir-faire .craft-editorial-copy{padding:38px 24px}
+}
+body.eywa-home #savoir-faire .craft-editorial-copy .section-kicker{text-align:left}

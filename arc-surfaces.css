@@ -1,0 +1,90 @@
+/* Rôles des surfaces : base douce, sections grises, cartes blanches et introductions noires. */
+:root,body{--accent:#1c8059;--surface-base:#fafaf8;--surface-soft:#f0efed;--surface-inset:#f0efed;--surface-card:#ffffff;--surface-dark:#0a0a0a;--text:#0a0a0a;--muted:#60605c;--border:#d8d7d2;--green-light:#1c8059;--white:#ffffff}
+body[data-eywa-page]{background:var(--surface-base);color:var(--text)}
+body[data-eywa-page] :is(input,textarea,select){background:var(--surface-card);color:var(--text);border-color:var(--border)}
+body[data-eywa-page] :is(.button,.nav-button,.md-cta){background:var(--accent);color:var(--surface-base)}
+/* Accueil : le noir introduit, les surfaces claires accompagnent la lecture. */
+body.eywa-home .intro-band{background:var(--surface-base)}
+body.eywa-home .how-it-works{background:var(--surface-soft)}
+body.eywa-home .booking{background:var(--surface-base);color:var(--text)}
+body.eywa-home .booking :is(h2,p,.section-kicker,.booking-help,.booking-help a){color:var(--text)}
+body.eywa-home .booking .mini-devis{background:var(--surface-card);border:1px solid var(--border);box-shadow:none}
+body.eywa-home .mini-devis :is(.md-bottom,.md-included){background:var(--surface-soft);color:var(--text)}
+body.eywa-home .reference-craft{background:var(--surface-soft)}
+body.eywa-home .reference-craft-hero{background:var(--surface-soft)}
+body.eywa-home #personnalisation{background:var(--surface-base)}
+body.eywa-home .reference-benefits{background:var(--surface-soft)}
+body.eywa-home .reviews{background:var(--surface-base)}
+body.eywa-home .faq-home{background:var(--surface-soft)}
+body.eywa-home .faq-home details[open]{background:var(--surface-card)}
+body.eywa-home .reference-coffee-cta{background:var(--surface-base)}
+/* Services : introduction noire, contenu clair, carte sur gris. */
+body[data-eywa-page="services"] .svc-hero{background:var(--surface-dark);color:var(--surface-base)}
+body[data-eywa-page="services"] .svc-hero :is(h1,p){color:var(--surface-base)}
+body[data-eywa-page="services"] .svc-body{background:var(--surface-base);color:var(--text)}
+body[data-eywa-page="services"] .svc-menu{background:var(--surface-soft);color:var(--text)}
+/* Menu : le fond calme laisse les boissons et leurs descriptions dominer. */
+body[data-eywa-page="menu"] .eywa-menu{background:var(--surface-base);color:var(--text)}
+body[data-eywa-page="menu"] .flavour-section,body[data-eywa-page="menu"] .preferences{background:var(--surface-soft);color:var(--text)}
+body[data-eywa-page="menu"] .flavour-section :is(h2,h3,p),body[data-eywa-page="menu"] .preferences :is(h2,h3,p){color:var(--text)}
+/* Galerie : entrée noire, photos sur une surface claire. */
+body[data-eywa-page="gallery"] .page-hero{background:var(--surface-dark);color:var(--surface-base)}
+body[data-eywa-page="gallery"] .page-hero :is(h1,p,.eyebrow){color:var(--surface-base)}
+body[data-eywa-page="gallery"] .gallery-showcase{background:var(--surface-base);color:var(--text)}
+/* Tarifs : introduction noire, chiffres sur fond clair, détail du trajet sur gris. */
+body[data-eywa-page="pricing"] .tariff-overview{background:var(--surface-dark);color:var(--surface-base)}
+body[data-eywa-page="pricing"] .tariff-overview :is(h1,.eyebrow,.tariff-overview-intro){color:var(--surface-base)}
+body[data-eywa-page="pricing"] .tariff-overview-grid article{background:var(--surface-card);color:var(--text);border-color:var(--border)}
+body[data-eywa-page="pricing"] .tariff-overview-grid article :is(h2,h3,p,li){color:var(--text)}
+body[data-eywa-page="pricing"] .tariff-overview-cta p{color:var(--surface-base)}
+body[data-eywa-page="pricing"] :is(.section,.service-pricing){background:var(--surface-base);color:var(--text)}
+body[data-eywa-page="pricing"] :is(.travel-pricing,.included){background:var(--surface-soft);color:var(--text)}
+body[data-eywa-page="pricing"] :is(.price-box,.travel-pricing-card){background:var(--surface-card);color:var(--text);border-color:var(--border)}
+body[data-eywa-page="pricing"] :is(.included,.price-box,.travel-pricing-card) :is(h2,h3,p,li,b){color:var(--text)}
+/* Avis, questions et contact : gris de page, blanc dans les blocs utiles. */
+body:is([data-eywa-page="reviews"],[data-eywa-page="faq"],[data-eywa-page="contact"]){background:var(--surface-soft)}
+body:is([data-eywa-page="reviews"],[data-eywa-page="faq"],[data-eywa-page="contact"]) .info-page{background:transparent;color:var(--text)}
+body:is([data-eywa-page="reviews"],[data-eywa-page="faq"],[data-eywa-page="contact"]) :is(.review,.contact-card,.faq-list details[open]){background:var(--surface-card);color:var(--text);border:1px solid var(--border)}
+body[data-eywa-page="why"] .value-objectives{background:var(--surface-soft);color:var(--text)}
+body[data-eywa-page="why"] .value-gain{background:var(--surface-soft);color:var(--text)}
+body[data-eywa-page="why"] .value-final{background:var(--surface-dark);color:var(--surface-base)}
+body[data-eywa-page="why"] .value-final :is(h2,p){color:var(--surface-base)}
+body[data-eywa-page] .cta{background:var(--surface-base);color:var(--text)}
+body[data-eywa-page] .cta :is(h2,p){color:var(--text)}
+/* Devis : fond blanc cassé comme The Arc, carte blanche et détails sur gris. */
+body:is([data-eywa-page="quote"],[data-eywa-page="quote-result"],[data-eywa-page="reservation"],[data-eywa-page="thanks"]){--green:var(--accent);--green-dark:var(--accent);--green-light:var(--accent);--cream:var(--surface-base);--gold:var(--accent);--ink:var(--text);--text:#0a0a0a;--muted:#60605c;--border:#d8d7d2;background:var(--surface-base);color:var(--text)}
+body.quote-form :is(.quote-header,.quote-intro,.quote-workspace){background:transparent;color:var(--text)}
+body.quote-form .quote-header{border-color:var(--border)}
+body.quote-form :is(.brand-logo,.quote-eyebrow,.quote-intro h1,.fq-title,.question,.success-title){color:var(--text)}
+body.quote-form :is(.quote-intro h1,.fq-title,.question,.success-title,.price-amount){font-family:var(--serif)!important}
+body.quote-form .brand-logo{font-family:var(--sans)!important;font-weight:600}
+body.quote-form .form-card{background:var(--surface-card);border:1px solid var(--border);box-shadow:none}
+body.quote-form :is(.quote-story-copy,.breakdown,.success-detail){background:var(--surface-soft);color:var(--text)}
+body.quote-form :is(.payment-note,.fq-avatar){background:var(--surface-inset);color:var(--text)}
+body.quote-form :is(.step-btn,.stepper-center,.type-opt,.qp,.days-btn){background:var(--surface-card);color:var(--text);border-color:var(--border)}
+body.quote-form :is(.qp.active,.type-opt.selected){background:var(--surface-soft);border-color:var(--accent);color:var(--text)}
+body.quote-form :is(.btn-fq,.btn-next,.btn-cta,.btn-pay,.btn-contact){background:var(--accent);color:var(--surface-card);border-radius:0}
+body.quote-form :is(.btn-fq,.btn-next,.btn-cta,.btn-pay,.btn-contact):hover{background:var(--surface-dark);color:var(--surface-card)}
+body.quote-form :is(.price-badge,.dot.done,.dot.active){background:var(--accent);color:var(--surface-card)}
+body.quote-form .fq-hint{color:var(--muted)}
+body.quote-result :is(.quote-header,.top-bar){background:var(--surface-base);color:var(--text)}
+body.quote-result :is(.devis-card,.bottom,.rev-card){background:var(--surface-card);color:var(--text);border-color:var(--border);box-shadow:none}
+body.quote-result :is(.card-head,.price-box,.avail,.upsells){background:var(--surface-soft);color:var(--text)}
+body.quote-result :is(.btn-main,.btn-pay,.btn-contact,.btn-cta){background:var(--accent);color:var(--surface-card)}
+/* Les anciens styles forçaient encore le fond noir des appels finaux. */
+body[data-eywa-page] .cta{background:var(--surface-base)!important}
+body[data-eywa-page="pricing"] .tariff-overview-head>p{color:var(--surface-base)}
+
+/* Nuances confirmées sur la capture fournie : #f0efed / #fafaf8 / #ffffff. */
+body.eywa-home .faq-home details[open]{background:transparent}
+body[data-eywa-page="faq"] .faq-list details[open]{background:transparent;border-color:var(--border)}
+body.quote-form .form-card{border:1px solid var(--accent);border-radius:0}
+body.eywa-home .booking .mini-devis{border-color:var(--accent);border-radius:0}
+body.quote-form .quote-header{width:100%;padding-inline:max(20px,calc((100% - 1280px)/2));background:var(--surface-dark);color:var(--surface-base);border-color:#fafaf826}
+body.quote-form .quote-header :is(.brand-logo,.quote-home){color:var(--surface-base)}
+
+/* Les flèches de navigation reprennent le vert de la marque. */
+body .direction-arrow{color:var(--accent)}
+body[data-eywa-page] .button:has(.direction-arrow){background:var(--surface-base);color:var(--text);border:1px solid var(--border)}
+body[data-eywa-page] .button:has(.direction-arrow):hover{background:var(--surface-soft)}
+body[data-eywa-page="services"] .service-list li::before{color:var(--accent);background:transparent}
