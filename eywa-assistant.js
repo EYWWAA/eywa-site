@@ -57,6 +57,9 @@
       body .eywa-help-bar .eywa-help-title{font-weight:600!important}
       body .eywa-help-bar small{color:#60605c}
     }
+
+    body.quote-result .quote-dock,body.quote-booking .total-bar{bottom:calc(var(--eywa-help-height) + env(safe-area-inset-bottom,0px) + 1px)}
+    body.quote-result,body.quote-booking{padding-bottom:calc(var(--eywa-help-height) + 130px + env(safe-area-inset-bottom,0px))!important}
   `;
   document.head.appendChild(style);
   const bar = document.createElement('nav');
@@ -67,7 +70,7 @@
   const contact = bar.querySelector('.eywa-help-contact');
   const mobile = window.matchMedia('(max-width:600px)');
   const syncContact = () => {
-    contact.href = mobile.matches ? 'tel:+33749902156' : 'contact.html';
+    contact.href = mobile.matches ? 'tel:+33749902156' : 'contact.html?v=20261006-help-all-pages';
     contact.setAttribute('aria-label', mobile.matches ? 'Appeler EYWA au 07 49 90 21 56' : 'Contact');
   };
   mobile.addEventListener('change', syncContact);
