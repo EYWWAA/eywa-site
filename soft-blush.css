@@ -1,0 +1,16 @@
+/* Rose à peine perceptible : fond principal, gris doux et bande événements. */
+:root,body[data-eywa-page]{--surface-base:#fcf8f9;--surface-soft:#f4eff1;--surface-inset:#f4eff1;--surface-card:#ffffff;--cream:#fcf8f9;--cream-dark:#f4eff1;--border:#ddd5d8}
+body[data-eywa-page]{background-color:var(--surface-base)}
+body[data-eywa-page="contact"]{background-color:var(--surface-soft)}
+body.eywa-home :is(.intro-band,.reference-benefits,.reviews,.faq-home,.reference-coffee-cta),body.eywa-home #personnalisation.personal-catalog{background-color:var(--surface-base)}
+body.eywa-home #comment-ca-marche.how-it-works,body.eywa-home #savoir-faire.reference-craft{background-color:var(--surface-soft)}
+body.eywa-home .faq-home details,body.eywa-home .faq-home details:nth-child(even),body.eywa-home .faq-home details[open]{background-color:var(--surface-base);border-color:var(--border)}
+body.eywa-home .concept-actions .text-link,body.eywa-home .concept-actions .text-link:hover{background-color:var(--surface-base)}
+body.eywa-home .event-ribbon{background:#faf2f5;color:var(--text);border-color:#e7dce1}
+body.eywa-home .event-ribbon .hero-events,body.eywa-home .event-ribbon .hero-events li{color:var(--text)}
+body.eywa-home .event-ribbon .hero-events li::before{background:var(--accent)}
+body.eywa-home #personnalisation :is(.personal-image-cell,.personal-project-body figure,.personal-project-body img){background-color:var(--surface-soft)}
+body[data-eywa-page] .eywa-help-bar{background:var(--surface-soft)!important;border-color:var(--border)!important}
+body[data-eywa-page] .eywa-help-bar .eywa-assistant-launcher{background:var(--surface-base)!important;border-color:var(--border)!important}
+
+body.eywa-home .reference-coffee-cta{background-color:var(--surface-base)!important}
