@@ -35,9 +35,9 @@ body header.nav .nav-button{max-width:none;white-space:normal}
 @media(max-width:1100px){body header.nav{gap:14px}body header.nav .nav-button{max-width:172px}}
 @media(max-width:760px){body header.nav{min-height:66px!important}body header.nav .navlinks.open{max-height:calc(100dvh - 66px);padding:12px 20px 24px}body header.nav .navlinks.open .nav-button{max-width:none}}
 
-/* Le dernier morceau du titre se fond du blanc vers un vert très clair. */
-body.eywa-home #accueil h1#title em{color:#d5eadd}
+/* Le dernier morceau du titre se fond du blanc vers un vert menthe plus visible. */
+body.eywa-home #accueil h1#title em{color:#aed9bf}
 @supports ((background-clip:text) or (-webkit-background-clip:text)){
- body.eywa-home #accueil h1#title em{background-image:linear-gradient(105deg,#fafaf8 0%,#e7f2eb 38%,#bedfcb 100%);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+ body.eywa-home #accueil h1#title em{background-image:linear-gradient(105deg,#fafaf8 0%,#d0ead9 38%,#79bc95 100%);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 }
 @media(forced-colors:active){body.eywa-home #accueil h1#title em{background:none;-webkit-text-fill-color:CanvasText;color:CanvasText}}
