@@ -399,11 +399,11 @@ body.quote-form .onsite-same input{width:18px;height:18px;padding:0;accent-color
     <!-- S2 : Lieu -->
     <div class="step" id="s2">
       <div class="question">Où se déroule votre événement&nbsp;?</div>
-      <div class="question-sub">Recherchez votre adresse et sélectionnez le lieu pour calculer le déplacement. Si vous choisissez seulement une ville, le trajet restera estimatif.</div>
+      <div class="question-sub">Saisissez votre adresse ou votre ville, puis sélectionnez le lieu correspondant.</div>
       <input type="text" id="lieu-input" placeholder="Rue, code postal et ville" oninput="checkS2()">
       <button type="button" class="btn-fq" onclick="findEventAddress()">Rechercher le lieu</button>
-      <div id="travel-results"></div><p id="travel-status" role="status" aria-live="polite"></p>
-      <p style="font-size:13px">Recherche d’adresses et itinéraires : IGN / Géoplateforme. Votre lieu est transmis à ce service pour calculer le trajet.</p>
+      <div id="travel-results"></div><p id="travel-status" role="status" aria-live="polite"></p><p style="font-size:11px">Lieux : <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OpenStreetMap</a>. Votre lieu est transmis aux services de recherche et d’itinéraire.</p>
+      <p style="font-size:13px;line-height:1.5">Dans un <a href="zone-intervention.html?v=20261007-zone-300km">rayon de 300 km autour de Charleville-Mézières</a>. Au-delà, <a href="contact.html">contactez-nous</a> pour une demande spécifique.</p>
       <div class="btn-row">
         <button class="btn-back" onclick="go('s2','s1',0)">← Retour</button>
         <button class="btn-next disabled" id="btn2" onclick="go('s2','s3',2)">Continuer →</button>
@@ -1027,7 +1027,7 @@ body.quote-form .onsite-same input{width:18px;height:18px;padding:0;accent-color
 </dialog>
 <script src="devis-pickers.js?v=20261006-publication"></script>
 <script src="brand-options.js?v=20261006-publication" defer></script>
-<script src="travel-pricing.js?v=20261006-publication"></script><script src="travel-route.js?v=20261006-publication"></script><script src="travel-origin.js?v=20261006-publication"></script><script src="travel-form.js?v=20261006-publication"></script>
+<script src="travel-pricing.js?v=20261006-publication"></script><script src="travel-route.js?v=20261007-zone-300km"></script><script src="travel-origin.js?v=20261006-publication"></script><script src="service-area.js?v=20261007-zone-300km"></script><script src="travel-places.js?v=20261007-zone-300km"></script><script src="travel-form.js?v=20261007-zone-300km"></script>
 <script src="eywa-assistant.js?v=20261006-light-bar" defer></script>
 </body>
 </html>

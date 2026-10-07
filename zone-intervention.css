@@ -1,0 +1,38 @@
+/* Zone d’intervention : reprend les surfaces et la typographie du site. */
+.zone-page{color:var(--text);background:var(--surface-base)}
+.zone-page .wrap{width:min(1180px,calc(100% - 64px));margin:auto}
+.zone-page .zone-kicker{font-size:11px;letter-spacing:.16em;line-height:1.5;margin:0 0 16px;color:var(--accent)}
+.zone-intro{padding:64px 0 54px;background:var(--surface-dark);color:var(--surface-base)}
+body .zone-intro h1{font:400 clamp(36px,4.2vw,58px)/1.12 var(--serif)!important;letter-spacing:-.035em;max-width:1020px;color:inherit;margin:0 0 24px}
+body .zone-intro h1 em{font-style:italic;color:#aed9bf;font-weight:400!important}
+.zone-intro .zone-kicker{color:#aed9bf}
+.zone-intro p:not(.zone-kicker){max-width:690px;font-size:16px;line-height:1.7;color:inherit;margin-bottom:24px}
+.zone-intro-link{display:inline-flex;gap:24px;align-items:center;color:inherit;font-size:14px;padding:8px 0;border-bottom:1px solid #aed9bf}
+.zone-map-section{padding:56px 0;scroll-margin-top:100px}
+.zone-map-layout{display:grid;grid-template-columns:.72fr 1.28fr;gap:46px;align-items:center}
+body .zone-page h2{font:400 clamp(30px,3vw,42px)/1.16 var(--serif)!important;letter-spacing:-.03em;margin:0 0 22px;color:var(--text)}
+.zone-map-copy p{font-size:15px;line-height:1.65;max-width:370px}
+.zone-map-copy .zone-map-note{font-size:13px;color:var(--muted);margin:18px 0 24px}
+.zone-legend{display:flex;align-items:center;gap:10px;font-size:13px;margin:20px 0}
+.zone-legend>span{width:15px;height:15px;flex:none;border:2px solid var(--accent);border-radius:50%;background:#1c80591a}
+.zone-map-figure{margin:0;min-width:0}
+.zone-map-figure img{display:block;width:100%;height:auto}
+.zone-map-figure figcaption{font-size:11px;color:var(--muted);margin:10px 0 0;line-height:1.5}
+.zone-map-figure figcaption a{text-decoration:underline;text-underline-offset:2px}
+.zone-cities{padding:56px 0;background:var(--surface-soft)}
+.zone-cities-head{max-width:680px;margin:0 0 34px}
+.zone-cities-head>p:last-child{font-size:15px;line-height:1.65;max-width:620px}
+.zone-city-columns{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:46px}
+.zone-city-columns>div{border-top:1px solid var(--border);padding-top:24px}
+body .zone-city-columns h3{font:400 26px/1.2 var(--serif)!important;margin:0 0 18px;color:var(--text)}
+.zone-city-columns ul{list-style:none;margin:0;padding:0;display:grid;gap:11px;font-size:15px;line-height:1.45}
+.zone-beyond{padding:58px 0}
+.zone-beyond-layout{display:grid;grid-template-columns:1fr auto;gap:50px;align-items:center}
+.zone-beyond-layout p:not(.zone-kicker){max-width:670px;font-size:15px;line-height:1.7;margin:0}
+.zone-page .button{min-height:52px;padding:16px 24px;border-radius:4px;background:var(--accent);color:var(--surface-base);font-size:14px;line-height:1.4;text-align:center;white-space:normal}
+.zone-page .button:hover{background:#176b4b}
+.zone-skip{position:absolute;top:8px;left:8px;z-index:9999;padding:12px 20px;transform:translateY(-180%);background:var(--surface-base);color:var(--text)}
+.zone-skip:focus{transform:translateY(0)}
+@media(max-width:900px){.zone-map-layout{grid-template-columns:1fr;gap:26px}.zone-map-copy p{max-width:620px}.zone-map-figure{max-width:780px}.zone-beyond-layout{grid-template-columns:1fr;gap:24px}.zone-beyond-layout>.button{justify-self:start}}
+@media(max-width:600px){.zone-page .wrap{width:calc(100% - 36px)}.zone-intro{padding:38px 0 34px}body .zone-intro h1{font-size:34px!important}.zone-intro p:not(.zone-kicker){font-size:15px}.zone-map-section,.zone-cities,.zone-beyond{padding:36px 0}.zone-city-columns{grid-template-columns:1fr 1fr;gap:28px 20px}.zone-city-columns>div:first-child{grid-column:1/-1}.zone-city-columns>div:first-child ul{grid-template-columns:1fr 1fr;gap:12px 20px}.zone-city-columns>div:first-child li:first-child{grid-column:1/-1}.zone-city-columns ul{font-size:14px}.zone-page .button{width:100%}.zone-map-copy .zone-map-note{margin-bottom:20px}.zone-beyond-layout>.button{justify-self:stretch}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}

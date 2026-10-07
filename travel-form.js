@@ -14,10 +14,7 @@
     status.textContent='Recherche de votre lieu…';
     var controller=new AbortController(),timeout=setTimeout(function(){controller.abort();},15000);
     try{
-      var response=await fetch('https://data.geopf.fr/geocodage/search?limit=5&q='+encodeURIComponent(query),{signal:controller.signal});
-      if(!response.ok)throw new Error();
-      var data=await response.json();if(ticket!==version)return;
-      var features=(data.features||[]).filter(function(f){return f.geometry&&f.geometry.type==='Point'&&f.properties&&f.properties.label;});
+      var features=await EywaTravelPlaces.search(query,{signal:controller.signal});if(ticket!==version)return;
       if(!features.length){status.textContent='Adresse introuvable. Essayez avec la rue, le code postal et la ville.';return;}
       status.textContent='Sélectionnez le lieu correspondant à votre événement :';
       features.forEach(function(feature){
@@ -29,15 +26,23 @@
   };
   async function selectAddress(feature,ticket){
     if(ticket!==version)return;ticket=++version;results.replaceChildren();
-    input.value=feature.properties.label;status.textContent='Calcul du trajet aller-retour…';
+    input.value=feature.properties.label;status.textContent='Vérification du lieu…';
+    try{
+      if(!window.EywaServiceArea)throw new Error();
+      if(!EywaServiceArea.contains(feature.geometry.coordinates)){
+        status.textContent='Votre lieu se situe au-delà de notre rayon de 300 km. Contactez-nous pour une demande spécifique.';
+        return;
+      }
+    }catch(e){status.textContent='Ce lieu n’a pas pu être vérifié. Sélectionnez un autre résultat ou contactez-nous.';return;}
     try{
       if(!window.EYWA_TRAVEL_ORIGIN)throw new Error();
-      var trip=await EywaTravelRoute.roundTrip(window.EYWA_TRAVEL_ORIGIN,feature.geometry.coordinates);
+      var route=feature.properties.countrycode==='FR'?EywaTravelRoute.roundTrip:EywaTravelRoute.internationalRoundTrip;
+      var trip=await route(window.EYWA_TRAVEL_ORIGIN,feature.geometry.coordinates);
       if(ticket!==version)return;
       var cost=EywaTravelPricing.calculate(trip.roundTripKm,trip.roundTripMinutes);
       window.eywaTravel=Object.assign(cost,{outwardMinutes:trip.outwardMinutes,lodgingRequired:trip.lodgingRequired,label:input.value,approximate:feature.properties.type!=='housenumber'});
-      status.textContent=(window.eywaTravel.approximate?'Estimation depuis le lieu sélectionné. ':'')+cost.roundTripKm.toFixed(1)+' km aller-retour · '+Math.round(cost.roundTripMinutes)+' min de conduite · '+cost.total.toFixed(2)+' € de déplacement. Un aller-retour est compté ; hébergement éventuel et trajets supplémentaires à préciser.';
-      if(trip.lodgingRequired)status.textContent+=' Le trajet aller dépasse 4 h : un hébergement sur place est à prévoir, avec un montant à confirmer avant réservation.';
+      status.textContent='';
+      
       var next=document.getElementById('btn2');next.disabled=false;next.classList.remove('disabled');
     }catch(e){if(ticket===version)status.textContent='Impossible de calculer ce trajet routier. Réessayez ou contactez-nous pour un devis adapté ; aucun trajet gratuit ne sera ajouté par défaut.';}
   }
