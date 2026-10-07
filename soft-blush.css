@@ -6,7 +6,7 @@ body.eywa-home :is(.intro-band,.reference-benefits,.reviews,.faq-home,.reference
 body.eywa-home #comment-ca-marche.how-it-works,body.eywa-home #savoir-faire.reference-craft{background-color:var(--surface-soft)}
 body.eywa-home .faq-home details,body.eywa-home .faq-home details:nth-child(even),body.eywa-home .faq-home details[open]{background-color:var(--surface-base);border-color:var(--border)}
 body.eywa-home .concept-actions .text-link,body.eywa-home .concept-actions .text-link:hover{background-color:var(--surface-base)}
-body.eywa-home .event-ribbon{background:#faf2f5;color:var(--text);border-color:#e7dce1}
+body.eywa-home .event-ribbon{background:#eee5e9;color:var(--text);border-color:#ddd0d6}
 body.eywa-home .event-ribbon .hero-events,body.eywa-home .event-ribbon .hero-events li{color:var(--text)}
 body.eywa-home .event-ribbon .hero-events li::before{background:var(--accent)}
 body.eywa-home #personnalisation :is(.personal-image-cell,.personal-project-body figure,.personal-project-body img){background-color:var(--surface-soft)}

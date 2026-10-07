@@ -51,3 +51,8 @@ body #journey .journey-support{font-size:13px!important;margin:22px 0 0}
 @media(hover:hover){.journey-photo:hover img{transform:scale(1.025)}}
 @media(max-width:600px){.journey-feature{grid-template-columns:1fr;min-height:0}.journey-feature .journey-intro{order:0;padding:22px}.journey-photo{order:1;height:180px}body #journey .journey-feature h1{font-size:30px!important}.journey-photo figcaption{font-size:10px}}
 @media(prefers-reduced-motion:reduce){.journey-photo img{transition:none;transform:none!important}}
+
+/* Davantage de précisions, dans des colonnes qui restent lisibles. */
+body.eywa-home #comment-ca-marche .how-steps p{font-size:16px!important;line-height:1.5!important}
+body.eywa-home #comment-ca-marche .how-steps h3{font-size:26px!important;line-height:1.2!important}
+@media(max-width:600px){body.eywa-home #comment-ca-marche .how-steps p{font-size:15px!important}body.eywa-home #comment-ca-marche .how-steps h3{font-size:24px!important}}
