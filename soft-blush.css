@@ -14,3 +14,7 @@ body[data-eywa-page] .eywa-help-bar{background:var(--surface-soft)!important;bor
 body[data-eywa-page] .eywa-help-bar .eywa-assistant-launcher{background:var(--surface-base)!important;border-color:var(--border)!important}
 
 body.eywa-home .reference-coffee-cta{background-color:var(--surface-base)!important}
+
+/* Les fonds alternent pour distinguer les sections de l’accueil. */
+body.eywa-home #evenements.reference-benefits{background-color:var(--surface-soft)}
+body.eywa-home #faq.faq-home{background-color:#f0efed}
