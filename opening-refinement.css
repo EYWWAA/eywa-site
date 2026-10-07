@@ -41,3 +41,6 @@ body.eywa-home #accueil h1#title em{color:#aed9bf}
  body.eywa-home #accueil h1#title em{background-image:linear-gradient(105deg,#fafaf8 0%,#d0ead9 38%,#79bc95 100%);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 }
 @media(forced-colors:active){body.eywa-home #accueil h1#title em{background:none;-webkit-text-fill-color:CanvasText;color:CanvasText}}
+
+/* Navigation anthracite, couleur relevée sur la capture de référence. */
+body header.nav,body header.nav::before,body header.nav .navlinks.open{background:#28292b!important}
