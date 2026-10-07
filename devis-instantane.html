@@ -292,6 +292,7 @@
 </style>
 <style>.travel-result{display:block;width:100%;text-align:left;padding:12px;margin:8px 0;background:#fff;border:1px solid #ccc;border-radius:6px;font:inherit;cursor:pointer}#travel-status{font-size:16px;line-height:1.5}</style>
 <link rel="stylesheet" href="soft-blush.css?v=20261007-etapes-detaillees">
+<link rel="stylesheet" href="quote-site-style.css?v=20261007-typographie">
 </head>
 <body data-eywa-page="quote" class="quote-form">
 
@@ -807,7 +808,7 @@
     var extraHrs = Math.max(0, A.hrs - 1.5);
     var baristasNeeded = Math.ceil(A.guests / (A.hrs * 50));
     var extraBaristas = Math.max(0, baristasNeeded - 1);
-    var pricePerDay = 650 + (extraGuests * 5) + Math.round(extraHrs * 70) + (extraBaristas * 200) + persoTotal();
+    var pricePerDay = 650 + (extraGuests * 5) + Math.round(extraHrs * 150) + (extraBaristas * 200) + persoTotal();
     return Math.round((pricePerDay * A.days + window.eywaTravel.total)*100)/100;
   }
 
@@ -818,7 +819,7 @@
     var extraHrs = Math.max(0, A.hrs - 1.5);
     var baristasNeeded = Math.ceil(A.guests / (A.hrs * 50));
     var extraBaristas = Math.max(0, baristasNeeded - 1);
-    var pricePerDay = 650 + (extraGuests * 5) + Math.round(extraHrs * 70) + (extraBaristas * 200) + persoTotal();
+    var pricePerDay = 650 + (extraGuests * 5) + Math.round(extraHrs * 150) + (extraBaristas * 200) + persoTotal();
     A.totalPrice = calcPrice();
 
     document.getElementById('priceDisplay').textContent = A.totalPrice + ' €';
@@ -833,7 +834,7 @@
     var bd = '';
     bd += '<div class="brow"><span>Base (50 pers., 1h30)</span><span>650 €</span></div>';
     if (extraGuests > 0) bd += '<div class="brow"><span>+' + extraGuests + ' invité' + (extraGuests>1?'s':'') + ' × 5 €</span><span>+' + (extraGuests*5) + ' €</span></div>';
-    if (extraHrs > 0) bd += '<div class="brow"><span>+' + hrsLabel(extraHrs) + ' × 70 €/h</span><span>+' + Math.round(extraHrs*70) + ' €</span></div>';
+    if (extraHrs > 0) bd += '<div class="brow"><span>+' + hrsLabel(extraHrs) + ' × 150 €/h</span><span>+' + Math.round(extraHrs*150) + ' €</span></div>';
     if (extraBaristas > 0) bd += '<div class="brow"><span>' + extraBaristas + ' barista' + (extraBaristas>1?'s':'') + ' sup. × 200 €</span><span>+' + (extraBaristas*200) + ' €</span></div>';
     for (var pi = 0; pi < A.personalization.length; pi++) {
       var pn = A.personalization[pi], pp = PERSO_PRIX[pn] || 0;
