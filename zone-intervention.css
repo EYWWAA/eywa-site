@@ -17,7 +17,7 @@ body .zone-page h2{font:400 clamp(25px,2.5vw,34px)/1.16 var(--serif)!important;l
 body .zone-special-request p{font-size:15px!important;line-height:1.6!important;margin:0 0 20px}
 .zone-page .button{min-height:50px;padding:14px 22px;border-radius:4px;background:var(--accent);color:var(--surface-base);font-size:14px;line-height:1.4;text-align:center;white-space:normal}
 .zone-page .button:hover{background:#176b4b}
-.zone-quote-link{display:block;width:fit-content;margin-top:14px;font-size:14px;text-decoration:underline;text-underline-offset:4px}
+.zone-secondary-link{display:block;width:fit-content;margin-top:14px;font-size:14px;text-decoration:underline;text-underline-offset:4px}
 body .zone-special-request .zone-travel-note{font-size:12px!important;line-height:1.5!important;color:var(--muted);margin:18px 0 0}
 .zone-cities{padding:32px 0 40px;background:var(--surface-soft)}
 .zone-city-columns{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:36px;margin-top:24px}
