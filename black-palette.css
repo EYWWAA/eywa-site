@@ -1,0 +1,10 @@
+/* Noir retenu pour les surfaces sombres de toutes les pages. */
+:root,body{--surface-dark:#181819!important}
+body.eywa-home :is(.home-opening,#accueil.hero,#accueil .hero-copy,#carousel-stage,#services.intro-band,#services .editorial-copy,#reservation.booking,#savoir-faire .reference-craft-hero,#savoir-faire .reference-craft-lower,#savoir-faire .craft-editorial-copy),
+body[data-eywa-page] :is(.svc-hero,.page-hero,.tariff-overview,.value-final),
+body footer{background:#181819!important}
+/* Le blanc du premier écran reste franc, sans atténuation. */
+body header.nav :is(.logo,.brand-eywa,.brand-descriptor,.nav-group>a:not(.nav-button),.nav-places-trigger,.mobile-menu){color:#fff!important}
+body header.nav .nav-group>a[aria-current="page"]:not(.nav-button){color:#fff!important}
+body.eywa-home #accueil :is(h1,.hero-description,.hero-location,.quote-note,.hero-secondary){color:#fff!important;opacity:1!important}
+
