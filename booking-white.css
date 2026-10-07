@@ -1,0 +1,7 @@
+/* Le mini-devis de la réservation reste blanc, avec des textes lisibles. */
+body.eywa-home #reservation .mini-devis{background:#ffffff!important;color:#0a0a0a!important;border-color:var(--border)}
+body.eywa-home #reservation :is(.md-label,.md-val,.md-unit,.md-staff,.md-staff-sub){color:#0a0a0a!important}
+body.eywa-home #reservation .md-label svg{color:#0a0a0a!important}
+body.eywa-home #reservation .md-btn{background:#ffffff!important;color:#0a0a0a!important;border-color:var(--border)}
+body.eywa-home #reservation .md-btn:hover{background:var(--accent)!important;color:#ffffff!important;border-color:var(--accent)}
+body.eywa-home #reservation .md-sep{background:var(--border)!important}
