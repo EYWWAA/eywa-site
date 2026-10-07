@@ -289,14 +289,6 @@
 <link rel="stylesheet" href="arc-surfaces.css?v=20261006-publication">
 <link rel="stylesheet" href="opening-refinement.css?v=20261007-etapes-detaillees">
 <style>
-.onsite-contact{margin:24px 0 0;padding:20px 0 0;border:0;border-top:1px solid var(--border)}
-.onsite-contact legend{padding:0;font-size:16px;font-weight:500}
-.onsite-help{font-size:13px;line-height:1.5;color:var(--muted);margin:10px 0 16px}
-.onsite-same{display:flex;align-items:center;gap:10px;margin:0 0 18px;font-size:14px;line-height:1.5}
-body.quote-form .onsite-same input{width:18px;height:18px;padding:0;accent-color:var(--accent);flex:none}
-.onsite-contact .field-block+.field-block{margin-top:14px}
-.onsite-contact .optional-label{font-weight:400;color:var(--muted)}
-.onsite-contact input:disabled{opacity:1;background:var(--surface-soft);color:var(--text)}
 </style>
 <style>.travel-result{display:block;width:100%;text-align:left;padding:12px;margin:8px 0;background:#fff;border:1px solid #ccc;border-radius:6px;font:inherit;cursor:pointer}#travel-status{font-size:16px;line-height:1.5}</style>
 <link rel="stylesheet" href="soft-blush.css?v=20261007-etapes-detaillees">
@@ -335,7 +327,7 @@ body.quote-form .onsite-same input{width:18px;height:18px;padding:0;accent-color
   <p class="quote-eyebrow">VOTRE ÉVÉNEMENT, NOTRE COFFEE BAR</p>
   <h1>Un moment à partager.<br> Un devis à votre image.</h1>
   <p>Quelques détails pour imaginer ensemble votre prestation.</p>
-  <ul class="quote-reassurance" aria-label="Votre demande de devis"><li>Gratuit</li><li>Sans engagement</li><li>Réponse sous 24 h</li></ul>
+  <ul class="quote-reassurance" aria-label="Votre demande de devis"><li>Gratuit</li><li>Sans engagement</li></ul>
 </div>
 <div class="quote-workspace">
 <main>
@@ -542,7 +534,7 @@ body.quote-form .onsite-same input{width:18px;height:18px;padding:0;accent-color
     <!-- S6 : Contact -->
     <div class="step" id="s6">
       <div class="question">À qui envoyer votre devis&nbsp;?</div>
-      <div class="question-sub">Devis gratuit, sans engagement. Réponse sous 24h.</div>
+      <div class="question-sub">Devis gratuit et sans engagement.</div>
       <div class="fields">
         <div class="input-row">
           <div class="field-block">
@@ -566,17 +558,10 @@ body.quote-form .onsite-same input{width:18px;height:18px;padding:0;accent-color
           <div class="input-label">Téléphone</div>
           <input type="tel" id="tel-input" placeholder="+33 6 XX XX XX XX" oninput="checkS6()">
         </div>
-        <fieldset class="onsite-contact">
-          <legend>La personne qui nous accueillera sur place</legend>
-          <p class="onsite-help">Un numéro joignable le jour J, pour organiser notre arrivée.</p>
-          <label class="onsite-same"><input type="checkbox" id="onsite-same" checked onchange="checkS6()"><span>Je serai le contact sur place.</span></label>
-          <div class="field-block"><label class="input-label" for="onsite-name">Nom du contact <span class="optional-label">(facultatif)</span></label><input type="text" id="onsite-name" placeholder="Nom de la personne qui nous accueillera" oninput="checkS6()"></div>
-          <div class="field-block"><label class="input-label" for="onsite-tel">Téléphone du contact sur place</label><input type="tel" id="onsite-tel" placeholder="Numéro joignable le jour J" oninput="checkS6()" aria-required="true" required></div>
-        </fieldset>
       </div>
       <button class="btn-cta disabled" id="btn6" onclick="submitForm()">Obtenir mon devis →</button>
       <div style="font-size:11.5px;color:var(--muted);text-align:center;margin-top:10px;line-height:1.6">
-        Devis gratuit · Sans engagement · Réponse sous 24h
+        Devis gratuit · Sans engagement
       </div>
       <button class="back-link" onclick="go('s6','s5',4)">← Retour</button>
     </div>
@@ -656,7 +641,6 @@ body.quote-form .onsite-same input{width:18px;height:18px;padding:0;accent-color
     personalization: [],
     design: '',
     prenom: '', nom: '', societe: '', email: '', tel: '',
-    onsiteName: '', onsiteTel: '',
     totalPrice: 0
   };
 
@@ -693,9 +677,6 @@ body.quote-form .onsite-same input{width:18px;height:18px;padding:0;accent-color
     var so = document.getElementById('societe-input'); if (so) A.societe = so.value.trim();
     var e = document.getElementById('email-input'); if (e) A.email = e.value.trim();
     var tel = document.getElementById('tel-input'); if (tel) A.tel = tel.value.trim();
-    syncOnsiteContact();
-    A.onsiteName = document.getElementById('onsite-name').value.trim();
-    A.onsiteTel = document.getElementById('onsite-tel').value.trim();
   }
 
   /* S1 */
@@ -794,25 +775,12 @@ body.quote-form .onsite-same input{width:18px;height:18px;padding:0;accent-color
   }
 
   /* S6 */
-  function syncOnsiteContact() {
-    var same = document.getElementById('onsite-same').checked;
-    var name = document.getElementById('onsite-name');
-    var phone = document.getElementById('onsite-tel');
-    name.disabled = same;
-    phone.disabled = same;
-    if (same) {
-      name.value = [document.getElementById('prenom-input').value.trim(), document.getElementById('nom-input').value.trim()].filter(Boolean).join(' ');
-      phone.value = document.getElementById('tel-input').value.trim();
-    }
-  }
   function checkS6() {
-    syncOnsiteContact();
     var p = document.getElementById('prenom-input').value.trim();
     var n = document.getElementById('nom-input').value.trim();
     var e = document.getElementById('email-input').value.trim();
     var t = document.getElementById('tel-input').value.trim();
-    var onsite = document.getElementById('onsite-tel').value.trim();
-    var ok = p.length >= 2 && n.length >= 2 && e.includes('@') && e.includes('.') && t.length >= 6 && onsite.replace(/\D/g, '').length >= 8;
+    var ok = p.length >= 2 && n.length >= 2 && e.includes('@') && e.includes('.') && t.length >= 6;
     var button = document.getElementById('btn6');
     button.classList[ok ? 'remove' : 'add']('disabled');
     button.disabled = !ok;
@@ -940,8 +908,6 @@ body.quote-form .onsite-same input{width:18px;height:18px;padding:0;accent-color
         'Lieu : ' + A.lieu,
         'Déplacement A/R : ' + window.eywaTravel.roundTripKm.toFixed(1) + ' km / ' + Math.round(window.eywaTravel.roundTripMinutes) + ' min / ' + window.eywaTravel.total.toFixed(2) + ' €',
         'Hébergement : ' + (window.eywaTravel.lodgingRequired ? 'À prévoir : aller supérieur à 4 h. Montant à confirmer.' : 'Non déclenché par la durée du trajet'),
-        'Contact sur place : ' + (A.onsiteName || 'Non précisé'),
-        'Téléphone du contact sur place : ' + A.onsiteTel,
         'Personnalisation : ' + (A.personalization.join(', ') || 'Aucune'),
         'Détails : ' + (A.details || '—'),
         'Estimation : ' + A.totalPrice + ' €',
@@ -957,7 +923,7 @@ body.quote-form .onsite-same input{width:18px;height:18px;padding:0;accent-color
         _subject: 'Nouvelle demande de devis EYWA — ' + A.prenom + ' ' + A.nom,
         _template: 'table', _captcha: 'false',
         _cc: A.email,
-        _autoresponse: 'Bonjour ' + A.prenom + ',\n\nMerci pour votre demande de devis EYWA !\n\nVotre devis personnalisé est disponible ici :\n' + devisUrl + '\n\nNous vous recontacterons dans les 24h pour confirmer les détails.\n\nÀ très bientôt,\nLouis — EYWA Coffee Bar\n07 49 90 21 56',
+        _autoresponse: 'Bonjour ' + A.prenom + ',\n\nMerci pour votre demande de devis EYWA !\n\nVotre devis personnalisé est disponible ici :\n' + devisUrl + '\n\nÀ très bientôt,\nLouis — EYWA Coffee Bar\n07 49 90 21 56',
         email: A.email,
         'Type d\'événement': finalType,
         'Nombre d\'invités': A.guests + ' personnes',
@@ -969,8 +935,6 @@ body.quote-form .onsite-same input{width:18px;height:18px;padding:0;accent-color
         'Prénom': A.prenom, 'Nom': A.nom, 'Société': A.societe || '—', 'Téléphone': A.tel,
         'Déplacement aller-retour': window.eywaTravel.total.toFixed(2) + ' € · ' + window.eywaTravel.roundTripKm.toFixed(1) + ' km · ' + Math.round(window.eywaTravel.roundTripMinutes) + ' min',
         'Hébergement': window.eywaTravel.lodgingRequired ? 'À prévoir, montant à confirmer' : 'Non déclenché par le trajet',
-        'Contact sur place': A.onsiteName || 'Non précisé',
-        'Téléphone du contact sur place': A.onsiteTel,
         'Estimation': A.totalPrice + ' €',
         'Lien devis client': devisUrl
       })
