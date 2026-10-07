@@ -1,0 +1,33 @@
+/* La page Contact donne la priorité à WhatsApp et à l’e-mail. */
+body[data-eywa-page="contact"] #contact-directe{padding:24px 0 30px;background:var(--surface-soft);color:var(--text)}
+#contact-directe>.wrap{width:min(980px,calc(100% - 48px));margin:auto}
+#contact-directe .contact-direct-intro{margin:0 0 22px}
+body #contact-directe h1{font:400 clamp(32px,3.4vw,42px)/1.15 var(--serif)!important;letter-spacing:-.03em;color:var(--text);margin:0 0 10px;max-width:none}
+body #contact-directe p{font-size:16px!important;line-height:1.55!important;margin:0}
+#contact-directe .contact-channels{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+#contact-directe .contact-channel{padding:26px;background:var(--surface-card);border:1px solid var(--border);border-radius:12px;min-width:0}
+body #contact-directe h2{font:400 28px/1.2 var(--serif)!important;letter-spacing:-.02em;margin:0 0 10px;color:var(--text)}
+body #contact-directe .contact-channel p{margin-bottom:20px}
+#contact-directe .contact-primary{display:flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:14px 20px;background:var(--accent);color:#fff;border-radius:5px;font-size:16px!important;line-height:1.35!important;text-decoration:none;text-align:center}
+#contact-directe .contact-primary:hover{background:#176b4b}
+#contact-directe .wa-icon{width:20px;height:20px;fill:currentColor;flex:none}
+#contact-directe .contact-address{display:block;font-size:14px!important;line-height:1.5;margin-top:14px;color:var(--muted);overflow-wrap:anywhere;text-align:center}
+body #contact-directe .contact-area-note{font-size:14px!important;line-height:1.5!important;color:var(--muted);margin-top:20px}
+#contact-directe .contact-area-note a,#contact-directe .contact-secondary a{text-decoration:underline;text-underline-offset:3px}
+#contact-directe .contact-secondary{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:16px;font-size:14px}
+body[data-eywa-page="contact"] header.nav .nav-button{background:transparent!important;color:#fafaf8!important;font-size:14px!important;min-height:0!important;padding:8px 0!important;border-radius:0!important;border:0!important;box-shadow:none!important;text-decoration:underline;text-underline-offset:4px;transform:none!important}
+@media(max-width:600px){
+ body[data-eywa-page="contact"] #contact-directe{padding:18px 0 24px}
+ #contact-directe>.wrap{width:calc(100% - 32px)}
+ #contact-directe .contact-direct-intro{margin-bottom:18px}
+ body #contact-directe h1{font-size:32px!important}
+ body #contact-directe .contact-direct-intro p{font-size:15px!important;line-height:1.5!important}
+ #contact-directe .contact-channels{grid-template-columns:1fr;gap:12px}
+ #contact-directe .contact-channel{padding:18px}
+ body #contact-directe h2{font-size:25px!important;margin-bottom:8px}
+ body #contact-directe .contact-channel p{font-size:14px!important;margin-bottom:14px}
+ #contact-directe .contact-address{font-size:13px!important;margin-top:10px}
+ #contact-directe .contact-primary{min-height:50px;padding:12px 16px}
+ body #contact-directe .contact-area-note{font-size:13px!important;margin-top:16px}
+ #contact-directe .contact-secondary{font-size:13px;margin-top:14px}
+}
