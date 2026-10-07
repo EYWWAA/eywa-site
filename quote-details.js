@@ -15,15 +15,12 @@
   try { selected = JSON.parse(p.get('options') || '[]'); } catch (_) {}
   if (!Array.isArray(selected)) selected = [];
   options.forEach(o => o.selected = selected.includes(o.name));
-  const service = (650 + Math.max(0,guests-50)*5 + Math.round(Math.max(0,hours-1.5)*70) + (staff-1)*200)*days;
-  const initialOptions = options.filter(o=>o.selected).reduce((sum,o)=>sum+o.price*days,0);
+  const service = (650 + Math.max(0,guests-50)*5 + Math.round(Math.max(0,hours-1.5)*150) + (staff-1)*200)*days;
   const km=Number(p.get('tk')), minutes=Number(p.get('tm'));
   const hasTravel=p.has('tk')&&p.has('tm')&&Number.isFinite(km)&&Number.isFinite(minutes)&&km>=0&&minutes>=0&&km<20000&&minutes<30000;
   const lodging=hasTravel&&Number(p.get('to'))>240;
   const travel=hasTravel?EywaTravelPricing.calculate(km,minutes).total:0;
-  const supplied = number('pr',service+initialOptions,10000000);
-  // Un ancien lien peut contenir un forfait ajusté sans le détail des options.
-  const adjustment = supplied-service-initialOptions-travel;
+
   const text = (id,value) => document.getElementById(id).textContent=value;
   text('card-title',p.get('p') ? 'Organisons votre événement, '+p.get('p')+'.' : 'Organisons votre événement.');
   text('meta-lieu',p.get('l') || 'Lieu à préciser');
@@ -31,7 +28,7 @@
   if (/^\d{4}-\d{2}-\d{2}$/.test(p.get('d')||'')) { const d=new Date(p.get('d')+'T12:00:00'); if(!isNaN(d))date=d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'}); }
   const duration = Math.floor(hours)+' h'+(hours%1 ? ' '+String(Math.round(hours%1*60)).padStart(2,'0') : '');
   text('meta-dt',date+(p.get('ti') ? ' · '+p.get('ti') : '')+' · '+duration+' de service');
-  text('inc-guests','Service pour '+guests+' invités');
+  text('inc-guests','Service jusqu’à '+guests+' invités');
   text('inc-hrs',duration+' de service'+(days>1?' par jour · '+days+' jours':''));
   text('inc-staff',staff+' barista'+(staff>1?'s':'')+' professionnel'+(staff>1?'s':'')+' EYWA');
   const list=document.querySelector('.incl');
@@ -65,15 +62,14 @@
   };
   function render(){
     const lines=document.getElementById('line-items');lines.replaceChildren();
-    lines.append(makeLine('Formule classique'+(date!=='Date à préciser'?' · '+date:''),money(650*days),'Forfait de base de 1 h 30 pour jusqu’à 50 invités. Votre événement : '+guests+' invités, '+duration+' de service'+(days>1?' par jour, sur '+days+' jours':'')+'. Comprend : une dégustation de cafés de spécialité, chauds ou glacés — espressos, americanos, cappuccinos, lattes et flat whites — préparés sur place par un barista professionnel. Café bio torréfié localement. Retrouvez l’expérience d’un coffee shop directement sur le lieu de votre événement : des espressos intenses, des cappuccinos crémeux et des boissons préparées à la demande. Le coffee bar, la machine à espresso, le matériel et les gobelets sont inclus. Nous arrivons une heure avant le début du service pour installer le bar ; l’installation et le rangement sont hors du temps de service. Les recettes nécessitant des ingrédients spécifiques sont à convenir en amont.',serviceTime));
+    lines.append(makeLine('Formule classique',money(650*days),'Un coffee bar, un barista professionnel et des boissons préparées à la demande. Le forfait comprend 1 h 30 de service pour jusqu’à 50 invités, le matériel et les gobelets. Installation et rangement hors du temps de service.',serviceTime));
     if(guests>50)lines.append(makeLine('Invités supplémentaires',money((guests-50)*5*days),(guests-50)+' invités au-delà du forfait de base, par jour.'));
-    if(hours>1.5)lines.append(makeLine('Prolongation du service',money(Math.round((hours-1.5)*70)*days),'Le créneau de service est porté à '+duration+' par jour.'));
+    if(hours>1.5)lines.append(makeLine('Prolongation du service',money(Math.round((hours-1.5)*150)*days),'150 € par heure supplémentaire. '+duration+' de service'+(days>1?' par jour.':'.')));
     if(staff>1)lines.append(makeLine('Renfort barista',money((staff-1)*200*days),(staff-1)+' barista(s) supplémentaire(s) pour adapter l’équipe au nombre d’invités et à la durée du service.'));
-    if(adjustment)lines.append(makeLine('Ajustement du devis initial',money(adjustment),'Montant déjà compris dans votre estimation transmise. Le détail de cet ajustement sera confirmé avec EYWA.'));
     options.filter(o=>o.selected).forEach(o=>lines.append(makeLine(o.name,money(o.price*days),o.description)));
     lines.append(makeLine('Déplacement aller-retour',hasTravel?money(travel):'À confirmer','Depuis Charleville-Mézières.'));
     if(lodging)lines.append(makeLine('Hébergement du barista','À confirmer','Le trajet aller dépasse quatre heures. Un logement sur place est à prévoir pour le ou les baristas. Le nombre de nuits et le montant seront précisés avec vous avant réservation. Ce coût n’est pas inclus dans le total affiché.'));
-    const total=Math.round((service+adjustment+travel+options.filter(o=>o.selected).reduce((n,o)=>n+o.price*days,0))*100)/100;
+    const total=Math.round((service+travel+options.filter(o=>o.selected).reduce((n,o)=>n+o.price*days,0))*100)/100;
     if(hasTravel)document.querySelector('.price-lbl').textContent='Prestation et trajet aller-retour · hébergement éventuel non compris';
     text('price-main',money(total));text('dock-total',money(total));
     const next=new URLSearchParams(p);next.set('pr',total);next.set('options',JSON.stringify(options.filter(o=>o.selected).map(o=>o.name)));next.set('dy',days);
