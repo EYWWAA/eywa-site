@@ -44,3 +44,16 @@ body.eywa-home #accueil h1#title em{color:#aed9bf}
 
 /* Navigation anthracite, couleur relevée sur la capture de référence. */
 body header.nav,body header.nav::before,body header.nav .navlinks.open{background:#28292b!important}
+
+/* Barre plus fine et angles discrets pour les boutons de devis. */
+body header.nav{min-height:70px!important}
+body header.nav .nav-button,body a.button[href*="devis-instantane"]{border-radius:6px!important}
+@media(min-width:761px){
+ body.eywa-home .home-opening{min-height:calc(100svh - 70px - var(--eywa-help-height,61px))}
+ body.eywa-home #personnalisation{--personal-nav-height:70px!important}
+}
+@media(max-width:760px){
+ body header.nav{min-height:60px!important}
+ body header.nav .navlinks.open{max-height:calc(100dvh - 60px)}
+}
+

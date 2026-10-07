@@ -1,0 +1,6 @@
+/* Essais de noir : uniquement le premier écran de l’accueil. */
+body.eywa-home{--home-black:#181819}
+body.eywa-home[data-home-black="profond"]{--home-black:#101113}
+body.eywa-home[data-home-black="chaud"]{--home-black:#211e1c}
+body.eywa-home :is(.home-opening,#accueil.hero,#accueil .hero-copy){background:var(--home-black)!important}
+
