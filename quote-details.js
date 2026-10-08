@@ -9,7 +9,7 @@
   const options = [
     {id:'bar',name:'Habillage du bar',price:250,img:'assets/gallery-v4/08-dior-boutique.webp',description:'Signalétique personnalisée et habillage du coffee bar avec votre logo, vos couleurs ou le visuel de votre campagne. Un élément visuel fort qui harmonise votre événement et rend votre marque immédiatement reconnaissable. Nous validons ensemble les fichiers graphiques et le rendu avant production.'},
     {id:'cups',name:'Gobelets sur mesure',price:100,img:'assets/gallery-v4/17-nike-gobelet.webp',description:'Votre logo, votre slogan ou un QR code sur les gobelets : nous nous chargeons de la personnalisation. Le type de gobelet, la finition, le design et la quantité sont définis avec vous. Transmettez votre fichier graphique au format vectoriel ou PDF haute définition. Les délais de production et tout ajustement de prix sont confirmés avant fabrication.'},
-    {id:'logo',name:'Logo sur les boissons',price:100,img:'assets/gallery-v4/01-bar-personnalisable.webp',description:'Transformez vos boissons en support de communication avec votre logo, un message ou un motif personnalisé sur la mousse. Une attention qui prolonge votre identité jusque dans la tasse et invite vos invités à partager leur expérience. Le visuel et les boissons compatibles sont validés avec vous avant l’événement.'}
+    {id:'logo',name:'Logo sur les boissons',price:100,img:'assets/gallery-v4/01-bar-sans-logo-20261008.webp',description:'Transformez vos boissons en support de communication avec votre logo, un message ou un motif personnalisé sur la mousse. Une attention qui prolonge votre identité jusque dans la tasse et invite vos invités à partager leur expérience. Le visuel et les boissons compatibles sont validés avec vous avant l’événement.'}
   ];
   let selected = [];
   try { selected = JSON.parse(p.get('options') || '[]'); } catch (_) {}
@@ -91,3 +91,4 @@
     render();
   });
 })();
+
