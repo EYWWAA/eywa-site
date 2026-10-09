@@ -1,0 +1,33 @@
+/* Comparaison : seules les couleurs changent entre les deux versions. */
+html[data-eywa-theme="creme"] body{
+ --accent:#161a17!important;--green:#161a17!important;--green-dark:#161a17!important;--green-light:#161a17!important;--gold:#161a17!important;--rose:#161a17!important;
+ --surface-base:#f3efe6!important;--surface-soft:#e9e4da!important;--surface-inset:#e9e4da!important;--surface-card:#fcfaf4!important;--surface-dark:#141612!important;
+ --cream:#f3efe6!important;--cream-dark:#e9e4da!important;--text:#1d211d!important;--ink:#1d211d!important;--muted:#69675e!important;--border:#d3cec2!important
+}
+html[data-eywa-theme="creme"] body[data-eywa-page]{background-color:var(--surface-base)!important}
+html[data-eywa-theme="creme"] body[data-eywa-page="contact"]{background-color:var(--surface-soft)!important}
+html[data-eywa-theme="creme"] body header.nav,
+html[data-eywa-theme="creme"] body header.nav::before,
+html[data-eywa-theme="creme"] body header.nav .navlinks.open{background:#141612!important}
+html[data-eywa-theme="creme"] body.eywa-photo-opening header.nav,
+html[data-eywa-theme="creme"] body.eywa-photo-opening header.nav::before{background:transparent!important}
+html[data-eywa-theme="creme"] body.eywa-home :is(#services.intro-band,#services .editorial-copy,#reservation.booking,#savoir-faire .reference-craft-hero,#savoir-faire .reference-craft-lower,#savoir-faire .craft-editorial-copy),
+html[data-eywa-theme="creme"] body[data-eywa-page] :is(.svc-hero,.page-hero,.tariff-overview,.value-final),
+html[data-eywa-theme="creme"] body footer{background:#141612!important}
+html[data-eywa-theme="creme"] body.eywa-home :is(#personnalisation.personal-catalog,.reviews,.reference-coffee-cta){background:var(--surface-base)!important}
+html[data-eywa-theme="creme"] body.eywa-home :is(#comment-ca-marche,#evenements,#faq,#savoir-faire.reference-craft){background:var(--surface-soft)!important}
+html[data-eywa-theme="creme"] body.eywa-home #personnalisation .personal-project,
+html[data-eywa-theme="creme"] body.eywa-home #reservation .mini-devis{background:var(--surface-card)!important;border-color:var(--border)!important}
+html[data-eywa-theme="creme"] body.eywa-home #reservation .mini-devis :is(.md-bottom,.md-included){background:var(--surface-soft)!important}
+html[data-eywa-theme="creme"] body.eywa-home #personnalisation :is(.personal-image-cell,.personal-project-body figure,.personal-project-body img),
+html[data-eywa-theme="creme"] body.eywa-home #faq details{background:var(--surface-soft)!important}
+html[data-eywa-theme="creme"] body[data-eywa-page] :is(.button,.nav-button,.md-cta,.btn-fq,.btn-next,.btn-cta,.btn-pay,.btn-contact,.btn-main,.btn-pay-final,.button-whatsapp){background:#161a17!important;color:#f3efe6!important}
+html[data-eywa-theme="creme"] body.eywa-photo-opening header.nav .nav-button,
+html[data-eywa-theme="creme"] body.eywa-photo-opening #accueil .hero-quote .button{background:#f3eee2!important;color:#171714!important}
+html[data-eywa-theme="creme"] body[data-eywa-page] .button:has(.direction-arrow){background:var(--surface-base)!important;color:var(--text)!important}
+html[data-eywa-theme="creme"] body.eywa-home #services .concept-actions .text-link{background:transparent!important;color:#f3efe6!important;border-color:#f3efe655!important}
+html[data-eywa-theme="creme"] body[data-eywa-page] .eywa-help-bar{background:var(--surface-soft)!important;border-color:var(--border)!important}
+html[data-eywa-theme="creme"] body[data-eywa-page] .eywa-help-bar .eywa-assistant-launcher{background:var(--surface-base)!important;border-color:var(--border)!important}
+
+html[data-eywa-theme="creme"] body.eywa-photo-opening header.nav::before{background:#141612cc!important}
+

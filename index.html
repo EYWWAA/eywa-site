@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="fr">
 <head>
+<script src="theme-comparison.js?v=20261009-palettes"></script>
   <link rel="icon" href="/favicon.ico?v=4" sizes="any">
   <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png?v=4">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=4">
@@ -189,8 +190,10 @@
 <link rel="stylesheet" href="soft-blush.css?v=20261007-etapes-detaillees">
 <link rel="stylesheet" href="personal-compact.css?v=20261007-cartes-ajustees"><link rel="stylesheet" href="booking-white.css?v=20261007-devis-simplifie">
 <link rel="stylesheet" href="black-palette.css?v=20261007-noir-global">
+<link rel="stylesheet" href="hero-editorial.css?v=20261009-accueil">
+<link rel="stylesheet" href="theme-comparison.css?v=20261009-palettes">
 </head>
-<body data-eywa-page="home" class="eywa-home">
+<body data-eywa-page="home" class="eywa-home eywa-photo-opening">
   <header class="wrap nav">
     <a class="logo" href="#accueil" aria-label="EYWA, accueil"><span class="brand-eywa">EYWA</span><span class="brand-descriptor">Coffee Catering</span></a>
     <button class="mobile-menu" type="button" aria-expanded="false" aria-controls="navlinks" aria-label="Ouvrir le menu"><span></span><span></span><span></span></button>
@@ -198,48 +201,21 @@
   </header>
 
   <main>
-    <div class="home-opening">
-    <section class="hero" id="accueil" aria-labelledby="title">
-      <div class="hero-copy">
-        <h1 id="title">Un barista.<br>Un coffee bar.<br><em>Votre événement.</em></h1>
-        <p class="hero-description">Un coffee bar à votre image et un barista dédié pour accueillir vos clients, collaborateurs et partenaires lors de vos événements d’entreprise.</p>
-        <p class="hero-location">Basés à <strong>Charleville-Mézières</strong>, nous intervenons dans un <a href="zone-intervention.html?v=20261007-zone-300km" style="text-decoration:underline;text-underline-offset:3px">rayon de 300 km</a>.</p>
-        <div class="hero-quote">
-          <a class="button button-gold" href="devis-instantane.html?v=20261007-etapes-detaillees">Obtenir mon devis instantané</a>
-          <p class="quote-note">Devis gratuit &amp; sans engagement</p>
-          <div class="hero-secondary">
-            <a class="hero-rating" href="#avis" aria-label="5 sur 5, deux avis clients reçus directement. Voir les avis."><span class="rating-stars" aria-hidden="true">★★★★★</span><span><strong>5/5</strong> · 2 avis clients</span></a>
-            <a class="hero-film-link" href="comment-ca-marche.html?v=20261007-etapes-detaillees"><span class="direction-arrow" aria-hidden="true">↓</span> Comment ça marche ?</a>
-          </div>
+    <div class="home-opening hero-editorial-opening">
+    <section class="hero hero-editorial" id="accueil" aria-labelledby="title">
+      <div class="hero-scene"><img src="assets/photos-reelles/barista-eywa-20261009.webp" alt="Un barista EYWA prépare une boisson derrière le coffee bar" width="1284" height="2778" fetchpriority="high"></div>
+      <div class="hero-editorial-content">
+        <div class="hero-copy">
+          <p class="hero-eyebrow">Événements · Entreprises · Marques</p>
+          <h1 id="title">Le café<br>qui marque<br>vos événements.</h1>
+          <p class="hero-description">Coffee catering haut de gamme<br>pour des expériences mémorables.</p>
+          <div class="hero-quote"><a class="button" href="devis-instantane.html?v=20261009-accueil">Demander un devis</a><p class="quote-note">Gratuit &amp; sans engagement</p></div>
         </div>
-      </div>
-
-      <div class="photo-carousel" role="region" aria-roledescription="carrousel" aria-label="Galerie de prestations EYWA">
-        <div class="carousel-stage" id="carousel-stage" tabindex="0" aria-label="Photos du coffee bar : utilisez les flèches gauche et droite pour changer de photo">
-          <figure class="carousel-slide active"><img src="assets/gallery-v4/06-renault-showroom.webp" alt="Projection du comptoir personnalisé pour Renault" fetchpriority="high" width="1086" height="1448"></figure>
-          <figure class="carousel-slide"><img src="assets/gallery-v4/02-nike-rooftop.webp" alt="Projection d’un coffee bar Nike sur un rooftop" width="1086" height="1448"></figure>
-          <figure class="carousel-slide"><img src="assets/gallery-v4/07-netflix-soiree.webp" alt="Projection du coffee bar Netflix pendant une soirée" width="1086" height="1448"></figure>
-          <button class="carousel-arrow prev" type="button" aria-label="Photo précédente">‹</button>
-          <button class="carousel-arrow next" type="button" aria-label="Photo suivante">›</button>
-        </div>
-        <div class="carousel-thumbs" role="tablist" aria-label="Choisir une photo">
-          <button class="carousel-thumb active" type="button" role="tab" aria-selected="true" aria-label="Voir la photo 1" tabindex="0"><img src="assets/gallery-v4/06-renault-showroom-thumb.webp" alt="" loading="lazy"></button>
-          <button class="carousel-thumb" type="button" role="tab" aria-selected="false" aria-label="Voir la photo 2" tabindex="-1"><img src="assets/gallery-v4/02-nike-rooftop-thumb.webp" alt="" loading="lazy"></button>
-          <button class="carousel-thumb" type="button" role="tab" aria-selected="false" aria-label="Voir la photo 3" tabindex="-1"><img src="assets/gallery-v4/07-netflix-soiree-thumb.webp" alt="" loading="lazy"></button>
-        </div>
+        <ul class="hero-pillars" aria-label="L’expérience EYWA"><li><svg viewBox="0 0 26 28" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5zM17 11h2a3 3 0 0 1 0 6h-2M3 23h17M7 6c-2-2 2-3 0-5M11 6c-2-2 2-3 0-5M15 6c-2-2 2-3 0-5"/></svg><span>Coffee bar<br>mobile</span></li><li><svg viewBox="0 0 26 28" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="8" r="4"/><path d="M3 23v-3a7 7 0 0 1 14 0v3M19 5a4 4 0 0 1 0 8M21 23v-3a7 7 0 0 0-3-6"/></svg><span>Expérience<br>de marque</span></li><li><svg viewBox="0 0 26 28" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 10 6v12l-10 6-10-6V8zM2 8l10 6 10-6M12 14v12"/></svg><span>Événements<br>&amp; entreprises</span></li><li><svg viewBox="0 0 26 28" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 25V12M12 17C5 17 2 12 2 5c7 0 10 5 10 12zM12 20c7 0 10-5 10-12-7 0-10 5-10 12z"/></svg><span>Boissons<br>de spécialité</span></li></ul>
+        <p class="hero-signature">People · Coffee · Better moments</p>
       </div>
     </section>
-
-    <div class="event-ribbon" aria-label="Vos événements">
-      <ul class="hero-events">
-        <li>Événements d'entreprise</li>
-        <li>Salons professionnels</li>
-        <li>Séminaires &amp; congrès</li>
-        <li>Lancements de produit</li>
-        <li>Journées d’équipe</li>
-      </ul>
-    </div>
-    </div>
+  </div>
 
     <section class="intro-band visual-intro" id="services" aria-labelledby="intro-title">
       <div class="wrap visual-split">
@@ -470,6 +446,7 @@
 <script src="home-entry.js?v=20261007-noirs" defer></script>
 </body>
 </html>
+
 
 
 
