@@ -1,63 +1,40 @@
-/* Ouverture photographique, inspirée de la référence fournie. */
+/* Ouverture photographique : navigation directement sur la photo, sans barre. */
 body.eywa-photo-opening .home-opening{display:block!important;min-height:0!important}
-body.eywa-photo-opening header.nav{position:relative!important;z-index:100;min-height:86px!important;margin-bottom:-86px;background:transparent!important}
-body.eywa-photo-opening header.nav::before{background:transparent!important;border:0!important;box-shadow:none}
-body.eywa-photo-opening header.nav .logo .brand-eywa{font-family:'Playfair Display',Georgia,serif!important;font-size:46px!important;font-weight:400!important;letter-spacing:-.05em;text-indent:0;text-transform:lowercase}
-body.eywa-photo-opening header.nav .logo .brand-descriptor{font-size:9px;letter-spacing:.22em}
+body.eywa-photo-opening header.nav{position:relative!important;top:auto;z-index:100;min-height:86px!important;margin-bottom:-86px;background:transparent!important}
+body.eywa-photo-opening header.nav::before{display:none!important}
+body.eywa-photo-opening header.nav .logo{display:block;line-height:0}
+body.eywa-photo-opening header.nav .brand-reference-logo{display:block;width:220px;height:auto;max-width:none;object-fit:contain}
 body.eywa-photo-opening header.nav .nav-button{background:#f3eee2!important;color:#171714!important;border-radius:999px!important;min-height:44px}
 body.eywa-photo-opening header.nav .nav-button:hover{background:#fff!important}
-body.eywa-photo-opening #accueil.hero-editorial{position:relative;isolation:isolate;display:block!important;overflow:hidden;min-height:760px!important;height:max(760px,calc(100svh - var(--eywa-help-height,61px)));padding:0!important;background:#171714!important;color:#fff}
-.hero-editorial .hero-scene{position:absolute;inset:0 0 0 30%;z-index:-2;overflow:hidden}
-.hero-editorial .hero-scene img{display:block;width:100%;height:100%;object-fit:cover;object-position:52% 44%;max-width:none}
-body.eywa-photo-opening #accueil.hero-editorial::before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#171714 0%,#171714ee 24%,#1717149c 44%,#1717141a 76%),linear-gradient(0deg,#17171499,transparent 35%,#17171444)}
-.hero-editorial-content{position:relative;display:flex;flex-direction:column;justify-content:center;min-height:inherit;height:100%;width:min(1280px,calc(100% - 96px));margin:auto;padding:135px 0 38px}
-body.eywa-photo-opening #accueil .hero-copy{background:transparent!important;padding:0!important;width:56%;display:block}
-body.eywa-photo-opening #accueil .hero-eyebrow{margin:0 0 24px;font-size:12px!important;font-weight:500!important;letter-spacing:.19em;text-transform:uppercase;line-height:1.6;color:#f3eee2}
-body.eywa-photo-opening #accueil h1#title{font-family:var(--sans)!important;font-size:clamp(48px,5vw,76px)!important;font-weight:600!important;line-height:1.02!important;letter-spacing:-.045em!important;margin:0 0 24px!important;max-width:650px;text-wrap:initial;overflow-wrap:normal}
+body.eywa-photo-opening #accueil.hero-editorial{position:relative;isolation:isolate;display:block!important;overflow:hidden;min-height:max(680px,calc(100svh - var(--eywa-help-height,61px)))!important;height:auto;padding:0!important;background:#171714!important;color:#fff}
+.hero-editorial .hero-scene{position:absolute;inset:0;z-index:-2;overflow:hidden}
+.hero-editorial .hero-scene img{display:block;width:100%;height:100%;max-width:none;object-fit:cover;object-position:62% 45%}
+body.eywa-photo-opening #accueil.hero-editorial::before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#10110ef0 0%,#10110ecd 26%,#10110e66 49%,#10110e14 80%),linear-gradient(0deg,#10110e55,transparent 40%,#10110e33)}
+.hero-editorial-content{position:relative;display:flex;flex-direction:column;justify-content:center;min-height:inherit;width:min(1280px,calc(100% - 96px));margin:auto;padding:130px 0 80px}
+body.eywa-photo-opening #accueil .hero-copy{background:transparent!important;padding:0!important;width:56%;display:block;flex:none!important}
+body.eywa-photo-opening #accueil .hero-eyebrow{margin:0 0 26px;font-size:12px!important;font-weight:500!important;letter-spacing:.19em;text-transform:uppercase;line-height:1.6;color:#f3eee2}
+body.eywa-photo-opening #accueil h1#title{font-family:'DM Sans',Arial,sans-serif!important;font-size:clamp(48px,4.5vw,68px)!important;font-weight:650!important;line-height:1.02!important;letter-spacing:-.04em!important;margin:0 0 24px!important;max-width:650px;text-wrap:initial;overflow-wrap:normal}
 body.eywa-photo-opening #accueil .hero-description{font-size:clamp(17px,1.5vw,21px)!important;line-height:1.5!important;margin:0 0 28px;max-width:500px}
 body.eywa-photo-opening #accueil .hero-quote{width:auto;margin:0}
 body.eywa-photo-opening #accueil .hero-quote .button{width:auto;min-width:0;max-width:none;min-height:50px;margin:0;padding:0 28px!important;font:500 15px var(--sans)!important;background:#f3eee2!important;color:#171714!important;border-radius:999px!important}
 body.eywa-photo-opening #accueil .hero-quote .button:hover{background:#fff!important}
-body.eywa-photo-opening #accueil .quote-note{font-size:12px!important;margin:10px 0 0!important;opacity:.85!important}
-.hero-pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;width:540px;max-width:100%;list-style:none;padding:0;margin:60px 0 0;color:#f3eee2}
-.hero-pillars li{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
-.hero-pillars svg{width:30px;height:32px}
-.hero-pillars span{font:500 11px/1.45 var(--sans);letter-spacing:.075em;text-transform:uppercase}
-.hero-signature{margin:28px 0 0;padding-top:22px;border-top:1px solid #f3eee252;width:fit-content;font:500 9px/1.5 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:#f3eee2}
-@media(min-width:761px) and (max-height:850px){body.eywa-photo-opening #accueil.hero-editorial{min-height:690px!important;height:max(690px,calc(100svh - var(--eywa-help-height,61px)))}.hero-editorial-content{padding-top:118px}.hero-pillars{margin-top:34px}}
-@media(max-width:1000px) and (min-width:761px){body.eywa-photo-opening #accueil .hero-copy{width:64%}.hero-editorial .hero-scene{left:24%}.hero-editorial-content{width:calc(100% - 64px)}body.eywa-photo-opening #accueil h1#title{font-size:58px!important}.hero-pillars{width:490px;gap:18px}}
+@media(max-width:1100px) and (min-width:761px){body.eywa-photo-opening header.nav .brand-reference-logo{width:175px}.hero-editorial-content{width:calc(100% - 64px)}body.eywa-photo-opening #accueil .hero-copy{width:66%}}
 @media(max-width:760px){
  body.eywa-photo-opening header.nav{min-height:76px!important;margin-bottom:-76px}
- body.eywa-photo-opening header.nav .logo .brand-eywa{font-size:36px!important}
+ body.eywa-photo-opening header.nav .logo{display:block}
+ body.eywa-photo-opening header.nav .brand-reference-logo{width:168px;height:auto}
  body.eywa-photo-opening header.nav .navlinks.open{background:#181819!important}
- body.eywa-photo-opening #accueil.hero-editorial{display:block!important;min-height:790px!important;height:auto}
- .hero-editorial .hero-scene{inset:0}
- .hero-editorial .hero-scene img{height:122%;position:absolute;top:-11%;object-position:57% 44%}
- body.eywa-photo-opening #accueil.hero-editorial::before{background:linear-gradient(90deg,#171714d9,#17171480 65%,#17171444),linear-gradient(0deg,#171714d9,transparent 45%,#17171433)}
- .hero-editorial-content{width:calc(100% - 48px);padding:140px 0 38px;min-height:790px;justify-content:center}
+ body.eywa-photo-opening #accueil.hero-editorial{min-height:720px!important}
+ .hero-editorial .hero-scene img{height:100%;object-position:52% center}
+ body.eywa-photo-opening #accueil.hero-editorial::before{background:linear-gradient(90deg,#10110ed9,#10110e80 66%,#10110e33),linear-gradient(0deg,#10110e66,transparent 50%,#10110e55)}
+ .hero-editorial-content{width:calc(100% - 48px);padding:140px 0 60px;min-height:720px;justify-content:flex-start}
  body.eywa-photo-opening #accueil .hero-copy{width:100%;order:initial}
- body.eywa-photo-opening #accueil .hero-eyebrow{font-size:10px!important;letter-spacing:.13em;margin-bottom:20px}
- body.eywa-photo-opening #accueil h1#title{font-size:clamp(40px,10.3vw,62px)!important;line-height:1.06!important;max-width:none;margin-bottom:24px!important}
- body.eywa-photo-opening #accueil .hero-description{font-size:17px!important;max-width:310px;margin-bottom:26px}
- .hero-pillars{width:100%;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:48px}
- .hero-pillars li{gap:10px}.hero-pillars svg{width:25px;height:28px}.hero-pillars span{font-size:8px;letter-spacing:.025em;line-height:1.6}
- .hero-signature{font-size:8px;letter-spacing:.17em;margin-top:28px}
+ body.eywa-photo-opening #accueil .hero-eyebrow{font-size:10px!important;letter-spacing:.13em;margin-bottom:24px}
+ body.eywa-photo-opening #accueil h1#title{font-size:clamp(38px,10.3vw,62px)!important;line-height:1.05!important;max-width:none;margin-bottom:24px!important}
+ body.eywa-photo-opening #accueil .hero-description{font-size:17px!important;max-width:310px;margin-bottom:28px}
+ body.eywa-photo-opening #accueil .hero-quote .button{max-width:100%;padding-inline:22px!important}
+ body.eywa-photo-opening #personnalisation{--personal-nav-height:0px!important}
 }
+@media(min-width:761px){body.eywa-photo-opening #personnalisation{--personal-nav-height:0px!important}}
 @media(prefers-reduced-motion:reduce){body.eywa-photo-opening #accueil *{transition:none!important}}
-
-/* Garder tous les éléments dans le flux, même sur un écran peu haut. */
-body.eywa-photo-opening #accueil.hero-editorial{height:auto!important;min-height:max(820px,calc(100svh - var(--eywa-help-height,61px)))!important}
-.hero-editorial-content{height:auto;min-height:inherit;justify-content:flex-start}
-body.eywa-photo-opening #accueil .hero-copy{flex:none!important}
-body.eywa-photo-opening #accueil h1#title{font-size:clamp(48px,4.5vw,68px)!important}
-body.eywa-photo-opening #accueil .hero-signature{font:500 9px/1.5 var(--sans)!important}
-.hero-pillars,.hero-signature{flex:none}
-@media(max-width:760px){body.eywa-photo-opening #accueil.hero-editorial{min-height:790px!important}body.eywa-photo-opening #accueil h1#title{font-size:clamp(40px,10.3vw,62px)!important}body.eywa-photo-opening #accueil .hero-signature{font-size:8px!important}}
-
-/* Navigation conservée au défilement, avec un fond translucide lisible. */
-body.eywa-photo-opening header.nav{position:sticky!important;top:0}
-body.eywa-photo-opening header.nav::before{background:#171714cc!important;backdrop-filter:blur(8px)}
-
-body.eywa-photo-opening #personnalisation{--personal-nav-height:86px!important}
-@media(max-width:760px){body.eywa-photo-opening #personnalisation{--personal-nav-height:76px!important}}
 
