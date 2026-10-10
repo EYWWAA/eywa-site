@@ -299,30 +299,6 @@
 </head>
 <body data-eywa-page="quote" class="quote-form">
 
-<!-- Zoho CRM. Chaque demande de devis devient un prospect.
-     Le POST part dans l'iframe cachée : le parcours client ne change pas d'un pixel. -->
-<iframe name="zoho-sink" id="zoho-sink" title="zoho" style="display:none"></iframe>
-<form id="zoho-lead" method="POST" target="zoho-sink" accept-charset="UTF-8"
-      action="https://crm.zoho.eu/crm/WebToLeadForm" style="display:none">
-  <input type="hidden" name="xnQsjsdp" value="86e9cf25cad229c1aa6cb9ee76682b002300c1d9293749ff2a16c9f368ab5eb0">
-  <input type="hidden" name="xmIwtLD" value="25d04618647e646f1c6b62418096eaa89e4e1c51b43531c130ab2305e4bc12ceb9e7a833b2e6819846c498bac43198db">
-  <input type="hidden" name="actionType" value="TGVhZHM=">
-  <input type="hidden" name="returnURL" value="https://eywacoffeecatering.com/merci.html">
-  <input type="hidden" name="zc_gad" value="">
-  <input type="hidden" name="aG9uZXlwb3Q" value="">
-  <input type="hidden" name="Company">
-  <input type="hidden" name="Last Name">
-  <input type="hidden" name="First Name">
-  <input type="hidden" name="Email">
-  <input type="hidden" name="Phone">
-  <input type="hidden" name="No of Employees">
-  <input type="hidden" name="Annual Revenue">
-  <input type="hidden" name="Skype ID">
-  <input type="hidden" name="Twitter">
-  <input type="hidden" name="Address - City">
-  <input type="hidden" name="Description">
-</form>
-
 <header class="quote-header">
   <a class="brand-logo" href="index.html?v=20261007-etapes-detaillees" aria-label="EYWA — Accueil">EYWA</a>
   <a class="quote-home" href="index.html?v=20261007-etapes-detaillees">Retour au site <span aria-hidden="true">↗</span></a>
@@ -882,43 +858,6 @@
 
     document.getElementById('s6').classList.remove('active');
     document.getElementById('loading').style.display = 'block';
-
-    /* Zoho CRM. Envoi silencieux dans l'iframe, avant le mail, pour que le POST
-       soit parti bien avant la redirection vers le devis. */
-    try {
-      var zf = document.getElementById('zoho-lead');
-      zf.elements['Company'].value = A.societe || finalType;
-      zf.elements['Last Name'].value = A.nom || A.prenom || 'Non précisé';
-      zf.elements['First Name'].value = A.prenom || '';
-      zf.elements['Email'].value = A.email || '';
-      zf.elements['Phone'].value = A.tel || '';
-      /* Champs standards Zoho détournés, libellés côté CRM :
-         No of Employees = Nombre d'invités, Annual Revenue = Montant estimé,
-         Skype ID = Date de l'événement, Twitter = Lien du devis.
-         Les deux premiers sont numériques, ne jamais y mettre d'unité. */
-      zf.elements['No of Employees'].value = A.guests;
-      zf.elements['Annual Revenue'].value = A.totalPrice;
-      zf.elements['Skype ID'].value = dateStr;
-      zf.elements['Twitter'].value = devisUrl;
-      zf.elements['Address - City'].value = A.lieu || '';
-      zf.elements['Description'].value = [
-        'Source : devis instantané du site',
-        'Type : ' + finalType,
-        'Invités : ' + A.guests,
-        'Durée : ' + hrsLabel(A.hrs),
-        'Jours : ' + A.days,
-        'Date : ' + dateStr,
-        'Heure : ' + (A.time || '—'),
-        'Lieu : ' + A.lieu,
-        'Déplacement A/R : ' + window.eywaTravel.roundTripKm.toFixed(1) + ' km / ' + Math.round(window.eywaTravel.roundTripMinutes) + ' min / ' + window.eywaTravel.total.toFixed(2) + ' €',
-        'Hébergement : ' + (window.eywaTravel.lodgingRequired ? 'À prévoir : aller supérieur à 4 h. Montant à confirmer.' : 'Non déclenché par la durée du trajet'),
-        'Personnalisation : ' + (A.personalization.join(', ') || 'Aucune'),
-        'Détails : ' + (A.details || '—'),
-        'Estimation : ' + A.totalPrice + ' €',
-        'Devis client : ' + devisUrl
-      ].join('\n');
-      zf.submit();
-    } catch (e) {}
 
     fetch('https://formsubmit.co/ajax/contact.eywa08@gmail.com', {
       method: 'POST',
