@@ -1,0 +1,126 @@
+/* Palette EYWA validée : crème, beige chaud, gris-beige et marron rosé. */
+html body.eywa-warm{
+ --accent:#c4937f!important;--green:#291817!important;--green-dark:#291817!important;--green-light:#594c42!important;--gold:#c4937f!important;--rose:#c4937f!important;--orange:#c4937f!important;--sand:#eee9df!important;
+ --surface-base:#fffbef!important;--surface-soft:#e3ded6!important;--surface-inset:#eee9df!important;--surface-card:#fffbef!important;--surface-dark:#eee9df!important;
+ --cream:#fffbef!important;--cream-dark:#e3ded6!important;--text:#291817!important;--ink:#291817!important;--mute:#67584d!important;--muted:#67584d!important;--border:#e5d9c7!important;--line:#e5d9c7!important;--white:#fffbef!important;
+ background:#fffbef!important;color:#291817!important;color-scheme:light;
+}
+html body.eywa-warm :is(h1,h2,h3,h4,.section-title,.logo,.brand-logo,.card-title,.question,.step-title,.fq-title,.price-num,.price-amount,.total-amount,.sect-label,.upsell-title,.upsell-name){color:#291817!important}
+html body.eywa-warm :is(.muted,.meta,.hint,.fq-hint,.quote-description,.quote-line-time,.extra-hour-note,.step-sub,.section-copy,.quote-eyebrow,.eyebrow,.menu-kicker){color:#67584d!important}
+html body.eywa-warm :is(header.nav,header.nav::before,.navlinks.open,.nav-places-menu,.quote-header,.top-bar,.top){background:#eee9df!important;border-color:#e5d9c7!important;box-shadow:none!important}
+html body.eywa-warm :is(header.nav,.quote-header,.top-bar,.top) :is(.logo,.brand-logo,.brand-eywa,.brand-descriptor,.quote-home,.nav-group>a:not(.nav-button),.nav-places-trigger,.mobile-menu){color:#291817!important}
+html body.eywa-warm header.nav .nav-group>a[aria-current="page"]:not(.nav-button){color:#291817!important;background:transparent!important;border-color:#c4937f!important}
+html body.eywa-warm header.nav .mobile-menu span{background:#291817!important}
+html body.eywa-warm :is(.topbar,.svc-hero,.page-hero,.tariff-overview,.value-final,.menu-explainer,.menu-cta,.cta){background:#eee9df!important;color:#291817!important}
+html body.eywa-warm :is(.topbar,.svc-hero,.page-hero,.tariff-overview,.value-final,.menu-explainer,.menu-cta,.cta) :is(h1,h2,h3,p,a:not(.button),.eyebrow){color:#291817!important}
+html body.eywa-warm :is(.gallery-intro,.gallery-collection,.gallery-showcase,.journey-page,.zone-page,.pricing-compact,.value-hero,.value-expertise,.section,.service-pricing){background-color:#fffbef!important}
+html body.eywa-warm :is(.menu-compact,.value-objectives,.value-gain,.zone-cities,.flavour-section,.preferences,.contact-direct,.info-page,.travel-pricing,.included){background-color:#e3ded6!important;color:#291817!important}
+html body.eywa-warm :is(.card,.form-card,.devis-card,.rev-card,.contact-card,.contact-channel,.drink,.drink-group,.menu-card,.price-box,.travel-pricing-card,.review,.upsell-item){background:#fffbef!important;color:#291817!important;border-color:#e5d9c7!important}
+html body.eywa-warm :is(.card-head,.card-body,.bottom,.phases,.total-bar,.quote-mobile-dock){background:#fffbef!important;color:#291817!important;border-color:#e5d9c7!important}
+html body.eywa-warm :is(.pricing-factors article,.event-summary,.payment-methods-note,.payment-note,.quote-story-copy,.breakdown,.success-detail,.note,.avail,.upsells,.fq-avatar,.welcome-box){background:#eee9df!important;color:#291817!important;border-color:#e5d9c7!important}
+html body.eywa-warm :is(input,textarea,select,.step-btn,.stepper-center,.type-opt,.qp,.days-btn,.radio-opt,.check-opt,.btn-back,.btn-outline-w){background-color:#fffbef!important;color:#291817!important;border-color:#e5d9c7!important;accent-color:#8a6959}
+html body.eywa-warm :is(.type-opt.selected,.qp.active,.radio-opt.selected,.check-opt.checked,.upsell-item.on,.menu-filter.active,.menu-tab.active){background:#eee9df!important;color:#291817!important;border-color:#c4937f!important}
+html body.eywa-warm :is(.phase.done .phase-dot,.phase.active .phase-dot,.dot.active,.dot.done,.price-badge){background:#c4937f!important;color:#291817!important;border-color:#c4937f!important}
+html body.eywa-warm :is(.phase-line.done,.progress-bar){background:#c4937f!important}
+html body.eywa-warm :is(.quote-description-hint,.direction-arrow,.how-number,.benefit-number){color:#8a6959!important}
+html body.eywa-warm footer{background:#e3ded6!important;color:#291817!important}
+html body.eywa-warm footer :is(a,p,span,div){color:#291817!important}
+html body.eywa-warm footer svg{fill:currentColor!important}
+html body.eywa-warm .eywa-help-bar{background:#e3ded6!important;border-color:#e5d9c7!important}
+html body.eywa-warm .eywa-assistant-launcher{background:#fffbef!important;color:#291817!important;border-color:#e5d9c7!important}
+html body.eywa-warm :focus-visible{outline:2px solid #8a6959;outline-offset:4px}
+
+/* Aperçu local v4 — couleurs reprises du mail et de son aperçu. */
+html body.eywa-warm{
+ --accent:#c4937f!important;--green:#291817!important;--green-dark:#291817!important;--green-light:#594c42!important;--gold:#c4937f!important;--rose:#c4937f!important;
+ --surface-base:#fffbef!important;--surface-soft:#e3ded6!important;--surface-inset:#eee9df!important;--surface-card:#fffbef!important;--surface-dark:#e3ded6!important;
+ --cream:#fffbef!important;--cream-dark:#e3ded6!important;--text:#291817!important;--ink:#291817!important;--mute:#67584d!important;--muted:#67584d!important;--border:#e5d9c7!important;--line:#e5d9c7!important;--white:#fffbef!important;
+ background:#fffbef!important;color:#291817!important;
+}
+/* Photo sur toute la largeur, navigation posée directement dessus. */
+html body.eywa-warm.eywa-home .home-opening{background:#fffbef!important}
+html body.eywa-warm.eywa-photo-opening #accueil.hero-editorial{background:#eee9df!important}
+html body.eywa-warm.eywa-photo-opening #accueil .hero-scene img{
+ inset:0!important;width:100%!important;height:100%!important;max-width:none!important;object-fit:cover!important;object-position:center center!important;mask-image:none!important;-webkit-mask-image:none!important;
+}
+html body.eywa-warm.eywa-photo-opening #accueil.hero-editorial::before{
+ background:linear-gradient(90deg,rgba(41,24,23,.66) 0%,rgba(41,24,23,.44) 36%,rgba(41,24,23,.08) 75%,rgba(41,24,23,.08) 100%)!important;
+}
+html body.eywa-warm.eywa-photo-opening #accueil .hero-copy{background:transparent!important}
+html body.eywa-warm.eywa-home #accueil :is(h1,.hero-description,.hero-location,.quote-note,.hero-secondary,.hero-eyebrow){color:#fffbef!important}
+html body.eywa-warm.eywa-photo-opening header.nav{background:transparent!important;background-image:none!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+html body.eywa-warm.eywa-photo-opening header.nav::before,html body.eywa-warm.eywa-photo-opening header.nav::after{display:none!important;background:none!important;border:0!important;box-shadow:none!important}
+html body.eywa-warm.eywa-photo-opening header.nav :is(.logo,.brand-eywa,.brand-descriptor,.nav-group>a:not(.nav-button),.nav-places-trigger,.mobile-menu){color:#fffbef!important}
+html body.eywa-warm.eywa-photo-opening header.nav .brand-reference-logo{filter:brightness(0) invert(1)}
+html body.eywa-warm.eywa-photo-opening header.nav .mobile-menu span{background:#fffbef!important}
+html body.eywa-warm.eywa-photo-opening header.nav .navlinks.open{background:#fffbef!important;border-color:#e5d9c7!important}
+html body.eywa-warm.eywa-photo-opening header.nav .navlinks.open :is(a,.nav-places-trigger){color:#291817!important}
+/* Surfaces claires : le brun du mail reste surtout dans les textes. */
+html body.eywa-warm.eywa-home :is(#services.intro-band,#services .editorial-copy,#reservation.booking,#personnalisation.personal-catalog,.reviews,.reference-coffee-cta,#savoir-faire .craft-editorial-copy){background:#fffbef!important;color:#291817!important}
+html body.eywa-warm.eywa-home :is(#comment-ca-marche,#evenements,#faq,#savoir-faire.reference-craft,#savoir-faire .reference-craft-lower){background:#e3ded6!important;color:#291817!important}
+html body.eywa-warm.eywa-home :is(#services .editorial-copy,#reservation,#comment-ca-marche,#evenements,#faq,#personnalisation,.reviews,.reference-coffee-cta,#savoir-faire .craft-editorial-copy) :is(h2,h3,p,li,strong,a,.section-kicker,.kicker,summary,.personal-name,.personal-number){color:#291817!important}
+html body.eywa-warm.eywa-home #services .concept-actions .text-link{background:transparent!important;color:#291817!important;border-color:#c4937f!important}
+html body.eywa-warm.eywa-home #services .concept-actions .text-link:hover{background:#eee9df!important}
+html body.eywa-warm.eywa-home #personnalisation .personal-project,html body.eywa-warm.eywa-home #reservation .mini-devis{background:#fffbef!important;border-color:#e5d9c7!important;border-top:3px solid #c4937f!important}
+html body.eywa-warm.eywa-home #reservation :is(.md-label,.md-val,.md-unit,.md-staff,.md-staff-sub){color:#291817!important}
+html body.eywa-warm.eywa-home #reservation .md-btn{background:#fffbef!important;color:#291817!important;border-color:#e5d9c7!important}
+html body.eywa-warm.eywa-home #reservation .md-btn:hover{background:#eee9df!important}
+html body.eywa-warm.eywa-home #reservation :is(.md-bottom,.md-included),html body.eywa-warm.eywa-home #faq details{background:#eee9df!important;border-color:#e5d9c7!important}
+html body.eywa-warm.eywa-home #personnalisation :is(.personal-image-cell,.personal-project-body figure,.personal-project-body img){background-color:#e3ded6!important}
+html body.eywa-warm.eywa-home :is(.how-number,.benefit-number,.reference-drink-list,.direction-arrow){color:#8a6959!important}
+html body.eywa-warm.eywa-home .how-steps li{border-color:#c4937f!important}
+html body.eywa-warm.eywa-home footer{background:#e3ded6!important;color:#291817!important}
+html body.eywa-warm.eywa-home footer :is(a,p,div,span){color:#291817!important}
+html body.eywa-warm.eywa-home footer svg{fill:#291817!important}
+html body.eywa-warm .eywa-help-bar{background:#e3ded6!important;border-color:#e5d9c7!important}
+html body.eywa-warm .eywa-help-bar .eywa-assistant-launcher{background:#fffbef!important;border-color:#e5d9c7!important;color:#291817!important}
+/* La deuxième section reprend le beige chaud de l'enveloppe du mail. */
+html body.eywa-warm.eywa-home :is(#services.intro-band,#services .visual-split,#services .editorial-copy){background:#eee9df!important}
+/* Une seule couleur pour les boutons de devis et de contact. */
+html body.eywa-warm.eywa-home :is(.button,.nav-button,#md-cta,.md-cta,.eywa-help-contact),
+html body.eywa-warm.eywa-photo-opening #accueil .hero-quote .button,
+html body.eywa-warm.eywa-photo-opening header.nav .nav-button,
+html body.eywa-warm.eywa-home header.nav .nav-group>a[href*="contact.html"]{
+ background:#c4937f!important;color:#291817!important;border-color:#c4937f!important;box-shadow:none!important;
+}
+html body.eywa-warm.eywa-home :is(.button,.nav-button,#md-cta,.md-cta,.eywa-help-contact):hover,
+html body.eywa-warm.eywa-photo-opening #accueil .hero-quote .button:hover,
+html body.eywa-warm.eywa-photo-opening header.nav .nav-button:hover,
+html body.eywa-warm.eywa-home header.nav .nav-group>a[href*="contact.html"]:hover{
+ background:#c4937f!important;color:#291817!important;box-shadow:inset 0 0 0 2px #291817!important;
+}
+html body.eywa-warm.eywa-home header.nav .nav-group>a[href*="contact.html"]{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 20px;border-radius:999px}
+html body.eywa-warm .eywa-help-contact :is(span,small,svg){color:#291817!important}
+html body.eywa-warm :focus-visible{outline:2px solid #8a6959!important;outline-offset:4px}
+@media(max-width:760px){
+
+ html body.eywa-warm.eywa-photo-opening #accueil .hero-scene img{object-position:77% center!important}
+ html body.eywa-warm.eywa-photo-opening #accueil.hero-editorial::before{background:linear-gradient(90deg,rgba(41,24,23,.66),rgba(41,24,23,.38) 75%,rgba(41,24,23,.2))!important}
+ html body.eywa-warm.eywa-photo-opening header.nav .nav-group>a[href*="contact.html"]{margin-top:8px;padding:12px 20px}
+}
+
+
+/* Boutons : une seule couleur sur les pages, devis et réservation compris. */
+html body.eywa-warm :is(.button,.nav-button,.md-cta,.btn-fq,.btn-next,.btn-cta,.btn-pay,.btn-contact,.btn-main,.btn-pay-final,.btn-gold,.button-whatsapp,.contact-primary,.eywa-help-contact),
+html body.eywa-warm :is(#accueil,#tarifs,#contact-directe,#reservation) :is(.button,.nav-button,.md-cta,.contact-primary),
+html body.eywa-warm.eywa-photo-opening header.nav .nav-button{
+ background:#c4937f!important;color:#291817!important;border-color:#c4937f!important;box-shadow:none!important;
+}
+html body.eywa-warm :is(.button,.nav-button,.md-cta,.btn-fq,.btn-next,.btn-cta,.btn-pay,.btn-contact,.btn-main,.btn-pay-final,.btn-gold,.button-whatsapp,.contact-primary,.eywa-help-contact):hover,
+html body.eywa-warm :is(#accueil,#tarifs,#contact-directe,#reservation) :is(.button,.nav-button,.md-cta,.contact-primary):hover{
+ background:#c4937f!important;color:#291817!important;box-shadow:inset 0 0 0 2px #291817!important;
+}
+html body.eywa-warm :is(.eywa-help-contact,.contact-primary) :is(span,small,svg){color:#291817!important}
+html body.eywa-warm[data-eywa-page] header.nav .nav-button{min-height:44px!important;padding:0 20px!important;border-radius:999px!important;text-decoration:none!important}
+html body.eywa-warm.eywa-photo-opening #accueil :is(h1,.hero-eyebrow,.hero-description){color:#fffbef!important}
+html body.eywa-warm.eywa-photo-opening header.nav :is(.logo,.brand-eywa,.brand-descriptor,.nav-group>a:not(.nav-button),.nav-places-trigger,.mobile-menu){color:#fffbef!important}
+html body.eywa-warm.eywa-photo-opening header.nav .navlinks.open :is(a,.nav-places-trigger){color:#291817!important}
+html body.eywa-warm :is(#savoir-faire .reference-craft-hero h2,#savoir-faire .reference-craft-hero strong){color:#fffbef!important}
+/* Le fond pleine largeur de la navigation est porté par un pseudo-élément. */
+html body.eywa-warm header.nav::before{background:#eee9df!important;border-color:#e5d9c7!important}
+html body.eywa-warm header.nav .nav-group>a::after{background-color:#c4937f!important;border-color:#c4937f!important}
+html body.eywa-warm[data-eywa-page] header.nav .nav-button{background:#c4937f!important;color:#291817!important;border-color:#c4937f!important}
+html body.eywa-warm[data-eywa-page] header.nav .nav-button:hover{background:#c4937f!important;color:#291817!important}
+/* Les barres d'action du devis restent crème, y compris aux étapes suivantes. */
+html body.eywa-warm :is(.step-actions,.quote-dock,.btn-row){background:#fffbef!important;color:#291817!important;border-color:#e5d9c7!important}
+html body.eywa-warm header.nav .nav-group>a[aria-current="page"]::after{background:#c4937f!important;border-color:#c4937f!important}
