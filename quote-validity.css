@@ -1,0 +1,10 @@
+.quote-expired-notice{margin:24px 0;padding:24px;border:1px solid #d8c6a5;border-radius:12px;background:#faf5eb;color:#332d22}
+.quote-expired-notice h2{font-size:25px;line-height:1.25;margin:0 0 12px}
+.quote-expired-notice p{font-size:16px;line-height:1.6;margin:0}
+.quote-expired-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
+.quote-expired-actions a{padding:12px 16px;border:1px solid #253b31;border-radius:7px;color:#253b31;text-decoration:none;font-weight:600}
+.quote-expired-actions a:first-child{background:#253b31;color:#fff}
+.quote-expired-actions a:focus-visible{outline:3px solid #8c6b35;outline-offset:3px}
+.quote-expired .top-actions .btn-gold,.quote-expired #btn-reserve-main,.quote-expired .pay-note,.quote-expired .quote-dock,.quote-expired .upsells,.quote-expired .extra-hour-note{display:none!important}
+.quote-result.quote-expired{padding-bottom:0}
+@media(max-width:760px){.quote-expired-actions{flex-direction:column}.quote-expired-actions a{text-align:center}}

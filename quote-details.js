@@ -75,6 +75,7 @@
     const next=new URLSearchParams(p);next.set('pr',total);next.set('options',JSON.stringify(options.filter(o=>o.selected).map(o=>o.name)));next.set('dy',days);
     history.replaceState(null,'',location.pathname+'?'+next.toString()+location.hash);
     ['main','bottom','dock'].forEach(id=>{const button=document.getElementById('btn-reserve-'+id);button.href=lodging?'contact.html':'reservation.html?'+next.toString();if(lodging)button.textContent='Finaliser avec EYWA';});
+    if (window.EywaQuoteValidity) window.EywaQuoteValidity.applyToQuote(next);
   }
   options.forEach(o=>{
     const card=document.createElement('article');card.className='upsell-item'+(o.selected?' on':'');
@@ -86,9 +87,11 @@
     input.addEventListener('change',()=>{o.selected=input.checked;card.classList.toggle('on',o.selected);render();});card.append(img,info,toggle);document.getElementById('quote-options').append(card);
   });
   render();
+  if (window.EywaQuoteValidity) window.EywaQuoteValidity.watchQuote(p);
   window.addEventListener('pageshow',()=>{
     document.querySelectorAll('#quote-options input').forEach((input,i)=>{input.checked=options[i].selected;});
     render();
   });
 })();
+
 

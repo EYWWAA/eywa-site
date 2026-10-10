@@ -108,6 +108,24 @@
 <link rel="stylesheet" href="soft-blush.css?v=20261007-etapes-detaillees">
 <link rel="stylesheet" href="black-palette.css?v=20261007-noir-global">
 <link rel="stylesheet" href="theme-comparison.css?v=20261009-palettes">
+<script src="quote-validity.js?v=20261010-expiration"></script>
+<script>
+  function redirectExpiredQuote() {
+    var params = new URLSearchParams(window.location.search || window.location.hash.replace(/^#/, '?'));
+    if (window.EywaQuoteValidity && window.EywaQuoteValidity.getStatus(params).expired) {
+      window.location.replace('devis.html?' + params.toString());
+      return true;
+    }
+    return false;
+  }
+  redirectExpiredQuote();
+  window.addEventListener('pageshow', redirectExpiredQuote);
+  window.addEventListener('focus', redirectExpiredQuote);
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) redirectExpiredQuote();
+  });
+  window.setInterval(redirectExpiredQuote, 60000);
+</script>
 </head>
 <body data-eywa-page="reservation" class="quote-booking">
 
@@ -346,6 +364,7 @@
   }
 
   function goTo(n) {
+    if (redirectExpiredQuote()) return;
     for (var i = 1; i <= TOTAL_STEPS; i++) {
       var el = document.getElementById('s' + i);
       if (el) {
@@ -413,6 +432,7 @@
   }
 
   function doPay() {
+    if (redirectExpiredQuote()) return false;
     var bn = document.getElementById('billing-name').value.trim();
     var cgv = document.getElementById('cgv').checked;
     if (!bn || !cgv) { showErr('err8', true); return false; }
@@ -430,5 +450,6 @@
 <script src="eywa-assistant.js?v=20261006-light-bar" defer></script>
 </body>
 </html>
+
 
 
