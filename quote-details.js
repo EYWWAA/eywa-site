@@ -32,9 +32,17 @@
   text('inc-hrs',duration+' de service'+(days>1?' par jour · '+days+' jours':''));
   text('inc-staff',staff+' barista'+(staff>1?'s':'')+' professionnel'+(staff>1?'s':'')+' EYWA');
   const list=document.querySelector('.incl');
-  const more=document.createElement('details');more.className='included-more';
-  const summary=document.createElement('summary');summary.textContent='Voir tout ce qui est inclus';more.append(summary);
-  const moreList=document.createElement('ul');moreList.className='incl';Array.from(list.children).slice(3).forEach(li=>moreList.append(li));more.append(moreList);list.after(more);
+  const more=document.createElement('div');more.className='included-more';
+  const moreList=document.createElement('ul');moreList.className='incl';moreList.id='included-more-list';moreList.hidden=true;
+  Array.from(list.children).slice(3).forEach(li=>moreList.append(li));
+  const moreToggle=document.createElement('button');moreToggle.type='button';moreToggle.className='included-more-toggle';
+  moreToggle.textContent='Voir tout ce qui est inclus';moreToggle.setAttribute('aria-expanded','false');moreToggle.setAttribute('aria-controls',moreList.id);
+  moreToggle.addEventListener('click',()=>{
+    const expanded=moreToggle.getAttribute('aria-expanded')!=='true';
+    moreList.hidden=!expanded;moreToggle.setAttribute('aria-expanded',String(expanded));
+    moreToggle.textContent=expanded?'Voir moins':'Voir tout ce qui est inclus';
+  });
+  more.append(moreList,moreToggle);list.after(more);
   const gallery=Array.from(document.querySelectorAll('.thumb'));
   window.swapHero=src=>{document.getElementById('hero-img').src=src;};
   gallery.forEach((img,i)=>{img.tabIndex=0;img.setAttribute('role','button');img.alt='Voir la photo du coffee bar '+(i+1);img.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();window.swapHero(img.src);}});});
