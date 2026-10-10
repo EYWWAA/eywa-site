@@ -1,9 +1,8 @@
-/* La palette suit la navigation, sans changer le contenu des pages. */
+/* Palette verte retenue pour le site. */
 (function(){
- var choice=new URLSearchParams(location.search).get('theme'),theme=choice;
- try{if(!['actuel','creme'].includes(theme))theme=sessionStorage.getItem('eywa-comparison-theme');else sessionStorage.setItem('eywa-comparison-theme',theme)}catch(e){}
- if(!['actuel','creme'].includes(theme))theme='actuel';
+ var theme='actuel';
  document.documentElement.dataset.eywaTheme=theme;
+ try{sessionStorage.setItem('eywa-comparison-theme',theme)}catch(e){}
  function links(){
   document.querySelectorAll('a[href]').forEach(function(a){
    var raw=a.getAttribute('href');if(!raw||raw.charAt(0)==='#')return;
