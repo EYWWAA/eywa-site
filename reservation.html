@@ -127,6 +127,14 @@
   window.setInterval(redirectExpiredQuote, 60000);
 </script>
 <link rel="stylesheet" href="warm-palette.css?v=20261010-chaud">
+<style id="payment-validation-feedback">
+html body.eywa-warm #err8.show{padding:12px 14px;border:1px solid #a33932;border-radius:10px;background:#fffbef;color:#8e2822;font-size:14px;font-weight:600;line-height:1.5}
+html body.eywa-warm #billing-name[aria-invalid="true"],html body.eywa-warm #cgv-wrap.payment-invalid{border-color:#a33932!important}
+html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-offset:3px}
+.payment-breakdown{display:grid;gap:12px;margin:0 0 20px;padding:16px;border:1px solid #e5d9c7;border-radius:10px;background:#eee9df}
+.payment-breakdown>div{display:flex;align-items:baseline;justify-content:space-between;gap:16px;font-size:14px;line-height:1.5}
+.payment-breakdown strong{white-space:nowrap}.payment-breakdown .payment-due{font-weight:700;color:#291817;border-top:1px solid #e5d9c7;border-bottom:1px solid #e5d9c7;padding:12px 0}
+</style>
 </head>
 <body data-eywa-page="reservation" class="quote-booking eywa-warm">
 
@@ -246,15 +254,15 @@
       <div class="step-title">Conditions d'accueil</div>
       <div class="step-sub">Pour assurer un service impeccable, notre équipe a besoin des conditions suivantes. Merci de confirmer.</div>
       <div class="check-group">
-        <label class="check-opt" id="ck1-wrap" onclick="toggleCheck(this,'ck1')">
+        <label class="check-opt" id="ck1-wrap" onchange="syncCheck(this)">
           <input type="checkbox" id="ck1">
           <span>Je confirme que notre équipe pourra accéder au lieu d'installation <strong>au moins 60 minutes avant</strong> le début du service pour l'installation et les tests.</span>
         </label>
-        <label class="check-opt" id="ck2-wrap" onclick="toggleCheck(this,'ck2')">
+        <label class="check-opt" id="ck2-wrap" onchange="syncCheck(this)">
           <input type="checkbox" id="ck2">
           <span>Je confirme qu'un espace d'environ <strong>2m × 1m</strong> sera disponible pour le bar, avec de la place pour former une file d'attente.</span>
         </label>
-        <label class="check-opt" id="ck3-wrap" onclick="toggleCheck(this,'ck3')">
+        <label class="check-opt" id="ck3-wrap" onchange="syncCheck(this)">
           <input type="checkbox" id="ck3">
           <span>Je confirme qu'une <strong>prise électrique 220V standard</strong> (ou groupe électrogène) sera disponible à moins de 10m du bar.</span>
         </label>
@@ -267,18 +275,19 @@
     <div id="s8" class="step" style="display:none">
       <div class="step-label">Paiement</div>
       <div class="step-title">Finalisez votre réservation</div>
-      <div class="step-sub">Plus qu'une étape ! Votre date sera confirmée dès réception du paiement.</div>
-      <div class="payment-methods-note"><strong>Paiement sécurisé.</strong> Carte, PayPal et Klarna peuvent être proposés sur la page de paiement. Le paiement en plusieurs fois apparaît selon l’éligibilité de la commande.</div>
-      <label class="fld">Nom ou raison sociale pour la facture *</label>
-      <input type="text" id="billing-name" placeholder="Marie Dupont ou SARL Événements Paris">
+      <div class="step-sub">Réglez l’acompte de 50 % pour confirmer votre réservation. Les 50 % restants seront réglés séparément.</div>
+      <div class="payment-breakdown" aria-label="Détail du règlement"><div><span>Montant total du devis</span><strong id="payment-total"></strong></div><div class="payment-due"><span>À régler maintenant · acompte de 50 %</span><strong id="payment-deposit"></strong></div><div><span>Solde restant après l’acompte</span><strong id="payment-balance"></strong></div></div>
+      <div class="payment-methods-note"><strong>Paiement sécurisé avec Stripe.</strong> Choisissez votre moyen de paiement sur la page suivante.</div>
+      <label class="fld" for="billing-name">Nom ou raison sociale pour la facture *</label>
+      <input type="text" id="billing-name" autocomplete="organization" aria-describedby="err8" oninput="if(document.getElementById('err8').classList.contains('show')) validatePaymentFields(false)" placeholder="Marie Dupont ou SARL Événements Paris">
       <div class="check-group" style="margin-top:1.25rem">
-        <label class="check-opt" id="cgv-wrap" onclick="toggleCheck(this,'cgv')">
-          <input type="checkbox" id="cgv">
-          <span>J'ai lu et j'accepte les <strong>conditions générales de vente</strong> d'EYWA. Je comprends que le paiement total confirme ma réservation et bloque la date.</span>
+        <label class="check-opt" id="cgv-wrap" onchange="syncCheck(this)">
+          <input type="checkbox" id="cgv" aria-describedby="err8">
+          <span>J'ai lu et j'accepte les <strong>conditions générales de vente</strong> d'EYWA. Je comprends que le versement de l’acompte de 50 % confirme ma réservation et bloque la date.</span>
         </label>
       </div>
-      <div class="error-msg" id="err8">Veuillez remplir le nom de facturation et accepter les CGV.</div>
-      <div class="btn-row"><button class="btn-back" onclick="goTo(7)">← Retour</button><a class="btn-pay-final" id="btn-pay" href="#" onclick="return doPay()">💳 Payer maintenant</a></div>
+      <div class="error-msg" id="err8" role="alert" aria-live="polite"></div>
+      <div class="btn-row"><button class="btn-back" onclick="goTo(7)">← Retour</button><button type="button" class="btn-pay-final" id="btn-pay" onclick="doPay()">Payer l’acompte de 50 % →</button></div>
     </div>
 
   </div>
@@ -286,7 +295,7 @@
 
 <div class="total-bar">
   <div>
-    <div class="total-label">Total TTC</div>
+    <div class="total-label" id="total-label">Total TTC</div>
   </div>
   <div class="total-amount" id="total-display">—</div>
 </div>
@@ -307,7 +316,14 @@
   });
 
   var price = Math.round((parseFloat(P.pr) || 350)*100)/100;
-  document.getElementById('total-display').textContent = price + ' €';
+  var totalCents = Math.round(price * 100);
+  var depositCents = Math.round(totalCents / 2);
+  var balanceCents = totalCents - depositCents;
+  function formatMoney(cents) { return (cents / 100).toLocaleString('fr-FR', {style:'currency', currency:'EUR'}); }
+  document.getElementById('total-display').textContent = formatMoney(totalCents);
+  document.getElementById('payment-total').textContent = formatMoney(totalCents);
+  document.getElementById('payment-deposit').textContent = formatMoney(depositCents);
+  document.getElementById('payment-balance').textContent = formatMoney(balanceCents);
 
   if (P.p) document.getElementById('welcome-title').textContent = 'Parfait ' + P.p + ' ! Finalisons votre réservation.';
 
@@ -375,6 +391,8 @@
     }
     buildDots(n);
     updatePhases(n);
+    document.getElementById('total-label').textContent = n === 8 ? 'Acompte à régler · 50 %' : 'Total TTC';
+    document.getElementById('total-display').textContent = formatMoney(n === 8 ? depositCents : totalCents);
     window.scrollTo(0, 0);
   }
 
@@ -386,10 +404,33 @@
     if (inp) inp.checked = true;
   }
 
-  function toggleCheck(wrap, id) {
-    var cb = document.getElementById(id);
-    cb.checked = !cb.checked;
+  function syncCheck(wrap) {
+    var cb = wrap.querySelector('input[type="checkbox"]');
     wrap.classList.toggle('checked', cb.checked);
+    if (cb.id === 'cgv' && document.getElementById('err8').classList.contains('show')) {
+      validatePaymentFields(false);
+    }
+  }
+
+  function validatePaymentFields(focusInvalid) {
+    var name = document.getElementById('billing-name');
+    var consent = document.getElementById('cgv');
+    var missingName = !name.value.trim();
+    var missingConsent = !consent.checked;
+    name.setAttribute('aria-invalid', String(missingName));
+    consent.setAttribute('aria-invalid', String(missingConsent));
+    document.getElementById('cgv-wrap').classList.toggle('payment-invalid', missingConsent);
+    var message = missingName && missingConsent
+      ? 'Indiquez votre nom de facturation et cochez la case d’acceptation des CGV pour continuer.'
+      : missingName ? 'Indiquez votre nom ou raison sociale pour la facture.'
+      : missingConsent ? 'Cochez la case d’acceptation des CGV pour accéder au paiement sécurisé.' : '';
+    document.getElementById('err8').textContent = message;
+    showErr('err8', Boolean(message));
+    if (message && focusInvalid) {
+      (missingName ? name : consent).focus();
+      document.getElementById('err8').scrollIntoView({block:'nearest'});
+    }
+    return !message;
   }
 
   function showErr(id, show) {
@@ -434,14 +475,11 @@
 
   function doPay() {
     if (redirectExpiredQuote()) return false;
-    var bn = document.getElementById('billing-name').value.trim();
-    var cgv = document.getElementById('cgv').checked;
-    if (!bn || !cgv) { showErr('err8', true); return false; }
-    showErr('err8', false);
-    var amountCents = Math.round(price * 100);
-    var label = encodeURIComponent('Réservation EYWA — ' + (P.t || 'Événement') + ' · ' + price + ' €');
+    if (!validatePaymentFields(true)) return false;
+    var amountCents = depositCents;
+    var label = encodeURIComponent('Acompte de 50 % EYWA — ' + (P.t || 'Événement'));
     var checkoutUrl = 'https://tubular-granita-827569.netlify.app/.netlify/functions/checkout';
-    window.location.href = checkoutUrl + '?amount=' + amountCents + '&label=' + label + '&cancel=reservation.html';
+    window.location.href = checkoutUrl + '?amount=' + amountCents + '&label=' + label + '&payment_kind=deposit&total_amount=' + totalCents + '&cancel=reservation.html';
     return false;
   }
 
@@ -451,7 +489,3 @@
 <script src="eywa-assistant.js?v=20261006-light-bar" defer></script>
 </body>
 </html>
-
-
-
-
