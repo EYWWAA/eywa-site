@@ -128,12 +128,14 @@
 </script>
 <link rel="stylesheet" href="warm-palette.css?v=20261010-chaud">
 <style id="payment-validation-feedback">
+/* Le total est dans la page : seule la barre d’aide fixe doit être réservée. */
+html body.eywa-warm.quote-booking{padding-bottom:calc(var(--eywa-help-height,60px) + 16px + env(safe-area-inset-bottom,0px))!important}
 html body.eywa-warm #err8.show{padding:12px 14px;border:1px solid #a33932;border-radius:10px;background:#fffbef;color:#8e2822;font-size:14px;font-weight:600;line-height:1.5}
 html body.eywa-warm #billing-name[aria-invalid="true"],html body.eywa-warm #cgv-wrap.payment-invalid{border-color:#a33932!important}
 html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-offset:3px}
-.payment-breakdown{display:grid;gap:12px;margin:0 0 20px;padding:16px;border:1px solid #e5d9c7;border-radius:10px;background:#eee9df}
+.payment-breakdown{display:grid;gap:8px;margin:0 0 16px;padding:12px;border:1px solid #e5d9c7;border-radius:10px;background:#eee9df}
 .payment-breakdown>div{display:flex;align-items:baseline;justify-content:space-between;gap:16px;font-size:14px;line-height:1.5}
-.payment-breakdown strong{white-space:nowrap}.payment-breakdown .payment-due{font-weight:700;color:#291817;border-top:1px solid #e5d9c7;border-bottom:1px solid #e5d9c7;padding:12px 0}
+.payment-breakdown strong{white-space:nowrap}.payment-breakdown .payment-due{font-weight:700;color:#291817;border-top:1px solid #e5d9c7;border-bottom:1px solid #e5d9c7;padding:8px 0}
 </style>
 </head>
 <body data-eywa-page="reservation" class="quote-booking eywa-warm">
