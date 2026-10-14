@@ -39,8 +39,8 @@
       var route=feature.properties.countrycode==='FR'?EywaTravelRoute.roundTrip:EywaTravelRoute.internationalRoundTrip;
       var trip=await route(window.EYWA_TRAVEL_ORIGIN,feature.geometry.coordinates);
       if(ticket!==version)return;
-      var cost=EywaTravelPricing.calculate(trip.roundTripKm,trip.roundTripMinutes);
-      window.eywaTravel=Object.assign(cost,{outwardMinutes:trip.outwardMinutes,lodgingRequired:trip.lodgingRequired,label:input.value,approximate:feature.properties.type!=='housenumber'});
+      var cost=EywaTravelPricing.calculate(trip.roundTripKm,trip.roundTripMinutes,trip.outwardKm);
+      window.eywaTravel=Object.assign(cost,{coordinates:feature.geometry.coordinates,country:feature.properties.countrycode,outwardMinutes:trip.outwardMinutes,lodgingRequired:trip.lodgingRequired,label:input.value,approximate:feature.properties.type!=='housenumber'});
       status.textContent='';
       
       var next=document.getElementById('btn2');next.disabled=false;next.classList.remove('disabled');

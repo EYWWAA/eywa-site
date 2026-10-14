@@ -24,7 +24,7 @@
     fetcher = fetcher || root.fetch.bind(root);
     var outward = await leg(origin,destination,fetcher);
     var inward = await leg(destination,origin,fetcher);
-    return {roundTripKm:outward.km+inward.km,roundTripMinutes:outward.minutes+inward.minutes,outwardMinutes:outward.minutes,returnMinutes:inward.minutes,lodgingRequired:outward.minutes>240};
+    return {roundTripKm:outward.km+inward.km,roundTripMinutes:outward.minutes+inward.minutes,outwardKm:outward.km,returnKm:inward.km,outwardMinutes:outward.minutes,returnMinutes:inward.minutes,lodgingRequired:outward.minutes>240};
   }
   async function osmLeg(start,end,fetcher){
     var controller=new AbortController();
@@ -41,7 +41,7 @@
     fetcher=fetcher||root.fetch.bind(root);
     var outward=await osmLeg(origin,destination,fetcher);
     var inward=await osmLeg(destination,origin,fetcher);
-    return {roundTripKm:outward.km+inward.km,roundTripMinutes:outward.minutes+inward.minutes,outwardMinutes:outward.minutes,returnMinutes:inward.minutes,lodgingRequired:outward.minutes>240};
+    return {roundTripKm:outward.km+inward.km,roundTripMinutes:outward.minutes+inward.minutes,outwardKm:outward.km,returnKm:inward.km,outwardMinutes:outward.minutes,returnMinutes:inward.minutes,lodgingRequired:outward.minutes>240};
   }
   var api={roundTrip:roundTrip,internationalRoundTrip:internationalRoundTrip};
   if (typeof module !== 'undefined' && module.exports) module.exports=api;

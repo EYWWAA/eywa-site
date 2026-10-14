@@ -19,7 +19,7 @@
   const km=Number(p.get('tk')), minutes=Number(p.get('tm'));
   const hasTravel=p.has('tk')&&p.has('tm')&&Number.isFinite(km)&&Number.isFinite(minutes)&&km>=0&&minutes>=0&&km<20000&&minutes<30000;
   const lodging=hasTravel&&Number(p.get('to'))>240;
-  const travel=hasTravel?EywaTravelPricing.calculate(km,minutes).total:0;
+  const travel=hasTravel?EywaTravelPricing.calculate(km,minutes,p.has('tw')?Number(p.get('tw')):undefined).total:0;
 
   const text = (id,value) => document.getElementById(id).textContent=value;
   text('card-title',p.get('p') ? 'Organisons votre événement, '+p.get('p')+'.' : 'Organisons votre événement.');
@@ -75,7 +75,7 @@
     if(hours>1.5)lines.append(makeLine('Prolongation du service',money(Math.round((hours-1.5)*150)*days),'150 € par heure supplémentaire. '+duration+' de service'+(days>1?' par jour.':'.')));
     if(staff>1)lines.append(makeLine('Renfort barista',money((staff-1)*200*days),(staff-1)+' barista(s) supplémentaire(s) pour adapter l’équipe au nombre d’invités et à la durée du service.'));
     options.filter(o=>o.selected).forEach(o=>lines.append(makeLine(o.name,money(o.price*days),o.description)));
-    lines.append(makeLine('Déplacement aller-retour',hasTravel?money(travel):'À confirmer','Depuis Charleville-Mézières.'));
+    lines.append(makeLine('Déplacement aller-retour',hasTravel?money(travel):'À confirmer','Gratuit jusqu’à 20 km à l’aller depuis Charleville-Mézières. Au-delà, le trajet complet est facturé.'));
     if(lodging)lines.append(makeLine('Hébergement du barista','À confirmer','Le trajet aller dépasse quatre heures. Un logement sur place est à prévoir pour le ou les baristas. Le nombre de nuits et le montant seront précisés avec vous avant réservation. Ce coût n’est pas inclus dans le total affiché.'));
     const total=Math.round((service+travel+options.filter(o=>o.selected).reduce((n,o)=>n+o.price*days,0))*100)/100;
     if(hasTravel)document.querySelector('.price-lbl').textContent='Prestation et trajet aller-retour · hébergement éventuel non compris';

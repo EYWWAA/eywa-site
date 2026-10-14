@@ -29,3 +29,5 @@ test('quote counts travel once across several days, retaining cents',()=>{
  vm.createContext(ctx);vm.runInContext(fn+';result=calcPrice()',ctx);
  assert.equal(ctx.result,2342.57);
 });
+
+test('20 km gratuits ; au-delà, trajet complet, y compris les 20 premiers km',()=>{assert.equal(pricing.calculate(40,60,20).total,0);assert.equal(pricing.calculate(50,60,25).total,26.5);assert.equal(pricing.calculate(45,60,25).total,25.25);assert.equal(pricing.calculate(41,60,20.01).total,24.25);assert.throws(()=>pricing.calculate(50,60,NaN));});
