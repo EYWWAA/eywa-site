@@ -43,7 +43,20 @@
     var inward=await osmLeg(destination,origin,fetcher);
     return {roundTripKm:outward.km+inward.km,roundTripMinutes:outward.minutes+inward.minutes,outwardKm:outward.km,returnKm:inward.km,outwardMinutes:outward.minutes,returnMinutes:inward.minutes,lodgingRequired:outward.minutes>240};
   }
-  var api={roundTrip:roundTrip,internationalRoundTrip:internationalRoundTrip};
+  // The free service zone is geographic. A verified point inside it needs no
+  // external directions request: a routing outage must not block a local quote.
+  function localDistanceKm(origin,destination){
+    coordinates(origin);coordinates(destination);
+    var rad=Math.PI/180,lat1=origin[1]*rad,lat2=destination[1]*rad;
+    var a=Math.sin((lat2-lat1)/2)**2+Math.cos(lat1)*Math.cos(lat2)*Math.sin((destination[0]-origin[0])*rad/2)**2;
+    return 6371.0088*2*Math.asin(Math.sqrt(Math.min(1,Math.max(0,a))));
+  }
+  async function eventTrip(origin,destination,country,fetcher){
+    var distance=localDistanceKm(origin,destination);
+    if(distance<=20+1e-8)return {localFree:true,localDistanceKm:distance,roundTripKm:0,roundTripMinutes:0,outwardKm:0,returnKm:0,outwardMinutes:0,returnMinutes:0,lodgingRequired:false};
+    return (String(country).toUpperCase()==='FR'?roundTrip:internationalRoundTrip)(origin,destination,fetcher);
+  }
+  var api={roundTrip:roundTrip,internationalRoundTrip:internationalRoundTrip,eventTrip:eventTrip};
   if (typeof module !== 'undefined' && module.exports) module.exports=api;
   else root.EywaTravelRoute=api;
 })(typeof window !== 'undefined' ? window : globalThis);

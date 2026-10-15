@@ -36,15 +36,14 @@
     }catch(e){status.textContent='Ce lieu n’a pas pu être vérifié. Sélectionnez un autre résultat ou contactez-nous.';return;}
     try{
       if(!window.EYWA_TRAVEL_ORIGIN)throw new Error();
-      var route=feature.properties.countrycode==='FR'?EywaTravelRoute.roundTrip:EywaTravelRoute.internationalRoundTrip;
-      var trip=await route(window.EYWA_TRAVEL_ORIGIN,feature.geometry.coordinates);
+      var trip=await EywaTravelRoute.eventTrip(window.EYWA_TRAVEL_ORIGIN,feature.geometry.coordinates,feature.properties.countrycode);
       if(ticket!==version)return;
       var cost=EywaTravelPricing.calculate(trip.roundTripKm,trip.roundTripMinutes,trip.outwardKm);
-      window.eywaTravel=Object.assign(cost,{coordinates:feature.geometry.coordinates,country:feature.properties.countrycode,outwardMinutes:trip.outwardMinutes,lodgingRequired:trip.lodgingRequired,label:input.value,approximate:feature.properties.type!=='housenumber'});
-      status.textContent='';
+      window.eywaTravel=Object.assign(cost,{localFree:trip.localFree===true,coordinates:feature.geometry.coordinates,country:feature.properties.countrycode,outwardMinutes:trip.outwardMinutes,lodgingRequired:trip.lodgingRequired,label:input.value,approximate:feature.properties.type!=='housenumber'});
+      status.textContent=trip.localFree?'Lieu reconnu. Déplacement gratuit dans le rayon de 20 km.':'';
       
       var next=document.getElementById('btn2');next.disabled=false;next.classList.remove('disabled');
-    }catch(e){if(ticket===version)status.textContent='Impossible de calculer ce trajet routier. Réessayez ou contactez-nous pour un devis adapté ; aucun trajet gratuit ne sera ajouté par défaut.';}
+    }catch(e){if(ticket===version)status.textContent='Le lieu est reconnu, mais le trajet n’a pas pu être calculé. Réessayez ou contactez-nous pour votre devis.';}
   }
   window.checkS2();
 })();

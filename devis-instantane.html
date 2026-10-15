@@ -827,11 +827,11 @@
       bd += '<div class="brow total"><span>Par jour</span><span>' + EywaLaunchOffer.priceHTML(pricePerDay) + '</span></div>';
       bd += '<div class="brow"><span>× ' + A.days + ' jours</span><span>' + EywaLaunchOffer.priceHTML(pricePerDay*A.days) + '</span></div>';
     }
-    bd += '<div class="brow"><span>Déplacement aller-retour (' + window.eywaTravel.roundTripKm.toFixed(1) + ' km)</span><span>' + EywaLaunchOffer.priceHTML(window.eywaTravel.total) + '</span></div>';
+    bd += '<div class="brow"><span>' + (window.eywaTravel.localFree ? 'Déplacement dans la zone des 20 km' : 'Déplacement aller-retour (' + window.eywaTravel.roundTripKm.toFixed(1) + ' km)') + '</span><span>' + EywaLaunchOffer.priceHTML(window.eywaTravel.total) + '</span></div>';
     if(window.eywaTravel.lodgingRequired)bd += '<div class="brow"><span>Hébergement (trajet aller supérieur à 4 h)</span><span>À confirmer</span></div>';
     bd += '<div class="brow total"><span>Estimation totale</span><span>' + EywaLaunchOffer.priceHTML(calcNormalPrice()) + '</span></div>';
     if(EywaLaunchOffer.state.active)bd += '<div class="brow note"><span>Paiement intégral à la réservation. Offre limitée aux deux premières réservations réglées.</span></div>';
-    bd += '<div class="brow note"><span>Déplacement gratuit jusqu’à 20 km à l’aller. Au-delà, trajet complet à 0,25 €/km + 14 €/h de conduite aller-retour, sans déduire les 20 premiers kilomètres. Péages inclus. Hébergement éventuel non compris.</span></div>';
+    bd += '<div class="brow note"><span>Déplacement gratuit dans un rayon de 20 km autour de Charleville-Mézières. Au-delà, trajet complet à 0,25 €/km + 14 €/h de conduite aller-retour, sans déduire les 20 premiers kilomètres. Péages inclus. Hébergement éventuel non compris.</span></div>';
     document.getElementById('breakdown').innerHTML = bd;
 
     showStep('sPrix');
@@ -846,7 +846,7 @@
       p: A.prenom, t: finalType,
       g: A.guests, h: A.hrs, dy: A.days,
       d: A.date, ti: A.time, l: A.lieu,
-      tw: window.eywaTravel.outwardKm, lng: window.eywaTravel.coordinates[0], lat: window.eywaTravel.coordinates[1], country: window.eywaTravel.country, to: window.eywaTravel.outwardMinutes, tk: window.eywaTravel.roundTripKm, tm: window.eywaTravel.roundTripMinutes, ta: window.eywaTravel.approximate ? 1 : 0, pr: calcNormalPrice(), options: JSON.stringify(A.personalization)
+      lf: window.eywaTravel.localFree ? 1 : 0, tw: window.eywaTravel.outwardKm, lng: window.eywaTravel.coordinates[0], lat: window.eywaTravel.coordinates[1], country: window.eywaTravel.country, to: window.eywaTravel.outwardMinutes, tk: window.eywaTravel.roundTripKm, tm: window.eywaTravel.roundTripMinutes, ta: window.eywaTravel.approximate ? 1 : 0, pr: calcNormalPrice(), options: JSON.stringify(A.personalization)
     });
     return base + '?' + params.toString();
   }
@@ -944,7 +944,7 @@
 </dialog>
 <script src="devis-pickers.js?v=20261006-publication"></script>
 <script src="brand-options.js?v=20261006-publication" defer></script>
-<script src="travel-pricing.js?v=20261014-zone20"></script><script src="travel-route.js?v=20261014-zone20"></script><script src="travel-origin.js?v=20261006-publication"></script><script src="service-area.js?v=20261007-zone-300km"></script><script src="travel-places.js?v=20261007-zone-300km"></script><script src="travel-form.js?v=20261014-zone20"></script>
+<script src="travel-pricing.js?v=20261014-zone20"></script><script src="travel-route.js?v=20261015-local20"></script><script src="travel-origin.js?v=20261006-publication"></script><script src="service-area.js?v=20261007-zone-300km"></script><script src="travel-places.js?v=20261007-zone-300km"></script><script src="travel-form.js?v=20261015-local20"></script>
 <script src="eywa-assistant.js?v=20261006-light-bar" defer></script>
 </body>
 </html>
