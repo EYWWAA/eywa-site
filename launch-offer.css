@@ -13,3 +13,9 @@
 #dock-total .launch-price del{font-size:15px!important}
 #dock-total .launch-price .launch-badge{display:inline-block!important;width:auto;font-size:11px!important}
 @media(max-width:760px){.launch-banner{flex-direction:column;gap:3px;padding:12px 20px;font-size:12px}.launch-price{gap:6px}.launch-badge{font-size:10px}}
+
+.launch-hero-offer{display:flex;flex-direction:column;gap:4px;width:fit-content;max-width:100%;margin:18px 0;padding:10px 14px;border-radius:6px;background:#1c8059;color:#fff;font:400 13px/1.4 var(--sans,'Jost',sans-serif);text-align:left}
+.launch-hero-offer[hidden]{display:none!important}
+.launch-hero-offer strong{font:inherit;font-weight:600;letter-spacing:.02em}
+.launch-hero-offer span{font:inherit;font-size:12px}
+@media(max-width:760px){.launch-hero-offer{margin:14px 0;padding:9px 12px;font-size:12px}.launch-hero-offer span{font-size:11px}}

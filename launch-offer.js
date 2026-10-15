@@ -12,7 +12,7 @@
   function update(value){
     var previous=JSON.stringify(state);
     state.ready=true;state.supported=value.supported===true;state.active=value.active===true&&Number(value.available)>0;
-    state.remaining=Math.max(0,Math.min(2,Number(value.remaining)||0));state.available=Math.max(0,Math.min(2,Number(value.available)||0));
+    state.remaining=Math.max(0,Math.min(1,Number(value.remaining)||0));state.available=Math.max(0,Math.min(1,Number(value.available)||0));
     document.documentElement.classList.toggle('launch-offer-active',state.active);
     document.querySelectorAll('[data-launch-banner]').forEach(function(el){el.hidden=!state.active;});
     paymentCopy.forEach(function(item){item.el.textContent=state.active?item.offer:item.normal;});
@@ -28,7 +28,7 @@
     document.querySelectorAll('.how-steps p').forEach(function(el){var normal=el.textContent,offer=normal.replace('avant le versement de l’acompte','avant le règlement de votre réservation').replace('vous confirmez et réglez l’acompte','vous confirmez et réglez intégralement votre devis remisé pendant l’offre de lancement');if(offer!==normal)paymentCopy.push({el:el,normal:normal,offer:offer});});
     var main=document.querySelector('main'),hero=document.querySelector('#accueil');if(!main&&!hero)return;
     var el=document.createElement('aside');el.className='launch-banner';el.dataset.launchBanner='';el.hidden=true;
-    el.innerHTML='<strong>Offre de lancement : −80 %</strong><span>Sur tout votre devis, personnalisations et déplacement compris. Pour les deux premières réservations réglées intégralement.</span>';
+    el.innerHTML='<strong>Offre de lancement : −80 %</strong><span>Sur tout votre devis, personnalisations et déplacement compris. Offre valable pour la première réservation réglée intégralement.</span>';
     if(hero)hero.after(el);else main.prepend(el);
   }
   root.EywaLaunchOffer={state:state,amount:amount,priceHTML:priceHTML,money:money,refresh:refresh,onChange:function(fn){listeners.push(fn);if(state.ready)fn(state);},endpoint:endpoint};

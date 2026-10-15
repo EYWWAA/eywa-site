@@ -297,7 +297,7 @@
 <link rel="stylesheet" href="black-palette.css?v=20261007-noir-global">
 <link rel="stylesheet" href="theme-comparison.css?v=20261009-palettes">
 <link rel="stylesheet" href="warm-palette.css?v=20261010-chaud">
-<link rel="stylesheet" href="launch-offer.css?v=20261015"><script src="launch-offer.js?v=20261015b"></script>
+<link rel="stylesheet" href="launch-offer.css?v=20261015-premiere"><script src="launch-offer.js?v=20261015-premiere"></script>
 </head>
 <body data-eywa-page="quote" class="quote-form eywa-warm">
 
@@ -830,7 +830,7 @@
     bd += '<div class="brow"><span>' + (window.eywaTravel.localFree ? 'Déplacement dans la zone des 20 km' : 'Déplacement aller-retour (' + window.eywaTravel.roundTripKm.toFixed(1) + ' km)') + '</span><span>' + EywaLaunchOffer.priceHTML(window.eywaTravel.total) + '</span></div>';
     if(window.eywaTravel.lodgingRequired)bd += '<div class="brow"><span>Hébergement (trajet aller supérieur à 4 h)</span><span>À confirmer</span></div>';
     bd += '<div class="brow total"><span>Estimation totale</span><span>' + EywaLaunchOffer.priceHTML(calcNormalPrice()) + '</span></div>';
-    if(EywaLaunchOffer.state.active)bd += '<div class="brow note"><span>Paiement intégral à la réservation. Offre limitée aux deux premières réservations réglées.</span></div>';
+    if(EywaLaunchOffer.state.active)bd += '<div class="brow note"><span>Paiement intégral à la réservation. Offre valable pour la première réservation réglée intégralement.</span></div>';
     bd += '<div class="brow note"><span>Déplacement gratuit dans un rayon de 20 km autour de Charleville-Mézières. Au-delà, trajet complet à 0,25 €/km + 14 €/h de conduite aller-retour, sans déduire les 20 premiers kilomètres. Péages inclus. Hébergement éventuel non compris.</span></div>';
     document.getElementById('breakdown').innerHTML = bd;
 
