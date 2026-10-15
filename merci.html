@@ -9,7 +9,7 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Réservation confirmée — EYWA</title>
+  <title>Votre paiement — EYWA</title>
   <style>
     :root { --green:#1a3d2b; --gold:#c8a951; --cream:#f4f2ee; }
     * { box-sizing:border-box; margin:0; padding:0; }
@@ -38,15 +38,27 @@
 <div class="top"><a href="/" class="logo">EYWA</a></div>
 <div class="card">
   <div class="icon">🎉</div>
-  <h1>Réservation confirmée !</h1>
-  <p>Votre paiement a bien été reçu. Votre date est maintenant bloquée dans notre agenda.</p>
-  <p>Vous recevrez une confirmation par email sous quelques minutes avec tous les détails de votre réservation.</p>
-  <div class="note">Notre équipe vous contactera dans les 24h pour finaliser les derniers détails opérationnels.</div>
+  <h1 id="payment-confirm-title">Vérification du paiement…</h1>
+  <p id="payment-confirm-copy">Nous vérifions la confirmation de votre règlement auprès de Stripe.</p>
+  <p>Nous préparons les derniers détails de votre événement avec vous.</p>
+  <div class="note" id="payment-confirm-note">Une question ? <a href="contact.html">Contactez EYWA</a>.</div>
 </div>
 <script src="brand-options.js?v=20261006-publication" defer></script>
 <script src="eywa-assistant.js?v=20261006-light-bar" defer></script>
-</body>
+<script>
+(function(){
+ var id=new URLSearchParams(location.search).get('session_id'),title=document.getElementById('payment-confirm-title'),copy=document.getElementById('payment-confirm-copy');
+ if(!id){title.textContent='Merci pour votre réservation';copy.textContent='Contactez-nous si vous souhaitez vérifier la confirmation de votre règlement.';return;}
+ fetch('https://tubular-granita-827569.netlify.app/.netlify/functions/launch-payment-status?session_id='+encodeURIComponent(id),{cache:'no-store'}).then(function(response){if(!response.ok)throw Error();return response.json();}).then(function(data){
+  if(!data.paid){title.textContent='Paiement à confirmer';copy.textContent='Votre paiement n’est pas encore confirmé. Contactez-nous avant de recommencer un règlement.';return;}
+  title.textContent='Paiement confirmé !';
+  copy.textContent=(data.full?'Votre paiement intégral de ':'Votre acompte de ')+(data.amountCents/100).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})+' a bien été reçu.';
+  if(data.full)document.getElementById('payment-confirm-note').textContent='Votre prestation est réglée intégralement. Aucun solde ne reste à payer.';
+ }).catch(function(){title.textContent='Vérification en cours';copy.textContent='La confirmation ne peut pas être affichée pour le moment. Contactez-nous avant de recommencer un règlement.';});
+})();
+</script></body>
 </html>
+
 
 
 

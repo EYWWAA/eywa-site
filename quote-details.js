@@ -64,22 +64,23 @@
   }
   const makeLine=(title,amount,description,schedule)=>{
     const row=document.createElement('article');row.className='quote-line';
-    const head=document.createElement('div');head.className='quote-line-head';const h=document.createElement('h3');h.textContent=title;const value=document.createElement('strong');value.textContent=amount;head.append(h,value);row.append(head);
+    const head=document.createElement('div');head.className='quote-line-head';const h=document.createElement('h3');h.textContent=title;const value=document.createElement('strong');value.innerHTML=window.EywaLaunchOffer&&typeof amount==='number'?EywaLaunchOffer.priceHTML(amount):String(amount);head.append(h,value);row.append(head);
     if(schedule){const time=document.createElement('p');time.className='quote-line-time';time.textContent=schedule;row.append(time);}
     row.append(makeDescription(description,title));return row;
   };
   function render(){
     const lines=document.getElementById('line-items');lines.replaceChildren();
-    lines.append(makeLine('Formule classique',money(650*days),'Un coffee bar, un barista professionnel et des boissons préparées à la demande. Le forfait comprend 1 h 30 de service pour jusqu’à 50 invités, le matériel et les gobelets. Installation et rangement hors du temps de service.',serviceTime));
-    if(guests>50)lines.append(makeLine('Invités supplémentaires',money((guests-50)*5*days),(guests-50)+' invités au-delà du forfait de base, par jour.'));
-    if(hours>1.5)lines.append(makeLine('Prolongation du service',money(Math.round((hours-1.5)*150)*days),'150 € par heure supplémentaire. '+duration+' de service'+(days>1?' par jour.':'.')));
-    if(staff>1)lines.append(makeLine('Renfort barista',money((staff-1)*200*days),(staff-1)+' barista(s) supplémentaire(s) pour adapter l’équipe au nombre d’invités et à la durée du service.'));
-    options.filter(o=>o.selected).forEach(o=>lines.append(makeLine(o.name,money(o.price*days),o.description)));
-    lines.append(makeLine('Déplacement aller-retour',hasTravel?money(travel):'À confirmer','Gratuit jusqu’à 20 km à l’aller depuis Charleville-Mézières. Au-delà, le trajet complet est facturé.'));
+    lines.append(makeLine('Formule classique',650*days,'Un coffee bar, un barista professionnel et des boissons préparées à la demande. Le forfait comprend 1 h 30 de service pour jusqu’à 50 invités, le matériel et les gobelets. Installation et rangement hors du temps de service.',serviceTime));
+    if(guests>50)lines.append(makeLine('Invités supplémentaires',(guests-50)*5*days,(guests-50)+' invités au-delà du forfait de base, par jour.'));
+    if(hours>1.5)lines.append(makeLine('Prolongation du service',Math.round((hours-1.5)*150)*days,'150 € par heure supplémentaire. '+duration+' de service'+(days>1?' par jour.':'.')));
+    if(staff>1)lines.append(makeLine('Renfort barista',(staff-1)*200*days,(staff-1)+' barista(s) supplémentaire(s) pour adapter l’équipe au nombre d’invités et à la durée du service.'));
+    options.filter(o=>o.selected).forEach(o=>lines.append(makeLine(o.name,o.price*days,o.description)));
+    lines.append(makeLine('Déplacement aller-retour',hasTravel?travel:'À confirmer','Gratuit jusqu’à 20 km à l’aller depuis Charleville-Mézières. Au-delà, le trajet complet est facturé.'));
     if(lodging)lines.append(makeLine('Hébergement du barista','À confirmer','Le trajet aller dépasse quatre heures. Un logement sur place est à prévoir pour le ou les baristas. Le nombre de nuits et le montant seront précisés avec vous avant réservation. Ce coût n’est pas inclus dans le total affiché.'));
     const total=Math.round((service+travel+options.filter(o=>o.selected).reduce((n,o)=>n+o.price*days,0))*100)/100;
     if(hasTravel)document.querySelector('.price-lbl').textContent='Prestation et trajet aller-retour · hébergement éventuel non compris';
-    text('price-main',money(total));text('dock-total',money(total));
+    document.getElementById('price-main').innerHTML=EywaLaunchOffer.priceHTML(total);document.getElementById('dock-total').innerHTML=EywaLaunchOffer.priceHTML(total);
+    document.querySelectorAll('.upsell-price').forEach((el,i)=>{el.innerHTML=EywaLaunchOffer.priceHTML(options[i].price*days)+(days>1?' pour '+days+' jours':'');});
     const next=new URLSearchParams(p);next.set('pr',total);next.set('options',JSON.stringify(options.filter(o=>o.selected).map(o=>o.name)));next.set('dy',days);
     history.replaceState(null,'',location.pathname+'?'+next.toString()+location.hash);
     ['main','bottom','dock'].forEach(id=>{const button=document.getElementById('btn-reserve-'+id);button.href=lodging?'contact.html':'reservation.html?'+next.toString();if(lodging)button.textContent='Finaliser avec EYWA';});
@@ -89,17 +90,19 @@
     const card=document.createElement('article');card.className='upsell-item'+(o.selected?' on':'');
     const img=document.createElement('img');img.className='upsell-thumb';img.src=o.img;img.alt='';
     const info=document.createElement('div');info.className='upsell-info';const name=document.createElement('h3');name.className='upsell-name';name.textContent=o.name;
-    const price=document.createElement('p');price.className='upsell-price';price.textContent=money(o.price*days)+(days>1?' pour '+days+' jours':'');
+    const price=document.createElement('p');price.className='upsell-price';price.innerHTML=EywaLaunchOffer.priceHTML(o.price*days)+(days>1?' pour '+days+' jours':'');
     info.append(name,price,makeDescription(o.description,o.name));
     const toggle=document.createElement('label');toggle.className='toggle';const input=document.createElement('input');input.type='checkbox';input.checked=o.selected;input.setAttribute('aria-label','Ajouter : '+o.name);const slider=document.createElement('span');slider.className='slider';toggle.append(input,slider);
     input.addEventListener('change',()=>{o.selected=input.checked;card.classList.toggle('on',o.selected);render();});card.append(img,info,toggle);document.getElementById('quote-options').append(card);
   });
   render();
+  EywaLaunchOffer.onChange(render);
   if (window.EywaQuoteValidity) window.EywaQuoteValidity.watchQuote(p);
   window.addEventListener('pageshow',()=>{
     document.querySelectorAll('#quote-options input').forEach((input,i)=>{input.checked=options[i].selected;});
     render();
   });
 })();
+
 
 

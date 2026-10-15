@@ -137,6 +137,7 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
 .payment-breakdown>div{display:flex;align-items:baseline;justify-content:space-between;gap:16px;font-size:14px;line-height:1.5}
 .payment-breakdown strong{white-space:nowrap}.payment-breakdown .payment-due{font-weight:700;color:#291817;border-top:1px solid #e5d9c7;border-bottom:1px solid #e5d9c7;padding:8px 0}
 </style>
+<link rel="stylesheet" href="launch-offer.css?v=20261015"><script src="launch-offer.js?v=20261015"></script>
 </head>
 <body data-eywa-page="reservation" class="quote-booking eywa-warm">
 
@@ -318,7 +319,8 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
   });
 
   var price = Math.round((parseFloat(P.pr) || 350)*100)/100;
-  var totalCents = Math.round(price * 100);
+  var normalTotalCents = Math.round(price * 100);
+  var totalCents = normalTotalCents;
   var depositCents = Math.round(totalCents / 2);
   var balanceCents = totalCents - depositCents;
   function formatMoney(cents) { return (cents / 100).toLocaleString('fr-FR', {style:'currency', currency:'EUR'}); }
@@ -346,7 +348,8 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
     var div = document.createElement('div');
     div.className = 'event-summary-row';
     var label = document.createElement('strong'); label.textContent = r[0];
-    div.append(label, document.createTextNode(r[1]));
+    if(r[0]==='Total'){var value=document.createElement('span');value.id='summary-total';value.textContent=r[1];div.append(label,value);}
+    else div.append(label,document.createTextNode(r[1]));
     summary.appendChild(div);
   });
 
@@ -393,7 +396,7 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
     }
     buildDots(n);
     updatePhases(n);
-    document.getElementById('total-label').textContent = n === 8 ? 'Acompte à régler · 50 %' : 'Total TTC';
+    document.getElementById('total-label').textContent = n === 8 ? (EywaLaunchOffer.state.active?'À régler intégralement':'Acompte à régler · 50 %') : 'Total TTC';
     document.getElementById('total-display').textContent = formatMoney(n === 8 ? depositCents : totalCents);
     window.scrollTo(0, 0);
   }
@@ -475,13 +478,49 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
     showErr('err7', false); goTo(8);
   }
 
-  function doPay() {
-    if (redirectExpiredQuote()) return false;
-    if (!validatePaymentFields(true)) return false;
-    var amountCents = depositCents;
-    var label = encodeURIComponent('Acompte de 50 % EYWA — ' + (P.t || 'Événement'));
-    var checkoutUrl = 'https://tubular-granita-827569.netlify.app/.netlify/functions/checkout';
-    window.location.href = checkoutUrl + '?amount=' + amountCents + '&label=' + label + '&payment_kind=deposit&total_amount=' + totalCents + '&cancel=reservation.html';
+  function applyOfferPrice(){
+    totalCents=EywaLaunchOffer.state.active?Math.round(normalTotalCents/5):normalTotalCents;
+    depositCents=EywaLaunchOffer.state.active?totalCents:Math.round(totalCents/2);
+    balanceCents=totalCents-depositCents;
+    document.getElementById('payment-total').innerHTML=EywaLaunchOffer.priceHTML(normalTotalCents/100);
+    if(document.getElementById('summary-total'))document.getElementById('summary-total').innerHTML=EywaLaunchOffer.priceHTML(normalTotalCents/100);
+    document.getElementById('payment-deposit').textContent=formatMoney(depositCents);
+    document.getElementById('payment-balance').textContent=formatMoney(balanceCents);
+    document.getElementById('payment-balance').previousElementSibling.textContent=EywaLaunchOffer.state.active?'Reste à payer après le règlement':'Solde restant après l’acompte';
+    document.querySelector('.payment-due span').textContent=EywaLaunchOffer.state.active?'À régler maintenant · paiement intégral':'À régler maintenant · acompte de 50 %';
+    document.querySelector('#s8 .step-sub').textContent=EywaLaunchOffer.state.active?'Bénéficiez de −80 % sur la totalité du devis en réglant intégralement votre réservation. Aucun solde ne restera à payer.':'Réglez l’acompte de 50 % pour confirmer votre réservation. Les 50 % restants seront réglés séparément.';
+    document.querySelector('#cgv-wrap span').innerHTML="J’ai lu et j’accepte les <strong>conditions générales de vente</strong> d’EYWA. "+(EywaLaunchOffer.state.active?'Je comprends que je règle la totalité du devis remisé pour confirmer ma réservation.':'Je comprends que le versement de l’acompte de 50 % confirme ma réservation et bloque la date.');
+    document.getElementById('btn-pay').textContent=EywaLaunchOffer.state.active?'Payer '+formatMoney(depositCents)+' en une fois →':'Payer l’acompte de 50 % →';
+    var paymentVisible=document.getElementById('s8').style.display!=='none';
+    document.getElementById('total-display').innerHTML=paymentVisible?formatMoney(depositCents):EywaLaunchOffer.priceHTML(normalTotalCents/100);
+    document.getElementById('total-label').textContent=paymentVisible?(EywaLaunchOffer.state.active?'À régler intégralement':'Acompte à régler · 50 %'):'Total TTC';
+  }
+  EywaLaunchOffer.onChange(applyOfferPrice);
+  async function doPay() {
+    if(redirectExpiredQuote()||!validatePaymentFields(true))return false;
+    var previousOffer=EywaLaunchOffer.state.active,previousAmount=depositCents;
+    var btn=document.getElementById('btn-pay');btn.disabled=true;
+    try{
+      await EywaLaunchOffer.refresh();applyOfferPrice();
+      if(previousOffer!==EywaLaunchOffer.state.active||previousAmount!==depositCents){
+        document.getElementById('cgv').checked=false;syncCheck(document.getElementById('cgv-wrap'));
+        document.getElementById('err8').textContent='L’offre vient de changer. Vérifiez le nouveau montant affiché avant de confirmer le paiement.';showErr('err8',true);return false;
+      }
+      if(!EywaLaunchOffer.state.supported){
+        window.location.href='https://tubular-granita-827569.netlify.app/.netlify/functions/checkout?amount='+depositCents+'&label='+encodeURIComponent('Acompte de 50 % EYWA — '+(P.t||'Événement'))+'&payment_kind=deposit&total_amount='+totalCents+'&cancel=reservation.html';return false;
+      }
+      var response=await fetch('https://tubular-granita-827569.netlify.app/.netlify/functions/launch-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({quote:P,offer:EywaLaunchOffer.state.active,expectedCents:depositCents})});
+      var data=await response.json();
+      if(!response.ok){
+        if(data.code==='OFFER_ENDED')await EywaLaunchOffer.refresh();
+        if(data.code==='PRICE_CHANGED'&&Number.isSafeInteger(data.normalCents)){normalTotalCents=data.normalCents;applyOfferPrice();}
+        document.getElementById('cgv').checked=false;syncCheck(document.getElementById('cgv-wrap'));
+        throw Error(data.error||'Impossible de préparer le paiement. Réessayez ou contactez EYWA.');
+      }
+      var paymentUrl=new URL(data.url);if(paymentUrl.hostname!=='checkout.stripe.com'||paymentUrl.protocol!=='https:')throw Error('Lien de paiement invalide');
+      window.location.href=paymentUrl.href;
+    }catch(error){document.getElementById('err8').textContent=error.message;showErr('err8',true);}
+    finally{btn.disabled=false;}
     return false;
   }
 
@@ -491,3 +530,4 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
 <script src="eywa-assistant.js?v=20261006-light-bar" defer></script>
 </body>
 </html>
+
