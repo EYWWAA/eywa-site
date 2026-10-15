@@ -1,3 +1,10 @@
+/* Couleur commune des boutons ; les variantes sont des aperçus explicites. */
+:root{--eywa-action-color:#c4937f}
+html[data-eywa-brown="rose"]{--eywa-action-color:#C4937F}
+html[data-eywa-brown="caramel"]{--eywa-action-color:#BE957A}
+html[data-eywa-brown="noisette"]{--eywa-action-color:#B38A72}
+html[data-eywa-brown="cannelle"]{--eywa-action-color:#AA7D65}
+html[data-eywa-brown="cafe"]{--eywa-action-color:#A17E70}
 /* Palette EYWA validée : crème, beige chaud, gris-beige et marron rosé. */
 html body.eywa-warm{
  --accent:#c4937f!important;--green:#291817!important;--green-dark:#291817!important;--green-light:#594c42!important;--gold:#c4937f!important;--rose:#c4937f!important;--orange:#c4937f!important;--sand:#eee9df!important;
@@ -81,13 +88,13 @@ html body.eywa-warm.eywa-home :is(.button,.nav-button,#md-cta,.md-cta,.eywa-help
 html body.eywa-warm.eywa-photo-opening #accueil .hero-quote .button,
 html body.eywa-warm.eywa-photo-opening header.nav .nav-button,
 html body.eywa-warm.eywa-home header.nav .nav-group>a[href*="contact.html"]{
- background:#c4937f!important;color:#291817!important;border-color:#c4937f!important;box-shadow:none!important;
+ background:var(--eywa-action-color,#c4937f)!important;color:#291817!important;border-color:var(--eywa-action-color,#c4937f)!important;box-shadow:none!important;
 }
 html body.eywa-warm.eywa-home :is(.button,.nav-button,#md-cta,.md-cta,.eywa-help-contact):hover,
 html body.eywa-warm.eywa-photo-opening #accueil .hero-quote .button:hover,
 html body.eywa-warm.eywa-photo-opening header.nav .nav-button:hover,
 html body.eywa-warm.eywa-home header.nav .nav-group>a[href*="contact.html"]:hover{
- background:#c4937f!important;color:#291817!important;box-shadow:inset 0 0 0 2px #291817!important;
+ background:var(--eywa-action-color,#c4937f)!important;color:#291817!important;box-shadow:inset 0 0 0 2px #291817!important;
 }
 html body.eywa-warm.eywa-home header.nav .nav-group>a[href*="contact.html"]{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 20px;border-radius:999px}
 html body.eywa-warm .eywa-help-contact :is(span,small,svg){color:#291817!important}
@@ -104,11 +111,11 @@ html body.eywa-warm :focus-visible{outline:2px solid #8a6959!important;outline-o
 html body.eywa-warm :is(.button,.nav-button,.md-cta,.btn-fq,.btn-next,.btn-cta,.btn-pay,.btn-contact,.btn-main,.btn-pay-final,.btn-gold,.button-whatsapp,.contact-primary,.eywa-help-contact),
 html body.eywa-warm :is(#accueil,#tarifs,#contact-directe,#reservation) :is(.button,.nav-button,.md-cta,.contact-primary),
 html body.eywa-warm.eywa-photo-opening header.nav .nav-button{
- background:#c4937f!important;color:#291817!important;border-color:#c4937f!important;box-shadow:none!important;
+ background:var(--eywa-action-color,#c4937f)!important;color:#291817!important;border-color:var(--eywa-action-color,#c4937f)!important;box-shadow:none!important;
 }
 html body.eywa-warm :is(.button,.nav-button,.md-cta,.btn-fq,.btn-next,.btn-cta,.btn-pay,.btn-contact,.btn-main,.btn-pay-final,.btn-gold,.button-whatsapp,.contact-primary,.eywa-help-contact):hover,
 html body.eywa-warm :is(#accueil,#tarifs,#contact-directe,#reservation) :is(.button,.nav-button,.md-cta,.contact-primary):hover{
- background:#c4937f!important;color:#291817!important;box-shadow:inset 0 0 0 2px #291817!important;
+ background:var(--eywa-action-color,#c4937f)!important;color:#291817!important;box-shadow:inset 0 0 0 2px #291817!important;
 }
 html body.eywa-warm :is(.eywa-help-contact,.contact-primary) :is(span,small,svg){color:#291817!important}
 html body.eywa-warm[data-eywa-page] header.nav .nav-button{min-height:44px!important;padding:0 20px!important;border-radius:999px!important;text-decoration:none!important}
@@ -118,9 +125,9 @@ html body.eywa-warm.eywa-photo-opening header.nav .navlinks.open :is(a,.nav-plac
 html body.eywa-warm :is(#savoir-faire .reference-craft-hero h2,#savoir-faire .reference-craft-hero strong){color:#fffbef!important}
 /* Le fond pleine largeur de la navigation est porté par un pseudo-élément. */
 html body.eywa-warm header.nav::before{background:#eee9df!important;border-color:#e5d9c7!important}
-html body.eywa-warm header.nav .nav-group>a::after{background-color:#c4937f!important;border-color:#c4937f!important}
-html body.eywa-warm[data-eywa-page] header.nav .nav-button{background:#c4937f!important;color:#291817!important;border-color:#c4937f!important}
-html body.eywa-warm[data-eywa-page] header.nav .nav-button:hover{background:#c4937f!important;color:#291817!important}
+html body.eywa-warm header.nav .nav-group>a::after{background-color:#c4937f!important;border-color:var(--eywa-action-color,#c4937f)!important}
+html body.eywa-warm[data-eywa-page] header.nav .nav-button{background:var(--eywa-action-color,#c4937f)!important;color:#291817!important;border-color:var(--eywa-action-color,#c4937f)!important}
+html body.eywa-warm[data-eywa-page] header.nav .nav-button:hover{background:var(--eywa-action-color,#c4937f)!important;color:#291817!important}
 /* Les barres d'action du devis restent crème, y compris aux étapes suivantes. */
 html body.eywa-warm :is(.step-actions,.quote-dock,.btn-row){background:#fffbef!important;color:#291817!important;border-color:#e5d9c7!important}
-html body.eywa-warm header.nav .nav-group>a[aria-current="page"]::after{background:#c4937f!important;border-color:#c4937f!important}
+html body.eywa-warm header.nav .nav-group>a[aria-current="page"]::after{background:var(--eywa-action-color,#c4937f)!important;border-color:var(--eywa-action-color,#c4937f)!important}
