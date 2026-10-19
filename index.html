@@ -199,6 +199,14 @@ body.eywa-photo-opening header.nav .brand-reference-logo{translate:0 20px}
 </style>
 <link rel="stylesheet" href="launch-offer.css?v=20261015-premiere"><script src="launch-offer.js?v=20261015-premiere"></script>
 <link rel="stylesheet" href="brand-unified.css?v=20261015-vector">
+<style id="eywa-intro-photo-layout">
+/* Preserve the desktop crop; keep the mobile photo in normal document flow. */
+body.eywa-home #services .editorial-photo img{position:absolute;inset:0;object-position:center 40%}
+@media(max-width:760px){
+ body.eywa-home #services .editorial-photo{width:100%;aspect-ratio:auto}
+ body.eywa-home #services .editorial-photo img{position:static;height:auto;aspect-ratio:4/3}
+}
+</style>
 </head>
 <body data-eywa-page="home" class="eywa-home eywa-photo-opening eywa-warm">
   <header class="wrap nav">
@@ -225,7 +233,7 @@ body.eywa-photo-opening header.nav .brand-reference-logo{translate:0 20px}
 
     <section class="intro-band visual-intro" id="services" aria-labelledby="intro-title">
       <div class="wrap visual-split">
-        <figure class="editorial-photo" style="position:relative"><img style="position:absolute;inset:0;object-position:center 40%" src="assets/photos-reelles/louis-bar-eywa-20261017.jpeg" alt="Louis, barista EYWA, derrière le coffee bar blanc avec son équipement et ses plantes" loading="lazy" width="710" height="1536"></figure>
+        <figure class="editorial-photo" style="position:relative"><img src="assets/photos-reelles/louis-bar-eywa-20261017.jpeg" alt="Louis, barista EYWA, derrière le coffee bar blanc avec son équipement et ses plantes" loading="eager" width="710" height="1536"></figure>
         <div class="editorial-copy">
           <p class="section-kicker">Ce que nous faisons</p>
           <h2 id="intro-title">Nous amenons le coffee bar<br>sur votre événement.</h2>
