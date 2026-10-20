@@ -50,7 +50,7 @@
 (function(){
  var id=new URLSearchParams(location.search).get('session_id'),title=document.getElementById('payment-confirm-title'),copy=document.getElementById('payment-confirm-copy');
  if(!id){title.textContent='Merci pour votre réservation';copy.textContent='Contactez-nous si vous souhaitez vérifier la confirmation de votre règlement.';return;}
- fetch('https://tubular-granita-827569.netlify.app/.netlify/functions/launch-payment-status?session_id='+encodeURIComponent(id),{cache:'no-store'}).then(function(response){if(!response.ok)throw Error();return response.json();}).then(function(data){
+ fetch('https://eywa-booking.eywa-booking-cloudflare.workers.dev/launch-payment-status?session_id='+encodeURIComponent(id),{cache:'no-store'}).then(function(response){if(!response.ok)throw Error();return response.json();}).then(function(data){
   if(!data.paid){title.textContent='Paiement à confirmer';copy.textContent='Votre paiement n’est pas encore confirmé. Contactez-nous avant de recommencer un règlement.';return;}
   title.textContent='Paiement confirmé !';
   copy.textContent=(data.full?'Votre paiement intégral de ':'Votre acompte de ')+(data.amountCents/100).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})+' a bien été reçu.';

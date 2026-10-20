@@ -1,9 +1,9 @@
 /* Disponibilité de l'offre partagée : le serveur est la source de vérité. */
 (function(root){
   'use strict';
-  var endpoint='https://tubular-granita-827569.netlify.app/.netlify/functions/launch-offer';
+  var endpoint='https://eywa-booking.eywa-booking-cloudflare.workers.dev/launch-offer';
   var state={supported:false,ready:false,active:false,remaining:0,available:0},listeners=[],pending,pendingDisplay=false,paymentCopy=[];
-  var cacheKey='eywa-launch-display-v1',cacheTTL=5*60*1000,errorTTL=60*1000,memoryCache;
+  var cacheKey='eywa-launch-display-cloudflare-v1',cacheTTL=5*60*1000,errorTTL=60*1000,memoryCache;
   var money=function(n){return Number(n).toLocaleString('fr-FR',{style:'currency',currency:'EUR'});};
   function amount(normal){return state.active?Math.round(Number(normal)*100/5)/100:Number(normal);}
   function priceHTML(normal){
