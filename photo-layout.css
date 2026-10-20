@@ -1,0 +1,28 @@
+/* Photographies dans leur format naturel, sans découper les boissons. */
+body.eywa-home #personnalisation .foam-examples.eywa-foam-gallery{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:12px!important;height:auto!important;min-height:0!important}
+body.eywa-home #personnalisation .eywa-foam-gallery figure{margin:0!important;min-width:0!important;height:auto!important;aspect-ratio:auto!important;overflow:hidden;border-radius:10px;background:transparent!important}
+body.eywa-home #personnalisation .eywa-foam-gallery img{position:static!important;display:block!important;width:100%!important;height:auto!important;aspect-ratio:3/2!important;object-fit:contain!important;transform:none!important}
+body.eywa-home #personnalisation .eywa-foam-gallery figcaption{padding:7px 0 0;font:400 12px/1.4 var(--sans);color:var(--text)}
+.eywa-foam-swipe{display:none}
+body.eywa-home #savoir-faire .craft-editorial-photo.eywa-photo-feature{display:block;aspect-ratio:auto;margin:0}
+body.eywa-home #savoir-faire .eywa-photo-feature img{display:block;width:100%;height:auto!important;aspect-ratio:3/2!important;object-fit:contain!important;object-position:center!important;border-radius:12px}
+body.eywa-home .reference-coffee-cta.eywa-coffee-photo-section{padding:56px 0!important;text-align:left}
+body.eywa-home .eywa-coffee-photo-section .eywa-coffee-final{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;max-width:1180px}
+.eywa-coffee-final figure{margin:0;overflow:hidden;border-radius:14px}
+body.eywa-home .eywa-coffee-photo-section .reference-coffee-photo{position:static!important;display:block!important;inset:auto!important;width:100%!important;height:auto!important;aspect-ratio:3/2!important;object-fit:contain!important;margin:0!important;filter:none!important;transform:none!important}
+body.eywa-home .eywa-coffee-photo-section .kicker{margin-bottom:16px}
+body.eywa-home .eywa-coffee-photo-section h2{font-size:clamp(34px,3.5vw,52px);margin-bottom:24px}
+body.eywa-home .eywa-coffee-photo-section h2 em{margin-top:4px}
+body[data-eywa-page="menu"] .menu-drink-photo{height:auto!important;aspect-ratio:3/2;object-fit:contain!important;margin-bottom:18px}
+.gallery-section-heading{position:absolute;left:0;margin:0;width:100%;font:400 26px/1.25 var(--serif);color:var(--text)}
+.gallery-section-heading[hidden]{display:none}
+@media(max-width:760px){
+ body.eywa-home #personnalisation .foam-examples.eywa-foam-gallery{display:flex!important;gap:12px!important;overflow-x:auto!important;scroll-snap-type:x mandatory;padding:0 0 10px!important;scrollbar-width:thin;scrollbar-color:#b38a72 transparent}
+ body.eywa-home #personnalisation .eywa-foam-gallery figure{flex:0 0 88%;scroll-snap-align:start}
+ .eywa-foam-swipe{display:block;margin-top:5px;font-size:11px}
+ body.eywa-home .reference-coffee-cta.eywa-coffee-photo-section{padding:36px 0!important}
+ body.eywa-home .eywa-coffee-photo-section .eywa-coffee-final{grid-template-columns:1fr;gap:24px}
+ body.eywa-home .eywa-coffee-photo-section h2{font-size:36px;margin-bottom:20px}
+ body.eywa-home .eywa-coffee-photo-section .button{max-width:100%;min-height:48px!important}
+ .gallery-section-heading{font-size:23px}
+}
