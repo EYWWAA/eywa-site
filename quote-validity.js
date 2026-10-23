@@ -55,7 +55,7 @@
       var contact = bottom.querySelector('.btn-contact'); if (contact) contact.href = 'contact.html';
     }
     var availability = document.querySelector('.avail span:last-child');
-    if (availability) availability.textContent = 'Devis expiré · date de l’événement passée.';
+    if (availability) availability.textContent = state.past?'Devis expiré · date de l’événement passée.':'Réservation au moins 3 jours à l’avance.';
     return state;
   }
   function watchQuote(params) {
