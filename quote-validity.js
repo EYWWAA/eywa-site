@@ -15,7 +15,8 @@
   }
   function getStatus(params, now) {
     var eventDate = params.get('d');
-    return { eventDate: eventDate, expired: validDate(eventDate) && eventDate < parisDate(now) };
+    var minimum=EywaBookingPolicy.minimumDate(now);
+    return {eventDate:eventDate,expired:!validDate(eventDate)||eventDate<minimum,past:validDate(eventDate)&&eventDate<parisDate(now)};
   }
   function applyToQuote(params) {
     var state = getStatus(params);
@@ -31,12 +32,12 @@
       banner.className = 'quote-expired-notice';
       banner.setAttribute('aria-labelledby', 'quote-expired-title');
       var title = document.createElement('h2');
-      title.id = 'quote-expired-title'; title.textContent = 'Ce devis est expiré';
+      title.id = 'quote-expired-title'; title.textContent = state.past?'Ce devis est expiré':'Cette date ne peut plus être réservée en ligne';
       var copy = document.createElement('p');
       var date = new Date(state.eventDate + 'T12:00:00Z').toLocaleDateString('fr-FR', {
         timeZone: 'Europe/Paris', day: 'numeric', month: 'long', year: 'numeric'
       });
-      copy.textContent = 'La date prévue pour votre événement, le ' + date + ', est passée. Vous pouvez consulter ce devis, mais il ne permet plus de réserver une prestation.';
+      copy.textContent = state.past?'La date de votre événement est passée. Obtenez un nouveau devis pour une nouvelle date.':'La réservation doit être effectuée au moins 3 jours avant l’événement. Choisissez une nouvelle date pour réserver.';
       var actions = document.createElement('div'); actions.className = 'quote-expired-actions';
       [['Obtenir un nouveau devis', 'devis-instantane.html'], ['Nous contacter', 'contact.html']].forEach(function (item) {
         var link = document.createElement('a'); link.textContent = item[0]; link.href = item[1]; actions.appendChild(link);

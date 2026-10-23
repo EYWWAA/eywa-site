@@ -3,12 +3,12 @@
   'use strict';
   var endpoint='https://eywa-booking.eywa-booking-cloudflare.workers.dev/launch-offer';
   var state={supported:false,ready:false,active:false,remaining:0,available:0},listeners=[],pending,pendingDisplay=false,paymentCopy=[];
-  var cacheKey='eywa-launch-display-cloudflare-v1',cacheTTL=5*60*1000,errorTTL=60*1000,memoryCache;
+  var cacheKey='eywa-launch-display-cloudflare-v2',cacheTTL=5*60*1000,errorTTL=60*1000,memoryCache;
   var money=function(n){return Number(n).toLocaleString('fr-FR',{style:'currency',currency:'EUR'});};
-  function amount(normal){return state.active?Math.round(Number(normal)*100/5)/100:Number(normal);}
-  function priceHTML(normal){
-    var current=amount(normal);
-    return state.active&&Number(normal)>0?'<span class="launch-price"><del aria-label="Tarif habituel : '+money(normal)+'">'+money(normal)+'</del><strong aria-label="Prix remisé : '+money(current)+'">'+money(current)+'</strong><span class="launch-badge">−80 %</span></span>':money(normal);
+  function amount(normal,protectedAmount){var protectedValue=Number(protectedAmount)||0;return state.active?Math.round((Number(normal)-protectedValue)*100/5)/100+protectedValue:Number(normal);}
+  function priceHTML(normal,protectedAmount){
+    var current=amount(normal,protectedAmount);
+    return state.active&&current<Number(normal)?'<span class="launch-price"><del aria-label="Tarif habituel : '+money(normal)+'">'+money(normal)+'</del><strong aria-label="Prix remisé : '+money(current)+'">'+money(current)+'</strong><span class="launch-badge">'+(Number(protectedAmount)>0?'Offre hors personnalisations':'−80 %')+'</span></span>':money(normal);
   }
   function update(value){
     var previous=JSON.stringify(state);
@@ -49,7 +49,7 @@
     document.querySelectorAll('.how-steps p').forEach(function(el){var normal=el.textContent,offer=normal.replace('avant le versement de l’acompte','avant le règlement de votre réservation').replace('vous confirmez et réglez l’acompte','vous confirmez et réglez intégralement votre devis remisé pendant l’offre de lancement');if(offer!==normal)paymentCopy.push({el:el,normal:normal,offer:offer});});
     var main=document.querySelector('main'),hero=document.querySelector('#accueil');if(!main&&!hero)return;
     var el=document.createElement('aside');el.className='launch-banner';el.dataset.launchBanner='';el.hidden=true;
-    el.innerHTML='<strong>Offre de lancement : −80 %</strong><span>Sur tout votre devis, personnalisations et déplacement compris. Offre valable pour la première réservation réglée intégralement.</span>';
+    el.innerHTML='<strong>Offre de lancement : −80 %</strong><span>Sur la prestation et le déplacement. Personnalisations au tarif normal. Offre valable pour la première réservation réglée intégralement.</span>';
     if(hero)hero.after(el);else main.prepend(el);
   }
   root.EywaLaunchOffer={state:state,amount:amount,priceHTML:priceHTML,money:money,refresh:refresh,onChange:function(fn){listeners.push(fn);if(state.ready)fn(state);},endpoint:endpoint};

@@ -7,7 +7,7 @@
   const guests = Math.round(number('g',50,2000)), hours = number('h',1.5,24), days = Math.round(number('dy',1,365));
   const staff = Math.max(1,Math.ceil(guests/(hours*50)));
   const options = [
-    {id:'bar',name:'Habillage du bar',price:250,img:'assets/gallery-v4/08-dior-boutique.webp',description:'Signalétique personnalisée et habillage du coffee bar avec votre logo, vos couleurs ou le visuel de votre campagne. Un élément visuel fort qui harmonise votre événement et rend votre marque immédiatement reconnaissable. Nous validons ensemble les fichiers graphiques et le rendu avant production.'},
+    {id:'bar',name:'Habillage du bar',price:200,img:'assets/gallery-v4/08-dior-boutique.webp',description:'Signalétique personnalisée et habillage du coffee bar avec votre logo, vos couleurs ou le visuel de votre campagne. Un élément visuel fort qui harmonise votre événement et rend votre marque immédiatement reconnaissable. Nous validons ensemble les fichiers graphiques et le rendu avant production.'},
     {id:'cups',name:'Gobelets sur mesure',price:100,img:'assets/gallery-v4/17-nike-gobelet.webp',description:'Votre logo, votre slogan ou un QR code sur les gobelets : nous nous chargeons de la personnalisation. Le type de gobelet, la finition, le design et la quantité sont définis avec vous. Transmettez votre fichier graphique au format vectoriel ou PDF haute définition. Les délais de production et tout ajustement de prix sont confirmés avant fabrication.'},
     {id:'logo',name:'Logo sur les boissons',price:100,img:'assets/gallery-v4/01-bar-sans-logo-20261008.webp',description:'Transformez vos boissons en support de communication avec votre logo, un message ou un motif personnalisé sur la mousse. Une attention qui prolonge votre identité jusque dans la tasse et invite vos invités à partager leur expérience. Le visuel et les boissons compatibles sont validés avec vous avant l’événement.'}
   ];
@@ -15,7 +15,7 @@
   try { selected = JSON.parse(p.get('options') || '[]'); } catch (_) {}
   if (!Array.isArray(selected)) selected = [];
   options.forEach(o => o.selected = selected.includes(o.name));
-  const service = (650 + Math.max(0,guests-50)*5 + Math.round(Math.max(0,hours-1.5)*150) + (staff-1)*200)*days;
+  const service = (450 + Math.max(0,guests-50)*5 + Math.round(Math.max(0,hours-1.5)*150) + (staff-1)*200)*days;
   const km=Number(p.get('tk')), minutes=Number(p.get('tm'));
   const hasTravel=p.has('tk')&&p.has('tm')&&Number.isFinite(km)&&Number.isFinite(minutes)&&km>=0&&minutes>=0&&km<20000&&minutes<30000;
   const lodging=hasTravel&&Number(p.get('to'))>240;
@@ -62,26 +62,26 @@
     const clock=n=>Math.floor((n%1440)/60)+'h'+String(n%60).padStart(2,'0');
     serviceTime=clock(hh*60+mm)+' – '+clock(end)+(end>=1440?' (le lendemain)':'');
   }
-  const makeLine=(title,amount,description,schedule)=>{
+  const makeLine=(title,amount,description,schedule,protectedAmount)=>{
     const row=document.createElement('article');row.className='quote-line';
-    const head=document.createElement('div');head.className='quote-line-head';const h=document.createElement('h3');h.textContent=title;const value=document.createElement('strong');value.innerHTML=window.EywaLaunchOffer&&typeof amount==='number'?EywaLaunchOffer.priceHTML(amount):String(amount);head.append(h,value);row.append(head);
+    const head=document.createElement('div');head.className='quote-line-head';const h=document.createElement('h3');h.textContent=title;const value=document.createElement('strong');value.innerHTML=window.EywaLaunchOffer&&typeof amount==='number'?EywaLaunchOffer.priceHTML(amount,protectedAmount):String(amount);head.append(h,value);row.append(head);
     if(schedule){const time=document.createElement('p');time.className='quote-line-time';time.textContent=schedule;row.append(time);}
     row.append(makeDescription(description,title));return row;
   };
   function render(){
     const lines=document.getElementById('line-items');lines.replaceChildren();
-    lines.append(makeLine('Formule classique',650*days,'Un coffee bar, un barista professionnel et des boissons préparées à la demande. Le forfait comprend 1 h 30 de service pour jusqu’à 50 invités, le matériel et les gobelets. Installation et rangement hors du temps de service.',serviceTime));
+    lines.append(makeLine('Formule classique',450*days,'Un coffee bar, un barista professionnel et des boissons préparées à la demande. Le forfait comprend 1 h 30 de service pour jusqu’à 50 invités, le matériel et les gobelets. Installation et rangement hors du temps de service.',serviceTime));
     if(guests>50)lines.append(makeLine('Invités supplémentaires',(guests-50)*5*days,(guests-50)+' invités au-delà du forfait de base, par jour.'));
     if(hours>1.5)lines.append(makeLine('Prolongation du service',Math.round((hours-1.5)*150)*days,'150 € par heure supplémentaire. '+duration+' de service'+(days>1?' par jour.':'.')));
     if(staff>1)lines.append(makeLine('Renfort barista',(staff-1)*200*days,(staff-1)+' barista(s) supplémentaire(s) pour adapter l’équipe au nombre d’invités et à la durée du service.'));
-    options.filter(o=>o.selected).forEach(o=>lines.append(makeLine(o.name,o.price*days,o.description)));
+    options.filter(o=>o.selected).forEach(o=>lines.append(makeLine(o.name,o.price*days,o.description,null,o.price*days)));
     lines.append(makeLine(p.get('lf')==='1'?'Déplacement dans la zone locale':'Déplacement aller-retour',hasTravel?travel:'À confirmer','Gratuit dans un rayon de 20 km autour de Charleville-Mézières. Au-delà, le trajet complet est facturé.'));
     if(lodging)lines.append(makeLine('Hébergement du barista','À confirmer','Le trajet aller dépasse quatre heures. Un logement sur place est à prévoir pour le ou les baristas. Le nombre de nuits et le montant seront précisés avec vous avant réservation. Ce coût n’est pas inclus dans le total affiché.'));
+    const protectedAmount=options.filter(o=>o.selected).reduce((n,o)=>n+o.price*days,0);
     const total=Math.round((service+travel+options.filter(o=>o.selected).reduce((n,o)=>n+o.price*days,0))*100)/100;
     if(hasTravel)document.querySelector('.price-lbl').textContent='Prestation et trajet aller-retour · hébergement éventuel non compris';
-    document.getElementById('price-main').innerHTML=EywaLaunchOffer.priceHTML(total);document.getElementById('dock-total').innerHTML=EywaLaunchOffer.priceHTML(total);
-    document.querySelectorAll('.upsell-price').forEach((el,i)=>{el.innerHTML=EywaLaunchOffer.priceHTML(options[i].price*days)+(days>1?' pour '+days+' jours':'');});
-    const next=new URLSearchParams(p);next.set('pr',total);next.set('options',JSON.stringify(options.filter(o=>o.selected).map(o=>o.name)));next.set('dy',days);
+    document.getElementById('price-main').innerHTML=EywaLaunchOffer.priceHTML(total,protectedAmount);document.getElementById('dock-total').innerHTML=EywaLaunchOffer.priceHTML(total,protectedAmount);
+    const next=new URLSearchParams(p);next.set('v','20261024-regles');next.set('pr',total);next.set('options',JSON.stringify(options.filter(o=>o.selected).map(o=>o.name)));next.set('dy',days);
     history.replaceState(null,'',location.pathname+'?'+next.toString()+location.hash);
     ['main','bottom','dock'].forEach(id=>{const button=document.getElementById('btn-reserve-'+id);button.href=lodging?'contact.html':'reservation.html?'+next.toString();if(lodging)button.textContent='Finaliser avec EYWA';});
     if (window.EywaQuoteValidity) window.EywaQuoteValidity.applyToQuote(next);
@@ -90,8 +90,7 @@
     const card=document.createElement('article');card.className='upsell-item'+(o.selected?' on':'');
     const img=document.createElement('img');img.className='upsell-thumb';img.src=o.img;img.alt='';
     const info=document.createElement('div');info.className='upsell-info';const name=document.createElement('h3');name.className='upsell-name';name.textContent=o.name;
-    const price=document.createElement('p');price.className='upsell-price';price.innerHTML=EywaLaunchOffer.priceHTML(o.price*days)+(days>1?' pour '+days+' jours':'');
-    info.append(name,price,makeDescription(o.description,o.name));
+    info.append(name,makeDescription(o.description,o.name));
     const toggle=document.createElement('label');toggle.className='toggle';const input=document.createElement('input');input.type='checkbox';input.checked=o.selected;input.setAttribute('aria-label','Ajouter : '+o.name);const slider=document.createElement('span');slider.className='slider';toggle.append(input,slider);
     input.addEventListener('change',()=>{o.selected=input.checked;card.classList.toggle('on',o.selected);render();});card.append(img,info,toggle);document.getElementById('quote-options').append(card);
   });

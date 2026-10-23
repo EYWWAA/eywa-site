@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
+<head><script src="booking-policy.js?v=20261024"></script>
 <script src="theme-comparison.js?v=20261015-marrons"></script>
   <link rel="icon" href="/favicon.ico?v=4" sizes="any">
   <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png?v=4">
@@ -108,7 +108,7 @@
 <link rel="stylesheet" href="soft-blush.css?v=20261007-etapes-detaillees">
 <link rel="stylesheet" href="black-palette.css?v=20261007-noir-global">
 <link rel="stylesheet" href="theme-comparison.css?v=20261009-palettes">
-<script src="quote-validity.js?v=20261010-expiration"></script>
+<script src="quote-validity.js?v=20261024-regles"></script>
 <script>
   function redirectExpiredQuote() {
     var params = new URLSearchParams(window.location.search || window.location.hash.replace(/^#/, '?'));
@@ -137,14 +137,15 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
 .payment-breakdown>div{display:flex;align-items:baseline;justify-content:space-between;gap:16px;font-size:14px;line-height:1.5}
 .payment-breakdown strong{white-space:nowrap}.payment-breakdown .payment-due{font-weight:700;color:#291817;border-top:1px solid #e5d9c7;border-bottom:1px solid #e5d9c7;padding:8px 0}
 </style>
-<link rel="stylesheet" href="launch-offer.css?v=20261015-premiere"><script src="launch-offer.js?v=20261020-cloudflare"></script>
+<link rel="stylesheet" href="launch-offer.css?v=20261015-premiere"><script src="launch-offer.js?v=20261024-regles"></script>
 <link rel="stylesheet" href="brand-unified.css?v=20261015-vector">
+<link rel="stylesheet" href="booking-rules.css?v=20261024"><script src="phone-validation.js?v=20261024"></script><script src="booking-client.js?v=20261024"></script>
 </head>
 <body data-eywa-page="reservation" class="quote-booking eywa-warm">
 
 <div class="top">
   <a href="index.html?v=20261007-etapes-detaillees" class="logo" aria-label="EYWA, accueil"><img class="eywa-wordmark" src="assets/brand/eywa-wordmark.svg?v=20261022-final" alt="EYWA Coffee Catering" width="1450" height="420"></a>
-  <a class="quote-home" id="back-to-quote" href="devis-instantane.html?v=20261007-etapes-detaillees">Retour au devis ↗</a>
+  <a class="quote-home" id="back-to-quote" href="devis-instantane.html?v=20261024-regles">Retour au devis ↗</a>
 </div>
 
 <div class="phases" id="phases">
@@ -167,7 +168,7 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
         <div class="step-sub">Cette étape confirme tous les détails opérationnels de votre événement et génère votre facture.</div>
       </div>
       <div class="event-summary" id="event-summary"></div>
-      <div class="btn-row"><button class="btn-next" onclick="goTo(2)">Commencer →</button></div>
+      <p class="booking-status" id="booking-status" role="status">Vérification de votre devis et de la disponibilité…</p><div class="btn-row"><button class="btn-next" id="begin-booking" onclick="beginBooking()" disabled>Commencer →</button></div>
     </div>
 
     <!-- STEP 2: Adresse exacte -->
@@ -190,9 +191,9 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
       <label class="fld">Prénom et nom *</label>
       <input type="text" id="contact-nom" placeholder="Marie Dupont">
       <label class="fld" style="margin-top:1rem">Téléphone portable *</label>
-      <input type="tel" id="contact-tel" placeholder="06 12 34 56 78">
+      <input type="tel" id="contact-tel" placeholder="06 12 34 56 78" required>
       <p class="hint">Numéro joignable le jour de l'événement</p>
-      <div class="error-msg" id="err3">Veuillez remplir le nom et le téléphone.</div>
+      <div class="error-msg" id="err3">Indiquez le nom du contact et un numéro de téléphone valide avec son indicatif.</div>
       <div class="btn-row"><button class="btn-back" onclick="goTo(2)">← Retour</button><button class="btn-next" onclick="next3()">Suivant →</button></div>
     </div>
 
@@ -235,11 +236,8 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
       <div class="step-title">Code vestimentaire</div>
       <div class="step-sub">Comment souhaitez-vous que notre barista soit habillé(e) pour votre événement ?</div>
       <div class="radio-group" id="dress-group">
-        <label class="radio-opt" onclick="selectRadio('dress-group',this,'Professionnel')">
-          <input type="radio" name="dress" value="Professionnel"> <span>Tenue professionnelle (tablier EYWA)</span>
-        </label>
-        <label class="radio-opt" onclick="selectRadio('dress-group',this,'Tout en noir')">
-          <input type="radio" name="dress" value="Tout en noir"> <span>Tout en noir</span>
+        <label class="radio-opt" onclick="selectRadio('dress-group',this,'Tenue barista (tablier)')">
+          <input type="radio" name="dress" value="Tenue barista (tablier)"> <span>Tenue barista (tablier)</span>
         </label>
         <label class="radio-opt" onclick="selectRadio('dress-group',this,'Formelle')">
           <input type="radio" name="dress" value="Formelle"> <span>Tenue formelle (chemise, pantalon élégant)</span>
@@ -247,8 +245,15 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
         <label class="radio-opt" onclick="selectRadio('dress-group',this,'Business casual')">
           <input type="radio" name="dress" value="Business casual"> <span>Business casual</span>
         </label>
+        <label class="radio-opt" onclick="selectRadio('dress-group',this,'Autre')"><input type="radio" name="dress" value="Autre"><span>Autre</span></label>
+        <label class="radio-opt" onclick="selectRadio('dress-group',this,'Vêtements fournis par le client')"><input type="radio" name="dress" value="Vêtements fournis par le client"><span>Nous fournissons les vêtements</span></label>
       </div>
-      <div class="error-msg" id="err6">Veuillez choisir un code vestimentaire.</div>
+      <div class="dress-detail-wrap" id="dress-detail-wrap" hidden><label for="dress-details">Précisez la tenue souhaitée ou les vêtements fournis *</label><textarea id="dress-details" maxlength="2000" placeholder="Couleurs, style, pièces fournies…"></textarea></div>
+      <label class="fld" for="reference-photo">Photo de référence (facultatif)</label>
+      <p class="hint">Montrez-nous le style ou la personnalisation que vous souhaitez. JPG, PNG ou WebP, 10 Mo maximum.</p>
+      <input type="file" id="reference-photo" accept="image/jpeg,image/png,image/webp">
+      <p class="field-error" id="photo-error" role="status" hidden></p><img class="photo-reference" id="photo-preview" alt="Votre photo de référence" hidden>
+      <div class="error-msg" id="err6">Choisissez une tenue et précisez votre demande si nécessaire.</div>
       <div class="btn-row"><button class="btn-back" onclick="goTo(5)">← Retour</button><button class="btn-next" onclick="next6()">Suivant →</button></div>
     </div>
 
@@ -268,7 +273,7 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
         </label>
         <label class="check-opt" id="ck3-wrap" onchange="syncCheck(this)">
           <input type="checkbox" id="ck3">
-          <span>Je confirme qu'une <strong>prise électrique 220V standard</strong> (ou groupe électrogène) sera disponible à moins de 10m du bar.</span>
+          <span>Je confirme qu'une <strong>prise électrique 220 V standard</strong> sera obligatoirement disponible à <strong>moins de 10 m du bar</strong>.</span>
         </label>
       </div>
       <div class="error-msg" id="err7">Veuillez cocher les trois cases pour continuer.</div>
@@ -282,6 +287,7 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
       <div class="step-sub">Réglez l’acompte de 50 % pour confirmer votre réservation. Les 50 % restants seront réglés séparément.</div>
       <div class="payment-breakdown" aria-label="Détail du règlement"><div><span>Montant total du devis</span><strong id="payment-total"></strong></div><div class="payment-due"><span>À régler maintenant · acompte de 50 %</span><strong id="payment-deposit"></strong></div><div><span>Solde restant après l’acompte</span><strong id="payment-balance"></strong></div></div>
       <div class="payment-methods-note"><strong>Paiement sécurisé avec Stripe.</strong> Choisissez votre moyen de paiement sur la page suivante.</div>
+      <details class="code-advantage"><summary>Vous avez un code avantage ?</summary><div class="code-entry"><input id="advantage-code" type="text" autocomplete="off" placeholder="Votre code" aria-label="Code avantage"><button type="button" id="apply-code" onclick="applyCode()">Appliquer</button></div><p class="booking-status" id="code-status" role="status"></p></details>
       <label class="fld" for="billing-name">Nom ou raison sociale pour la facture *</label>
       <input type="text" id="billing-name" autocomplete="organization" aria-describedby="err8" oninput="if(document.getElementById('err8').classList.contains('show')) validatePaymentFields(false)" placeholder="Marie Dupont ou SARL Événements Paris">
       <div class="check-group" style="margin-top:1.25rem">
@@ -319,7 +325,7 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
     var kv = x.split('='); if (kv[0]) P[decodeURIComponent(kv[0])] = decodeURIComponent((kv[1]||'').replace(/\+/g,' '));
   });
 
-  var price = Math.round((parseFloat(P.pr) || 350)*100)/100;
+  var price = Math.round((parseFloat(P.pr) || 450)*100)/100;
   var normalTotalCents = Math.round(price * 100);
   var totalCents = normalTotalCents;
   var depositCents = Math.round(totalCents / 2);
@@ -397,7 +403,7 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
     }
     buildDots(n);
     updatePhases(n);
-    document.getElementById('total-label').textContent = n === 8 ? (EywaLaunchOffer.state.active?'À régler intégralement':'Acompte à régler · 50 %') : 'Total TTC';
+    document.getElementById('total-label').textContent = n === 8 ? ((specialPrice||EywaLaunchOffer.state.active)?'À régler intégralement':'Acompte à régler · 50 %') : 'Total TTC';
     document.getElementById('total-display').textContent = formatMoney(n === 8 ? depositCents : totalCents);
     window.scrollTo(0, 0);
   }
@@ -408,6 +414,7 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
     radioVals[groupId] = val;
     var inp = label.querySelector('input');
     if (inp) inp.checked = true;
+    if(groupId==='dress-group')document.getElementById('dress-detail-wrap').hidden=!['Autre','Vêtements fournis par le client'].includes(val);
   }
 
   function syncCheck(wrap) {
@@ -452,7 +459,7 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
   function next3() {
     var n = document.getElementById('contact-nom').value.trim();
     var t = document.getElementById('contact-tel').value.trim();
-    if (!n || !t) { showErr('err3', true); return; }
+    if (!n || !EywaBooking.phoneValid('contact-tel',true)) { showErr('err3', true); return; }
     showErr('err3', false); goTo(4);
   }
   function next4() {
@@ -468,7 +475,7 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
   }
   function next6() {
     var dr = radioVals['dress-group'];
-    if (!dr) { showErr('err6', true); return; }
+    if (!dr || (['Autre','Vêtements fournis par le client'].includes(dr)&&!document.getElementById('dress-details').value.trim()) || photoPending) { showErr('err6', true); return; }
     showErr('err6', false); goTo(7);
   }
   function next7() {
@@ -479,48 +486,72 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
     showErr('err7', false); goTo(8);
   }
 
+  var appliedCode='',specialPrice=false,priceReady=false,availabilityReady=false,photoPending=false,referencePhoto='',priceRequest=0;
+  function personalizationCents(){var rates={'Habillage du bar':200,'Gobelets sur mesure':100,'Logo sur les boissons':100},names=[];try{names=JSON.parse(P.options||'[]');}catch(_){}return Array.isArray(names)?[...new Set(names)].reduce(function(n,name){return n+(rates[name]||0);},0)*Math.max(1,Number(P.dy)||1)*100:0;}
   function applyOfferPrice(){
-    totalCents=EywaLaunchOffer.state.active?Math.round(normalTotalCents/5):normalTotalCents;
-    depositCents=EywaLaunchOffer.state.active?totalCents:Math.round(totalCents/2);
-    balanceCents=totalCents-depositCents;
-    document.getElementById('payment-total').innerHTML=EywaLaunchOffer.priceHTML(normalTotalCents/100);
-    if(document.getElementById('summary-total'))document.getElementById('summary-total').innerHTML=EywaLaunchOffer.priceHTML(normalTotalCents/100);
+    var full=specialPrice||EywaLaunchOffer.state.active;
+    totalCents=specialPrice?100:Math.round(EywaLaunchOffer.amount(normalTotalCents/100,personalizationCents()/100)*100);
+    depositCents=full?totalCents:Math.round(totalCents/2);balanceCents=totalCents-depositCents;
+    var totalHTML=specialPrice?formatMoney(100):EywaLaunchOffer.priceHTML(normalTotalCents/100,personalizationCents()/100);
+    document.getElementById('payment-total').innerHTML=totalHTML;
+    if(document.getElementById('summary-total'))document.getElementById('summary-total').innerHTML=totalHTML;
     document.getElementById('payment-deposit').textContent=formatMoney(depositCents);
     document.getElementById('payment-balance').textContent=formatMoney(balanceCents);
-    document.getElementById('payment-balance').previousElementSibling.textContent=EywaLaunchOffer.state.active?'Reste à payer après le règlement':'Solde restant après l’acompte';
-    document.querySelector('.payment-due span').textContent=EywaLaunchOffer.state.active?'À régler maintenant · paiement intégral':'À régler maintenant · acompte de 50 %';
-    document.querySelector('#s8 .step-sub').textContent=EywaLaunchOffer.state.active?'Bénéficiez de −80 % sur la totalité du devis en réglant intégralement votre réservation. Aucun solde ne restera à payer.':'Réglez l’acompte de 50 % pour confirmer votre réservation. Les 50 % restants seront réglés séparément.';
-    document.querySelector('#cgv-wrap span').innerHTML="J’ai lu et j’accepte les <strong>conditions générales de vente</strong> d’EYWA. "+(EywaLaunchOffer.state.active?'Je comprends que je règle la totalité du devis remisé pour confirmer ma réservation.':'Je comprends que le versement de l’acompte de 50 % confirme ma réservation et bloque la date.');
-    document.getElementById('btn-pay').textContent=EywaLaunchOffer.state.active?'Payer '+formatMoney(depositCents)+' en une fois →':'Payer l’acompte de 50 % →';
+    document.getElementById('payment-balance').previousElementSibling.textContent=full?'Reste à payer après le règlement':'Solde restant après l’acompte';
+    document.querySelector('.payment-due span').textContent=full?'À régler maintenant · paiement intégral':'À régler maintenant · acompte de 50 %';
+    document.querySelector('#s8 .step-sub').textContent=specialPrice?'Votre code est appliqué : le total de votre réservation est de 1 €. Aucun solde ne restera à payer.':EywaLaunchOffer.state.active?'Bénéficiez de −80 % sur la prestation et le déplacement. Les personnalisations sont au tarif normal. Réglez le devis en une fois pour confirmer votre réservation.':'Réglez l’acompte de 50 % pour confirmer votre réservation. Les 50 % restants seront réglés séparément.';
+    document.querySelector('#cgv-wrap span').innerHTML='J’ai lu et j’accepte les <strong>conditions générales de vente</strong> d’EYWA. '+(full?'Je comprends que je règle la totalité du devis affiché pour confirmer ma réservation.':'Je comprends que le versement de l’acompte de 50 % confirme ma réservation et bloque la date.');
+    document.getElementById('btn-pay').textContent=full?'Payer '+formatMoney(depositCents)+' en une fois →':'Payer l’acompte de 50 % →';
+    document.getElementById('btn-pay').disabled=!priceReady||!availabilityReady;
     var paymentVisible=document.getElementById('s8').style.display!=='none';
-    document.getElementById('total-display').innerHTML=paymentVisible?formatMoney(depositCents):EywaLaunchOffer.priceHTML(normalTotalCents/100);
-    document.getElementById('total-label').textContent=paymentVisible?(EywaLaunchOffer.state.active?'À régler intégralement':'Acompte à régler · 50 %'):'Total TTC';
+    document.getElementById('total-display').innerHTML=paymentVisible?formatMoney(depositCents):totalHTML;
+    document.getElementById('total-label').textContent=paymentVisible?(full?'À régler intégralement':'Acompte à régler · 50 %'):'Total TTC';
   }
-  EywaLaunchOffer.onChange(applyOfferPrice);
+  async function refreshQuotePrice(code){
+    var id=++priceRequest;priceReady=false;applyOfferPrice();
+    var response=await fetch(EywaBooking.api+'/quote-price',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({quote:P,offer:EywaLaunchOffer.state.active,code:code||''}),signal:AbortSignal.timeout(12000)}),data=await response.json();
+    if(id!==priceRequest)return;
+    if(!response.ok)throw Error(data.error||'Impossible de vérifier votre devis. Réessayez.');
+    normalTotalCents=data.normalCents;specialPrice=data.special;appliedCode=data.special?code:'';priceReady=true;applyOfferPrice();return data;
+  }
+  async function checkBookingDate(){
+    var status=document.getElementById('booking-status');availabilityReady=false;
+    try{var result=await EywaBooking.availability({date:P.d,days:P.dy||1,h:P.h,ti:P.ti});availabilityReady=result.available;status.textContent=availabilityReady?'Votre date est disponible. Finalisons les détails de votre réservation.':'Cette date est déjà réservée. Choisissez une autre date dans le devis.';status.dataset.error=String(!availabilityReady);}
+    catch(e){status.textContent=e.message;status.dataset.error='true';}
+    document.getElementById('begin-booking').disabled=!availabilityReady||!priceReady;applyOfferPrice();return availabilityReady;
+  }
+  async function beginBooking(){if(await checkBookingDate())goTo(2);}
+  async function applyCode(){
+    var button=document.getElementById('apply-code'),status=document.getElementById('code-status'),code=document.getElementById('advantage-code').value.trim();button.disabled=true;
+    try{await refreshQuotePrice(code);status.textContent=specialPrice?'Code appliqué : total de la réservation 1 €.':'Code retiré. Le tarif du devis est rétabli.';status.dataset.error='false';document.getElementById('cgv').checked=false;syncCheck(document.getElementById('cgv-wrap'));}
+    catch(e){status.textContent=e.message;status.dataset.error='true';await refreshQuotePrice(appliedCode).catch(function(){});}
+    finally{button.disabled=false;}
+  }
+  function collectBookingDetails(){return {address:document.getElementById('addr').value.trim(),contactName:document.getElementById('contact-nom').value.trim(),phone:EywaBooking.phoneValue('contact-tel')||'',phoneCountry:EywaBooking.phoneCountry('contact-tel'),setupLocation:document.getElementById('setup-lieu').value.trim(),outdoor:radioVals['outdoor-group'],unloadParking:document.getElementById('parking-dl').value.trim(),eventParking:document.getElementById('parking-ev').value.trim(),dressCode:radioVals['dress-group'],dressDetails:document.getElementById('dress-details').value.trim(),referencePhoto:referencePhoto,access60:document.getElementById('ck1').checked,space:document.getElementById('ck2').checked,power220:document.getElementById('ck3').checked,cgv:document.getElementById('cgv').checked,billingName:document.getElementById('billing-name').value.trim()};}
+  document.querySelectorAll('#dress-group input,#outdoor-group input').forEach(function(input){input.addEventListener('change',function(){if(this.checked)selectRadio(this.closest('.radio-group').id,this.closest('.radio-opt'),this.value);});});
+  EywaBooking.mountPhone('contact-tel');
+  document.getElementById('addr').value=P.l||'';
+  document.getElementById('reference-photo').addEventListener('change',async function(){
+    var file=this.files[0],error=document.getElementById('photo-error'),preview=document.getElementById('photo-preview');referencePhoto='';preview.hidden=true;error.hidden=true;
+    if(!file)return;if(!['image/jpeg','image/png','image/webp'].includes(file.type)||file.size>10*1024*1024){error.textContent='Choisissez une photo JPG, PNG ou WebP de moins de 10 Mo.';error.hidden=false;this.value='';return;}
+    photoPending=true;var url=URL.createObjectURL(file);
+    try{var image=new Image();image.src=url;await image.decode();var scale=Math.min(1,1280/image.width,1280/image.height),canvas=document.createElement('canvas');canvas.width=Math.round(image.width*scale);canvas.height=Math.round(image.height*scale);canvas.getContext('2d').drawImage(image,0,0,canvas.width,canvas.height);var data=canvas.toDataURL('image/jpeg',.8);if(data.length>1000000)throw Error('Cette photo est trop volumineuse. Choisissez une image plus petite.');referencePhoto=data;preview.src=data;preview.hidden=false;}
+    catch(e){error.textContent=e.message||'Cette photo ne peut pas être lue.';error.hidden=false;this.value='';}finally{URL.revokeObjectURL(url);photoPending=false;}
+  });
+  EywaLaunchOffer.onChange(function(){refreshQuotePrice(appliedCode).then(checkBookingDate).catch(function(e){document.getElementById('booking-status').textContent=e.message;document.getElementById('booking-status').dataset.error='true';});});
   async function doPay() {
-    if(redirectExpiredQuote()||!validatePaymentFields(true))return false;
-    var previousOffer=EywaLaunchOffer.state.active,previousAmount=depositCents;
-    var btn=document.getElementById('btn-pay');btn.disabled=true;
+    if(redirectExpiredQuote()||!validatePaymentFields(true)||!EywaBooking.phoneValid('contact-tel',true)||!document.getElementById('ck3').checked)return false;
+    var previousOffer=EywaLaunchOffer.state.active,previousAmount=depositCents,btn=document.getElementById('btn-pay');btn.disabled=true;
     try{
-      await EywaLaunchOffer.refresh();applyOfferPrice();
-      if(previousOffer!==EywaLaunchOffer.state.active||previousAmount!==depositCents){
-        document.getElementById('cgv').checked=false;syncCheck(document.getElementById('cgv-wrap'));
-        document.getElementById('err8').textContent='L’offre vient de changer. Vérifiez le nouveau montant affiché avant de confirmer le paiement.';showErr('err8',true);return false;
-      }
+      await EywaLaunchOffer.refresh();await refreshQuotePrice(appliedCode);
+      if((!specialPrice&&previousOffer!==EywaLaunchOffer.state.active)||previousAmount!==depositCents){document.getElementById('cgv').checked=false;syncCheck(document.getElementById('cgv-wrap'));throw Error('Le tarif vient de changer. Vérifiez le nouveau montant affiché avant de confirmer le paiement.');}
       if(!EywaLaunchOffer.state.supported)throw Error('Le paiement est temporairement indisponible. Réessayez ou contactez EYWA.');
-      var response=await fetch('https://eywa-booking.eywa-booking-cloudflare.workers.dev/launch-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({quote:P,offer:EywaLaunchOffer.state.active,expectedCents:depositCents})});
+      var response=await fetch(EywaBooking.api+'/launch-checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({quote:P,offer:EywaLaunchOffer.state.active,code:appliedCode,expectedCents:depositCents,bookingDetails:collectBookingDetails()})});
       var data=await response.json();
-      if(!response.ok){
-        if(data.code==='OFFER_ENDED')await EywaLaunchOffer.refresh();
-        if(data.code==='PRICE_CHANGED'&&Number.isSafeInteger(data.normalCents)){normalTotalCents=data.normalCents;applyOfferPrice();}
-        document.getElementById('cgv').checked=false;syncCheck(document.getElementById('cgv-wrap'));
-        throw Error(data.error||'Impossible de préparer le paiement. Réessayez ou contactez EYWA.');
-      }
-      var paymentUrl=new URL(data.url);if(paymentUrl.hostname!=='checkout.stripe.com'||paymentUrl.protocol!=='https:')throw Error('Lien de paiement invalide');
-      window.location.href=paymentUrl.href;
+      if(!response.ok){if(data.code==='OFFER_ENDED')await EywaLaunchOffer.refresh();if(data.code==='PRICE_CHANGED'&&Number.isSafeInteger(data.normalCents)){normalTotalCents=data.normalCents;applyOfferPrice();}if(data.code==='DATE_UNAVAILABLE'){availabilityReady=false;document.getElementById('booking-status').textContent=data.error;}document.getElementById('cgv').checked=false;syncCheck(document.getElementById('cgv-wrap'));throw Error(data.error||'Impossible de préparer le paiement. Réessayez ou contactez EYWA.');}
+      var paymentUrl=new URL(data.url);if(paymentUrl.hostname!=='checkout.stripe.com'||paymentUrl.protocol!=='https:')throw Error('Lien de paiement invalide');window.location.href=paymentUrl.href;
     }catch(error){document.getElementById('err8').textContent=error.message;showErr('err8',true);}
-    finally{btn.disabled=false;}
-    return false;
+    finally{btn.disabled=!priceReady||!availabilityReady;}return false;
   }
 
   goTo(1);

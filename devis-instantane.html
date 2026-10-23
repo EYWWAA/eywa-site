@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
+<head><script src="booking-policy.js?v=20261024"></script>
 <script src="theme-comparison.js?v=20261015-marrons"></script>
   <link rel="icon" href="/favicon.ico?v=4" sizes="any">
   <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png?v=4">
@@ -297,8 +297,9 @@
 <link rel="stylesheet" href="black-palette.css?v=20261007-noir-global">
 <link rel="stylesheet" href="theme-comparison.css?v=20261009-palettes">
 <link rel="stylesheet" href="warm-palette.css?v=20261015-caramel">
-<link rel="stylesheet" href="launch-offer.css?v=20261015-premiere"><script src="launch-offer.js?v=20261020-cloudflare"></script>
+<link rel="stylesheet" href="launch-offer.css?v=20261015-premiere"><script src="launch-offer.js?v=20261024-regles"></script>
 <link rel="stylesheet" href="brand-unified.css?v=20261015-vector">
+<link rel="stylesheet" href="booking-rules.css?v=20261024"><script src="phone-validation.js?v=20261024"></script><script src="booking-client.js?v=20261024"></script>
 </head>
 <body data-eywa-page="quote" class="quote-form eywa-warm">
 
@@ -388,7 +389,7 @@
     <!-- S3 : Date + Heure + Jours -->
     <div class="step" id="s3">
       <div class="question">Quand est votre événement&nbsp;?</div>
-      <div class="question-sub">Nous vérifierons notre disponibilité pour cette date.</div>
+      <div class="question-sub">Réservez au moins 3 jours à l’avance. Les dates déjà réservées sont indisponibles.</div>
       <div class="input-row">
         <div>
           <label class="input-label" for="date-trigger">Date</label>
@@ -401,6 +402,7 @@
           <input type="hidden" id="time-input">
         </div>
       </div>
+      <p class="booking-status" id="date-status" role="status"></p>
       <div class="days-row">
         <div class="days-label">Nombre de jours</div>
         <div class="days-stepper">
@@ -411,7 +413,7 @@
       </div>
       <div class="btn-row">
         <button class="btn-back" onclick="go('s3','s2',1)">← Retour</button>
-        <button class="btn-next disabled" id="btn3" onclick="go('s3','s4',3)">Continuer →</button>
+        <button class="btn-next disabled" id="btn3" onclick="if(dateAvailable)go('s3','s4',3)" disabled>Continuer →</button>
       </div>
     </div>
 
@@ -450,7 +452,7 @@
         style="background-image:url('assets/gallery-v4/17-nike-gobelet.webp')">
         <div class="perso-body">
           <div class="perso-info">
-            <div class="perso-name">Gobelets sur mesure · 100 €</div>
+            <div class="perso-name">Gobelets sur mesure</div>
             <div class="perso-sub">Logo, couleurs ou message de l'événement</div>
           </div>
           <div class="perso-check">
@@ -465,7 +467,7 @@
         style="background-image:url('assets/gallery-v4/01-bar-sans-logo-20261008.webp')">
         <div class="perso-body">
           <div class="perso-info">
-            <div class="perso-name">Habillage du bar · 250 €</div>
+            <div class="perso-name">Habillage du bar</div>
             <div class="perso-sub">Façade du comptoir imprimée à vos couleurs</div>
           </div>
           <div class="perso-check">
@@ -480,7 +482,7 @@
         style="background-image:url('assets/gallery-v4/08-dior-boutique.webp')">
         <div class="perso-body">
           <div class="perso-info">
-            <div class="perso-name">Votre logo sur les boissons · 100 €</div>
+            <div class="perso-name">Votre logo sur les boissons</div>
             <div class="perso-sub">Imprimé à l'encre alimentaire sur la mousse</div>
           </div>
           <div class="perso-check">
@@ -659,7 +661,7 @@
     var n = document.getElementById('nom-input'); if (n) A.nom = n.value.trim();
     var so = document.getElementById('societe-input'); if (so) A.societe = so.value.trim();
     var e = document.getElementById('email-input'); if (e) A.email = e.value.trim();
-    var tel = document.getElementById('tel-input'); if (tel) A.tel = tel.value.trim();
+    var tel = document.getElementById('tel-input'); if (tel) A.tel = EywaBooking.phoneValue('tel-input') || '';
   }
 
   /* S1 */
@@ -720,14 +722,21 @@
   }
 
   /* S3 */
-  function checkS3() {
-    var ok = document.getElementById('date-input').value && document.getElementById('time-input').value;
-    document.getElementById('btn3').classList[ok ? 'remove' : 'add']('disabled');
+  var dateAvailable=false,dateCheck=0;
+  async function checkS3() {
+    var id=++dateCheck,date=document.getElementById('date-input').value,time=document.getElementById('time-input').value,button=document.getElementById('btn3'),status=document.getElementById('date-status');
+    dateAvailable=false;button.disabled=true;button.classList.add('disabled');
+    if(!date||!time){status.textContent='';return;}
+    try{EywaBookingPolicy.eventDays(date,A.days);}catch(e){status.textContent=e.message;status.dataset.error='true';return;}
+    status.textContent='Vérification de la disponibilité…';status.dataset.error='false';
+    try{var result=await EywaBooking.availability({date:date,days:A.days,h:A.hrs,ti:time});if(id!==dateCheck)return;dateAvailable=result.available;status.textContent=dateAvailable?'Date disponible. Elle sera bloquée pendant votre paiement.':'Une des dates choisies est déjà réservée. Choisissez une autre date.';status.dataset.error=String(!dateAvailable);button.disabled=!dateAvailable;button.classList.toggle('disabled',!dateAvailable);}
+    catch(e){if(id===dateCheck){status.textContent=e.message;status.dataset.error='true';}}
   }
 
   function changeDays(delta) {
     A.days = Math.max(1, A.days + delta);
     document.getElementById('days-display').textContent = A.days;
+    checkS3();
   }
 
   /* S4 */
@@ -762,8 +771,8 @@
     var p = document.getElementById('prenom-input').value.trim();
     var n = document.getElementById('nom-input').value.trim();
     var e = document.getElementById('email-input').value.trim();
-    var t = document.getElementById('tel-input').value.trim();
-    var ok = p.length >= 2 && n.length >= 2 && e.includes('@') && e.includes('.') && t.length >= 6;
+    var t = EywaBooking.phoneValue('tel-input');
+    var ok = p.length >= 2 && n.length >= 2 && e.includes('@') && e.includes('.') && Boolean(t);
     var button = document.getElementById('btn6');
     button.classList[ok ? 'remove' : 'add']('disabled');
     button.disabled = !ok;
@@ -775,7 +784,7 @@
      d'evenement. Decision de Louis du 22/08/2026 : meme tarif de base pour
      tous, c'est la personnalisation qui fait monter le panier. */
   var PERSO_PRIX = {
-    'Habillage du bar': 250,
+    'Habillage du bar': 200,
     'Gobelets sur mesure': 100,
     'Logo sur les boissons': 100
   };
@@ -790,11 +799,11 @@
     var extraHrs = Math.max(0, A.hrs - 1.5);
     var baristasNeeded = Math.ceil(A.guests / (A.hrs * 50));
     var extraBaristas = Math.max(0, baristasNeeded - 1);
-    var pricePerDay = 650 + (extraGuests * 5) + Math.round(extraHrs * 150) + (extraBaristas * 200) + persoTotal();
+    var pricePerDay = 450 + (extraGuests * 5) + Math.round(extraHrs * 150) + (extraBaristas * 200) + persoTotal();
     return Math.round((pricePerDay * A.days + window.eywaTravel.total)*100)/100;
   }
 
-  function calcPrice(){return EywaLaunchOffer.amount(calcNormalPrice());}
+  function calcPrice(){return EywaLaunchOffer.amount(calcNormalPrice(),persoTotal()*A.days);}
 
   function showPrice() {
     if(!window.eywaTravel){showStep('s2');return;}
@@ -803,10 +812,10 @@
     var extraHrs = Math.max(0, A.hrs - 1.5);
     var baristasNeeded = Math.ceil(A.guests / (A.hrs * 50));
     var extraBaristas = Math.max(0, baristasNeeded - 1);
-    var pricePerDay = 650 + (extraGuests * 5) + Math.round(extraHrs * 150) + (extraBaristas * 200) + persoTotal();
+    var pricePerDay = 450 + (extraGuests * 5) + Math.round(extraHrs * 150) + (extraBaristas * 200) + persoTotal();
     A.totalPrice = calcPrice();
 
-    document.getElementById('priceDisplay').innerHTML = EywaLaunchOffer.priceHTML(calcNormalPrice());
+    document.getElementById('priceDisplay').innerHTML = EywaLaunchOffer.priceHTML(calcNormalPrice(),persoTotal()*A.days);
 
     var dateStr = A.date ? new Date(A.date + 'T12:00').toLocaleDateString('fr-FR', {day:'numeric',month:'long',year:'numeric'}) : '';
     var ctx = A.guests + ' invité' + (A.guests > 1 ? 's' : '') + ' · ' + hrsLabel(A.hrs);
@@ -816,21 +825,21 @@
     document.getElementById('priceContext').textContent = ctx;
 
     var bd = '';
-    bd += '<div class="brow"><span>Base (50 pers., 1h30)</span><span>' + EywaLaunchOffer.priceHTML(650) + '</span></div>';
+    bd += '<div class="brow"><span>Base (50 pers., 1h30)</span><span>' + EywaLaunchOffer.priceHTML(450) + '</span></div>';
     if (extraGuests > 0) bd += '<div class="brow"><span>+' + extraGuests + ' invité' + (extraGuests>1?'s':'') + ' × 5 €</span><span>' + EywaLaunchOffer.priceHTML(extraGuests*5) + '</span></div>';
     if (extraHrs > 0) bd += '<div class="brow"><span>+' + hrsLabel(extraHrs) + ' × 150 €/h</span><span>' + EywaLaunchOffer.priceHTML(Math.round(extraHrs*150)) + '</span></div>';
     if (extraBaristas > 0) bd += '<div class="brow"><span>' + extraBaristas + ' barista' + (extraBaristas>1?'s':'') + ' sup. × 200 €</span><span>' + EywaLaunchOffer.priceHTML(extraBaristas*200) + '</span></div>';
     for (var pi = 0; pi < A.personalization.length; pi++) {
       var pn = A.personalization[pi], pp = PERSO_PRIX[pn] || 0;
-      if (pp > 0) bd += '<div class="brow"><span>' + pn + '</span><span>' + EywaLaunchOffer.priceHTML(pp) + '</span></div>';
+      if (pp > 0) bd += '<div class="brow"><span>' + pn + '</span><span>' + EywaLaunchOffer.money(pp) + '</span></div>';
     }
     if (A.days > 1) {
-      bd += '<div class="brow total"><span>Par jour</span><span>' + EywaLaunchOffer.priceHTML(pricePerDay) + '</span></div>';
-      bd += '<div class="brow"><span>× ' + A.days + ' jours</span><span>' + EywaLaunchOffer.priceHTML(pricePerDay*A.days) + '</span></div>';
+      bd += '<div class="brow total"><span>Par jour</span><span>' + EywaLaunchOffer.priceHTML(pricePerDay,persoTotal()) + '</span></div>';
+      bd += '<div class="brow"><span>× ' + A.days + ' jours</span><span>' + EywaLaunchOffer.priceHTML(pricePerDay*A.days,persoTotal()*A.days) + '</span></div>';
     }
     bd += '<div class="brow"><span>' + (window.eywaTravel.localFree ? 'Déplacement dans la zone des 20 km' : 'Déplacement aller-retour (' + window.eywaTravel.roundTripKm.toFixed(1) + ' km)') + '</span><span>' + EywaLaunchOffer.priceHTML(window.eywaTravel.total) + '</span></div>';
     if(window.eywaTravel.lodgingRequired)bd += '<div class="brow"><span>Hébergement (trajet aller supérieur à 4 h)</span><span>À confirmer</span></div>';
-    bd += '<div class="brow total"><span>Estimation totale</span><span>' + EywaLaunchOffer.priceHTML(calcNormalPrice()) + '</span></div>';
+    bd += '<div class="brow total"><span>Estimation totale</span><span>' + EywaLaunchOffer.priceHTML(calcNormalPrice(),persoTotal()*A.days) + '</span></div>';
     if(EywaLaunchOffer.state.active)bd += '<div class="brow note"><span>Paiement intégral à la réservation. Offre valable pour la première réservation réglée intégralement.</span></div>';
     bd += '<div class="brow note"><span>Déplacement gratuit dans un rayon de 20 km autour de Charleville-Mézières. Au-delà, trajet complet à 0,25 €/km + 14 €/h de conduite aller-retour, sans déduire les 20 premiers kilomètres. Péages inclus. Hébergement éventuel non compris.</span></div>';
     document.getElementById('breakdown').innerHTML = bd;
@@ -844,7 +853,7 @@
     var base = window.location.href.split('?')[0].split('#')[0].replace(/[^/]*$/, '') + 'devis.html';
     var finalType = A.type === 'Autre' && A.typeCustom ? 'Autre : ' + A.typeCustom : A.type;
     var params = new URLSearchParams({
-      p: A.prenom, t: finalType,
+      v:'20261024-regles',p: A.prenom, t: finalType,
       g: A.guests, h: A.hrs, dy: A.days,
       d: A.date, ti: A.time, l: A.lieu,
       lf: window.eywaTravel.localFree ? 1 : 0, tw: window.eywaTravel.outwardKm, lng: window.eywaTravel.coordinates[0], lat: window.eywaTravel.coordinates[1], country: window.eywaTravel.country, to: window.eywaTravel.outwardMinutes, tk: window.eywaTravel.roundTripKm, tm: window.eywaTravel.roundTripMinutes, ta: window.eywaTravel.approximate ? 1 : 0, pr: calcNormalPrice(), options: JSON.stringify(A.personalization)
@@ -896,11 +905,11 @@
   }
 
   EywaLaunchOffer.onChange(function(){
-    document.querySelectorAll('.perso-card').forEach(function(card){var name=card.dataset.val,rate=PERSO_PRIX[name];if(rate)card.querySelector('.perso-name').innerHTML=name+' · '+EywaLaunchOffer.priceHTML(rate);});
     if(document.getElementById('sPrix').classList.contains('active'))showPrice();
   });
 
   renderDots(0);
+  EywaBooking.mountPhone('tel-input',checkS6);
   checkS6();
 
   /* Reprise des valeurs du mini-simulateur de la page d'accueil.
@@ -935,7 +944,7 @@
   <div class="calendar-nav"><button type="button" id="month-prev" aria-label="Mois précédent">‹</button><div class="calendar-selects"><select id="calendar-month" aria-label="Mois"></select><select id="calendar-year" aria-label="Année"></select></div><button type="button" id="month-next" aria-label="Mois suivant">›</button></div>
   <div class="calendar-week" aria-hidden="true"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span></div>
   <div class="calendar-days" id="calendar-days"></div>
-  <p class="picker-note">La disponibilité sera confirmée par EYWA.</p>
+  <p class="picker-note">Réservation au moins 3 jours à l’avance. Les dates indisponibles sont grisées.</p>
 </dialog>
 <dialog class="quote-picker" id="time-picker" aria-labelledby="time-picker-title">
   <div class="picker-heading"><h2 id="time-picker-title">À quelle heure ?</h2><button type="button" class="picker-close" data-close aria-label="Fermer les horaires">×</button></div>
@@ -943,7 +952,7 @@
   <div class="time-grid" id="time-grid"></div>
   <details class="precise-time"><summary>Besoin d’un horaire plus précis ?</summary><div><input type="time" id="precise-time" aria-label="Horaire précis"><button type="button" id="apply-time">Choisir</button></div></details>
 </dialog>
-<script src="devis-pickers.js?v=20261006-publication"></script>
+<script src="devis-pickers.js?v=20261024-regles"></script>
 <script src="brand-options.js?v=20261006-publication" defer></script>
 <script src="travel-pricing.js?v=20261014-zone20"></script><script src="travel-route.js?v=20261015-local20"></script><script src="travel-origin.js?v=20261006-publication"></script><script src="service-area.js?v=20261007-zone-300km"></script><script src="travel-places.js?v=20261007-zone-300km"></script><script src="travel-form.js?v=20261015-local20"></script>
 <script src="eywa-assistant.js?v=20261006-light-bar" defer></script>

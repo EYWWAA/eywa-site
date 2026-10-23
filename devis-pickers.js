@@ -13,7 +13,9 @@
   for (var m = 0; m < 12; m++) {
     month.add(new Option(new Date(2026, m, 1).toLocaleDateString('fr-FR', {month:'long'}), m));
   }
-  function renderCalendar() {
+  var renderId=0;
+  async function renderCalendar() {
+    var active=++renderId;
     year.replaceChildren();
     for (var y = today.getFullYear(); y <= Math.max(today.getFullYear()+5, shown.getFullYear()+1); y++) year.add(new Option(y, y));
     month.value = shown.getMonth(); year.value = shown.getFullYear();
@@ -25,7 +27,7 @@
     for (var d = 1; d <= count; d++) {
       var day = new Date(shown.getFullYear(), shown.getMonth(), d);
       var button = document.createElement('button'); button.type='button'; button.textContent=d;
-      button.dataset.date=iso(day); button.disabled=day < today;
+      button.dataset.date=iso(day); button.disabled=true;
       button.setAttribute('aria-label', day.toLocaleDateString('fr-FR', {weekday:'long',day:'numeric',month:'long',year:'numeric'}));
       button.setAttribute('aria-pressed', String(iso(day)===dateInput.value));
       if (iso(day)===iso(today)) button.setAttribute('aria-current','date');
@@ -35,6 +37,9 @@
         checkS3(); dateDialog.close();
       }); grid.appendChild(button);
     }
+    var note=dateDialog.querySelector('.picker-note');note.textContent='Chargement des disponibilités…';
+    try{var result=await EywaBooking.availability({from:iso(new Date(shown.getFullYear(),shown.getMonth(),1)),to:iso(new Date(shown.getFullYear(),shown.getMonth()+1,0))});if(active!==renderId)return;grid.querySelectorAll('button').forEach(function(button){var busy=result.blocked.includes(button.dataset.date);button.disabled=button.dataset.date<result.minDate||busy;button.dataset.unavailable=String(busy);if(busy)button.setAttribute('aria-label',button.getAttribute('aria-label')+' — indisponible');});note.textContent='Réservez au moins 3 jours à l’avance. Les dates indisponibles sont grisées.';}
+    catch(e){if(active===renderId){note.textContent=e.message;var retry=document.createElement('button');retry.type='button';retry.className='calendar-retry';retry.textContent='Réessayer';retry.onclick=renderCalendar;note.append(' ',retry);}}
   }
   dateTrigger.addEventListener('click',function(){ if(dateInput.value) { var selected=new Date(dateInput.value+'T12:00'); shown=new Date(selected.getFullYear(),selected.getMonth(),1); } renderCalendar(); dateDialog.showModal(); });
   function changeMonth(delta) { shown=new Date(shown.getFullYear(),shown.getMonth()+delta,1); renderCalendar(); }
