@@ -15,7 +15,7 @@
   try { selected = JSON.parse(p.get('options') || '[]'); } catch (_) {}
   if (!Array.isArray(selected)) selected = [];
   options.forEach(o => o.selected = selected.includes(o.name));
-  const service = (450 + Math.max(0,guests-50)*5 + Math.round(Math.max(0,hours-1.5)*150) + (staff-1)*200)*days;
+  const service = (45000 + Math.max(0,guests-50)*346 + Math.round(Math.max(0,hours-1.5)*10385) + (staff-1)*20000)*days/100;
   const km=Number(p.get('tk')), minutes=Number(p.get('tm'));
   const hasTravel=p.has('tk')&&p.has('tm')&&Number.isFinite(km)&&Number.isFinite(minutes)&&km>=0&&minutes>=0&&km<20000&&minutes<30000;
   const lodging=hasTravel&&Number(p.get('to'))>240;
@@ -71,8 +71,8 @@
   function render(){
     const lines=document.getElementById('line-items');lines.replaceChildren();
     lines.append(makeLine('Formule classique',450*days,'Un coffee bar, un barista professionnel et des boissons préparées à la demande. Le forfait comprend 1 h 30 de service pour jusqu’à 50 invités, le matériel et les gobelets. Installation et rangement hors du temps de service.',serviceTime));
-    if(guests>50)lines.append(makeLine('Invités supplémentaires',(guests-50)*5*days,(guests-50)+' invités au-delà du forfait de base, par jour.'));
-    if(hours>1.5)lines.append(makeLine('Prolongation du service',Math.round((hours-1.5)*150)*days,'150 € par heure supplémentaire. '+duration+' de service'+(days>1?' par jour.':'.')));
+    if(guests>50)lines.append(makeLine('Invités supplémentaires',(guests-50)*346*days/100,(guests-50)+' invités au-delà du forfait de base, à 3,46 € par invité et par jour.'));
+    if(hours>1.5)lines.append(makeLine('Prolongation du service',Math.round((hours-1.5)*10385)*days/100,'103,85 € par heure supplémentaire. '+duration+' de service'+(days>1?' par jour.':'.')));
     if(staff>1)lines.append(makeLine('Renfort barista',(staff-1)*200*days,(staff-1)+' barista(s) supplémentaire(s) pour adapter l’équipe au nombre d’invités et à la durée du service.'));
     options.filter(o=>o.selected).forEach(o=>lines.append(makeLine(o.name,o.price*days,o.description,null,o.price*days)));
     lines.append(makeLine(p.get('lf')==='1'?'Déplacement dans la zone locale':'Déplacement aller-retour',hasTravel?travel:'À confirmer','Gratuit dans un rayon de 20 km autour de Charleville-Mézières. Au-delà, le trajet complet est facturé.'));
@@ -81,7 +81,7 @@
     const total=Math.round((service+travel+options.filter(o=>o.selected).reduce((n,o)=>n+o.price*days,0))*100)/100;
     if(hasTravel)document.querySelector('.price-lbl').textContent='Prestation et trajet aller-retour · hébergement éventuel non compris';
     document.getElementById('price-main').innerHTML=EywaLaunchOffer.priceHTML(total,protectedAmount);document.getElementById('dock-total').innerHTML=EywaLaunchOffer.priceHTML(total,protectedAmount);
-    const next=new URLSearchParams(p);next.set('v','20261024-regles');next.set('pr',total);next.set('options',JSON.stringify(options.filter(o=>o.selected).map(o=>o.name)));next.set('dy',days);
+    const next=new URLSearchParams(p);next.set('v','20261024-supplements');next.set('pr',total);next.set('options',JSON.stringify(options.filter(o=>o.selected).map(o=>o.name)));next.set('dy',days);
     history.replaceState(null,'',location.pathname+'?'+next.toString()+location.hash);
     ['main','bottom','dock'].forEach(id=>{const button=document.getElementById('btn-reserve-'+id);button.href=lodging?'contact.html':'reservation.html?'+next.toString();if(lodging)button.textContent='Finaliser avec EYWA';});
     if (window.EywaQuoteValidity) window.EywaQuoteValidity.applyToQuote(next);

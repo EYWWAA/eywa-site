@@ -297,7 +297,7 @@
 <link rel="stylesheet" href="black-palette.css?v=20261007-noir-global">
 <link rel="stylesheet" href="theme-comparison.css?v=20261009-palettes">
 <link rel="stylesheet" href="warm-palette.css?v=20261015-caramel">
-<link rel="stylesheet" href="launch-offer.css?v=20261015-premiere"><script src="launch-offer.js?v=20261024-regles"></script>
+<link rel="stylesheet" href="launch-offer.css?v=20261015-premiere"><script src="launch-offer.js?v=20261024-supplements"></script>
 <link rel="stylesheet" href="brand-unified.css?v=20261015-vector">
 <link rel="stylesheet" href="booking-rules.css?v=20261024"><script src="phone-validation.js?v=20261024"></script><script src="booking-client.js?v=20261024"></script>
 </head>
@@ -799,7 +799,7 @@
     var extraHrs = Math.max(0, A.hrs - 1.5);
     var baristasNeeded = Math.ceil(A.guests / (A.hrs * 50));
     var extraBaristas = Math.max(0, baristasNeeded - 1);
-    var pricePerDay = 450 + (extraGuests * 5) + Math.round(extraHrs * 150) + (extraBaristas * 200) + persoTotal();
+    var pricePerDay = (45000 + extraGuests * 346 + Math.round(extraHrs * 10385) + extraBaristas * 20000 + persoTotal() * 100) / 100;
     return Math.round((pricePerDay * A.days + window.eywaTravel.total)*100)/100;
   }
 
@@ -812,7 +812,7 @@
     var extraHrs = Math.max(0, A.hrs - 1.5);
     var baristasNeeded = Math.ceil(A.guests / (A.hrs * 50));
     var extraBaristas = Math.max(0, baristasNeeded - 1);
-    var pricePerDay = 450 + (extraGuests * 5) + Math.round(extraHrs * 150) + (extraBaristas * 200) + persoTotal();
+    var pricePerDay = (45000 + extraGuests * 346 + Math.round(extraHrs * 10385) + extraBaristas * 20000 + persoTotal() * 100) / 100;
     A.totalPrice = calcPrice();
 
     document.getElementById('priceDisplay').innerHTML = EywaLaunchOffer.priceHTML(calcNormalPrice(),persoTotal()*A.days);
@@ -826,8 +826,8 @@
 
     var bd = '';
     bd += '<div class="brow"><span>Base (50 pers., 1h30)</span><span>' + EywaLaunchOffer.priceHTML(450) + '</span></div>';
-    if (extraGuests > 0) bd += '<div class="brow"><span>+' + extraGuests + ' invité' + (extraGuests>1?'s':'') + ' × 5 €</span><span>' + EywaLaunchOffer.priceHTML(extraGuests*5) + '</span></div>';
-    if (extraHrs > 0) bd += '<div class="brow"><span>+' + hrsLabel(extraHrs) + ' × 150 €/h</span><span>' + EywaLaunchOffer.priceHTML(Math.round(extraHrs*150)) + '</span></div>';
+    if (extraGuests > 0) bd += '<div class="brow"><span>+' + extraGuests + ' invité' + (extraGuests>1?'s':'') + ' × 3,46 €</span><span>' + EywaLaunchOffer.priceHTML(extraGuests*346/100) + '</span></div>';
+    if (extraHrs > 0) bd += '<div class="brow"><span>+' + hrsLabel(extraHrs) + ' × 103,85 €/h</span><span>' + EywaLaunchOffer.priceHTML(Math.round(extraHrs*10385)/100) + '</span></div>';
     if (extraBaristas > 0) bd += '<div class="brow"><span>' + extraBaristas + ' barista' + (extraBaristas>1?'s':'') + ' sup. × 200 €</span><span>' + EywaLaunchOffer.priceHTML(extraBaristas*200) + '</span></div>';
     for (var pi = 0; pi < A.personalization.length; pi++) {
       var pn = A.personalization[pi], pp = PERSO_PRIX[pn] || 0;
@@ -853,7 +853,7 @@
     var base = window.location.href.split('?')[0].split('#')[0].replace(/[^/]*$/, '') + 'devis.html';
     var finalType = A.type === 'Autre' && A.typeCustom ? 'Autre : ' + A.typeCustom : A.type;
     var params = new URLSearchParams({
-      v:'20261024-regles',p: A.prenom, t: finalType,
+      v:'20261024-supplements',p: A.prenom, t: finalType,
       g: A.guests, h: A.hrs, dy: A.days,
       d: A.date, ti: A.time, l: A.lieu,
       lf: window.eywaTravel.localFree ? 1 : 0, tw: window.eywaTravel.outwardKm, lng: window.eywaTravel.coordinates[0], lat: window.eywaTravel.coordinates[1], country: window.eywaTravel.country, to: window.eywaTravel.outwardMinutes, tk: window.eywaTravel.roundTripKm, tm: window.eywaTravel.roundTripMinutes, ta: window.eywaTravel.approximate ? 1 : 0, pr: calcNormalPrice(), options: JSON.stringify(A.personalization)
@@ -952,7 +952,7 @@
   <div class="time-grid" id="time-grid"></div>
   <details class="precise-time"><summary>Besoin d’un horaire plus précis ?</summary><div><input type="time" id="precise-time" aria-label="Horaire précis"><button type="button" id="apply-time">Choisir</button></div></details>
 </dialog>
-<script src="devis-pickers.js?v=20261024-regles"></script>
+<script src="devis-pickers.js?v=20261024-supplements"></script>
 <script src="brand-options.js?v=20261006-publication" defer></script>
 <script src="travel-pricing.js?v=20261014-zone20"></script><script src="travel-route.js?v=20261015-local20"></script><script src="travel-origin.js?v=20261006-publication"></script><script src="service-area.js?v=20261007-zone-300km"></script><script src="travel-places.js?v=20261007-zone-300km"></script><script src="travel-form.js?v=20261015-local20"></script>
 <script src="eywa-assistant.js?v=20261006-light-bar" defer></script>
