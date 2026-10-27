@@ -47,6 +47,10 @@
   function refreshDisplay(){return refresh({cached:true});}
   function banner(){
     document.querySelectorAll('.how-steps p').forEach(function(el){var normal=el.textContent,offer=normal.replace('avant le versement de l’acompte','avant le règlement de votre réservation').replace('vous confirmez et réglez l’acompte','vous confirmez et réglez intégralement votre devis remisé pendant l’offre de lancement');if(offer!==normal)paymentCopy.push({el:el,normal:normal,offer:offer});});
+    // Une page qui annonce déjà l'offre dans son ouverture n'a pas besoin
+    // du bandeau pleine largeur : il ferait double emploi. C'est le cas
+    // de l'accueil ; les autres pages gardent le bandeau.
+    if(document.querySelector('.launch-hero-offer'))return;
     var main=document.querySelector('main'),hero=document.querySelector('#accueil');if(!main&&!hero)return;
     var el=document.createElement('aside');el.className='launch-banner';el.dataset.launchBanner='';el.hidden=true;
     el.innerHTML='<strong>Offre de lancement : −80 %</strong><span>Sur la prestation et le déplacement. Personnalisations au tarif normal. Offre valable pour la première réservation réglée intégralement.</span>';
