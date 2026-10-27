@@ -7,27 +7,30 @@ body.eywa-home .faq-home{padding:44px 0!important}
 body.eywa-home .faq-home .section-title{font-size:clamp(27px,2.9vw,36px)!important;margin-bottom:6px}
 body.eywa-home .faq-home .faq-list{margin-top:18px}
 body.eywa-home .faq-home details{border-radius:10px;margin-bottom:6px;padding:0!important}
-body.eywa-home .faq-home summary{padding:14px 52px 14px 18px!important;font-size:16px!important;line-height:1.35!important}
+body.eywa-home .faq-home summary{padding:15px 52px 15px 18px!important;font-size:18.5px!important;line-height:1.35!important}
 body.eywa-home .faq-home summary::after{top:50%!important;right:16px!important;transform:translateY(-50%);font-size:21px!important}
-body.eywa-home .faq-home details p{padding:0 18px 15px!important;font-size:14.5px!important;line-height:1.6!important}
+body.eywa-home .faq-home details p{padding:0 18px 16px!important;font-size:15.5px!important;line-height:1.62!important}
 
 /* « On se retrouve autour d'un café » : le texte passe sur la photo. */
 body.eywa-home .reference-coffee-cta.cta-on-photo{position:relative;isolation:isolate;overflow:hidden;display:grid;align-items:center;min-height:clamp(360px,42vw,520px);padding:0!important;background:#1a120f!important}
 body.eywa-home .cta-on-photo .cta-photo{position:absolute;inset:0;z-index:-2;margin:0;padding:0}
 body.eywa-home .cta-on-photo .cta-photo img.reference-coffee-photo{display:block;width:100%!important;height:100%!important;margin:0!important;object-fit:cover!important;object-position:center!important}
-body.eywa-home .cta-on-photo::before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(26,18,15,.92) 0%,rgba(26,18,15,.8) 38%,rgba(26,18,15,.45) 72%,rgba(26,18,15,.3) 100%)!important}
+body.eywa-home .cta-on-photo::before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,rgba(26,18,15,.5),rgba(26,18,15,.42))!important}
 body.eywa-home .cta-on-photo .eywa-coffee-final{display:block}
-body.eywa-home .cta-on-photo .eywa-coffee-final-copy{max-width:620px;padding:54px 0}
+body.eywa-home .cta-on-photo .eywa-coffee-final-copy{max-width:660px;margin:0 auto;padding:54px 0;text-align:center}
 /* warm-palette.css impose l’encre sur cette section avec un sélecteur
    qui porte un identifiant : il faut donc en porter un aussi. */
 html body.eywa-warm.eywa-home #rendez-vous.reference-coffee-cta.cta-on-photo :is(h2,p,em,strong,.kicker){color:#fffbef!important}
-html body.eywa-warm.eywa-home #rendez-vous.reference-coffee-cta.cta-on-photo .kicker{opacity:.88}
+html body.eywa-warm.eywa-home #rendez-vous.reference-coffee-cta.cta-on-photo .kicker{opacity:.9}
+/* Voile plus léger pour laisser voir le latte : l'ombre portée prend le
+   relais sur la lisibilité du texte. */
+body.eywa-home .cta-on-photo :is(h2,.kicker){text-shadow:0 2px 18px rgba(16,10,8,.72),0 1px 3px rgba(16,10,8,.5)}
 @media(max-width:760px){
  body.eywa-home .reference-coffee-cta.cta-on-photo{min-height:340px}
  body.eywa-home .cta-on-photo .eywa-coffee-final-copy{padding:40px 0}
- body.eywa-home .cta-on-photo::before{background:linear-gradient(0deg,rgba(26,18,15,.86) 30%,rgba(26,18,15,.5))!important}
+ body.eywa-home .cta-on-photo::before{background:linear-gradient(0deg,rgba(26,18,15,.6),rgba(26,18,15,.48))!important}
  body.eywa-home .faq-home{padding:34px 0!important}
- body.eywa-home .faq-home summary{padding:13px 46px 13px 15px!important;font-size:15px!important}
+ body.eywa-home .faq-home summary{padding:14px 46px 14px 15px!important;font-size:16.5px!important}
  body.eywa-home .faq-home details{padding:0!important}
  body.eywa-home .faq-home details p{padding:0 15px 13px!important;font-size:14px!important}
 }
@@ -44,3 +47,20 @@ html body.eywa-warm.eywa-home .reviews .rating-stars{color:#b8865a!important}
    vide à gauche. Le cadrage glisse vers la droite de la source, ce qui
    ramène le bar vers la gauche du cadre, entier. */
 body.eywa-home #services .editorial-photo img{object-position:68% 40%!important}
+
+/* Les deux premières photos touchaient les bords de l'écran et occupaient
+   toute la hauteur. Elles gardent une marge et des angles adoucis, et le
+   bloc d'accueil ne fait plus une fenêtre entière. */
+body.eywa-photo-opening #accueil.hero-editorial{min-height:max(520px,calc(100svh - 70px - var(--eywa-help-height,61px) - 72px))!important}
+body.eywa-photo-opening #accueil .photo-carousel{box-sizing:border-box;padding:26px 26px 26px 0!important}
+/* Le cadre du carrousel est en positionnement absolu plus haut dans les
+   feuilles : il couvrait la marge. On le remet dans le flux. */
+body.eywa-photo-opening #accueil .carousel-stage{position:relative!important;inset:auto!important;width:100%!important;height:100%!important;min-height:0!important;border-radius:18px!important;overflow:hidden}
+body.eywa-home #services .editorial-photo{box-sizing:border-box;min-height:520px!important;padding:26px 0 26px 26px!important}
+body.eywa-home #services .editorial-photo img{position:relative!important;inset:auto!important;width:100%!important;height:100%!important;border-radius:18px!important}
+@media(max-width:760px){
+ body.eywa-photo-opening #accueil .photo-carousel{padding:0 20px 24px!important}
+ body.eywa-photo-opening #accueil .carousel-stage{height:min(88vw,380px)!important;border-radius:14px!important}
+ body.eywa-home #services .editorial-photo{min-height:0!important;padding:20px 20px 0!important}
+ body.eywa-home #services .editorial-photo img{border-radius:14px!important;height:auto!important;aspect-ratio:4/3;object-fit:cover}
+}
