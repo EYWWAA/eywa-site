@@ -39,3 +39,8 @@ body.eywa-photo-opening #accueil .carousel-slide::after{display:none}
 /* Les étoiles de la section Avis étaient restées vertes alors que celles
    du bloc d'accueil sont passées au caramel. */
 html body.eywa-warm.eywa-home .reviews .rating-stars{color:#b8865a!important}
+
+/* « Ce que nous faisons » : le bar était coupé à droite et laissait du
+   vide à gauche. Le cadrage glisse vers la droite de la source, ce qui
+   ramène le bar vers la gauche du cadre, entier. */
+body.eywa-home #services .editorial-photo img{object-position:68% 40%!important}
