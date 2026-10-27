@@ -6,9 +6,9 @@ body.eywa-photo-opening header.nav .logo{display:block;line-height:0}
 body.eywa-photo-opening header.nav .brand-reference-logo{display:block;width:220px;height:auto;max-width:none;object-fit:contain}
 body.eywa-photo-opening header.nav .nav-button{border-radius:999px!important;min-height:44px}
 body.eywa-photo-opening #accueil.hero-editorial{position:relative;isolation:isolate;display:block!important;overflow:hidden;min-height:max(640px,calc(100svh - var(--eywa-help-height,61px)))!important;height:auto;padding:0!important;background:#fffbef!important;color:#291817}
-.hero-editorial-content{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.82fr);align-items:center;gap:64px;min-height:inherit;width:min(1280px,calc(100% - 96px));margin:auto;padding:122px 0 72px}
-.hero-editorial .hero-portrait{margin:0;align-self:center;justify-self:end;width:100%;max-width:470px}
-.hero-editorial .hero-portrait img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:center 56%;border-radius:18px;background:#efeae0}
+.hero-editorial-content{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.95fr);align-items:center;gap:52px;min-height:inherit;width:min(1280px,calc(100% - 96px));margin:auto;padding:122px 0 72px}
+.hero-editorial .hero-portrait{margin:0;align-self:center;justify-self:end;width:100%;max-width:580px}
+.hero-editorial .hero-portrait img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:center 56%;border-radius:18px;background:#efeae0;max-height:calc(100svh - 230px)}
 body.eywa-photo-opening #accueil .hero-copy{background:transparent!important;padding:0!important;width:100%;display:block;flex:none!important}
 body.eywa-photo-opening #accueil .hero-eyebrow{margin:0 0 26px;font-size:12px!important;font-weight:500!important;letter-spacing:.19em;text-transform:uppercase;line-height:1.6;color:#8a6959}
 body.eywa-photo-opening #accueil h1#title{font-family:'DM Sans',Arial,sans-serif!important;font-size:clamp(46px,4.2vw,64px)!important;font-weight:650!important;line-height:1.03!important;letter-spacing:-.04em!important;margin:0 0 22px!important;max-width:620px;text-wrap:initial;overflow-wrap:normal}
@@ -26,7 +26,7 @@ body.eywa-photo-opening #accueil .hero-rating{display:inline-flex;align-items:ce
 body.eywa-photo-opening #accueil .hero-rating:hover{text-decoration:underline;text-underline-offset:4px}
 body.eywa-photo-opening #accueil .hero-rating .rating-stars{color:#b8865a!important;font-size:14px;letter-spacing:.06em}
 body.eywa-photo-opening #accueil .hero-rating strong{font-weight:650}
-@media(max-width:1100px) and (min-width:761px){body.eywa-photo-opening header.nav .brand-reference-logo{width:175px}.hero-editorial-content{width:calc(100% - 64px);gap:40px;grid-template-columns:minmax(0,1fr) minmax(0,.72fr)}.hero-editorial .hero-portrait{max-width:330px}}
+@media(max-width:1100px) and (min-width:761px){body.eywa-photo-opening header.nav .brand-reference-logo{width:175px}.hero-editorial-content{width:calc(100% - 64px);gap:40px;grid-template-columns:minmax(0,1fr) minmax(0,.88fr)}.hero-editorial .hero-portrait{max-width:470px}}
 @media(max-width:760px){
  body.eywa-photo-opening header.nav{min-height:76px!important;margin-bottom:-76px}
  body.eywa-photo-opening header.nav .logo{display:block}
@@ -35,7 +35,7 @@ body.eywa-photo-opening #accueil .hero-rating strong{font-weight:650}
  body.eywa-photo-opening #accueil.hero-editorial{min-height:0!important}
  .hero-editorial-content{width:calc(100% - 48px);padding:116px 0 48px;min-height:0;grid-template-columns:minmax(0,1fr);gap:32px}
  .hero-editorial .hero-portrait{justify-self:stretch;max-width:none;order:2}
- .hero-editorial .hero-portrait img{aspect-ratio:5/4;object-position:center 42%;border-radius:14px}
+ .hero-editorial .hero-portrait img{aspect-ratio:1/1;object-position:center 48%;border-radius:14px;max-height:none}
  body.eywa-photo-opening #accueil .hero-copy{width:100%;order:initial}
  body.eywa-photo-opening #accueil .hero-eyebrow{font-size:10px!important;letter-spacing:.13em;margin-bottom:24px}
  body.eywa-photo-opening #accueil h1#title{font-size:clamp(36px,9.6vw,58px)!important;line-height:1.05!important;max-width:none;margin-bottom:20px!important}
