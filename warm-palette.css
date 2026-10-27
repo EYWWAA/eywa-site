@@ -46,15 +46,21 @@ html body.eywa-warm{
 }
 /* Photo sur toute la largeur, navigation posée directement dessus. */
 html body.eywa-warm.eywa-home .home-opening{background:#fffbef!important}
-html body.eywa-warm.eywa-photo-opening #accueil.hero-editorial{background:#eee9df!important}
+html body.eywa-warm.eywa-photo-opening #accueil.hero-editorial{background:#241a17!important}
+/* Le bar n'est plus centré : il est posé au sol, calé à droite, et laisse
+   la colonne de gauche libre pour le titre, la ville et la note clients. */
 html body.eywa-warm.eywa-photo-opening #accueil .hero-scene img{
- inset:0!important;width:100%!important;height:100%!important;max-width:none!important;object-fit:cover!important;object-position:center center!important;mask-image:none!important;-webkit-mask-image:none!important;
+ inset:auto -9% 0 auto!important;width:auto!important;height:90%!important;max-width:none!important;object-fit:contain!important;object-position:right bottom!important;
+ mask-image:linear-gradient(90deg,transparent 0%,#000 24%,#000 100%),linear-gradient(0deg,#000 80%,transparent 100%)!important;-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 24%,#000 100%),linear-gradient(0deg,#000 80%,transparent 100%)!important;mask-composite:intersect!important;-webkit-mask-composite:source-in!important;
 }
 html body.eywa-warm.eywa-photo-opening #accueil.hero-editorial::before{
- background:linear-gradient(90deg,rgba(41,24,23,.66) 0%,rgba(41,24,23,.44) 36%,rgba(41,24,23,.08) 75%,rgba(41,24,23,.08) 100%)!important;
+ background:linear-gradient(90deg,rgba(36,26,23,.78) 0%,rgba(36,26,23,.5) 34%,rgba(36,26,23,.1) 70%,rgba(36,26,23,0) 100%),linear-gradient(0deg,rgba(36,26,23,.42),transparent 38%)!important;
 }
 html body.eywa-warm.eywa-photo-opening #accueil .hero-copy{background:transparent!important}
 html body.eywa-warm.eywa-home #accueil :is(h1,.hero-description,.hero-location,.quote-note,.hero-secondary,.hero-eyebrow){color:#fffbef!important}
+html body.eywa-warm.eywa-home #accueil h1#title em{background-image:none!important;-webkit-text-fill-color:#fffbef!important;color:#fffbef!important}
+html body.eywa-warm.eywa-home #accueil .hero-rating{color:#fffbef!important}
+html body.eywa-warm.eywa-home #accueil .hero-rating .rating-stars{color:#e8c99b!important}
 html body.eywa-warm.eywa-photo-opening header.nav{background:transparent!important;background-image:none!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
 html body.eywa-warm.eywa-photo-opening header.nav::before,html body.eywa-warm.eywa-photo-opening header.nav::after{display:none!important;background:none!important;border:0!important;box-shadow:none!important}
 html body.eywa-warm.eywa-photo-opening header.nav :is(.logo,.brand-eywa,.brand-descriptor,.nav-group>a:not(.nav-button),.nav-places-trigger,.mobile-menu){color:#fffbef!important}
@@ -99,10 +105,15 @@ html body.eywa-warm.eywa-home header.nav .nav-group>a[href*="contact.html"]:hove
 html body.eywa-warm.eywa-home header.nav .nav-group>a[href*="contact.html"]{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 20px;border-radius:999px}
 html body.eywa-warm .eywa-help-contact :is(span,small,svg){color:#291817!important}
 html body.eywa-warm :focus-visible{outline:2px solid #8a6959!important;outline-offset:4px}
+/* Tablette : le bar ne tient pas à côté du texte, il passe en bande basse. */
+@media(min-width:761px) and (max-width:1100px){
+ html body.eywa-warm.eywa-photo-opening #accueil .hero-scene img{inset:auto 0 0 auto!important;width:100%!important;height:60%!important;object-fit:cover!important;object-position:46% 30%!important;mask-image:linear-gradient(0deg,#000 68%,transparent 100%)!important;-webkit-mask-image:linear-gradient(0deg,#000 68%,transparent 100%)!important;mask-composite:add!important;-webkit-mask-composite:source-over!important}
+ html body.eywa-warm.eywa-photo-opening #accueil.hero-editorial::before{background:linear-gradient(0deg,rgba(36,26,23,.6) 0%,rgba(36,26,23,.2) 32%,rgba(36,26,23,0) 52%),linear-gradient(90deg,rgba(36,26,23,.62),rgba(36,26,23,.32) 72%,rgba(36,26,23,.18))!important}
+}
 @media(max-width:760px){
 
- html body.eywa-warm.eywa-photo-opening #accueil .hero-scene img{object-position:77% center!important}
- html body.eywa-warm.eywa-photo-opening #accueil.hero-editorial::before{background:linear-gradient(90deg,rgba(41,24,23,.66),rgba(41,24,23,.38) 75%,rgba(41,24,23,.2))!important}
+ html body.eywa-warm.eywa-photo-opening #accueil .hero-scene img{inset:auto 0 0 auto!important;width:100%!important;height:56%!important;object-fit:cover!important;object-position:46% center!important;mask-image:linear-gradient(0deg,#000 64%,transparent 100%)!important;-webkit-mask-image:linear-gradient(0deg,#000 64%,transparent 100%)!important}
+ html body.eywa-warm.eywa-photo-opening #accueil.hero-editorial::before{background:linear-gradient(0deg,rgba(36,26,23,.62) 0%,rgba(36,26,23,.22) 30%,rgba(36,26,23,0) 50%),linear-gradient(90deg,rgba(36,26,23,.6),rgba(36,26,23,.3) 75%,rgba(36,26,23,.18))!important}
  html body.eywa-warm.eywa-photo-opening header.nav .nav-group>a[href*="contact.html"]{margin-top:8px;padding:12px 20px}
 }
 
