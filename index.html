@@ -185,12 +185,12 @@
 <link rel="stylesheet" href="opening-refinement.css?v=20261007-navigation-fine">
 <link rel="stylesheet" href="booking-craft-refinement.css?v=20261006-publication">
 <link rel="stylesheet" href="photo-split-sections.css?v=20261006-publication">
-<link rel="stylesheet" href="carousel-navigation.css?v=20261006-publication">
+<link rel="stylesheet" href="carousel-navigation.css?v=20261027-carrousel-gauche">
 <link rel="stylesheet" href="journey.css?v=20261007-trois-etapes">
 <link rel="stylesheet" href="soft-blush.css?v=20261007-etapes-detaillees">
 <link rel="stylesheet" href="personal-compact.css?v=20261007-cartes-ajustees"><link rel="stylesheet" href="booking-white.css?v=20261007-devis-simplifie">
 <link rel="stylesheet" href="black-palette.css?v=20261007-noir-global">
-<link rel="stylesheet" href="hero-editorial.css?v=20261027-photo-plus-grande">
+<link rel="stylesheet" href="hero-editorial.css?v=20261027-carrousel-gauche">
 <link rel="stylesheet" href="theme-comparison.css?v=20261009-palettes">
 <link rel="stylesheet" href="warm-palette.css?v=20261027-louis-droite">
 <style id="eywa-logo-position">
@@ -233,6 +233,20 @@ body.eywa-home #savoir-faire .eywa-photo-duo img{min-width:0;min-height:0;object
     <div class="home-opening hero-editorial-opening">
     <section class="hero hero-editorial" id="accueil" aria-labelledby="title">
       <div class="hero-editorial-content">
+        <div class="photo-carousel hero-carousel" role="region" aria-roledescription="carrousel" aria-label="Photos du coffee bar EYWA">
+          <div class="carousel-stage" id="carousel-stage" tabindex="0" aria-label="Photos du coffee bar : utilisez les flèches gauche et droite pour changer de photo">
+          <figure class="carousel-slide active"><img src="assets/photos-reelles/louis-bar-eywa-20261027.jpg" alt="Louis, barista EYWA, derrière le coffee bar blanc avec son équipement et ses plantes" width="710" height="1262" fetchpriority="high"></figure>
+          <figure class="carousel-slide"><img src="assets/photos-reelles/barista-eywa-20261027.webp" alt="Louis prépare une boisson derrière le coffee bar EYWA" width="1284" height="2283" loading="lazy"></figure>
+          <figure class="carousel-slide"><img src="assets/hero/bar-classique-mur-clair-20261013.webp" alt="Le coffee bar EYWA blanc avec son plateau en noyer, sa machine et ses plantes" width="1672" height="941" loading="lazy"></figure>
+          <button class="carousel-arrow prev" type="button" aria-label="Photo précédente">‹</button>
+          <button class="carousel-arrow next" type="button" aria-label="Photo suivante">›</button>
+          </div>
+          <div class="carousel-thumbs" role="tablist" aria-label="Choisir une photo">
+          <button class="carousel-thumb active" type="button" role="tab" aria-selected="true" aria-label="Voir la photo 1" tabindex="0"><img src="assets/photos-reelles/louis-bar-eywa-20261027.jpg" alt="" loading="lazy"></button>
+          <button class="carousel-thumb" type="button" role="tab" aria-selected="false" aria-label="Voir la photo 2" tabindex="-1"><img src="assets/photos-reelles/barista-eywa-20261027.webp" alt="" loading="lazy"></button>
+          <button class="carousel-thumb" type="button" role="tab" aria-selected="false" aria-label="Voir la photo 3" tabindex="-1"><img src="assets/hero/bar-classique-mur-clair-20261013.webp" alt="" loading="lazy"></button>
+          </div>
+        </div>
         <div class="hero-copy">
           <p class="hero-eyebrow">Événements · Entreprises · Marques</p>
           <h1 id="title">Un barista.<br>Un coffee bar.<br><em>Votre événement.</em></h1>
@@ -247,9 +261,6 @@ body.eywa-home #savoir-faire .eywa-photo-duo img{min-width:0;min-height:0;object
             </div>
           </div>
         </div>
-        <figure class="hero-portrait">
-          <img src="assets/photos-reelles/louis-bar-eywa-20261017.jpeg" alt="Louis, barista EYWA, derrière le coffee bar blanc avec son équipement et ses plantes" width="710" height="1536" fetchpriority="high">
-        </figure>
         </div>
     </section>
   </div>
@@ -479,7 +490,7 @@ body.eywa-home #savoir-faire .eywa-photo-duo img{min-width:0;min-height:0;object
 <script src="eywa-assistant.js?v=20261006-light-bar" defer></script>
 
 <script src="brand-options.js?v=20261006-publication" defer></script>
-<script src="carousel-controls.js?v=20261006-publication" defer></script>
+<script src="carousel-controls.js?v=20261027-carrousel-gauche" defer></script>
 <script src="home-entry.js?v=20261007-noirs" defer></script>
 </body>
 </html>

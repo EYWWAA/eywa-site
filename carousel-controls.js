@@ -68,5 +68,23 @@
     if (Math.abs(dx) >= 48 && Math.abs(dx) > Math.abs(dy) * 1.2) show(active + (dx < 0 ? 1 : -1));
   });
   stage.addEventListener('pointercancel', () => { pointerStart = undefined; });
+  // Défilement automatique : il s'arrête au survol, au clavier et dès que
+  // le visiteur prend la main, et ne démarre pas si l'animation est réduite.
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let timer;
+  const stop = () => { clearInterval(timer); timer = undefined; };
+  const start = () => {
+    if (timer || calm.matches || slides.length < 2) return;
+    timer = setInterval(() => { if (!document.hidden) show(active + 1, false); }, 5000);
+  };
+  region.addEventListener('pointerenter', stop);
+  region.addEventListener('pointerleave', start);
+  region.addEventListener('focusin', stop);
+  region.addEventListener('focusout', start);
+  ['click', 'keydown', 'wheel', 'pointerdown'].forEach(type =>
+    region.addEventListener(type, stop, { passive: true }));
+  calm.addEventListener('change', () => { stop(); start(); });
+  start();
+
   show(active, false);
 })();
