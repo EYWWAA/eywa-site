@@ -2,10 +2,6 @@
 html body img.eywa-wordmark{display:block;width:164px!important;height:auto!important;max-width:100%;object-fit:contain;filter:brightness(0) invert(1);image-rendering:auto}
 html body :is(a.logo,a.brand-logo):has(.eywa-wordmark){display:inline-flex;align-items:center;flex-shrink:0;line-height:0;letter-spacing:0!important;text-indent:0!important}
 html body.eywa-warm :is(header.nav,.quote-header,.top-bar,.top,footer) img.eywa-wordmark{filter:none!important}
-html body.eywa-photo-opening header.nav img.eywa-wordmark{width:220px!important;filter:brightness(0) invert(1)!important}
-/* Accueil : l’ouverture est désormais crème, le logo doit rester encre. */
-html body.eywa-home.eywa-photo-opening header.nav img.eywa-wordmark{filter:none!important}
 html body .footer-brand img.eywa-wordmark{width:144px!important;margin-bottom:8px}
 html body :is(.quote-header,.top-bar,.top) img.eywa-wordmark{width:130px!important}
-@media(max-width:1100px) and (min-width:761px){html body.eywa-photo-opening header.nav img.eywa-wordmark{width:175px!important}}
-@media(max-width:760px){html body img.eywa-wordmark{width:152px!important}html body.eywa-photo-opening header.nav img.eywa-wordmark{width:168px!important}html body :is(.quote-header,.top-bar,.top) img.eywa-wordmark{width:118px!important}}
+@media(max-width:760px){html body img.eywa-wordmark{width:152px!important}html body :is(.quote-header,.top-bar,.top) img.eywa-wordmark{width:118px!important}}

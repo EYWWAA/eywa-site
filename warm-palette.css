@@ -53,13 +53,6 @@ html body.eywa-warm.eywa-home #accueil :is(h1,.hero-description,.hero-location,.
 html body.eywa-warm.eywa-home #accueil h1#title em{background-image:none!important;-webkit-text-fill-color:#8a6959!important;color:#8a6959!important}
 html body.eywa-warm.eywa-home #accueil .hero-rating{color:#291817!important}
 html body.eywa-warm.eywa-home #accueil .hero-rating .rating-stars{color:#b8865a!important}
-html body.eywa-warm.eywa-photo-opening header.nav{background:transparent!important;background-image:none!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
-html body.eywa-warm.eywa-photo-opening header.nav::before,html body.eywa-warm.eywa-photo-opening header.nav::after{display:none!important;background:none!important;border:0!important;box-shadow:none!important}
-html body.eywa-warm.eywa-photo-opening header.nav :is(.logo,.brand-eywa,.brand-descriptor,.nav-group>a:not(.nav-button),.nav-places-trigger,.mobile-menu){color:#291817!important}
-html body.eywa-warm.eywa-photo-opening header.nav .brand-reference-logo{filter:none}
-html body.eywa-warm.eywa-photo-opening header.nav .mobile-menu span{background:#291817!important}
-html body.eywa-warm.eywa-photo-opening header.nav .navlinks.open{background:#fffbef!important;border-color:#e5d9c7!important}
-html body.eywa-warm.eywa-photo-opening header.nav .navlinks.open :is(a,.nav-places-trigger){color:#291817!important}
 /* Surfaces claires : le brun du mail reste surtout dans les textes. */
 html body.eywa-warm.eywa-home :is(#services.intro-band,#services .editorial-copy,#reservation.booking,#personnalisation.personal-catalog,.reviews,.reference-coffee-cta,#savoir-faire .craft-editorial-copy){background:#fffbef!important;color:#291817!important}
 html body.eywa-warm.eywa-home :is(#comment-ca-marche,#evenements,#faq,#savoir-faire.reference-craft,#savoir-faire .reference-craft-lower){background:#e3ded6!important;color:#291817!important}
@@ -99,7 +92,6 @@ html body.eywa-warm .eywa-help-contact :is(span,small,svg){color:#291817!importa
 html body.eywa-warm :focus-visible{outline:2px solid #8a6959!important;outline-offset:4px}
 @media(max-width:760px){
 
- html body.eywa-warm.eywa-photo-opening header.nav .nav-group>a[href*="contact.html"]{margin-top:8px;padding:12px 20px}
 }
 
 
@@ -116,8 +108,6 @@ html body.eywa-warm :is(#accueil,#tarifs,#contact-directe,#reservation) :is(.but
 html body.eywa-warm :is(.eywa-help-contact,.contact-primary) :is(span,small,svg){color:#291817!important}
 html body.eywa-warm[data-eywa-page] header.nav .nav-button{min-height:44px!important;padding:0 20px!important;border-radius:999px!important;text-decoration:none!important}
 html body.eywa-warm.eywa-photo-opening #accueil :is(h1,.hero-eyebrow,.hero-description){color:#291817!important}
-html body.eywa-warm.eywa-photo-opening header.nav :is(.logo,.brand-eywa,.brand-descriptor,.nav-group>a:not(.nav-button),.nav-places-trigger,.mobile-menu){color:#291817!important}
-html body.eywa-warm.eywa-photo-opening header.nav .navlinks.open :is(a,.nav-places-trigger){color:#291817!important}
 html body.eywa-warm :is(#savoir-faire .reference-craft-hero h2,#savoir-faire .reference-craft-hero strong){color:#fffbef!important}
 /* Le fond pleine largeur de la navigation est porté par un pseudo-élément. */
 html body.eywa-warm header.nav::before{background:#eee9df!important;border-color:#e5d9c7!important}
