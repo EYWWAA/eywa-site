@@ -16,7 +16,7 @@
     headings.forEach(h=>h.hidden=selection!=='all');
     tiles.forEach(tile=>tile.hidden=selection!=='all'&&tile.dataset.galleryCategory!==selection);
     let totalHeight=0;
-    const categories=selection==='all'?['events','craft','foam','bars','cups']:[selection];
+    const categories=selection==='all'?['craft','foam','bars','cups']:[selection];
     categories.forEach(category=>{
       const group=tiles.filter(tile=>tile.dataset.galleryCategory===category);
       if(!group.length)return;
