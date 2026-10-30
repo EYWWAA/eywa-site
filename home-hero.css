@@ -220,3 +220,9 @@ html body.eywa-warm.eywa-home .event-marquee{background:#241a17!important}
 
 /* La mention de gratuité collait au dernier argument. */
 body.eywa-photo-opening #accueil .hero-quote{margin-top:22px!important}
+
+/* Note sur cinq : étoiles dorées, lisibles comme sur les plateformes d’avis. */
+html body.eywa-home :is(.rating-stars,.review-stars){color:#fbbc04!important;letter-spacing:1.5px}
+html body.eywa-home .hero-trust strong{font:600 15px/1.4 Arial,Helvetica,sans-serif}
+html body.eywa-home .google-profile-link{display:inline-flex;gap:7px;align-items:center;margin-top:12px;font:500 14px/1.4 Arial,sans-serif;text-decoration:underline;text-underline-offset:4px}
+#comment-ca-marche{scroll-margin-top:90px}
