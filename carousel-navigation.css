@@ -9,3 +9,13 @@ body.eywa-home #carousel-stage .carousel-arrow:focus-visible{outline:2px solid v
 body.eywa-home #reservation .mini-devis,body.eywa-home #reservation .md-btn{border-color:#b8bec280}
 .carousel-announcement{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 @media(max-width:760px){body.eywa-home #carousel-stage .carousel-arrow.prev{left:12px}body.eywa-home #carousel-stage .carousel-arrow.next{right:12px}}
+
+/* Flèches visibles, indépendantes de la couleur des boutons du site. */
+html body.eywa-home #carousel-stage{touch-action:pan-y pinch-zoom;cursor:grab}
+html body.eywa-home #carousel-stage:active{cursor:grabbing}
+html body.eywa-home #carousel-stage .carousel-arrow{display:grid!important;opacity:1!important;visibility:visible!important;width:44px;height:44px;padding:10px;background:rgba(255,255,255,.94)!important;color:#291817!important;border:1px solid rgba(41,24,23,.15);box-shadow:0 2px 10px #0002;cursor:pointer}
+html body.eywa-home #carousel-stage .carousel-arrow svg{display:block;width:24px;height:24px}
+html body.eywa-home #carousel-stage .carousel-arrow:hover{background:#fff!important}
+html body.eywa-home #carousel-stage .carousel-counter{position:absolute;z-index:5;bottom:14px;right:16px;border-radius:20px;padding:5px 10px;color:#fff;background:#291817a6;font:500 12px/1.3 Arial,sans-serif;pointer-events:none}
+html body.eywa-home #carousel-stage .carousel-slide::after{display:none}
+@media(prefers-reduced-motion:reduce){.carousel-slide{transition:none!important}}
