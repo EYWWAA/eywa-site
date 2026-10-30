@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<script src="theme-comparison.js?v=20261015-marrons"></script>
+  <link rel="icon" href="/favicon.ico?v=4" sizes="any">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png?v=4">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=4">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=4">
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Traiteur café et bar mobile personnalisable pour vos événements d'entreprise dans un rayon de 300 km autour de Charleville-Mézières : comptoir habillé à vos couleurs, gobelets et latte art à votre logo, baristas en tenue assortie.">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0a0a0a">
+  <link rel="canonical" href="https://eywacoffeecatering.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://eywacoffeecatering.com/">
+  <meta property="og:title" content="Traiteur café | 300 km autour de Charleville-Mézières | EYWA">
+  <meta property="og:description" content="Un coffee bar mobile pensé pour les événements d'entreprise.">
+  <meta property="og:image" content="https://eywacoffeecatering.com/assets/gallery-v4/02-nike-rooftop.webp">
+  <title>Traiteur café | 300 km autour de Charleville-Mézières | EYWA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&amp;family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&amp;display=swap" rel="stylesheet">
+  <style>
+    :root { --green:#0a0a0a; --green-dark:#0a0a0a; --green-soft:#fafaf8; --cream:#fafaf8; --gold:#fafaf8; --ink:#0a0a0a; --mute:#0a0a0a; --line:#fafaf8; --white:#fafaf8; --sans:'DM Sans',Arial,sans-serif; --serif:'Fraunces',Georgia,serif; }
+    * { box-sizing:border-box; }
+    figure { margin:0; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); background:var(--cream); font-family:var(--sans); }
+    a { color:inherit; text-decoration:none; }
+    button { font:inherit; }
+    .wrap { width:min(1180px,calc(100% - 42px)); margin:auto; }
+    .topbar { padding:10px 16px; color:#fafaf8; background:var(--green-dark); text-align:center; font-size:12px; font-weight:600; letter-spacing:.035em; }
+    .nav { min-height:81px; display:flex; align-items:center; justify-content:space-between; gap:25px; background:var(--cream); }
+    .logo { color:var(--green); font-size:23px; font-weight:700; letter-spacing:.19em; }
+    .navlinks { display:flex; align-items:center; gap:27px; font-size:14px; font-weight:600; }
+    .navlinks > a:not(.nav-button) { margin:-5px -8px; padding:5px 8px; border-radius:6px; }
+    .navlinks > a:not(.nav-button):hover { color:var(--green); background:var(--green-soft); text-decoration:none; }
+    .nav-places { position:relative; }
+    .nav-places-trigger { display:inline-flex; align-items:center; gap:5px; margin:-5px -8px; padding:5px 8px; border:0; border-radius:6px; color:inherit; background:transparent; cursor:pointer; font:inherit; font-weight:600; }
+    .nav-places:hover .nav-places-trigger,.nav-places:focus-within .nav-places-trigger,.nav-places.open .nav-places-trigger { color:var(--green); background:var(--green-soft); }
+    .nav-places-trigger::after { content:'⌄'; font-size:14px; transform:translateY(-1px); }
+    .nav-places-menu { position:absolute; z-index:20; top:100%; left:50%; display:grid; min-width:182px; padding:7px; border:1px solid var(--line); border-radius:10px; background:#fafaf8; box-shadow:0 12px 28px rgba(23,61,45,.14); opacity:0; pointer-events:none; transform:translate(-50%,-5px); transition:opacity .14s,transform .14s; }
+    .nav-places:hover .nav-places-menu,.nav-places:focus-within .nav-places-menu,.nav-places.open .nav-places-menu { opacity:1; pointer-events:auto; transform:translate(-50%,0); }
+    .nav-places-menu a { padding:9px 11px; border-radius:6px; color:var(--green); font-size:13px; }
+    .nav-places-menu a:hover { background:var(--green-soft); text-decoration:none; }
+    .nav-button,.button { display:inline-flex; align-items:center; justify-content:center; gap:9px; border:0; border-radius:8px; background:var(--green); color:#fafaf8; cursor:pointer; font-family:inherit; font-size:15px; font-weight:700; line-height:1; transition:transform .16s,background .16s; }
+    .nav-button { min-height:43px; padding:0 16px; font-size:13px; }
+    .button { min-height:56px; padding:0 23px; }
+    .button:hover,.nav-button:hover { background:var(--green-dark); transform:translateY(-1px); }
+    .button-gold { color:var(--green-dark); background:var(--gold); box-shadow:0 7px 0 #fafaf8,0 14px 26px rgba(23,61,45,.14); }
+    .button-gold:hover { color:var(--green-dark); background:#fafaf8; box-shadow:0 9px 0 #fafaf8,0 16px 28px rgba(23,61,45,.16); }
+    .mobile-menu { display:none; border:0; color:var(--green); background:transparent; font:700 14px var(--sans); cursor:pointer; }
+
+    .hero { display:grid; grid-template-columns:1fr .94fr; min-height:570px; overflow:hidden; background:#fafaf8; }
+    /* space-between : le contenu se repartit sur toute la hauteur, ce qui
+       aligne la ligne des etoiles sur la rangee des vignettes a droite
+       au lieu de laisser 112px de vide en bas. */
+    /* Couloir droit reduit a 58px : le padding symetrique laissait 112px
+       de vide entre le texte et la photo. */
+    .hero-copy { display:flex; flex-direction:column; justify-content:space-between; padding:26px 58px 22px max(30px,calc((100vw - 1180px)/2)); }
+    h1,h2,h3,p { margin-top:0; }
+    h1 { max-width:590px; margin-bottom:18px; color:var(--green); font:700 clamp(32px,3vw,44px)/1.08 var(--serif); letter-spacing:-.045em; }
+    .lead { max-width:570px; margin-bottom:20px; color:#0a0a0a; font-size:16px; line-height:1.55; }
+    .hero-points { display:grid; gap:9px; margin:0 0 23px; padding:0; color:#0a0a0a; font-size:14px; font-weight:600; line-height:1.4; list-style:none; }
+    .hero-points li::before { content:'✓'; display:inline-grid; width:20px; height:20px; place-items:center; margin-right:8px; color:var(--green-dark); background:var(--gold); border-radius:50%; font-size:12px; font-weight:900; vertical-align:1px; }
+    .hero-quote { display:flex; flex-direction:column; align-items:flex-start; }
+    .hero-quote .button { min-width:min(100%,356px); min-height:66px; padding:0 27px; font-size:18px; }
+    .trust-row { display:flex; align-items:center; gap:12px; margin:17px 0 0; color:var(--mute); font-size:13px; line-height:1.4; }
+    .ticks { display:flex; gap:2px; color:#fafaf8; font-size:16px; letter-spacing:-.06em; white-space:nowrap; }
+
+    .photo-carousel { min-width:0; padding:26px 26px 22px 0; background:#fafaf8; }
+    .carousel-stage { position:relative; height:calc(100% - 83px); min-height:405px; overflow:hidden; border-radius:16px; background:var(--green-dark); touch-action:pan-y; }
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity .35s ease; pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+    .carousel-slide img { width:100%; height:100%; object-fit:cover; object-position:center; }
+    .carousel-slide::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg,transparent 62%,rgba(8,27,18,.54)); pointer-events:none; }
+    .carousel-caption { position:absolute; z-index:1; right:18px; bottom:18px; max-width:255px; padding:11px 13px; color:#fafaf8; background:rgba(14,42,30,.86); border:1px solid rgba(255,255,255,.18); border-radius:8px; font-size:12px; font-weight:600; line-height:1.42; }
+    .carousel-arrow { position:absolute; z-index:2; top:50%; display:grid; width:45px; height:45px; place-items:center; border:0; border-radius:50%; color:#fafaf8; background:rgba(23,61,45,.93); cursor:pointer; transform:translateY(-50%); font-size:26px; line-height:1; transition:background .15s,transform .15s; }
+    .carousel-arrow:hover { background:var(--green-dark); transform:translateY(-50%) scale(1.05); }
+    .carousel-arrow.prev { left:16px; }
+    .carousel-arrow.next { right:16px; }
+    .carousel-thumbs { display:flex; gap:8px; height:69px; margin-top:10px; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; }
+    .carousel-thumbs::-webkit-scrollbar { display:none; }
+    .carousel-thumb { flex:0 0 calc((100% - 16px)/3); min-width:0; padding:0; overflow:hidden; border:2px solid transparent; border-radius:7px; background:var(--green-dark); cursor:pointer; opacity:.58; scroll-snap-align:start; transition:opacity .15s,border-color .15s; }
+    .carousel-thumb.active { border-color:var(--gold); opacity:1; }
+    .carousel-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+
+    .video-section { padding:80px 0; background:var(--cream); }
+    .section-kicker { margin:0 0 12px; color:var(--green); font-size:12px; font-weight:700; letter-spacing:.09em; text-align:center; text-transform:uppercase; }
+    .section-title { max-width:720px; margin:0 auto 17px; color:var(--green); font:700 clamp(30px,3.4vw,42px)/1.1 var(--serif); text-align:center; letter-spacing:-.045em; }
+    .section-sub { max-width:650px; margin:0 auto; color:var(--mute); font-size:16px; line-height:1.6; text-align:center; }
+    .video-frame { max-width:880px; aspect-ratio:16/9; margin:36px auto 0; overflow:hidden; background:var(--green-dark); border-radius:15px; box-shadow:0 18px 38px rgba(23,61,45,.18); }
+    .video-frame video { width:100%; height:100%; object-fit:cover; display:block; }
+    .video-credit { margin:9px 0 0; color:var(--mute); font-size:11px; text-align:center; }
+    .video-credit a { text-decoration:underline; text-underline-offset:3px; }
+
+    .peace { padding:84px 0; background:#fafaf8; }
+    .peace-grid { display:grid; grid-template-columns:.9fr 1.1fr; align-items:center; gap:76px; }
+    .peace-title { max-width:510px; margin:0; color:var(--green); font:700 clamp(31px,3.7vw,44px)/1.09 var(--serif); letter-spacing:-.05em; }
+    .peace-copy { margin:0 0 24px; color:var(--mute); font-size:16px; line-height:1.62; }
+    .peace-list { display:grid; gap:15px; margin:0; padding:0; list-style:none; }
+    .peace-list li { display:flex; align-items:flex-start; gap:12px; color:#0a0a0a; font-size:15px; font-weight:600; line-height:1.48; }
+    .check { display:grid; flex:0 0 24px; width:24px; height:24px; place-items:center; color:var(--green-dark); background:var(--gold); border-radius:50%; font-size:14px; font-weight:900; }
+    .peace .button { margin-top:31px; }
+
+    .quote-cta { padding:72px 0; color:#fafaf8; background:var(--green); }
+    .quote-cta-wrap { display:grid; grid-template-columns:1fr auto; align-items:center; gap:35px; }
+    .quote-cta h2 { max-width:710px; margin:0 0 12px; font:700 clamp(30px,3.4vw,42px)/1.1 var(--serif); letter-spacing:-.045em; }
+    .quote-cta p { margin:0; color:rgba(255,255,255,.78); font-size:16px; line-height:1.55; }
+    .quote-cta .button { white-space:nowrap; }
+
+    .places { padding:68px 0; background:#fafaf8; }
+    .place-list { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; max-width:860px; margin:31px auto 0; }
+    .place { padding:24px 20px; border:1px solid var(--line); border-radius:12px; background:var(--cream); text-align:center; }
+    .place-pin { display:grid; width:34px; height:34px; place-items:center; margin:0 auto 11px; color:var(--green); background:var(--green-soft); border-radius:50%; font-size:16px; }
+    .place h3 { margin:0 0 5px; color:var(--green); font:700 23px/1.15 var(--serif); letter-spacing:-.03em; }
+    .place p { margin:0; color:var(--mute); font-size:13px; line-height:1.45; }
+
+    .reviews { padding:79px 0 86px; background:var(--cream); }
+    .review-window { max-width:710px; margin:31px auto 0; overflow:hidden; }
+    .review-track { display:flex; transition:transform .28s ease; }
+    .review { flex:0 0 100%; padding:31px 34px; border:1px solid var(--line); border-radius:14px; background:#fafaf8; text-align:center; }
+    .review-stars { margin-bottom:15px; color:#fafaf8; font-size:22px; letter-spacing:2px; }
+    .review p { margin:0 0 12px; color:var(--mute); font-size:15px; line-height:1.55; }
+    .review strong { color:var(--green); font-size:14px; }
+    .review-controls { display:flex; align-items:center; justify-content:center; gap:12px; margin-top:15px; }
+    .review-control { display:grid; width:35px; height:35px; place-items:center; border:1px solid var(--line); border-radius:50%; color:var(--green); background:#fafaf8; cursor:pointer; font-size:20px; }
+    .review-control:disabled { cursor:default; opacity:.4; }
+    .review-count { color:var(--mute); font-size:12px; }
+
+    footer { padding:33px 0; color:rgba(255,255,255,.68); background:var(--green-dark); }
+    .footer-grid { display:flex; align-items:flex-start; justify-content:space-between; gap:30px; font-size:13px; line-height:1.5; }
+    .footer-brand { color:#fafaf8; font-size:20px; font-weight:700; letter-spacing:.19em; }
+    .footer-links { display:flex; gap:19px; }
+
+    @media (max-width:850px) {
+      .hero { grid-template-columns:1fr; } .hero-copy { min-height:490px; padding:44px max(21px,calc((100vw - 680px)/2)); } .photo-carousel { max-width:680px; width:100%; margin:0 auto; padding:0 21px 28px; } .carousel-stage { height:440px; } .peace-grid,.quote-cta-wrap { grid-template-columns:1fr; gap:35px; } .peace-title { max-width:650px; } .quote-cta .button { justify-self:start; }
+    }
+    @media (max-width:600px) {
+      .wrap { width:min(100% - 32px,1180px); } .topbar { font-size:10px; } .nav { min-height:67px; } .logo { font-size:20px; } .mobile-menu { display:block; } .navlinks { display:none; } .navlinks.open { position:absolute; z-index:10; top:67px; left:0; right:0; display:flex; flex-direction:column; align-items:stretch; gap:0; padding:13px 16px 18px; background:#fafaf8; border-bottom:1px solid var(--line); } .navlinks.open a { padding:12px 0; } .navlinks.open .nav-button { margin-top:7px; } .nav-places { display:block; } .nav-places-trigger { width:100%; padding:12px 0; justify-content:space-between; } .nav-places-menu { position:static; min-width:0; margin:0 0 4px; padding:4px 0 5px 14px; border:0; border-radius:0; box-shadow:none; opacity:0; pointer-events:none; transform:none; max-height:0; overflow:hidden; } .nav-places.open .nav-places-menu { opacity:1; pointer-events:auto; max-height:160px; } .nav-places-menu a { display:block; padding:8px 0; } .hero-copy { min-height:0; padding:40px 16px 35px; } h1 { font-size:35px; } .lead { font-size:15px; } .hero-points { margin-bottom:20px; font-size:13px; } .hero-quote .button { width:100%; min-height:63px; font-size:17px; } .trust-row { align-items:flex-start; margin-top:15px; } .photo-carousel { padding:0 16px 25px; } .carousel-stage { min-height:0; height:min(74vw,390px); border-radius:12px; } .carousel-arrow { width:39px; height:39px; font-size:23px; } .carousel-arrow.prev { left:11px; } .carousel-arrow.next { right:11px; } .carousel-caption { right:11px; bottom:11px; max-width:218px; font-size:11px; } .carousel-thumbs { height:58px; } .video-section,.peace,.places,.reviews { padding:64px 0; } .section-title { font-size:36px; } .section-sub { font-size:15px; } .video-frame { margin-top:27px; border-radius:11px; } .peace-copy { font-size:15px; } .peace-list li { font-size:14px; } .peace .button,.quote-cta .button { width:100%; } .quote-cta { padding:61px 0; } .place-list { grid-template-columns:1fr; gap:9px; margin-top:24px; } .place { display:grid; grid-template-columns:36px 1fr; column-gap:12px; align-items:center; padding:16px; text-align:left; } .place-pin { grid-row:span 2; margin:0; } .place h3 { margin:0; font-size:20px; } .place p { margin:3px 0 0; } .review { padding:27px 20px; } .footer-grid { flex-direction:column; } .footer-links { flex-wrap:wrap; }
+    }
+    @media (max-width:600px) { .nav-places-trigger,.navlinks > a:not(.nav-button) { margin:0; } }
+    @media (max-width:600px) { h1 { font-size:29px; } }
+    @media (min-width:601px) { h1 { font-size:34px !important; } .section-title { font-size:38px !important; } .peace-title { font-size:40px !important; } .quote-cta h2 { font-size:38px !important; } }
+    .carousel-caption { display:none !important; }
+    .logo { display:flex; align-items:center; }
+    .logo img { display:block; width:72px; height:64px; object-fit:contain; }
+    .hero { min-height:520px; }
+    /* Aligne le bas du texte (ligne des etoiles) sur le bas des vignettes
+       de droite : meme padding-bottom que .photo-carousel (22px). */
+    .hero-copy { justify-content:space-between; padding-top:26px; padding-bottom:22px; }
+    @media (max-width:850px) { .hero { min-height:0; } .hero-copy { justify-content:flex-start; padding-top:30px; } }
+    @media (max-width:600px) {
+      .nav { min-height:64px; position:relative; }
+      .logo img { width:58px; height:54px; }
+      .hero-copy { padding:24px 16px 29px; }
+      .mobile-menu { display:flex !important; width:42px; height:42px; align-items:center; justify-content:center; flex-direction:column; gap:5px; padding:0 !important; }
+      .mobile-menu span { display:block; width:21px; height:2px; border-radius:2px; background:currentColor; transition:transform .18s, opacity .18s; }
+      .mobile-menu.is-open span:first-child { transform:translateY(7px) rotate(45deg); }
+      .mobile-menu.is-open span:nth-child(2) { opacity:0; }
+      .mobile-menu.is-open span:last-child { transform:translateY(-7px) rotate(-45deg); }
+      .navlinks.open { z-index:50; box-shadow:0 14px 20px rgba(23,61,45,.1); }
+    }
+
+    .coffee-craft{padding:64px 0;background:#fafaf8}.coffee-craft .section-title{margin-bottom:32px}.craft-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;margin-bottom:28px}.craft-grid img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;border-radius:4px}.craft-grid h3{font-family:var(--serif);font-size:1.5rem;line-height:1.25;margin:20px 0 12px;color:var(--green)}.craft-grid p{font-size:15px;line-height:1.7;color:var(--mute);margin:0}.eywa-home #personnalisation{padding:56px 0}.eywa-home #personnalisation .brand-photo{aspect-ratio:4/3;max-height:360px}.eywa-home #personnalisation .brand-photo img{height:100%;object-fit:cover}@media(max-width:700px){.coffee-craft{padding:44px 0}.craft-grid{grid-template-columns:1fr;gap:30px}.craft-grid img{aspect-ratio:16/9;max-height:260px}.eywa-home #personnalisation{padding:44px 0}}
+
+    .brand-story,.benefit-story{padding:72px 0}.brand-story{background:#fafaf8}.brand-story-head{display:grid;grid-template-columns:1.4fr 1fr;gap:48px;align-items:center;margin-bottom:36px}.brand-story .section-title,.benefit-story .section-title{text-align:left;margin:0}.brand-story .section-kicker,.benefit-story .section-kicker{text-align:left}.brand-story-head>p,.brand-story-details p,.benefit-story p{color:var(--mute);line-height:1.7}.brand-story-layout{display:grid;grid-template-columns:1.15fr 1fr;gap:56px;align-items:center}.brand-story figure{margin:0}.brand-story figure img{width:100%;height:440px;object-fit:cover;object-position:center 65%;display:block;border-radius:4px}.brand-story figcaption{font-size:11px;color:var(--mute);margin-top:8px}.brand-story-details>div{position:relative;padding:18px 0 18px 40px;border-top:1px solid #fafaf8}.brand-story-details span{position:absolute;left:0;top:23px;color:#0a0a0a;font-size:12px}.brand-story h3,.benefit-story h3{font-family:var(--serif);font-weight:500;font-size:25px;line-height:1.25;margin:0 0 10px;color:var(--green)}.brand-story-details p{margin:0;font-size:15px}.brand-story-details>.text-link{margin-top:20px}.benefit-story{background:var(--cream)}.benefit-story-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;margin:40px 0}.benefit-story-grid article+article{border-left:1px solid var(--line);padding-left:64px}.benefit-story .benefit-audience{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin:0 0 20px}.benefit-story h3{font-size:30px}.benefit-story-grid strong{font-weight:500;color:var(--green)}.benefit-story-bottom{border-top:1px solid var(--line);padding-top:24px;display:flex;gap:40px;align-items:center;justify-content:space-between}.benefit-story-bottom p{max-width:580px;margin:0}.benefit-story-bottom a{flex-shrink:0}@media(max-width:760px){.brand-story,.benefit-story{padding:48px 0}.brand-story-head,.brand-story-layout,.benefit-story-grid{grid-template-columns:1fr;gap:24px}.brand-story figure img{height:320px}.benefit-story-grid article+article{border-left:0;border-top:1px solid var(--line);padding:28px 0 0}.benefit-story-bottom{display:block}.benefit-story-bottom a{margin-top:20px}.benefit-story h3{font-size:26px}}
+</style>
+  <link rel="stylesheet" href="header.css?v=20261006-publication">
+  <link rel="stylesheet" href="home.css?v=20261006-publication">
+  <link rel="stylesheet" href="design.css?v=20261006-publication">
+  <link rel="stylesheet" href="personnalisation.css?v=20261006-publication">
+<link rel="stylesheet" href="reference-sections.css?v=20261006-publication">
+<link rel="stylesheet" href="https://use.typekit.net/siv0vng.css">
+<script src="https://use.typekit.net/ik/sR9C6s2CmtklvGmHOBiU86tItp94UbAjJee13bWbCFSfe0wgfFHN4UJLFRbh52jhWDjhw29h5esKwemKFD9aFRB8FcsR5Q8K5gGMJ6iyd1TTjAozJyBKScB0ZeN0OAikdas8SaBuZPJbZ148-AiGifuDjAoDOWgkdkGHfOEOMyMMeMb6MKGHfOrOMyMMeMS6MKGHfOhOMyMMeMt6MKG4fOUbIMIjMkMfH6qJl8MbMs6IJMJ7fbKt9gMgeMS6MKG4fOubIMIj2PMfH6qJ0mMbMs6sJMJ7fbRHmsMfeMb6MKG4fJoTIMJjgkMfH6qJRAqbMy65JMJ7fbKV-sMfegI6MTMghwd333j.js" async onload="try{Typekit.load({async:true});}catch(e){}"></script>
+<link rel="stylesheet" href="typography.css?v=20261006-publication">
+  <link rel="stylesheet" href="home-clarity.css?v=20261006-mobile-order">
+  <link rel="stylesheet" href="harmony.css?v=20261006-publication">
+<link rel="stylesheet" href="original-green.css?v=20261006-publication">
+<link rel="stylesheet" href="arc-inspired.css?v=20261006-publication">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&amp;family=Playfair+Display:ital,wght@0,400;0,500;1,400&amp;display=swap">
+<link rel="stylesheet" href="arc-surfaces.css?v=20261006-publication">
+<link rel="stylesheet" href="opening-refinement.css?v=20261007-navigation-fine">
+<link rel="stylesheet" href="booking-craft-refinement.css?v=20261006-publication">
+<link rel="stylesheet" href="photo-split-sections.css?v=20261006-publication">
+<link rel="stylesheet" href="carousel-navigation.css?v=20261027-carrousel-gauche">
+<link rel="stylesheet" href="journey.css?v=20261007-trois-etapes">
+<link rel="stylesheet" href="soft-blush.css?v=20261007-etapes-detaillees">
+<link rel="stylesheet" href="personal-compact.css?v=20261007-cartes-ajustees"><link rel="stylesheet" href="booking-white.css?v=20261007-devis-simplifie">
+<link rel="stylesheet" href="black-palette.css?v=20261007-noir-global">
+<link rel="stylesheet" href="hero-editorial.css?v=20261030-titre-encre">
+<link rel="stylesheet" href="event-marquee.css?v=20261027-bandeau">
+<link rel="stylesheet" href="theme-comparison.css?v=20261009-palettes">
+<link rel="stylesheet" href="warm-palette.css?v=20261030-titre-encre">
+<style id="eywa-logo-position">
+</style>
+<link rel="stylesheet" href="launch-offer.css?v=20261015-premiere"><script src="launch-offer.js?v=20261027-sans-bandeau"></script>
+<link rel="stylesheet" href="brand-unified.css?v=20261027-louis-droite">
+<style id="eywa-intro-photo-layout">
+/* Preserve the desktop crop; keep the mobile photo in normal document flow. */
+body.eywa-home #services .editorial-photo img{position:absolute;inset:0;object-position:center 40%}
+@media(max-width:760px){
+ body.eywa-home #services .editorial-photo{width:100%;aspect-ratio:auto}
+ body.eywa-home #services .editorial-photo img{position:static;height:auto;aspect-ratio:4/3}
+}
+</style>
+<style id="eywa-real-photos">
+/* Show the drink photo above the cream call-to-action instead of behind it. */
+body.eywa-home .reference-coffee-cta{padding-top:0!important}
+body.eywa-home .reference-coffee-cta .reference-coffee-photo{display:block;position:relative;inset:auto;z-index:auto;width:100%;height:clamp(240px,34vw,440px);margin-bottom:48px;object-fit:cover;object-position:center;filter:none;transform:none}
+
+body.eywa-home #savoir-faire .craft-editorial-photo.eywa-photo-duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;overflow:hidden}
+body.eywa-home #savoir-faire .eywa-photo-duo img{min-width:0;min-height:0;object-position:center}
+@media(max-width:760px){
+ body.eywa-home #savoir-faire .craft-editorial-photo.eywa-photo-duo{aspect-ratio:auto}
+ body.eywa-home #savoir-faire .eywa-photo-duo img{height:auto;aspect-ratio:2/3}
+}
+</style>
+<style>body.eywa-home #personnalisation .foam-examples .personal-project-thumbs{grid-template-rows:repeat(2,minmax(0,1fr))!important}</style>
+<link rel="stylesheet" href="photo-layout.css?v=20261020-v2">
+<link rel="stylesheet" href="apercu-accueil.css?v=20261030">
+<link rel="stylesheet" href="home-sections.css?v=20261027-photos-respirent">
+</head>
+<body data-eywa-page="home" class="eywa-home eywa-photo-opening eywa-warm">
+  <header class="wrap nav">
+    <a class="logo" href="#accueil" aria-label="EYWA, accueil"><img class="brand-reference-logo eywa-wordmark" src="assets/brand/eywa-wordmark.svg?v=20261022-final" alt="EYWA Coffee Catering" width="1450" height="420"></a>
+    <button class="mobile-menu" type="button" aria-expanded="false" aria-controls="navlinks" aria-label="Ouvrir le menu"><span></span><span></span><span></span></button>
+    <nav class="navlinks" id="navlinks" aria-label="Navigation principale"><span class="nav-group nav-group-left"><a href="zone-intervention.html?v=20261007-zone-300km">Lieux</a><a href="galerie.html?v=20261007-etapes-detaillees">Galerie</a><a href="menu.html?v=20261007-etapes-detaillees">Menu</a><a href="tarifs.html?v=20261007-etapes-detaillees">Tarifs</a></span><span class="nav-group nav-group-right"><a class="nav-button" href="devis-instantane.html?v=20261024-supplements">Obtenir mon devis</a></span></nav>
+  </header>
+
+  <main>
+    <div class="home-opening hero-editorial-opening">
+    <section class="hero hero-editorial" id="accueil" aria-labelledby="title">
+      <div class="hero-editorial-content">
+        <div class="photo-carousel hero-carousel">
+          <div class="carousel-stage" id="carousel-stage">
+          <figure class="carousel-slide active"><img src="assets/photos-reelles/louis-bar-eywa-20261027.jpg" alt="Louis, barista EYWA, derrière le coffee bar blanc avec son équipement et ses plantes" width="710" height="1262" fetchpriority="high"></figure>
+          </div>
+        </div>
+        <div class="hero-copy">
+          <h1 id="title">Un barista.<br>Un coffee bar.<br><em>Votre événement.</em></h1>
+          <p class="hero-trust"><span class="rating-stars" aria-hidden="true">★★★★★</span><strong>5/5</strong><span>2 avis clients, recueillis directement</span></p>
+          <ul class="hero-points">
+            <li>Nous desservons Reims, Metz, Nancy, Lille, Paris, le Luxembourg <a href="zone-intervention.html?v=20261007-zone-300km">et au-delà</a>.</li>
+            <li>Café, matcha, chai, chocolat chaud et thé <em>à volonté&nbsp;!</em></li>
+            <li><em>Tout compris</em> — barista, matériel, installation et rangement, sans supplément</li>
+            <li>Bar, gobelets et latte art <em>à l’effigie de votre marque</em></li>
+            <li><em>Plusieurs baristas</em> pour les grands événements</li>
+          </ul>
+          <p class="launch-hero-offer" data-launch-banner hidden><strong>Offre de lancement : −80 %</strong><span>Première réservation · Paiement intégral</span></p>
+          <div class="hero-quote">
+            <div class="hero-actions">
+              <a class="button" href="devis-instantane.html?v=20261024-supplements">Obtenir un devis instantané</a>
+              <a class="button button-ghost" href="tel:+33749902156">Appelez-nous</a>
+            </div>
+            <p class="quote-note">Devis gratuit &amp; sans engagement · réponse immédiate</p>
+            <div class="hero-secondary">
+              <a class="hero-how-link" href="comment-ca-marche.html?v=20261007-etapes-detaillees">Comment ça marche <span class="direction-arrow" aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </div>
+        </div>
+    </section>
+  </div>
+
+    <div class="event-marquee" aria-label="Les événements que nous accompagnons">
+      <div class="event-marquee-track">
+        <ul class="event-marquee-list"><li>Activation de marque</li><li>Corporate</li><li>Office</li><li>Conférence</li><li>Expo</li><li>Séminaire</li></ul>
+        <ul class="event-marquee-list" aria-hidden="true"><li>Activation de marque</li><li>Corporate</li><li>Office</li><li>Conférence</li><li>Expo</li><li>Séminaire</li></ul>
+      </div>
+    </div>
+
+    <section class="intro-band visual-intro" id="services" aria-labelledby="intro-title">
+      <div class="wrap visual-split">
+        <figure class="editorial-photo" style="position:relative"><img src="assets/hero/bar-classique-mur-clair-20261013.webp" alt="Le coffee bar EYWA blanc avec son plateau en noyer, sa machine et ses plantes, devant un mur clair" loading="eager" width="1672" height="941"></figure>
+        <div class="editorial-copy">
+          <p class="section-kicker">Ce que nous faisons</p>
+          <h2 id="intro-title">Nous amenons le coffee bar<br>sur votre événement.</h2>
+          <p>Nous venons avec notre bar à café mobile, nos baristas et tout le matériel nécessaire. Sur place, nous préparons les boissons à la demande et accueillons vos invités autour du comptoir.</p>
+          <ul class="simple-points"><li><span><strong>Tout est personnalisable</strong> : bar, gobelets, latte art, carte et tenues.</span></li><li>Café, matcha, chai, chocolat chaud &amp; thé</li><li>Barista, matériel et boissons à volonté pendant la durée choisie</li><li>Installation, service et rangement compris</li></ul>
+          <div class="concept-actions"><a class="text-link" href="menu.html?v=20261007-etapes-detaillees">Découvrir la carte</a><a class="text-link" href="pourquoi-eywa.html?v=20261007-etapes-detaillees">Pourquoi faire appel à nous</a></div>
+        </div>
+      </div>
+    </section>
+
+
+
+<section class="how-it-works" id="comment-ca-marche" aria-labelledby="how-title">
+      <div class="wrap">
+        <h2 id="how-title">Comment ça marche ?</h2>
+        <ol class="how-steps">
+<li><span class="how-number" aria-hidden="true">1</span><h3>Votre devis instantané</h3><p>Indiquez votre date, le nombre d’invités, la durée du service et le lieu. Votre proposition s’affiche aussitôt à l’écran, détaillée ligne par ligne, frais de déplacement compris. C’est immédiat, gratuit et sans engagement : à cette étape, vous ne réservez rien.</p></li>
+<li><span class="how-number" aria-hidden="true">2</span><h3>Parlons de votre événement</h3><p>Votre devis vous convient ? Vous pouvez réserver directement. Et si vous avez une question ou une demande particulière — boissons, personnalisation, installation — nous en parlons et nous validons les détails ensemble avant que vous réserviez.</p></li>
+<li><span class="how-number" aria-hidden="true">3</span><h3>Réservez et profitez</h3><p>Une fois les détails convenus, vous confirmez et réglez l’acompte. Nous préparons le coffee bar, assurons le service et le rangement. Une semaine avant le jour J, nous vous contactons pour refaire le point et confirmer les derniers détails.</p></li>
+</ol><a class="journey-text-link" href="comment-ca-marche.html?v=20261007-etapes-detaillees">Comment ça marche en détail <span class="direction-arrow" aria-hidden="true">↗</span></a>
+
+      </div>
+    </section>
+
+    <section class="booking" id="reservation" aria-labelledby="booking-title">
+      <div class="wrap booking-solo">
+        <div class="section-head">
+          <p class="section-kicker">Connaître le prix</p>
+          <h2 id="booking-title">Votre devis<br>en quelques clics</h2>
+          <p class="booking-help">Vous hésitez sur la formule ?<br><a href="contact.html?v=20261007-etapes-detaillees">Parlons de votre projet <span class="direction-arrow" aria-hidden="true">↗</span></a></p>
+        </div>
+
+        <!-- Ces choix préremplissent le formulaire de devis. -->
+        <div class="mini-devis">
+          <div class="md-field">
+            <div class="md-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              Durée du service
+            </div>
+            <div class="md-stepper">
+              <button type="button" class="md-btn" onclick="mdHours(-0.5)" aria-label="Réduire la durée">−</button>
+              <span class="md-box"><span class="md-val" id="md-hours">1h30</span><span class="md-unit">de service</span></span>
+              <button type="button" class="md-btn" onclick="mdHours(0.5)" aria-label="Augmenter la durée">+</button>
+            </div>
+          </div>
+
+          <div class="md-field">
+            <div class="md-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              Nombre d'invités
+            </div>
+            <div class="md-stepper">
+              <button type="button" class="md-btn" onclick="mdGuests(-10)" aria-label="Moins d'invités">−</button>
+              <span class="md-box"><span class="md-val" id="md-guests">50</span><span class="md-unit">personnes</span></span>
+              <button type="button" class="md-btn" onclick="mdGuests(10)" aria-label="Plus d'invités">+</button>
+            </div>
+          </div>
+
+          <div class="md-sep"></div>
+
+          <p class="md-staff" id="md-staff">1 barista professionnel + un coffee bar</p>
+          <p class="md-staff-sub">Café, matcha, chai, chocolat chaud et thé.</p>
+
+
+          <div class="md-sep"></div>
+
+          <a class="button button-gold md-cta" id="md-cta" href="devis-instantane.html?v=20261024-supplements&amp;invites=50&amp;heures=1.5">Obtenir mon tarif</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="personal-catalog" id="personnalisation" aria-labelledby="branding-title">
+      <div class="wrap">
+        <div class="personal-catalog-head"><h2 class="section-title" id="branding-title">Nos personnalisations</h2></div>
+        <div class="personal-catalog-list">
+          <article class="personal-project">
+            <header class="personal-project-heading"><span class="personal-number">01</span><div class="personal-label"><h3 class="personal-name">Le bar</h3><p>La façade du bar peut être personnalisée avec votre logo et vos couleurs.</p></div></header>
+            <div class="personal-project-body"><div class="personal-project-thumbs"><div class="personal-image-cell"><img class="personal-detail" src="assets/gallery-v4/02-nike-rooftop.webp" alt="Projection d’un coffee bar Nike sur un rooftop" loading="lazy" width="800" height="600"></div><div class="personal-image-cell"><img src="assets/gallery-v4/04-cupra-showroom.webp" alt="Projection d’un bar personnalisé Cupra" loading="lazy" width="1086" height="1448"></div></div><figure><img src="assets/gallery-v4/08-dior-boutique.webp" alt="Projection d’un bar habillé aux couleurs de Dior" loading="lazy" width="1086" height="1448"></figure></div>
+            <p class="personal-caption">Projection de personnalisation, sans partenariat avec les marques représentées.</p>
+          </article>
+          <article class="personal-project">
+            <header class="personal-project-heading"><span class="personal-number">02</span><div class="personal-label"><h3 class="personal-name">Les gobelets</h3><p>Ajoutez votre logo ou le visuel de votre choix sur les gobelets.</p></div></header>
+            <div class="personal-project-body"><div class="personal-project-thumbs"><div class="personal-image-cell"><img src="configurateur/editorial/nike/cup-v4.webp" alt="Projection d’un gobelet personnalisé Nike" loading="lazy" width="1448" height="1086"></div><div class="personal-image-cell"><img src="configurateur/editorial/celio/cup-v4.webp" alt="Projection de gobelets personnalisés Celio" loading="lazy" width="1448" height="1086"></div></div><figure><img src="configurateur/editorial/dior/cup-3f2008626109.webp" alt="Projection d’un gobelet personnalisé Dior" loading="lazy" width="1448" height="1086"></figure></div>
+            <p class="personal-caption">Projection de personnalisation, sans partenariat avec les marques représentées.</p>
+          </article>
+          <article class="personal-project">
+            <header class="personal-project-heading"><span class="personal-number">03</span><div class="personal-label"><h3 class="personal-name">La mousse</h3><p>Une imprimante alimentaire reproduit votre logo sur la mousse des boissons compatibles.</p></div></header>
+            <div class="personal-project-body foam-examples eywa-foam-gallery" role="region" aria-label="Exemples de logos sur mousse"><figure><img src="assets/photos-20261020/mousse-eywa.webp" alt="Projection du logo EYWA sur la mousse d’un latte EYWA" loading="lazy" width="1536" height="1024"><figcaption>EYWA</figcaption></figure><figure><img src="assets/photos-20261020/mousse-nike.webp" alt="Projection du logo Nike sur la mousse d’un latte EYWA" loading="lazy" width="1536" height="1024"><figcaption>Nike</figcaption></figure><figure><img src="assets/photos-20261020/mousse-dior.webp" alt="Projection du logo Dior sur la mousse d’un latte EYWA" loading="lazy" width="1536" height="1024"><figcaption>Dior</figcaption></figure></div>
+<p class="personal-caption foam-credit">Projections de personnalisation sur une photographie EYWA, sans partenariat avec les marques représentées.<span class="eywa-foam-swipe">Faites défiler les exemples.</span></p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+
+
+    <section class="reference-craft" id="savoir-faire" aria-labelledby="craft-title">
+      <div class="reference-craft-hero">
+        <img class="reference-craft-photo" src="assets/photos-reelles/eywa-lait-vapeur-20261019.webp" alt="" loading="lazy" width="1280" height="1920">
+        <div class="wrap"><h2 id="craft-title">Du bon café.<br><em>Entre de bonnes mains.</em></h2></div>
+      </div>
+      <div class="wrap reference-craft-lower">
+        <div class="craft-editorial-split">
+          <figure class="craft-editorial-photo eywa-photo-feature"><img src="assets/photos-20261020/preparation-latte.webp" alt="Le geste du barista EYWA versant le lait dans un latte" loading="lazy" width="1920" height="1280"></figure>
+          <div class="craft-editorial-copy">
+            <p class="section-kicker">Le café &amp; le savoir-faire</p>
+            <h3>Un café de spécialité bio.</h3>
+            <p>Notre café est torréfié localement. Nous l’utilisons pour préparer les americanos, cappuccinos, lattes et mochas de votre événement.</p>
+            <h3>Des baristas professionnels.</h3>
+            <p>Ils accueillent vos invités, les conseillent dans leur choix et préparent les boissons selon leurs préférences.</p>
+            <ul class="craft-points"><li>Latte art sur les boissons au lait</li><li>Boissons chaudes ou glacées</li><li>Laits végétaux et café décaféiné disponibles</li></ul>
+            <div class="craft-menu-note"><a class="reference-menu-link" href="menu.html?v=20261007-etapes-detaillees">Découvrir la carte</a></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reference-benefits" id="evenements" aria-labelledby="events-title"><div class="wrap benefit-layout"><h2 id="events-title">Un coffee bar.<br>Qu’est-ce que ça change pour <span class="keep-together">vous&nbsp;?</span></h2><a class="button" href="pourquoi-eywa.html?v=20261007-etapes-detaillees">Pourquoi faire appel à nous</a></div></section>
+
+    <section class="reviews" id="avis" aria-labelledby="reviews-title"><div class="wrap reviews-compact"><div><h2 id="reviews-title">Avis clients</h2><p class="reviews-source">Avis recueillis directement auprès de nos clients.</p></div><p class="reviews-rating"><span class="rating-stars" aria-hidden="true">★★★★★</span><strong>5/5</strong><span>2 avis clients</span></p></div></section>
+
+<section class="faq-home" id="faq" aria-labelledby="faq-title">
+      <div class="wrap">
+        <p class="section-kicker">Questions fréquentes</p>
+        <h2 class="section-title" id="faq-title">Encore une question ?</h2>
+        <div class="faq-list">
+<details><summary>Quelles villes desservez-vous ?</summary><p>Nous sommes basés à Charleville-Mézières et intervenons dans un <a href="zone-intervention.html?v=20261007-contact-direct">rayon de 300 km</a>. Le déplacement est gratuit dans un rayon de 20 km autour de Charleville-Mézières. Au-delà, le trajet aller-retour complet est facturé pour couvrir les frais nécessaires, sans déduire les 20 premiers kilomètres. Au-delà de 300 km ou à l’étranger, une intervention reste possible sur demande. <a href="contact.html?v=20261007-contact-direct">Contactez-nous pour en parler</a>.</p></details>
+<details><summary>Qu’est-ce que le service traiteur café EYWA ?</summary><p>EYWA, c’est un bar à café mobile accompagné de baristas professionnels pour les événements d’entreprise. Nous installons un coffee bar sur votre lieu et préparons les boissons à la demande, pour offrir à vos invités une vraie pause café.</p></details>
+
+<details><summary>De quoi avez-vous besoin sur place ?</summary><p>Une prise électrique 220 V standard à moins de 10 m du bar est obligatoire. Prévoyez aussi un emplacement accessible pour le coffee bar, avec de la place derrière pour que le barista puisse travailler. Une personne doit nous accueillir à l’arrivée et nous indiquer où nous installer. Son numéro de téléphone est demandé lors de la réservation. Nous validons ensemble l’emplacement et les accès avant l’événement.</p></details>
+<details><summary>Proposez-vous du café décaféiné ?</summary><p>Oui, nous proposons du café décaféiné.</p></details>
+<details><summary>Travaillez-vous lors d’événements en plein air ?</summary><p>Oui, nous intervenons aussi en extérieur. Le bar doit être installé sur un emplacement stable et abrité du soleil et des intempéries, sous une tonnelle, un barnum ou un auvent, avec une alimentation électrique adaptée. En cas de forte pluie, de vent ou de froid important, nous prévoyons avec vous une solution de repli pour assurer le service dans de bonnes conditions.</p></details>
+<details><summary>Qu’est-ce qui est inclus dans la location ?</summary><p>La prestation comprend le bar à café mobile, les baristas, le matériel de préparation, les ingrédients et les gobelets nécessaires au service. Les boissons prévues au devis sont servies à volonté pendant la durée réservée. L’installation et le rangement sont compris et ne réduisent pas votre temps de service. Les frais de déplacement, l’hébergement si nécessaire et les options de personnalisation sont précisés séparément dans le devis.</p></details>
+<details><summary>Proposez-vous aussi des prestations pour des événements privés ?</summary><p>Oui, nous pouvons également intervenir pour un événement privé, selon les disponibilités. Contactez-nous pour échanger sur votre projet et obtenir un devis adapté.</p></details>
+</div>
+        <p class="faq-link"></p>
+      </div>
+    </section>
+
+<section class="reference-coffee-cta eywa-coffee-photo-section cta-on-photo" id="rendez-vous" aria-labelledby="quote-title"><figure class="cta-photo"><img class="reference-coffee-photo" src="assets/photos-20261020/latte-art.webp" alt="" loading="lazy" width="1920" height="1280"></figure><div class="wrap eywa-coffee-final"><div class="eywa-coffee-final-copy"><p class="kicker">Votre prochain événement commence ici</p><h2 id="quote-title">On se retrouve<br><em>autour d’un café ?</em></h2><a class="button" href="devis-instantane.html?v=20261024-supplements">Obtenir mon devis instantané </a></div></div></section>
+  </main>
+
+  <footer><div class="wrap footer-grid"><div><div class="footer-brand"><img class="eywa-wordmark" src="assets/brand/eywa-wordmark.svg?v=20261022-final" alt="EYWA Coffee Catering" width="1450" height="420"></div><div>Bar à café mobile pour vos événements</div></div><div class="footer-links"><a href="zone-intervention.html?v=20261007-zone-300km">Zone d’intervention</a><a href="contact.html?v=20261007-etapes-detaillees">Contact</a><a href="mailto:contact.eywa08@gmail.com">Email</a><a href="tel:+33749902156">07 49 90 21 56</a><a href="devis-instantane.html?v=20261024-supplements">Devis</a></div><div class="footer-social" aria-label="Réseaux sociaux"><a href="https://www.instagram.com/eywa.charleville/" target="_blank" rel="noopener noreferrer" aria-label="EYWA sur Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.05 1.8.25 2.2.42.6.22 1 .48 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c0 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2 0-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c0-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2Zm0 1.8c-3.1 0-3.5 0-4.8.07-1.1.05-1.7.24-2.1.4-.5.2-.9.44-1.2.78-.34.33-.57.7-.78 1.2-.16.4-.35 1-.4 2.1C2.65 9.85 2.64 10.2 2.64 12s0 2.15.07 3.45c.05 1.1.24 1.7.4 2.1.2.5.44.87.78 1.2.33.34.7.57 1.2.78.4.16 1 .35 2.1.4 1.3.07 1.7.07 4.8.07s3.5 0 4.8-.07c1.1-.05 1.7-.24 2.1-.4.5-.2.87-.44 1.2-.78.34-.33.57-.7.78-1.2.16-.4.35-1 .4-2.1.07-1.3.07-1.65.07-3.45s0-2.15-.07-3.45c-.05-1.1-.24-1.7-.4-2.1a3.2 3.2 0 0 0-.78-1.2 3.2 3.2 0 0 0-1.2-.78c-.4-.16-1-.35-2.1-.4C15.5 4 15.1 4 12 4Zm0 3.1a4.9 4.9 0 1 1 0 9.8 4.9 4.9 0 0 1 0-9.8Zm0 1.8a3.1 3.1 0 1 0 0 6.2 3.1 3.1 0 0 0 0-6.2Zm5.1-.3a1.15 1.15 0 1 1 0-2.3 1.15 1.15 0 0 1 0 2.3Z"/></svg></a><span aria-label="YouTube, lien à venir" title="YouTube, bientôt"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 12s0-3.2-.4-4.7a2.5 2.5 0 0 0-1.7-1.8C19.3 5 12 5 12 5s-7.3 0-8.9.5A2.5 2.5 0 0 0 1.4 7.3C1 8.8 1 12 1 12s0 3.2.4 4.7c.2.9.9 1.6 1.7 1.8 1.6.5 8.9.5 8.9.5s7.3 0 8.9-.5a2.5 2.5 0 0 0 1.7-1.8c.4-1.5.4-4.7.4-4.7Zm-13.3 3V9l6.1 3-6.1 3Z"/></svg></span><span aria-label="Facebook, lien à venir" title="Facebook, bientôt"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.7-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.7l-.4 2.9h-2.3v7A10 10 0 0 0 22 12Z"/></svg></span><span aria-label="TikTok, lien à venir" title="TikTok, bientôt"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 2h-3.1v13.1a2.6 2.6 0 1 1-2.2-2.6V9.3a5.7 5.7 0 1 0 5.3 5.7V8.6a6.7 6.7 0 0 0 3.9 1.2V6.7a3.9 3.9 0 0 1-3.9-3.9V2Z"/></svg></span></div><div>© 2026 EYWA</div></div></footer>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://eywacoffeecatering.com/#organization","name":"EYWA","url":"https://eywacoffeecatering.com/","logo":"https://eywacoffeecatering.com/assets/brand/eywa-wordmark.svg?v=20261022-final","email":"contact.eywa08@gmail.com","telephone":"+33749902156","areaServed":{"@type":"GeoCircle","geoMidpoint":{"@type":"GeoCoordinates","latitude":49.778496,"longitude":4.740663},"geoRadius":300000,"description":"Rayon de 300 km autour de Charleville-Mézières. Au-delà, demande spécifique auprès d’EYWA."}},{"@type":"Service","name":"Coffee catering pour événements d’entreprise","serviceType":"Coffee catering, baristas et bar à café mobile","provider":{"@id":"https://eywacoffeecatering.com/#organization"},"areaServed":{"@type":"GeoCircle","geoMidpoint":{"@type":"GeoCoordinates","latitude":49.778496,"longitude":4.740663},"geoRadius":300000,"description":"Rayon de 300 km autour de Charleville-Mézières. Au-delà, demande spécifique auprès d’EYWA."},"description":"Service de café événementiel avec baristas professionnels, bar à café mobile, café, matcha, chocolat chaud et bien d'autres boissons pour les événements d'entreprise dans un rayon de 300 km autour de Charleville-Mézières."}]}
+  </script>
+  <script>
+    const mobileMenu = document.querySelector('.mobile-menu');
+    const navLinks = document.querySelector('.navlinks');
+    mobileMenu.addEventListener('click', () => { const open = navLinks.classList.toggle('open'); mobileMenu.classList.toggle('is-open', open); mobileMenu.setAttribute('aria-expanded', String(open)); mobileMenu.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu'); });
+    navLinks.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => { navLinks.classList.remove('open'); mobileMenu.classList.remove('is-open'); mobileMenu.setAttribute('aria-expanded','false'); mobileMenu.setAttribute('aria-label','Ouvrir le menu'); }));
+    const placesNav = document.querySelector('.nav-places');
+    const placesTrigger = document.querySelector('.nav-places-trigger');
+    let placesCloseTimer;
+    const isMobileNav = () => window.matchMedia('(max-width: 600px)').matches;
+    const openPlaces = () => {
+      if (isMobileNav()) return;
+      window.clearTimeout(placesCloseTimer);
+      placesNav.classList.add('open');
+    };
+    const closePlaces = () => {
+      if (isMobileNav()) return;
+      placesCloseTimer = window.setTimeout(() => {
+        placesNav.classList.remove('open');
+        placesTrigger.setAttribute('aria-expanded', 'false');
+      }, 220);
+    };
+    placesNav?.addEventListener('mouseenter', openPlaces);
+    placesNav?.addEventListener('mouseleave', closePlaces);
+    placesTrigger?.addEventListener('click', () => {
+      if (!isMobileNav()) {
+        placesTrigger.blur();
+        return;
+      }
+      const open = placesNav.classList.toggle('open');
+      placesTrigger.setAttribute('aria-expanded', open);
+    });
+
+    // Le carrousel est géré dans carousel-controls.js.
+
+    /* ----------------------------------------------------------------
+       Amorce du devis dans la section Reservation : le visiteur indique
+       seulement son nombre d'invites, la valeur est transmise en
+       parametre a devis-instantane.html qui prerempli l'etape 1.
+       Volontairement sans prix affiche ici : le tarif reste calcule a un
+       seul endroit, dans devis-instantane.html.
+       ---------------------------------------------------------------- */
+    (() => {
+      const guestsEl = document.getElementById('md-guests');
+      if (!guestsEl) return;
+      const hoursEl = document.getElementById('md-hours');
+      const ctaEl = document.getElementById('md-cta');
+      const staffEl = document.getElementById('md-staff');
+
+      let guests = 50;
+      let hours = 1.5;
+
+      /* Meme regle que devis-instantane.html : un barista sert environ
+         50 invites par heure de service. */
+      const baristas = () => Math.max(1, Math.ceil(guests / (hours * 50)));
+
+      const render = () => {
+        guestsEl.textContent = guests;
+        hoursEl.textContent = hours % 1 === 0 ? hours + 'h' : Math.floor(hours) + 'h30';
+        ctaEl.href = 'devis-instantane.html?v=20261024-supplements&invites=' + guests + '&heures=' + hours;
+
+        const n = baristas();
+        staffEl.textContent = n + ' barista' + (n > 1 ? 's' : '')
+          + ' professionnel' + (n > 1 ? 's' : '') + ' + un coffee bar';
+      };
+
+      window.mdGuests = (delta) => { guests = Math.min(2000, Math.max(10, guests + delta)); render(); };
+      window.mdHours = (delta) => { hours = Math.min(12, Math.max(1.5, Math.round((hours + delta) * 2) / 2)); render(); };
+
+      render();
+    })();
+  </script>
+
+
+<script src="eywa-assistant.js?v=20261006-light-bar" defer></script>
+
+<script src="brand-options.js?v=20261006-publication" defer></script>
+<script src="carousel-controls.js?v=20261027-carrousel-gauche" defer></script>
+<script src="home-entry.js?v=20261007-noirs" defer></script>
+</body>
+</html>
+
+
+
+
+
+
+

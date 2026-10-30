@@ -1,0 +1,71 @@
+/* Maquette : structure inspirée de New Life Coffee, palette et polices EYWA. */
+
+/* La photo ne touche plus le bord de l'écran : elle reste dans la largeur
+   du contenu, comme sur leur site, et occupe nettement moins de place. */
+body.eywa-photo-opening #accueil .hero-editorial-content{
+ width:min(1280px,calc(100% - 96px))!important;margin:0 auto!important;
+ grid-template-columns:1fr .86fr!important;gap:56px!important;align-items:center!important;
+}
+body.eywa-photo-opening #accueil .photo-carousel{padding:0!important}
+body.eywa-photo-opening #accueil .carousel-stage{
+ height:auto!important;aspect-ratio:1/1;border-radius:14px!important;max-height:560px;
+}
+body.eywa-photo-opening #accueil .hero-copy{padding:64px 0!important}
+
+/* La note clients remonte juste sous le titre, comme chez eux. */
+body.eywa-photo-opening #accueil .hero-trust{
+ display:flex;align-items:center;flex-wrap:wrap;gap:4px 10px;margin:0 0 22px;
+ font:500 14px/1.4 var(--sans,'DM Sans',sans-serif);color:#291817;
+}
+body.eywa-photo-opening #accueil .hero-trust .rating-stars{color:#b8865a;font-size:15px;letter-spacing:.08em}
+body.eywa-photo-opening #accueil .hero-trust strong{font-weight:700}
+body.eywa-photo-opening #accueil .hero-trust span:last-child{color:#6d544b;font-weight:400}
+
+/* Les arguments en liste courte, l'essentiel en italique serif. */
+body.eywa-photo-opening #accueil .hero-points{
+ list-style:none;margin:0 0 28px;padding:0;display:grid;gap:11px;max-width:520px;
+}
+body.eywa-photo-opening #accueil .hero-points li{
+ position:relative;padding-left:22px;font:400 16px/1.5 var(--sans,'DM Sans',sans-serif);color:#291817;
+}
+body.eywa-photo-opening #accueil .hero-points li::before{
+ content:'';position:absolute;left:0;top:.62em;width:7px;height:7px;border-radius:50%;background:#be957a;
+}
+body.eywa-photo-opening #accueil .hero-points em{
+ font-family:var(--serif);font-style:italic;font-weight:600;color:#291817;
+}
+body.eywa-photo-opening #accueil .hero-points strong{font-weight:650}
+body.eywa-photo-opening #accueil .hero-points a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+
+/* Deux actions côte à côte : le devis, et le téléphone. */
+body.eywa-photo-opening #accueil .hero-actions{display:flex;flex-wrap:wrap;gap:12px}
+body.eywa-photo-opening #accueil .button-ghost{
+ background:transparent!important;color:#291817!important;
+ box-shadow:inset 0 0 0 1.5px #c9ab9a!important;
+}
+body.eywa-photo-opening #accueil .button-ghost:hover{
+ background:#f3ece4!important;box-shadow:inset 0 0 0 1.5px #291817!important;
+}
+
+@media(max-width:1100px) and (min-width:761px){
+ body.eywa-photo-opening #accueil .hero-editorial-content{width:calc(100% - 56px)!important;gap:36px!important}
+}
+@media(max-width:760px){
+ body.eywa-photo-opening #accueil .hero-editorial-content{width:100%!important;gap:0!important;grid-template-columns:1fr!important;align-items:stretch!important}
+ body.eywa-photo-opening #accueil .carousel-stage{aspect-ratio:4/3;max-height:none}
+ body.eywa-photo-opening #accueil .photo-carousel{padding:0 20px 24px!important}
+ body.eywa-photo-opening #accueil .hero-copy{padding:32px 24px 28px!important}
+ body.eywa-photo-opening #accueil .hero-points li{font-size:15px}
+ body.eywa-photo-opening #accueil .hero-actions .button{flex:1 1 100%}
+}
+
+/* warm-palette.css remplit tous les .button en caramel avec !important :
+   il faut un sélecteur plus spécifique pour le bouton secondaire. */
+html body.eywa-warm.eywa-home.eywa-photo-opening #accueil .hero-actions .button-ghost,
+html body.eywa-warm.eywa-home.eywa-photo-opening #accueil .hero-actions .button-ghost:hover{
+ background:transparent!important;color:#291817!important;
+ box-shadow:inset 0 0 0 1.5px #c9ab9a!important;
+}
+html body.eywa-warm.eywa-home.eywa-photo-opening #accueil .hero-actions .button-ghost:hover{
+ background:#f5efe6!important;box-shadow:inset 0 0 0 1.5px #291817!important;
+}
