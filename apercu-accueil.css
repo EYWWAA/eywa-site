@@ -69,3 +69,36 @@ html body.eywa-warm.eywa-home.eywa-photo-opening #accueil .hero-actions .button-
 html body.eywa-warm.eywa-home.eywa-photo-opening #accueil .hero-actions .button-ghost:hover{
  background:#f5efe6!important;box-shadow:inset 0 0 0 1.5px #291817!important;
 }
+
+/* Tout doit tenir sans défiler, sur un portable comme sur un grand écran.
+   La photo monte en haut du bloc au lieu d'être centrée, et la colonne de
+   texte est resserrée : titre, interlignes, marges. */
+body.eywa-photo-opening #accueil.hero-editorial{
+ min-height:0!important;
+}
+body.eywa-photo-opening #accueil .hero-editorial-content{
+ align-items:stretch!important;padding:28px 0 32px!important;
+ min-height:calc(100svh - 70px - var(--eywa-help-height,61px))!important;
+}
+body.eywa-photo-opening #accueil .hero-copy{
+ padding:0!important;justify-content:center!important;
+}
+body.eywa-photo-opening #accueil .photo-carousel{display:flex;align-items:stretch}
+body.eywa-photo-opening #accueil .carousel-stage{
+ aspect-ratio:auto!important;height:100%!important;max-height:none!important;align-self:stretch;
+}
+body.eywa-photo-opening #accueil h1#title{
+ font-size:clamp(36px,3.1vw,50px)!important;line-height:1.04!important;margin:0 0 16px!important;
+}
+body.eywa-photo-opening #accueil .hero-trust{margin:0 0 16px;font-size:13.5px}
+body.eywa-photo-opening #accueil .hero-points{gap:8px;margin:0 0 22px;max-width:500px}
+body.eywa-photo-opening #accueil .hero-points li{font-size:15px;line-height:1.45;padding-left:20px}
+body.eywa-photo-opening #accueil .hero-points li::before{width:6px;height:6px;top:.58em}
+body.eywa-photo-opening #accueil .quote-note{margin-top:10px!important;font-size:12px!important}
+body.eywa-photo-opening #accueil .hero-secondary{margin-top:12px!important}
+
+@media(max-width:760px){
+ body.eywa-photo-opening #accueil .hero-editorial-content{min-height:0!important;padding:0!important}
+ body.eywa-photo-opening #accueil .carousel-stage{aspect-ratio:4/3!important;height:auto!important}
+ body.eywa-photo-opening #accueil .hero-copy{padding:28px 24px 24px!important}
+}
