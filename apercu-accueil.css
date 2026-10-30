@@ -144,3 +144,17 @@ body.eywa-photo-opening #accueil .carousel-stage{max-height:400px!important}
  body.eywa-photo-opening #accueil .hero-editorial-content{width:100%!important;grid-template-columns:1fr!important;gap:0!important}
  body.eywa-photo-opening #accueil .carousel-stage{max-height:none!important}
 }
+
+/* « Service de bar à café mobile » devient le titre, comme le « Service
+   traiteur de café à Philadelphie » de New Life. */
+body.eywa-photo-opening #accueil h1#title{
+ font-size:clamp(34px,3vw,48px)!important;line-height:1.08!important;max-width:9ch!important;
+}
+body.eywa-photo-opening #accueil h1#title em{font-style:italic!important}
+@media(max-width:760px){
+ body.eywa-photo-opening #accueil h1#title{max-width:none!important;font-size:clamp(30px,8vw,40px)!important}
+}
+
+/* Titre long façon New Life : il tient sur trois lignes, comme le leur. */
+body.eywa-photo-opening #accueil h1#title{max-width:14ch!important;font-size:clamp(30px,2.6vw,42px)!important}
+@media(max-width:760px){body.eywa-photo-opening #accueil h1#title{max-width:none!important}}
