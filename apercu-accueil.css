@@ -102,3 +102,45 @@ body.eywa-photo-opening #accueil .hero-secondary{margin-top:12px!important}
  body.eywa-photo-opening #accueil .carousel-stage{aspect-ratio:4/3!important;height:auto!important}
  body.eywa-photo-opening #accueil .hero-copy{padding:28px 24px 24px!important}
 }
+
+/* Deuxième passe : la photo prend moins de place et la colonne de texte
+   est resserrée, le bloc respire au lieu de remplir toute la largeur. */
+body.eywa-photo-opening #accueil .hero-editorial-content{
+ width:min(1180px,calc(100% - 96px))!important;
+ grid-template-columns:1fr .66fr!important;gap:64px!important;
+}
+body.eywa-photo-opening #accueil .photo-carousel{align-items:flex-start}
+body.eywa-photo-opening #accueil .carousel-stage{
+ height:auto!important;aspect-ratio:4/5!important;max-height:440px!important;align-self:flex-start;
+}
+body.eywa-photo-opening #accueil h1#title{font-size:clamp(32px,2.6vw,42px)!important;max-width:460px}
+body.eywa-photo-opening #accueil .hero-points{max-width:430px}
+body.eywa-photo-opening #accueil .hero-points li{font-size:14.5px}
+
+/* Le sur-titre, dans l'esprit de leur « Service traiteur de café à… ». */
+body.eywa-photo-opening #accueil .hero-kicker{
+ margin:0 0 14px;font:500 12px/1.5 var(--sans,'DM Sans',sans-serif);
+ letter-spacing:.18em;text-transform:uppercase;color:#8a6959;
+}
+@media(max-width:760px){
+ body.eywa-photo-opening #accueil .hero-editorial-content{width:100%!important;grid-template-columns:1fr!important;gap:0!important}
+ body.eywa-photo-opening #accueil .carousel-stage{aspect-ratio:4/3!important;max-height:none!important}
+ body.eywa-photo-opening #accueil h1#title{max-width:none}
+ body.eywa-photo-opening #accueil .hero-kicker{font-size:11px;margin-bottom:12px}
+}
+
+/* Troisième passe : on réduit la largeur totale du bloc plutôt que de
+   brider le texte à l'intérieur d'une colonne large — sinon les
+   arguments se cassent sur trois lignes et le bloc repart en hauteur. */
+body.eywa-photo-opening #accueil .hero-editorial-content{
+ width:min(1080px,calc(100% - 80px))!important;
+ grid-template-columns:1fr .6fr!important;gap:48px!important;
+}
+body.eywa-photo-opening #accueil h1#title{max-width:none!important;font-size:clamp(32px,2.5vw,40px)!important}
+body.eywa-photo-opening #accueil .hero-points{max-width:none!important;gap:7px!important;margin-bottom:20px!important}
+body.eywa-photo-opening #accueil .hero-points li{font-size:14.5px!important;line-height:1.42!important}
+body.eywa-photo-opening #accueil .carousel-stage{max-height:400px!important}
+@media(max-width:760px){
+ body.eywa-photo-opening #accueil .hero-editorial-content{width:100%!important;grid-template-columns:1fr!important;gap:0!important}
+ body.eywa-photo-opening #accueil .carousel-stage{max-height:none!important}
+}
