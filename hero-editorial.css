@@ -20,7 +20,7 @@ body.eywa-photo-opening #accueil .hero-description{font-size:clamp(16px,1.35vw,1
 body.eywa-photo-opening #accueil .hero-quote{width:auto;margin:0}
 body.eywa-photo-opening #accueil .hero-quote .button{width:auto;min-width:0;max-width:none;min-height:50px;margin:0;padding:0 28px!important;font:500 15px var(--sans)!important;border-radius:999px!important}
 /* Ancienne signature d'accueil reprise sur la photo : ville, note et mention de devis. */
-body.eywa-photo-opening #accueil h1#title em{font-family:var(--serif);font-style:normal;font-weight:600!important;color:#8a6959!important}
+body.eywa-photo-opening #accueil h1#title em{font-family:var(--serif);font-style:normal;font-weight:600!important;color:#291817!important}
 body.eywa-photo-opening #accueil .hero-location{font-size:15px!important;line-height:1.5!important;margin:0 0 26px!important;max-width:460px;color:#5b4038!important}
 body.eywa-photo-opening #accueil .hero-location strong{font-weight:650!important}
 body.eywa-photo-opening #accueil .hero-location a{color:inherit;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}

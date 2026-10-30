@@ -50,7 +50,7 @@ html body.eywa-warm.eywa-photo-opening #accueil.hero-editorial{background:#fffbe
 html body.eywa-warm.eywa-photo-opening #accueil.hero-editorial::before{display:none!important}
 html body.eywa-warm.eywa-photo-opening #accueil .hero-copy{background:transparent!important}
 html body.eywa-warm.eywa-home #accueil :is(h1,.hero-description,.hero-location,.quote-note,.hero-secondary,.hero-eyebrow){color:#291817!important}
-html body.eywa-warm.eywa-home #accueil h1#title em{background-image:none!important;-webkit-text-fill-color:#8a6959!important;color:#8a6959!important}
+html body.eywa-warm.eywa-home #accueil h1#title em{background-image:none!important;-webkit-text-fill-color:#291817!important;color:#291817!important}
 html body.eywa-warm.eywa-home #accueil .hero-rating{color:#291817!important}
 html body.eywa-warm.eywa-home #accueil .hero-rating .rating-stars{color:#b8865a!important}
 /* Surfaces claires : le brun du mail reste surtout dans les textes. */
