@@ -5,3 +5,6 @@ html body.eywa-warm :is(header.nav,.quote-header,.top-bar,.top,footer) img.eywa-
 html body .footer-brand img.eywa-wordmark{width:144px!important;margin-bottom:8px}
 html body :is(.quote-header,.top-bar,.top) img.eywa-wordmark{width:130px!important}
 @media(max-width:760px){html body img.eywa-wordmark{width:152px!important}html body :is(.quote-header,.top-bar,.top) img.eywa-wordmark{width:118px!important}}
+
+/* Une couleur d’étoiles commune à l’accueil et au devis. */
+html body :is(.rating-stars,.review-stars,.stars){color:#fbbc04!important}
