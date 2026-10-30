@@ -189,3 +189,34 @@ body.eywa-photo-opening #accueil .hero-actions .button{
  font:500 15px var(--sans,'DM Sans',sans-serif)!important;
  display:inline-flex;align-items:center;justify-content:center;width:auto;
 }
+
+/* Proportions relevées sur leur page : bloc large, titre dominant, photo
+   presque carrée et nettement plus grande que la version précédente. */
+body.eywa-photo-opening #accueil .hero-editorial-content{
+ width:min(1300px,calc(100% - 80px))!important;
+ grid-template-columns:1fr .95fr!important;gap:72px!important;align-items:center!important;
+}
+body.eywa-photo-opening #accueil h1#title{
+ font-size:clamp(38px,3.6vw,56px)!important;line-height:1.05!important;
+ max-width:13ch!important;margin:0 0 20px!important;
+}
+body.eywa-photo-opening #accueil .carousel-stage{
+ aspect-ratio:1/1!important;max-height:545px!important;align-self:center;
+}
+body.eywa-photo-opening #accueil .hero-points{margin:0!important;gap:12px!important}
+body.eywa-photo-opening #accueil .hero-points li{font-size:16px!important;line-height:1.5!important}
+
+/* Le crème de leur page couvre tout, pas seulement l'ouverture : sinon le
+   bloc d'accueil tranche et paraît blanc. La barre du haut ne bouge pas. */
+html body.eywa-warm.eywa-home :is(#services.intro-band,#services .editorial-copy,#reservation.booking,
+ #personnalisation.personal-catalog,.reviews,#savoir-faire .craft-editorial-copy){background:#f8f8ef!important}
+html body.eywa-warm.eywa-home .event-marquee{background:#241a17!important}
+
+@media(max-width:760px){
+ body.eywa-photo-opening #accueil .hero-editorial-content{width:100%!important;grid-template-columns:1fr!important;gap:0!important}
+ body.eywa-photo-opening #accueil h1#title{max-width:none!important;font-size:clamp(34px,9.4vw,46px)!important}
+ body.eywa-photo-opening #accueil .carousel-stage{aspect-ratio:4/3!important;max-height:none!important}
+}
+
+/* La mention de gratuité collait au dernier argument. */
+body.eywa-photo-opening #accueil .hero-quote{margin-top:22px!important}
