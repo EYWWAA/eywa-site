@@ -326,7 +326,7 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
     var kv = x.split('='); if (kv[0]) P[decodeURIComponent(kv[0])] = decodeURIComponent((kv[1]||'').replace(/\+/g,' '));
   });
 
-  var price = Math.round((parseFloat(P.pr) || 450)*100)/100;
+  var price = Math.round((parseFloat(P.pr) || 350)*100)/100;
   var normalTotalCents = Math.round(price * 100);
   var totalCents = normalTotalCents;
   var depositCents = Math.round(totalCents / 2);

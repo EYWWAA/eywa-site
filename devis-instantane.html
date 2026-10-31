@@ -805,7 +805,7 @@
     var extraHrs = Math.max(0, A.hrs - 1.5);
     var baristasNeeded = Math.ceil(A.guests / (A.hrs * 50));
     var extraBaristas = Math.max(0, baristasNeeded - 1);
-    var pricePerDay = (45000 + extraGuests * 346 + Math.round(extraHrs * 10385) + extraBaristas * 20000 + persoTotal() * 100) / 100;
+    var pricePerDay = (35000 + extraGuests * 270 + Math.round(extraHrs * 8000) + extraBaristas * 15500 + persoTotal() * 100) / 100;
     return Math.round((pricePerDay * A.days + window.eywaTravel.total)*100)/100;
   }
 
@@ -818,7 +818,7 @@
     var extraHrs = Math.max(0, A.hrs - 1.5);
     var baristasNeeded = Math.ceil(A.guests / (A.hrs * 50));
     var extraBaristas = Math.max(0, baristasNeeded - 1);
-    var pricePerDay = (45000 + extraGuests * 346 + Math.round(extraHrs * 10385) + extraBaristas * 20000 + persoTotal() * 100) / 100;
+    var pricePerDay = (35000 + extraGuests * 270 + Math.round(extraHrs * 8000) + extraBaristas * 15500 + persoTotal() * 100) / 100;
     A.totalPrice = calcPrice();
 
     document.getElementById('priceDisplay').innerHTML = EywaLaunchOffer.priceHTML(calcNormalPrice(),persoTotal()*A.days);
@@ -831,10 +831,10 @@
     document.getElementById('priceContext').textContent = ctx;
 
     var bd = '';
-    bd += '<div class="brow"><span>Base (50 pers., 1h30)</span><span>' + EywaLaunchOffer.priceHTML(450) + '</span></div>';
-    if (extraGuests > 0) bd += '<div class="brow"><span>+' + extraGuests + ' invité' + (extraGuests>1?'s':'') + ' × 3,46 €</span><span>' + EywaLaunchOffer.priceHTML(extraGuests*346/100) + '</span></div>';
-    if (extraHrs > 0) bd += '<div class="brow"><span>+' + hrsLabel(extraHrs) + ' × 103,85 €/h</span><span>' + EywaLaunchOffer.priceHTML(Math.round(extraHrs*10385)/100) + '</span></div>';
-    if (extraBaristas > 0) bd += '<div class="brow"><span>' + extraBaristas + ' barista' + (extraBaristas>1?'s':'') + ' sup. × 200 €</span><span>' + EywaLaunchOffer.priceHTML(extraBaristas*200) + '</span></div>';
+    bd += '<div class="brow"><span>Base (50 pers., 1h30)</span><span>' + EywaLaunchOffer.priceHTML(350) + '</span></div>';
+    if (extraGuests > 0) bd += '<div class="brow"><span>+' + extraGuests + ' invité' + (extraGuests>1?'s':'') + ' × 2,70 €</span><span>' + EywaLaunchOffer.priceHTML(extraGuests*270/100) + '</span></div>';
+    if (extraHrs > 0) bd += '<div class="brow"><span>+' + hrsLabel(extraHrs) + ' × 80 €/h</span><span>' + EywaLaunchOffer.priceHTML(Math.round(extraHrs*8000)/100) + '</span></div>';
+    if (extraBaristas > 0) bd += '<div class="brow"><span>' + extraBaristas + ' barista' + (extraBaristas>1?'s':'') + ' sup. × 155 €</span><span>' + EywaLaunchOffer.priceHTML(extraBaristas*155) + '</span></div>';
     for (var pi = 0; pi < A.personalization.length; pi++) {
       var pn = A.personalization[pi], pp = PERSO_PRIX[pn] || 0;
       if (pp > 0) bd += '<div class="brow"><span>' + pn + '</span><span>' + EywaLaunchOffer.money(pp) + '</span></div>';
