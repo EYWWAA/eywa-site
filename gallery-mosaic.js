@@ -12,30 +12,19 @@
     const columns = innerWidth > 900 ? 3 : innerWidth > 600 ? 2 : 1;
     const gap = innerWidth > 600 ? 24 : 16;
     const width = (mosaic.clientWidth - gap * (columns - 1)) / columns;
-    const headings=[...mosaic.querySelectorAll('[data-gallery-heading]')];
-    headings.forEach(h=>h.hidden=selection!=='all');
-    tiles.forEach(tile=>tile.hidden=selection!=='all'&&tile.dataset.galleryCategory!==selection);
-    let totalHeight=0;
-    const categories=selection==='all'?['craft','bars','foam','cups']:[selection];
-    categories.forEach(category=>{
-      const group=tiles.filter(tile=>tile.dataset.galleryCategory===category);
-      if(!group.length)return;
-      if(selection==='all'){
-        const heading=headings.find(h=>h.dataset.galleryHeading===category);
-        heading.style.top=totalHeight+'px';
-        totalHeight+=heading.getBoundingClientRect().height+22;
-      }
-      const heights=Array(columns).fill(totalHeight);
-      group.forEach(tile=>{
-        const col=heights.indexOf(Math.min(...heights));
-        const image=tile.querySelector('img');
-        tile.style.width=width+'px';tile.style.left=col*(width+gap)+'px';tile.style.top=heights[col]+'px';
-        heights[col]+=width*Number(image.getAttribute('height'))/Number(image.getAttribute('width'))+gap;
-      });
-      totalHeight=Math.max(...heights)-gap+(selection==='all'?44:0);
+    tiles.forEach(tile => tile.hidden = selection !== 'all' && tile.dataset.galleryCategory !== selection);
+    const heights = Array(columns).fill(0);
+    visibleTiles().forEach(tile => {
+      const col = heights.indexOf(Math.min(...heights));
+      const image = tile.querySelector('img');
+      const ratio = Number(tile.dataset.galleryRatio) || Number(image.getAttribute('width')) / Number(image.getAttribute('height'));
+      tile.style.width = width + 'px';
+      tile.style.left = col * (width + gap) + 'px';
+      tile.style.top = heights[col] + 'px';
+      heights[col] += width / ratio + gap;
     });
     mosaic.classList.add('masonry-ready');
-    mosaic.style.height=Math.max(0,totalHeight-(selection==='all'?44:0))+'px';
+    mosaic.style.height = Math.max(0, Math.max(...heights) - gap) + 'px';
   };
   filters.forEach(button => button.addEventListener('click', () => {
     selection = button.dataset.galleryFilter;
@@ -54,6 +43,7 @@
     const image = viewer.querySelector('img');
     image.src = source.src;
     image.alt = source.alt;
+    viewer.querySelector('figure').classList.toggle('gallery-cropped', tile.dataset.galleryCrop === 'portrait');
     viewer.querySelector('figcaption').textContent = tile.querySelector('figcaption').textContent;
     viewer.querySelector('.gallery-viewer-position').textContent = (current + 1) + ' / ' + visible.length;
     viewer.querySelector('.gallery-viewer-prev').hidden = visible.length < 2;

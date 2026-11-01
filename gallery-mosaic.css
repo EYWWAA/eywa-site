@@ -45,3 +45,8 @@ body header.nav .nav-group>a[aria-current="page"]:not(.nav-button){color:var(--s
 @media(prefers-reduced-motion:reduce){.gallery-photo img,.gallery-tile figcaption,.gallery-filter{transition:none}.gallery-tile:hover img{transform:none}}
 
 .gallery-viewer>button[hidden]{display:none}
+
+/* Portrait resserré : pas de bandes noires ni de grand espace au-dessus du bar. */
+.gallery-tile[data-gallery-crop="portrait"] .gallery-photo img{aspect-ratio:4/5;object-fit:cover;object-position:50% 65%}
+.gallery-viewer figure.gallery-cropped img{width:min(100%,calc((100dvh - 180px)*.8));height:auto;aspect-ratio:4/5;object-fit:cover;object-position:50% 65%}
+@media(max-width:600px){.gallery-viewer figure.gallery-cropped img{width:min(100%,calc((100dvh - 200px)*.8))}}
