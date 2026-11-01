@@ -1,29 +1,39 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://eywacoffeecatering.com/</loc>
-    <lastmod>2026-10-27</lastmod>
+    <lastmod>2026-11-01</lastmod>
   </url>
   <url>
     <loc>https://eywacoffeecatering.com/galerie.html</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-11-01</lastmod>
   </url>
   <url>
     <loc>https://eywacoffeecatering.com/menu.html</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-11-01</lastmod>
   </url>
   <url>
     <loc>https://eywacoffeecatering.com/tarifs.html</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-11-01</lastmod>
   </url>
   <url>
     <loc>https://eywacoffeecatering.com/contact.html</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-11-01</lastmod>
   </url>
-  <url><loc>https://eywacoffeecatering.com/pourquoi-eywa.html</loc><lastmod>2026-09-25</lastmod></url>
+  <url>
+    <loc>https://eywacoffeecatering.com/pourquoi-eywa.html</loc>
+    <lastmod>2026-11-01</lastmod>
+  </url>
   <url>
     <loc>https://eywacoffeecatering.com/comment-ca-marche.html</loc>
-    <lastmod>2026-10-07</lastmod>
+    <lastmod>2026-11-01</lastmod>
   </url>
-  <url><loc>https://eywacoffeecatering.com/zone-intervention.html</loc><lastmod>2026-10-07</lastmod></url>
+  <url>
+    <loc>https://eywacoffeecatering.com/zone-intervention.html</loc>
+    <lastmod>2026-11-01</lastmod>
+  </url>
+  <url>
+    <loc>https://eywacoffeecatering.com/devis-instantane.html</loc>
+    <lastmod>2026-11-01</lastmod>
+  </url>
 </urlset>
