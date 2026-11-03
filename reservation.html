@@ -109,7 +109,7 @@
 <link rel="stylesheet" href="soft-blush.css?v=20261007-etapes-detaillees">
 <link rel="stylesheet" href="black-palette.css?v=20261007-noir-global">
 <link rel="stylesheet" href="theme-comparison.css?v=20261009-palettes">
-<script src="quote-validity.js?v=20261024-supplements"></script>
+<script src="quote-validity.js?v=20261103-tarifs300"></script>
 <script>
   function redirectExpiredQuote() {
     var params = new URLSearchParams(window.location.search || window.location.hash.replace(/^#/, '?'));
@@ -148,7 +148,7 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
 
 <div class="top">
   <a href="index.html?v=20261007-etapes-detaillees" class="logo" aria-label="EYWA, accueil"><img class="eywa-wordmark" src="assets/brand/eywa-wordmark.svg?v=20261031-alignement" alt="EYWA Coffee Catering" width="1450" height="477"></a>
-  <a class="quote-home" id="back-to-quote" href="devis-instantane.html?v=20261024-supplements">Retour au devis ↗</a>
+  <a class="quote-home" id="back-to-quote" href="devis-instantane.html?v=20261103-tarifs300">Retour au devis ↗</a>
 </div>
 
 <div class="phases" id="phases">
@@ -328,7 +328,7 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
     var kv = x.split('='); if (kv[0]) P[decodeURIComponent(kv[0])] = decodeURIComponent((kv[1]||'').replace(/\+/g,' '));
   });
 
-  var price = Math.round((parseFloat(P.pr) || 450)*100)/100;
+  var price = Math.round((parseFloat(P.pr) || 300)*100)/100;
   var normalTotalCents = Math.round(price * 100);
   var totalCents = normalTotalCents;
   var depositCents = Math.round(totalCents / 2);
