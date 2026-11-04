@@ -7,9 +7,9 @@
   const guests = Math.round(number('g',50,2000)), hours = number('h',1.5,24), days = Math.round(number('dy',1,365));
   const staff = Math.max(1,Math.ceil(guests/(hours*50)));
   const options = [
-    {id:'bar',name:'Habillage du bar',price:200,img:'assets/gallery-v4/08-dior-boutique.webp',description:'Signalétique personnalisée et habillage du coffee bar avec votre logo, vos couleurs ou le visuel de votre campagne. Un élément visuel fort qui harmonise votre événement et rend votre marque immédiatement reconnaissable. Nous validons ensemble les fichiers graphiques et le rendu avant production.'},
-    {id:'cups',name:'Gobelets sur mesure',price:100,img:'assets/gallery-v4/17-nike-gobelet.webp',description:'Votre logo, votre slogan ou un QR code sur les gobelets : nous nous chargeons de la personnalisation. Le type de gobelet, la finition, le design et la quantité sont définis avec vous. Transmettez votre fichier graphique au format vectoriel ou PDF haute définition. Les délais de production et tout ajustement de prix sont confirmés avant fabrication.'},
-    {id:'logo',name:'Logo sur les boissons',price:100,img:'assets/gallery-v4/01-bar-sans-logo-20261008.webp',description:'Transformez vos boissons en support de communication avec votre logo, un message ou un motif personnalisé sur la mousse. Une attention qui prolonge votre identité jusque dans la tasse et invite vos invités à partager leur expérience. Le visuel et les boissons compatibles sont validés avec vous avant l’événement.'}
+    {id:'bar',name:'Habillage du bar',price:200,description:'Signalétique personnalisée et habillage du coffee bar avec votre logo, vos couleurs ou le visuel de votre campagne. Un élément visuel fort qui harmonise votre événement et rend votre marque immédiatement reconnaissable. Nous validons ensemble les fichiers graphiques et le rendu avant production.'},
+    {id:'cups',name:'Gobelets sur mesure',price:100,description:'Votre logo, votre slogan ou un QR code sur les gobelets : nous nous chargeons de la personnalisation. Le type de gobelet, la finition, le design et la quantité sont définis avec vous. Transmettez votre fichier graphique au format vectoriel ou PDF haute définition. Les délais de production et tout ajustement de prix sont confirmés avant fabrication.'},
+    {id:'logo',name:'Logo sur les boissons',price:100,description:'Transformez vos boissons en support de communication avec votre logo, un message ou un motif personnalisé sur la mousse. Une attention qui prolonge votre identité jusque dans la tasse et invite vos invités à partager leur expérience. Le visuel et les boissons compatibles sont validés avec vous avant l’événement.'}
   ];
   let selected = [];
   try { selected = JSON.parse(p.get('options') || '[]'); } catch (_) {}
@@ -43,9 +43,6 @@
     moreToggle.textContent=expanded?'Voir moins':'Voir tout ce qui est inclus';
   });
   more.append(moreList,moreToggle);list.after(more);
-  const gallery=Array.from(document.querySelectorAll('.thumb'));
-  window.swapHero=src=>{document.getElementById('hero-img').src=src;};
-  gallery.forEach((img,i)=>{img.tabIndex=0;img.setAttribute('role','button');img.alt='Voir la photo du coffee bar '+(i+1);img.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();window.swapHero(img.src);}});});
   let disclosureId=0;
   const makeDescription=(description,title)=>{
     const wrapper=document.createElement('div');wrapper.className='quote-description';
@@ -88,11 +85,10 @@
   }
   options.forEach(o=>{
     const card=document.createElement('article');card.className='upsell-item'+(o.selected?' on':'');
-    const img=document.createElement('img');img.className='upsell-thumb';img.src=o.img;img.alt='';
     const info=document.createElement('div');info.className='upsell-info';const name=document.createElement('h3');name.className='upsell-name';name.textContent=o.name;
     info.append(name,makeDescription(o.description,o.name));
     const toggle=document.createElement('label');toggle.className='toggle';const input=document.createElement('input');input.type='checkbox';input.checked=o.selected;input.setAttribute('aria-label','Ajouter : '+o.name);const slider=document.createElement('span');slider.className='slider';toggle.append(input,slider);
-    input.addEventListener('change',()=>{o.selected=input.checked;card.classList.toggle('on',o.selected);render();});card.append(img,info,toggle);document.getElementById('quote-options').append(card);
+    input.addEventListener('change',()=>{o.selected=input.checked;card.classList.toggle('on',o.selected);render();});card.append(info,toggle);document.getElementById('quote-options').append(card);
   });
   render();
   EywaLaunchOffer.onChange(render);
