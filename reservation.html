@@ -489,20 +489,21 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
     showErr('err7', false); goTo(8);
   }
 
-  var appliedCode='',specialPrice=false,priceReady=false,availabilityReady=false,photoPending=false,referencePhoto='',priceRequest=0;
+  var appliedCode='',specialPrice=false,serviceSpecial=false,specialTotalCents=0,specialPersonalizationCents=0,specialTravelCents=0,priceReady=false,availabilityReady=false,photoPending=false,referencePhoto='',priceRequest=0;
+  function specialPriceMessage(){return serviceSpecial?'Prestation et déplacement à 1 € · Personnalisations au tarif normal : '+formatMoney(specialPersonalizationCents)+'. Total : '+formatMoney(specialTotalCents)+', à régler en une fois. Aucun solde ne restera à payer.':'Votre code est appliqué : le total de votre réservation est de 1 €. Aucun solde ne restera à payer.';}
   function personalizationCents(){var rates={'Habillage du bar':200,'Gobelets sur mesure':100,'Logo sur les boissons':100},names=[];try{names=JSON.parse(P.options||'[]');}catch(_){}return Array.isArray(names)?[...new Set(names)].reduce(function(n,name){return n+(rates[name]||0);},0)*Math.max(1,Number(P.dy)||1)*100:0;}
   function applyOfferPrice(){
     var full=specialPrice||EywaLaunchOffer.state.active;
-    totalCents=specialPrice?100:Math.round(EywaLaunchOffer.amount(normalTotalCents/100,personalizationCents()/100)*100);
+    totalCents=specialPrice?specialTotalCents:Math.round(EywaLaunchOffer.amount(normalTotalCents/100,personalizationCents()/100)*100);
     depositCents=full?totalCents:Math.round(totalCents/2);balanceCents=totalCents-depositCents;
-    var totalHTML=specialPrice?formatMoney(100):EywaLaunchOffer.priceHTML(normalTotalCents/100,personalizationCents()/100);
+    var totalHTML=specialPrice?formatMoney(specialTotalCents):EywaLaunchOffer.priceHTML(normalTotalCents/100,personalizationCents()/100);
     document.getElementById('payment-total').innerHTML=totalHTML;
     if(document.getElementById('summary-total'))document.getElementById('summary-total').innerHTML=totalHTML;
     document.getElementById('payment-deposit').textContent=formatMoney(depositCents);
     document.getElementById('payment-balance').textContent=formatMoney(balanceCents);
     document.getElementById('payment-balance').previousElementSibling.textContent=full?'Reste à payer après le règlement':'Solde restant après l’acompte';
     document.querySelector('.payment-due span').textContent=full?'À régler maintenant · paiement intégral':'À régler maintenant · acompte de 50 %';
-    document.querySelector('#s8 .step-sub').textContent=specialPrice?'Votre code est appliqué : le total de votre réservation est de 1 €. Aucun solde ne restera à payer.':EywaLaunchOffer.state.active?'Bénéficiez de −80 % sur la prestation et le déplacement. Les personnalisations sont au tarif normal. Réglez le devis en une fois pour confirmer votre réservation.':'Réglez l’acompte de 50 % pour confirmer votre réservation. Les 50 % restants seront réglés séparément.';
+    document.querySelector('#s8 .step-sub').textContent=specialPrice?specialPriceMessage():EywaLaunchOffer.state.active?'Bénéficiez de −80 % sur la prestation et le déplacement. Les personnalisations sont au tarif normal. Réglez le devis en une fois pour confirmer votre réservation.':'Réglez l’acompte de 50 % pour confirmer votre réservation. Les 50 % restants seront réglés séparément.';
     document.querySelector('#cgv-wrap span').innerHTML='J’ai lu et j’accepte les <strong>conditions générales de vente</strong> d’EYWA. '+(full?'Je comprends que je règle la totalité du devis affiché pour confirmer ma réservation.':'Je comprends que le versement de l’acompte de 50 % confirme ma réservation et bloque la date.');
     document.getElementById('btn-pay').textContent=full?'Payer '+formatMoney(depositCents)+' en une fois →':'Payer l’acompte de 50 % →';
     document.getElementById('btn-pay').disabled=!priceReady||!availabilityReady;
@@ -515,7 +516,7 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
     var response=await fetch(EywaBooking.api+'/quote-price',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({quote:P,offer:EywaLaunchOffer.state.active,code:code||''}),signal:AbortSignal.timeout(12000)}),data=await response.json();
     if(id!==priceRequest)return;
     if(!response.ok)throw Error(data.error||'Impossible de vérifier votre devis. Réessayez.');
-    normalTotalCents=data.normalCents;specialPrice=data.special;appliedCode=data.special?code:'';priceReady=true;applyOfferPrice();return data;
+    normalTotalCents=data.normalCents;specialPrice=data.special;serviceSpecial=Boolean(data.serviceSpecial);specialTotalCents=data.totalCents;specialPersonalizationCents=data.personalizationCents||0;specialTravelCents=data.travelCents||0;appliedCode=data.special?code:'';priceReady=true;applyOfferPrice();return data;
   }
   async function checkBookingDate(){
     var status=document.getElementById('booking-status');availabilityReady=false;
@@ -526,7 +527,7 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
   async function beginBooking(){if(await checkBookingDate())goTo(2);}
   async function applyCode(){
     var button=document.getElementById('apply-code'),status=document.getElementById('code-status'),code=document.getElementById('advantage-code').value.trim();button.disabled=true;
-    try{await refreshQuotePrice(code);status.textContent=specialPrice?'Code appliqué : total de la réservation 1 €.':'Code retiré. Le tarif du devis est rétabli.';status.dataset.error='false';document.getElementById('cgv').checked=false;syncCheck(document.getElementById('cgv-wrap'));}
+    try{await refreshQuotePrice(code);status.textContent=specialPrice?'Code appliqué. '+specialPriceMessage():'Code retiré. Le tarif du devis est rétabli.';status.dataset.error='false';document.getElementById('cgv').checked=false;syncCheck(document.getElementById('cgv-wrap'));}
     catch(e){status.textContent=e.message;status.dataset.error='true';await refreshQuotePrice(appliedCode).catch(function(){});}
     finally{button.disabled=false;}
   }
