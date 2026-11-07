@@ -488,7 +488,17 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
   }
 
   var appliedCode='',specialPrice=false,priceReady=false,availabilityReady=false,photoPending=false,referencePhoto='',priceRequest=0;
-  function personalizationCents(){var rates={'Habillage du bar':200,'Gobelets sur mesure':100,'Logo sur les boissons':100},names=[];try{names=JSON.parse(P.options||'[]');}catch(_){}return Array.isArray(names)?[...new Set(names)].reduce(function(n,name){return n+(rates[name]||0);},0)*Math.max(1,Number(P.dy)||1)*100:0;}
+  /* Supplement d'impression acceleree : du une seule fois si les gobelets
+     personnalises sont commandes moins de deux semaines avant l'evenement. */
+  function rushCupsCents(){
+    var names=[];try{names=JSON.parse(P.options||'[]');}catch(_){}
+    if(!Array.isArray(names)||names.indexOf('Gobelets sur mesure')<0)return 0;
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(P.d||''))return 0;
+    var today=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Paris'}).format(new Date());
+    var j=Math.round((Date.parse(P.d+'T12:00:00Z')-Date.parse(today+'T12:00:00Z'))/86400000);
+    return j<14?5000:0;
+  }
+  function personalizationCents(){var rates={'Habillage du bar':200,'Gobelets sur mesure':200,'Logo sur les boissons':150},names=[];try{names=JSON.parse(P.options||'[]');}catch(_){}return (Array.isArray(names)?[...new Set(names)].reduce(function(n,name){return n+(rates[name]||0);},0)*Math.max(1,Number(P.dy)||1)*100:0)+rushCupsCents();}
   function applyOfferPrice(){
     var full=specialPrice||EywaLaunchOffer.state.active;
     totalCents=specialPrice?100:Math.round(EywaLaunchOffer.amount(normalTotalCents/100,personalizationCents()/100)*100);

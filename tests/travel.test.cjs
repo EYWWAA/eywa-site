@@ -25,9 +25,13 @@ test('API failure or wrong units never become free travel',async()=>{
 test('quote counts travel once across several days, retaining cents',()=>{
  const html=fs.readFileSync('devis-instantane.html','utf8');
  const fn=html.match(/function calcNormalPrice\(\) \{[\s\S]*?\n  \}/)[0];
- const ctx={A:{guests:50,hrs:1.5,days:3},window:{eywaTravel:{total:92.57}},persoTotal:()=>100};
+ const ctx={A:{guests:50,hrs:1.5,days:3},window:{eywaTravel:{total:92.57}},persoTotal:()=>100,supplementUrgence:()=>0};
  vm.createContext(ctx);vm.runInContext(fn+';result=calcNormalPrice()',ctx);
  assert.equal(ctx.result,1442.57);
+ // Le supplement d'impression des gobelets est du une seule fois, pas par jour.
+ const rush={A:{guests:50,hrs:1.5,days:3},window:{eywaTravel:{total:92.57}},persoTotal:()=>100,supplementUrgence:()=>50};
+ vm.createContext(rush);vm.runInContext(fn+';result=calcNormalPrice()',rush);
+ assert.equal(rush.result,1492.57);
 });
 
 test('20 km gratuits ; au-delà, trajet complet, y compris les 20 premiers km',()=>{assert.equal(pricing.calculate(40,60,20).total,0);assert.equal(pricing.calculate(50,60,25).total,26.5);assert.equal(pricing.calculate(45,60,25).total,25.25);assert.equal(pricing.calculate(41,60,20.01).total,24.25);assert.throws(()=>pricing.calculate(50,60,NaN));});

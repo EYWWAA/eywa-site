@@ -791,13 +791,27 @@
      tous, c'est la personnalisation qui fait monter le panier. */
   var PERSO_PRIX = {
     'Habillage du bar': 200,
-    'Gobelets sur mesure': 100,
-    'Logo sur les boissons': 100
+    'Gobelets sur mesure': 200,
+    'Logo sur les boissons': 150
   };
+  var DELAI_GOBELETS = 14, SUPPLEMENT_URGENCE = 50;
   function persoTotal() {
     var t = 0;
     for (var i = 0; i < A.personalization.length; i++) t += (PERSO_PRIX[A.personalization[i]] || 0);
     return t;
+  }
+  /* Jours restants avant l'événement, en heure de Paris. */
+  function joursAvantEvenement(iso) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(iso || '')) return null;
+    var today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Paris' }).format(new Date());
+    return Math.round((Date.parse(iso + 'T12:00:00Z') - Date.parse(today + 'T12:00:00Z')) / 86400000);
+  }
+  /* Les gobelets doivent partir à l'impression : sous deux semaines, l'envoi
+     est accéléré. Le supplément est dû une fois, pas par jour d'événement. */
+  function supplementUrgence() {
+    if (A.personalization.indexOf('Gobelets sur mesure') < 0) return 0;
+    var j = joursAvantEvenement(A.date);
+    return (j !== null && j < DELAI_GOBELETS) ? SUPPLEMENT_URGENCE : 0;
   }
 
   function calcNormalPrice() {
@@ -806,10 +820,10 @@
     var baristasNeeded = Math.ceil(A.guests / (A.hrs * 50));
     var extraBaristas = Math.max(0, baristasNeeded - 1);
     var pricePerDay = (35000 + extraGuests * 270 + Math.round(extraHrs * 8000) + extraBaristas * 15500 + persoTotal() * 100) / 100;
-    return Math.round((pricePerDay * A.days + window.eywaTravel.total)*100)/100;
+    return Math.round((pricePerDay * A.days + supplementUrgence() + window.eywaTravel.total)*100)/100;
   }
 
-  function calcPrice(){return EywaLaunchOffer.amount(calcNormalPrice(),persoTotal()*A.days);}
+  function calcPrice(){return EywaLaunchOffer.amount(calcNormalPrice(),persoTotal()*A.days + supplementUrgence());}
 
   function showPrice() {
     if(!window.eywaTravel){showStep('s2');return;}
@@ -821,7 +835,7 @@
     var pricePerDay = (35000 + extraGuests * 270 + Math.round(extraHrs * 8000) + extraBaristas * 15500 + persoTotal() * 100) / 100;
     A.totalPrice = calcPrice();
 
-    document.getElementById('priceDisplay').innerHTML = EywaLaunchOffer.priceHTML(calcNormalPrice(),persoTotal()*A.days);
+    document.getElementById('priceDisplay').innerHTML = EywaLaunchOffer.priceHTML(calcNormalPrice(),persoTotal()*A.days + supplementUrgence());
 
     var dateStr = A.date ? new Date(A.date + 'T12:00').toLocaleDateString('fr-FR', {day:'numeric',month:'long',year:'numeric'}) : '';
     var ctx = A.guests + ' invité' + (A.guests > 1 ? 's' : '') + ' · ' + hrsLabel(A.hrs);
@@ -839,13 +853,14 @@
       var pn = A.personalization[pi], pp = PERSO_PRIX[pn] || 0;
       if (pp > 0) bd += '<div class="brow"><span>' + pn + '</span><span>' + EywaLaunchOffer.money(pp) + '</span></div>';
     }
+    if (supplementUrgence() > 0) bd += '<div class="brow"><span>Impression accélérée des gobelets (moins de 2 semaines)</span><span>' + EywaLaunchOffer.money(SUPPLEMENT_URGENCE) + '</span></div>';
     if (A.days > 1) {
       bd += '<div class="brow total"><span>Par jour</span><span>' + EywaLaunchOffer.priceHTML(pricePerDay,persoTotal()) + '</span></div>';
       bd += '<div class="brow"><span>× ' + A.days + ' jours</span><span>' + EywaLaunchOffer.priceHTML(pricePerDay*A.days,persoTotal()*A.days) + '</span></div>';
     }
     bd += '<div class="brow"><span>' + (window.eywaTravel.localFree ? 'Déplacement dans la zone des 20 km' : 'Déplacement aller-retour (' + window.eywaTravel.roundTripKm.toFixed(1) + ' km)') + '</span><span>' + EywaLaunchOffer.priceHTML(window.eywaTravel.total) + '</span></div>';
     if(window.eywaTravel.lodgingRequired)bd += '<div class="brow"><span>Hébergement (trajet aller supérieur à 4 h)</span><span>À confirmer</span></div>';
-    bd += '<div class="brow total"><span>Estimation totale</span><span>' + EywaLaunchOffer.priceHTML(calcNormalPrice(),persoTotal()*A.days) + '</span></div>';
+    bd += '<div class="brow total"><span>Estimation totale</span><span>' + EywaLaunchOffer.priceHTML(calcNormalPrice(),persoTotal()*A.days + supplementUrgence()) + '</span></div>';
     if(EywaLaunchOffer.state.active)bd += '<div class="brow note"><span>Paiement intégral à la réservation. Offre valable pour la première réservation réglée intégralement.</span></div>';
     bd += '<div class="brow note"><span>Déplacement gratuit dans un rayon de 20 km autour de Charleville-Mézières. Au-delà, trajet complet à 0,25 €/km + 14 €/h de conduite aller-retour, sans déduire les 20 premiers kilomètres. Péages inclus. Hébergement éventuel non compris.</span></div>';
     document.getElementById('breakdown').innerHTML = bd;

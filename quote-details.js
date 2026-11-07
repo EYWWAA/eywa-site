@@ -8,14 +8,28 @@
   const staff = Math.max(1,Math.ceil(guests/(hours*50)));
   const options = [
     {id:'bar',name:'Habillage du bar',price:200,img:'assets/gallery-v4/08-dior-boutique.webp',description:'Signalétique personnalisée et habillage du coffee bar avec votre logo, vos couleurs ou le visuel de votre campagne. Un élément visuel fort qui harmonise votre événement et rend votre marque immédiatement reconnaissable. Nous validons ensemble les fichiers graphiques et le rendu avant production.'},
-    {id:'cups',name:'Gobelets sur mesure',price:100,img:'assets/gallery-v4/17-nike-gobelet.webp',description:'Votre logo, votre slogan ou un QR code sur les gobelets : nous nous chargeons de la personnalisation. Le type de gobelet, la finition, le design et la quantité sont définis avec vous. Transmettez votre fichier graphique au format vectoriel ou PDF haute définition. Les délais de production et tout ajustement de prix sont confirmés avant fabrication.'},
-    {id:'logo',name:'Logo sur les boissons',price:100,img:'assets/gallery-v4/01-bar-sans-logo-20261008.webp',description:'Transformez vos boissons en support de communication avec votre logo, un message ou un motif personnalisé sur la mousse. Une attention qui prolonge votre identité jusque dans la tasse et invite vos invités à partager leur expérience. Le visuel et les boissons compatibles sont validés avec vous avant l’événement.'}
+    {id:'cups',name:'Gobelets sur mesure',price:200,img:'assets/gallery-v4/17-nike-gobelet.webp',description:'Votre logo, votre slogan ou un QR code sur les gobelets : nous nous chargeons de la personnalisation. Le type de gobelet, la finition, le design et la quantité sont définis avec vous. Transmettez votre fichier graphique au format vectoriel ou PDF haute définition. Les délais de production et tout ajustement de prix sont confirmés avant fabrication.'},
+    {id:'logo',name:'Logo sur les boissons',price:150,img:'assets/gallery-v4/01-bar-sans-logo-20261008.webp',description:'Transformez vos boissons en support de communication avec votre logo, un message ou un motif personnalisé sur la mousse. Une attention qui prolonge votre identité jusque dans la tasse et invite vos invités à partager leur expérience. Le visuel et les boissons compatibles sont validés avec vous avant l’événement.'}
   ];
   let selected = [];
   try { selected = JSON.parse(p.get('options') || '[]'); } catch (_) {}
   if (!Array.isArray(selected)) selected = [];
   options.forEach(o => o.selected = selected.includes(o.name));
   const service = (35000 + Math.max(0,guests-50)*270 + Math.round(Math.max(0,hours-1.5)*8000) + (staff-1)*15500)*days/100;
+  /* Les gobelets personnalises doivent partir a l'impression : sous deux
+     semaines, l'envoi est accelere. Du une seule fois, pas par jour. */
+  const DELAI_GOBELETS = 14, SUPPLEMENT_URGENCE = 50;
+  const joursAvantEvenement = iso => {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(iso || '')) return null;
+    const today = new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Paris'}).format(new Date());
+    return Math.round((Date.parse(iso+'T12:00:00Z') - Date.parse(today+'T12:00:00Z'))/86400000);
+  };
+  const rushCups = () => {
+    const o = options.find(x => x.id === 'cups');
+    if (!o || !o.selected) return 0;
+    const j = joursAvantEvenement(p.get('d'));
+    return (j !== null && j < DELAI_GOBELETS) ? SUPPLEMENT_URGENCE : 0;
+  };
   const km=Number(p.get('tk')), minutes=Number(p.get('tm'));
   const hasTravel=p.has('tk')&&p.has('tm')&&Number.isFinite(km)&&Number.isFinite(minutes)&&km>=0&&minutes>=0&&km<20000&&minutes<30000;
   const lodging=hasTravel&&Number(p.get('to'))>240;
@@ -75,10 +89,11 @@
     if(hours>1.5)lines.append(makeLine('Prolongation du service',Math.round((hours-1.5)*8000)*days/100,'80 € par heure supplémentaire. '+duration+' de service'+(days>1?' par jour.':'.')));
     if(staff>1)lines.append(makeLine('Renfort barista',(staff-1)*155*days,(staff-1)+' barista(s) supplémentaire(s) pour adapter l’équipe au nombre d’invités et à la durée du service.'));
     options.filter(o=>o.selected).forEach(o=>lines.append(makeLine(o.name,o.price*days,o.description,null,o.price*days)));
+    if(rushCups()>0)lines.append(makeLine('Impression accélérée des gobelets',SUPPLEMENT_URGENCE,'Supplément de 50 € appliqué lorsque les gobelets personnalisés sont commandés moins de deux semaines avant l’événement, pour couvrir la production et la livraison en urgence.',null,SUPPLEMENT_URGENCE));
     lines.append(makeLine(p.get('lf')==='1'?'Déplacement dans la zone locale':'Déplacement aller-retour',hasTravel?travel:'À confirmer','Gratuit dans un rayon de 20 km autour de Charleville-Mézières. Au-delà, le trajet complet est facturé.'));
     if(lodging)lines.append(makeLine('Hébergement du barista','À confirmer','Le trajet aller dépasse quatre heures. Un logement sur place est à prévoir pour le ou les baristas. Le nombre de nuits et le montant seront précisés avec vous avant réservation. Ce coût n’est pas inclus dans le total affiché.'));
-    const protectedAmount=options.filter(o=>o.selected).reduce((n,o)=>n+o.price*days,0);
-    const total=Math.round((service+travel+options.filter(o=>o.selected).reduce((n,o)=>n+o.price*days,0))*100)/100;
+    const protectedAmount=options.filter(o=>o.selected).reduce((n,o)=>n+o.price*days,0)+rushCups();
+    const total=Math.round((service+travel+options.filter(o=>o.selected).reduce((n,o)=>n+o.price*days,0)+rushCups())*100)/100;
     if(hasTravel)document.querySelector('.price-lbl').textContent='Prestation et trajet aller-retour · hébergement éventuel non compris';
     document.getElementById('price-main').innerHTML=EywaLaunchOffer.priceHTML(total,protectedAmount);document.getElementById('dock-total').innerHTML=EywaLaunchOffer.priceHTML(total,protectedAmount);
     const next=new URLSearchParams(p);next.set('v','20261024-supplements');next.set('pr',total);next.set('options',JSON.stringify(options.filter(o=>o.selected).map(o=>o.name)));next.set('dy',days);
