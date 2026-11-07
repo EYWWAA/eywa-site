@@ -15,7 +15,7 @@
   try { selected = JSON.parse(p.get('options') || '[]'); } catch (_) {}
   if (!Array.isArray(selected)) selected = [];
   options.forEach(o => o.selected = selected.includes(o.name));
-  const service = (35000 + Math.max(0,guests-50)*270 + Math.round(Math.max(0,hours-1.5)*8000) + (staff-1)*15500)*days/100;
+  const service = (25000 + Math.max(0,guests-50)*190 + Math.round(Math.max(0,hours-1.5)*5500) + (staff-1)*11000)*days/100;
   function joursAvantEvenement(iso) {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(iso || '')) return null;
     var parsed=new Date(iso+'T12:00:00Z');if(isNaN(parsed)||parsed.toISOString().slice(0,10)!==iso)return null;
@@ -79,10 +79,10 @@
   };
   function render(){
     const lines=document.getElementById('line-items');lines.replaceChildren();
-    lines.append(makeLine('Formule classique',350*days,'Un coffee bar, un barista professionnel et des boissons préparées à la demande. Le forfait comprend 1 h 30 de service pour jusqu’à 50 invités, le matériel et les gobelets. Installation et rangement hors du temps de service.',serviceTime));
-    if(guests>50)lines.append(makeLine('Invités supplémentaires',(guests-50)*270*days/100,(guests-50)+' invités au-delà du forfait de base, à 2,70 € par invité et par jour.'));
-    if(hours>1.5)lines.append(makeLine('Prolongation du service',Math.round((hours-1.5)*8000)*days/100,'80 € par heure supplémentaire. '+duration+' de service'+(days>1?' par jour.':'.')));
-    if(staff>1)lines.append(makeLine('Renfort barista',(staff-1)*155*days,(staff-1)+' barista(s) supplémentaire(s) pour adapter l’équipe au nombre d’invités et à la durée du service.'));
+    lines.append(makeLine('Formule classique',250*days,'Un coffee bar, un barista professionnel et des boissons préparées à la demande. Le forfait comprend 1 h 30 de service pour jusqu’à 50 invités, le matériel et les gobelets. Installation et rangement hors du temps de service.',serviceTime));
+    if(guests>50)lines.append(makeLine('Invités supplémentaires',(guests-50)*190*days/100,(guests-50)+' invités au-delà du forfait de base, à 1,90 € par invité et par jour.'));
+    if(hours>1.5)lines.append(makeLine('Prolongation du service',Math.round((hours-1.5)*5500)*days/100,'55 € par heure supplémentaire. '+duration+' de service'+(days>1?' par jour.':'.')));
+    if(staff>1)lines.append(makeLine('Renfort barista',(staff-1)*110*days,(staff-1)+' barista(s) supplémentaire(s) pour adapter l’équipe au nombre d’invités et à la durée du service.'));
     options.filter(o=>o.selected).forEach(o=>lines.append(makeLine(o.name,o.price*days,o.description,null,o.price*days)));
     if(rushCups()>0)lines.append(makeLine('Impression accélérée des gobelets',rushCups(),'Supplément unique de 50 € pour les gobelets personnalisés commandés moins de 14 jours avant l’événement.',null,rushCups()));
     lines.append(makeLine(p.get('lf')==='1'?'Déplacement dans la zone locale':'Déplacement aller-retour',hasTravel?travel:'À confirmer','Gratuit dans un rayon de 20 km autour de Charleville-Mézières. Au-delà, le trajet complet est facturé.'));
