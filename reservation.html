@@ -328,7 +328,7 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
     var kv = x.split('='); if (kv[0]) P[decodeURIComponent(kv[0])] = decodeURIComponent((kv[1]||'').replace(/\+/g,' '));
   });
 
-  var price = Math.round((parseFloat(P.pr) || 300)*100)/100;
+  var price = Math.round((parseFloat(P.pr) || 350)*100)/100;
   var normalTotalCents = Math.round(price * 100);
   var totalCents = normalTotalCents;
   var depositCents = Math.round(totalCents / 2);
@@ -491,7 +491,16 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
 
   var appliedCode='',specialPrice=false,serviceSpecial=false,specialTotalCents=0,specialPersonalizationCents=0,specialTravelCents=0,priceReady=false,availabilityReady=false,photoPending=false,referencePhoto='',priceRequest=0;
   function specialPriceMessage(){return serviceSpecial?'Prestation et déplacement à 1 € · Personnalisations au tarif normal : '+formatMoney(specialPersonalizationCents)+'. Total : '+formatMoney(specialTotalCents)+', à régler en une fois. Aucun solde ne restera à payer.':'Votre code est appliqué : le total de votre réservation est de 1 €. Aucun solde ne restera à payer.';}
-  function personalizationCents(){var rates={'Habillage du bar':200,'Gobelets sur mesure':100,'Logo sur les boissons':100},names=[];try{names=JSON.parse(P.options||'[]');}catch(_){}return Array.isArray(names)?[...new Set(names)].reduce(function(n,name){return n+(rates[name]||0);},0)*Math.max(1,Number(P.dy)||1)*100:0;}
+  function joursAvantEvenement(iso) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(iso || '')) return null;
+    var parsed=new Date(iso+'T12:00:00Z');if(isNaN(parsed)||parsed.toISOString().slice(0,10)!==iso)return null;
+    var parts=new Intl.DateTimeFormat('en',{timeZone:'Europe/Paris',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+    var part=function(type){return parts.find(function(p){return p.type===type;}).value;};
+    var today=part('year')+'-'+part('month')+'-'+part('day');
+    return Math.round((Date.parse(iso+'T12:00:00Z')-Date.parse(today+'T12:00:00Z'))/86400000);
+  }
+  function rushCupsCents(){var names=[];try{names=JSON.parse(P.options||'[]');}catch(_){}var j=joursAvantEvenement(P.d);return Array.isArray(names)&&names.includes('Gobelets sur mesure')&&j!==null&&j>=0&&j<14?5000:0;}
+  function personalizationCents(){var rates={'Habillage du bar':200,'Gobelets sur mesure':200,'Logo sur les boissons':150},names=[];try{names=JSON.parse(P.options||'[]');}catch(_){}return Array.isArray(names)?[...new Set(names)].reduce(function(n,name){return n+(rates[name]||0);},0)*Math.max(1,Number(P.dy)||1)*100+ (Array.isArray(names)?rushCupsCents():0):0;}
   function applyOfferPrice(){
     var full=specialPrice||EywaLaunchOffer.state.active;
     totalCents=specialPrice?specialTotalCents:Math.round(EywaLaunchOffer.amount(normalTotalCents/100,personalizationCents()/100)*100);

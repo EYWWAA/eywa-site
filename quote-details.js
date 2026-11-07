@@ -8,14 +8,26 @@
   const staff = Math.max(1,Math.ceil(guests/(hours*50)));
   const options = [
     {id:'bar',name:'Habillage du bar',price:200,description:'Signalétique personnalisée et habillage du coffee bar avec votre logo, vos couleurs ou le visuel de votre campagne. Un élément visuel fort qui harmonise votre événement et rend votre marque immédiatement reconnaissable. Nous validons ensemble les fichiers graphiques et le rendu avant production.'},
-    {id:'cups',name:'Gobelets sur mesure',price:100,description:'Votre logo, votre slogan ou un QR code sur les gobelets : nous nous chargeons de la personnalisation. Le type de gobelet, la finition, le design et la quantité sont définis avec vous. Transmettez votre fichier graphique au format vectoriel ou PDF haute définition. Les délais de production et tout ajustement de prix sont confirmés avant fabrication.'},
-    {id:'logo',name:'Logo sur les boissons',price:100,description:'Transformez vos boissons en support de communication avec votre logo, un message ou un motif personnalisé sur la mousse. Une attention qui prolonge votre identité jusque dans la tasse et invite vos invités à partager leur expérience. Le visuel et les boissons compatibles sont validés avec vous avant l’événement.'}
+    {id:'cups',name:'Gobelets sur mesure',price:200,description:'Votre logo, votre slogan ou un QR code sur les gobelets : nous nous chargeons de la personnalisation. Le type de gobelet, la finition, le design et la quantité sont définis avec vous. Transmettez votre fichier graphique au format vectoriel ou PDF haute définition. Les délais de production et tout ajustement de prix sont confirmés avant fabrication.'},
+    {id:'logo',name:'Logo sur les boissons',price:150,description:'Transformez vos boissons en support de communication avec votre logo, un message ou un motif personnalisé sur la mousse. Une attention qui prolonge votre identité jusque dans la tasse et invite vos invités à partager leur expérience. Le visuel et les boissons compatibles sont validés avec vous avant l’événement.'}
   ];
   let selected = [];
   try { selected = JSON.parse(p.get('options') || '[]'); } catch (_) {}
   if (!Array.isArray(selected)) selected = [];
   options.forEach(o => o.selected = selected.includes(o.name));
-  const service = (30000 + Math.max(0,guests-50)*231 + Math.round(Math.max(0,hours-1.5)*6923) + (staff-1)*20000)*days/100;
+  const service = (35000 + Math.max(0,guests-50)*270 + Math.round(Math.max(0,hours-1.5)*8000) + (staff-1)*15500)*days/100;
+  function joursAvantEvenement(iso) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(iso || '')) return null;
+    var parsed=new Date(iso+'T12:00:00Z');if(isNaN(parsed)||parsed.toISOString().slice(0,10)!==iso)return null;
+    var parts=new Intl.DateTimeFormat('en',{timeZone:'Europe/Paris',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+    var part=function(type){return parts.find(function(p){return p.type===type;}).value;};
+    var today=part('year')+'-'+part('month')+'-'+part('day');
+    return Math.round((Date.parse(iso+'T12:00:00Z')-Date.parse(today+'T12:00:00Z'))/86400000);
+  }
+  function rushCups() {
+    var j=joursAvantEvenement(p.get('d'));
+    return options.some(o=>o.id==='cups'&&o.selected) && j!==null && j>=0 && j<14 ? 50 : 0;
+  }
   const km=Number(p.get('tk')), minutes=Number(p.get('tm'));
   const hasTravel=p.has('tk')&&p.has('tm')&&Number.isFinite(km)&&Number.isFinite(minutes)&&km>=0&&minutes>=0&&km<20000&&minutes<30000;
   const lodging=hasTravel&&Number(p.get('to'))>240;
@@ -67,18 +79,19 @@
   };
   function render(){
     const lines=document.getElementById('line-items');lines.replaceChildren();
-    lines.append(makeLine('Formule classique',300*days,'Un coffee bar, un barista professionnel et des boissons préparées à la demande. Le forfait comprend 1 h 30 de service pour jusqu’à 50 invités, le matériel et les gobelets. Installation et rangement hors du temps de service.',serviceTime));
-    if(guests>50)lines.append(makeLine('Invités supplémentaires',(guests-50)*231*days/100,(guests-50)+' invités au-delà du forfait de base, à 2,31 € par invité et par jour.'));
-    if(hours>1.5)lines.append(makeLine('Prolongation du service',Math.round((hours-1.5)*6923)*days/100,'69,23 € par heure supplémentaire. '+duration+' de service'+(days>1?' par jour.':'.')));
-    if(staff>1)lines.append(makeLine('Renfort barista',(staff-1)*200*days,(staff-1)+' barista(s) supplémentaire(s) pour adapter l’équipe au nombre d’invités et à la durée du service.'));
+    lines.append(makeLine('Formule classique',350*days,'Un coffee bar, un barista professionnel et des boissons préparées à la demande. Le forfait comprend 1 h 30 de service pour jusqu’à 50 invités, le matériel et les gobelets. Installation et rangement hors du temps de service.',serviceTime));
+    if(guests>50)lines.append(makeLine('Invités supplémentaires',(guests-50)*270*days/100,(guests-50)+' invités au-delà du forfait de base, à 2,70 € par invité et par jour.'));
+    if(hours>1.5)lines.append(makeLine('Prolongation du service',Math.round((hours-1.5)*8000)*days/100,'80 € par heure supplémentaire. '+duration+' de service'+(days>1?' par jour.':'.')));
+    if(staff>1)lines.append(makeLine('Renfort barista',(staff-1)*155*days,(staff-1)+' barista(s) supplémentaire(s) pour adapter l’équipe au nombre d’invités et à la durée du service.'));
     options.filter(o=>o.selected).forEach(o=>lines.append(makeLine(o.name,o.price*days,o.description,null,o.price*days)));
+    if(rushCups()>0)lines.append(makeLine('Impression accélérée des gobelets',rushCups(),'Supplément unique de 50 € pour les gobelets personnalisés commandés moins de 14 jours avant l’événement.',null,rushCups()));
     lines.append(makeLine(p.get('lf')==='1'?'Déplacement dans la zone locale':'Déplacement aller-retour',hasTravel?travel:'À confirmer','Gratuit dans un rayon de 20 km autour de Charleville-Mézières. Au-delà, le trajet complet est facturé.'));
     if(lodging)lines.append(makeLine('Hébergement du barista','À confirmer','Le trajet aller dépasse quatre heures. Un logement sur place est à prévoir pour le ou les baristas. Le nombre de nuits et le montant seront précisés avec vous avant réservation. Ce coût n’est pas inclus dans le total affiché.'));
-    const protectedAmount=options.filter(o=>o.selected).reduce((n,o)=>n+o.price*days,0);
-    const total=Math.round((service+travel+options.filter(o=>o.selected).reduce((n,o)=>n+o.price*days,0))*100)/100;
+    const protectedAmount=options.filter(o=>o.selected).reduce((n,o)=>n+o.price*days,0)+rushCups();
+    const total=Math.round((service+travel+options.filter(o=>o.selected).reduce((n,o)=>n+o.price*days,0)+rushCups())*100)/100;
     if(hasTravel)document.querySelector('.price-lbl').textContent='Prestation et trajet aller-retour · hébergement éventuel non compris';
     document.getElementById('price-main').innerHTML=EywaLaunchOffer.priceHTML(total,protectedAmount);document.getElementById('dock-total').innerHTML=EywaLaunchOffer.priceHTML(total,protectedAmount);
-    const next=new URLSearchParams(p);next.set('v','20261103-tarifs300');next.set('pr',total);next.set('options',JSON.stringify(options.filter(o=>o.selected).map(o=>o.name)));next.set('dy',days);
+    const next=new URLSearchParams(p);next.set('v','20261107-tarifs350');next.set('pr',total);next.set('options',JSON.stringify(options.filter(o=>o.selected).map(o=>o.name)));next.set('dy',days);
     history.replaceState(null,'',location.pathname+'?'+next.toString()+location.hash);
     ['main','bottom','dock'].forEach(id=>{const button=document.getElementById('btn-reserve-'+id);button.href=lodging?'contact.html':'reservation.html?'+next.toString();if(lodging)button.textContent='Finaliser avec EYWA';});
     if (window.EywaQuoteValidity) window.EywaQuoteValidity.applyToQuote(next);
