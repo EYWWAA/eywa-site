@@ -75,3 +75,6 @@
 @media (max-width: 700px) {
   .personal-image-cell, .personal-project-body figure { border-radius: 12px; }
 }
+
+/* Renvoi depuis la section « Nos personnalisations » de l'accueil. */
+.personal-catalog-head .personal-catalog-lead { margin: 6px 0 0; font-size: 15px; }
