@@ -1,0 +1,78 @@
+/* Accueil, « Nos personnalisations » : présentation en texte, sans photo.
+   Remplace l'ancienne mise en page en cartes illustrées. Chargée en dernier,
+   après warm-palette et brand-unified, qui ciblent #personnalisation. */
+
+html body.eywa-home .perso-plain {
+  padding: clamp(48px, 7vw, 92px) 0;
+}
+
+html body.eywa-home .perso-plain .perso-plain-head {
+  max-width: 54ch;
+  margin: 0 0 clamp(28px, 4vw, 44px);
+}
+html body.eywa-home .perso-plain .section-title {
+  margin: 0 0 12px;
+}
+html body.eywa-home .perso-plain .perso-plain-lead {
+  margin: 0;
+  font-size: clamp(16px, 1.4vw, 19px);
+  line-height: 1.6;
+  opacity: .82;
+}
+
+/* Les trois personnalisations, côte à côte sur grand écran. */
+html body.eywa-home .perso-plain .perso-plain-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 40px);
+}
+html body.eywa-home .perso-plain .perso-plain-list > li {
+  margin: 0;
+  padding-top: 20px;
+  border-top: 1px solid rgba(41, 24, 23, .18);
+}
+html body.eywa-home .perso-plain .perso-plain-num {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 13px;
+  letter-spacing: .1em;
+  opacity: .5;
+}
+html body.eywa-home .perso-plain .perso-plain-list h3 {
+  margin: 0 0 10px;
+  font-size: clamp(18px, 1.7vw, 22px);
+  line-height: 1.22;
+}
+html body.eywa-home .perso-plain .perso-plain-list p {
+  margin: 0;
+  font-size: clamp(15px, 1.15vw, 16px);
+  line-height: 1.65;
+  opacity: .84;
+}
+
+html body.eywa-home .perso-plain .perso-plain-cta {
+  margin: clamp(26px, 4vw, 40px) 0 0;
+}
+
+@media (max-width: 860px) {
+  html body.eywa-home .perso-plain .perso-plain-list {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+  html body.eywa-home .perso-plain .perso-plain-list > li {
+    padding: 18px 0;
+  }
+  html body.eywa-home .perso-plain .perso-plain-list > li:last-child {
+    border-bottom: 1px solid rgba(41, 24, 23, .18);
+  }
+}
+
+/* Le titre héritait d'un retrait prévu pour l'ancienne mise en page. */
+html body.eywa-home .perso-plain .section-title {
+  margin-left: 0;
+  padding-left: 0;
+  text-align: left;
+}
