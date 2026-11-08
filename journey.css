@@ -40,12 +40,13 @@ body #services-parcours .section-kicker{font-size:11px!important}
 .journey-feature{display:grid;grid-template-columns:1fr 1fr;min-height:240px;margin-bottom:24px;background:var(--surface-dark)}
 .journey-photo{position:relative;overflow:hidden;margin:0;min-width:0}
 .journey-photo img{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .45s ease}
-.journey-photo figcaption{position:absolute;bottom:12px;left:12px;padding:6px 10px;background:#0a0a0a99;color:#fff;font-size:11px}
+.journey-photo figcaption{position:absolute;bottom:12px;left:12px;padding:6px 10px;background:#0a0a0acc;color:#fff;font-size:11px;border-radius:4px}
+/* Le panneau est passé sur fond clair : le texte blanc d'origine n'y était plus lisible. */
 .journey-feature .journey-intro{padding:30px;display:flex;flex-direction:column;justify-content:center;text-align:left;margin:0}
-body #journey .journey-feature h1{font-size:36px!important;color:#fafaf8;margin-bottom:16px}
-body #journey .journey-feature p{color:#fafaf8;margin-bottom:12px}
-body #journey .journey-feature .eyebrow{color:#fafaf8;font-size:10px!important;letter-spacing:.13em}
-body #journey .journey-feature .journey-intro-small{font-size:13px!important;margin:0;color:#fafaf8}
+body #journey .journey-feature h1{font-size:36px!important;color:#291817;margin-bottom:16px}
+body #journey .journey-feature p{color:#2b2a26;margin-bottom:12px}
+body #journey .journey-feature .eyebrow{color:#72706b;font-size:10px!important;letter-spacing:.13em}
+body #journey .journey-feature .journey-intro-small{font-size:13px!important;margin:0;color:#5f5c56}
 body #journey .journey-support{font-size:13px!important;margin:22px 0 0}
 .journey-support a{color:inherit;text-underline-offset:4px;text-decoration-color:var(--accent)}
 @media(hover:hover){.journey-photo:hover img{transform:scale(1.025)}}
