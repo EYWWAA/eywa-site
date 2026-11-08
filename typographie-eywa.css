@@ -22,14 +22,10 @@ html body.eywa-typo {
   --serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
 }
 
+/* Le titre de l'accueil reste sur son ancienne écriture, à la demande de Louis :
+   DM Sans, posé par hero-editorial.css, qui l'emporte sur la règle serif plus bas. */
+
 /* Familles codées en dur ailleurs, à rattraper une par une. */
-html body.eywa-typo.eywa-photo-opening #accueil h1#title {
-  font-family: var(--eywa-serif) !important;
-  font-weight: 300 !important;
-  font-size: clamp(44px, 4.8vw, 70px) !important;
-  line-height: 1.06 !important;
-  letter-spacing: -.005em !important;
-}
 html body.eywa-typo :is(.kicker, .eyebrow, .section-kicker, .navlinks, .button,
                         .nav-button, .text-link, .faq-list summary) {
   font-family: var(--eywa-sans) !important;
@@ -130,10 +126,4 @@ html body.eywa-typo :is(.price-main, #price-main, #priceDisplay, .brow.total spa
 html body.eywa-typo :is(#accueil.hero-editorial, .perso-plain, .personal-catalog,
                         .coffee-craft, .benefits, .faq-home) {
   background: var(--eywa-fond) !important;
-}
-
-/* Cormorant est plus étroite que DM Sans : le titre tenait sur 13 caractères
-   par ligne, il lui en faut davantage pour ne pas se casser en cinq lignes. */
-html body.eywa-typo.eywa-photo-opening #accueil h1#title {
-  max-width: 19ch !important;
 }
