@@ -1,0 +1,14 @@
+{
+  "name": "eywa-booking-cloudflare",
+  "version": "2.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "deploy": "wrangler deploy --config wrangler.jsonc",
+    "dev": "wrangler dev --config wrangler.jsonc"
+  },
+  "devDependencies": {
+    "wrangler": "4.151.3"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "eywa-booking",
+  "main": "src/worker.mjs",
+  "compatibility_date": "2026-10-20",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "workers_dev": true,
+  "vars": {
+    "EYWA_LAUNCH_ENABLED": "false",
+    "EYWA_AUTOMATION_ENABLED": "false",
+    "EYWA_GMAIL_ARCHIVE_ENABLED": "false",
+    "EYWA_CACHE_VERSION": "20261103-tarifs300"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "eywa-booking",
+      "database_id": "4c996434-00b6-4b5b-96a5-88021306d768",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "triggers": {"crons": ["*/5 * * * *"]},
+  "observability": {
+    "enabled": true
+  },
+  "account_id": "558f8663bdc2ae0968204ae32275309f"
+}
