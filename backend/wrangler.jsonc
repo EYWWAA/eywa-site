@@ -9,9 +9,10 @@
   "workers_dev": true,
   "vars": {
     "EYWA_LAUNCH_ENABLED": "false",
-    "EYWA_AUTOMATION_ENABLED": "false",
-    "EYWA_GMAIL_ARCHIVE_ENABLED": "false",
-    "EYWA_CACHE_VERSION": "20261103-tarifs300"
+    "EYWA_AUTOMATION_ENABLED": "true",
+    "EYWA_GMAIL_ARCHIVE_ENABLED": "true",
+    "EYWA_CACHE_VERSION": "20261024-supplements",
+    "EYWA_MAIL_RELAY_URL": "https://script.google.com/macros/s/AKfycbw_lUr0bTQMwjnShWXoPNC7k2TazU741FXqjBzemBCW5AHlRCTuWBbFWy7aTXcJJTu-/exec"
   },
   "d1_databases": [
     {
@@ -21,7 +22,11 @@
       "migrations_dir": "migrations"
     }
   ],
-  "triggers": {"crons": ["*/5 * * * *"]},
+  "triggers": {
+    "crons": [
+      "*/5 * * * *"
+    ]
+  },
   "observability": {
     "enabled": true
   },

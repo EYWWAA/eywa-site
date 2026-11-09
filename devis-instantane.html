@@ -572,7 +572,8 @@
         </div>
       </div>
       <p class="legal-privacy-note">Vos informations permettent d’établir et de vous envoyer votre devis. <a href="confidentialite.html" target="_blank" rel="noopener noreferrer">En savoir plus sur vos données et vos droits</a>. Une demande de devis ne réserve pas la date et ne vous inscrit pas à une newsletter.</p>
-      <button class="btn-cta disabled" id="btn6" onclick="submitForm()">Obtenir mon devis →</button>
+      <label style="display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.5;margin-top:16px"><input id="quote-followup-consent" type="checkbox" style="width:18px;height:18px;flex-shrink:0;margin:1px 0 0"><span>J’accepte de recevoir des e-mails de suivi concernant ce devis. Je peux les arrêter à tout moment.</span></label>
+<button class="btn-cta disabled" id="btn6" onclick="submitForm()">Obtenir mon devis →</button>
       <div style="font-size:11.5px;color:var(--muted);text-align:center;margin-top:10px;line-height:1.6">
         Devis gratuit · Sans engagement
       </div>
@@ -592,7 +593,7 @@
         <div class="success-title">Demande reçue !</div>
         <div class="success-sub" id="success-sub">Nous avons bien reçu votre demande.</div>
         <div class="success-detail">
-          Votre devis personnalisé vient d'être envoyé à votre adresse email.<br><br>
+          Votre devis est enregistré. Son envoi par e-mail est en cours.<br><br>
           Une question urgente ?<br>
           <strong>contact.eywa08@gmail.com</strong><br>
           <strong>07 49 90 21 56</strong>
@@ -903,47 +904,30 @@
     return base + '?' + params.toString();
   }
 
-  function submitForm() {
+  var quoteRequestId='', quoteRequestFingerprint='', quoteSubmitting=false;
+  async function submitForm() {
+    if(quoteSubmitting)return;
     if(!window.eywaTravel){showStep('s2');return;}
-    if (!checkS6()) return;
+    if(!checkS6())return;
     collect();
-    A.totalPrice = calcPrice();
-
-    var finalType = A.type === 'Autre' && A.typeCustom ? 'Autre : ' + A.typeCustom : (A.type || 'Non précisé');
-    var dateStr = A.date ? new Date(A.date + 'T12:00').toLocaleDateString('fr-FR', {day:'numeric',month:'long',year:'numeric'}) : '—';
-    var devisUrl = buildDevisUrl();
-
-    document.getElementById('s6').classList.remove('active');
-    document.getElementById('loading').style.display = 'block';
-
-    fetch('https://formsubmit.co/ajax/contact.eywa08@gmail.com', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({
-        _subject: 'Nouvelle demande de devis EYWA — ' + A.prenom + ' ' + A.nom,
-        _template: 'table', _captcha: 'false',
-        _cc: A.email,
-        _autoresponse: 'Bonjour ' + A.prenom + ',\n\nMerci pour votre demande de devis EYWA !\n\nVotre devis personnalisé est disponible ici :\n' + devisUrl + '\n\nÀ très bientôt,\nLouis — EYWA Coffee Bar\n07 49 90 21 56',
-        email: A.email,
-        'Type d\'événement': finalType,
-        'Nombre d\'invités': A.guests + ' personnes',
-        'Durée': hrsLabel(A.hrs),
-        'Nombre de jours': A.days,
-        'Date': dateStr, 'Heure': A.time || '—',
-        'Lieu': A.lieu, 'Détails': A.details || '—',
-        'Personnalisation': A.personalization.join(', ') || 'Aucune',
-        'Prénom': A.prenom, 'Nom': A.nom, 'Société': A.societe || '—', 'Téléphone': A.tel,
-        'Déplacement aller-retour': window.eywaTravel.total.toFixed(2) + ' € · ' + window.eywaTravel.roundTripKm.toFixed(1) + ' km · ' + Math.round(window.eywaTravel.roundTripMinutes) + ' min',
-        'Hébergement': window.eywaTravel.lodgingRequired ? 'À prévoir, montant à confirmer' : 'Non déclenché par le trajet',
-        'Estimation': A.totalPrice + ' €',
-        'Lien devis client': devisUrl
-      })
-    })
-    .catch(function() {})
-    .finally(function() {
-      document.getElementById('loading').style.display = 'none';
-      window.location.href = devisUrl;
-    });
+    var quote=Object.fromEntries(new URL(buildDevisUrl()).searchParams);
+    var contact={email:A.email,firstName:A.prenom,lastName:A.nom,phone:A.tel,company:A.societe||'',details:A.details||''};
+    var fingerprint=JSON.stringify({quote:quote,contact:contact});
+    if(fingerprint!==quoteRequestFingerprint){quoteRequestId=crypto.randomUUID();quoteRequestFingerprint=fingerprint;}
+    var error=document.getElementById('quote-send-error');
+    if(!error){error=document.createElement('p');error.id='quote-send-error';error.setAttribute('role','alert');error.style.cssText='color:#8b3029;line-height:1.6;margin-top:12px';document.getElementById('btn6').before(error);}
+    error.textContent='';quoteSubmitting=true;document.getElementById('btn6').disabled=true;
+    document.getElementById('s6').classList.remove('active');document.getElementById('loading').style.display='block';
+    try{
+      var response=await fetch('https://eywa-booking.eywa-booking-cloudflare.workers.dev/send-quote',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({requestId:quoteRequestId,quote:quote,contact:contact,offer:EywaLaunchOffer.state.active,followupConsent:document.getElementById('quote-followup-consent').checked}),signal:AbortSignal.timeout(30000)});
+      var result=await response.json();
+      if(!response.ok||!result.id||!result.url)throw Error(result.error||'Le devis n’a pas pu être enregistré. Réessayez.');
+      var destination=new URL(result.url);if(destination.origin!==location.origin||destination.pathname!=='/devis.html')throw Error('Le lien du devis est indisponible. Contactez EYWA.');
+      window.location.assign(destination.href);
+    }catch(e){
+      document.getElementById('loading').style.display='none';document.getElementById('s6').classList.add('active');
+      error.textContent=e.name==='TimeoutError'||e.name==='AbortError'?'La connexion a pris trop de temps. Réessayez : votre demande ne sera pas envoyée deux fois.':e.message;
+    }finally{quoteSubmitting=false;document.getElementById('btn6').disabled=false;}
   }
 
   EywaLaunchOffer.onChange(function(){
