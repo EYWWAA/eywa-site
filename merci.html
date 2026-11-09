@@ -37,6 +37,7 @@
 <link rel="stylesheet" href="brand-unified.css?v=20261031-alignement">
 
 <meta name="robots" content="noindex, follow">
+<link rel="stylesheet" href="legal.css?v=20261109">
 </head>
 <body data-eywa-page="thanks" class="eywa-warm">
 <div class="top"><a href="/" class="logo" aria-label="EYWA, accueil"><img class="eywa-wordmark" src="assets/brand/eywa-wordmark.svg?v=20261031-alignement" alt="EYWA Coffee Catering" width="1450" height="477"></a></div>
@@ -48,7 +49,7 @@
   <div class="note" id="payment-confirm-note">Une question ? <a href="contact.html">Contactez EYWA</a>.</div>
 </div>
 <script src="brand-options.js?v=20261006-publication" defer></script>
-<script src="eywa-assistant.js?v=20261006-light-bar" defer></script>
+<script src="eywa-assistant.js?v=20261109-confidentialite" defer></script>
 <script>
 (function(){
  var id=new URLSearchParams(location.search).get('session_id'),title=document.getElementById('payment-confirm-title'),copy=document.getElementById('payment-confirm-copy');
@@ -60,7 +61,8 @@
   if(data.full)document.getElementById('payment-confirm-note').textContent='Votre prestation est réglée intégralement. Aucun solde ne reste à payer.';
  }).catch(function(){title.textContent='Vérification en cours';copy.textContent='La confirmation ne peut pas être affichée pour le moment. Contactez-nous avant de recommencer un règlement.';});
 })();
-</script></body>
+</script><footer class="legal-site-footer"><nav class="eywa-legal-links" aria-label="Informations légales"><a href="conditions-generales-de-vente.html">CGV</a><a href="annulation-remboursement.html">Annulation et remboursement</a><a href="mentions-legales.html">Mentions légales</a><a href="confidentialite.html">Confidentialité</a></nav></footer>
+</body>
 </html>
 
 

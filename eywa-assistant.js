@@ -77,13 +77,23 @@
   };
   mobile.addEventListener('change', syncContact);
   syncContact();
-  launcher.addEventListener('click', () => document.getElementById('chatbase-bubble-button')?.click());
+  let assistantRequested = false;
+  let pendingOpen = false;
+  launcher.addEventListener('click', () => {
+    const bubble = document.getElementById('chatbase-bubble-button');
+    if (bubble) { bubble.click(); return; }
+    pendingOpen = true;
+    if (!assistantRequested) { assistantRequested = true; load(); }
+    sync();
+  });
   document.body.appendChild(bar);
   const sync = () => {
     const bubble = document.getElementById('chatbase-bubble-button');
     const panel = document.getElementById('chatbase-bubble-window');
     const opened = !!(panel && getComputedStyle(panel).display !== 'none' && panel.getBoundingClientRect().height > 0);
-    if (launcher.disabled !== !bubble) launcher.disabled = !bubble;
+    const loading = assistantRequested && !bubble;
+    if (launcher.disabled !== loading) launcher.disabled = loading;
+    if (bubble && pendingOpen) { pendingOpen = false; queueMicrotask(() => bubble.click()); }
     if (bubble && bubble.getAttribute('tabindex') !== '-1') { bubble.setAttribute('tabindex', '-1'); bubble.setAttribute('aria-hidden', 'true'); }
     if (launcher.getAttribute('aria-expanded') !== String(opened)) launcher.setAttribute('aria-expanded', String(opened));
     const label = opened ? 'Fermer l’assistant IA EYWA' : 'Ouvrir l’assistant IA EYWA pour une réponse rapide';
@@ -107,6 +117,5 @@
     script.setAttribute('domain', 'www.chatbase.co');
     document.body.appendChild(script);
   };
-  if (document.readyState === 'complete') load();
-  else window.addEventListener('load', load, {once:true});
+  // The visitor requests the assistant by clicking its launcher.
 })();

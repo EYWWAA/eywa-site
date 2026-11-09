@@ -143,6 +143,7 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
 <link rel="stylesheet" href="booking-rules.css?v=20261024"><script src="phone-validation.js?v=20261024"></script><script src="booking-client.js?v=20261024"></script>
 
 <meta name="robots" content="noindex, follow">
+<link rel="stylesheet" href="legal.css?v=20261109">
 </head>
 <body data-eywa-page="reservation" class="quote-booking eywa-warm">
 
@@ -293,10 +294,13 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
       <details class="code-advantage"><summary>Vous avez un code avantage ?</summary><div class="code-entry"><input id="advantage-code" type="text" autocomplete="off" placeholder="Votre code" aria-label="Code avantage"><button type="button" id="apply-code" onclick="applyCode()">Appliquer</button></div><p class="booking-status" id="code-status" role="status"></p></details>
       <label class="fld" for="billing-name">Nom ou raison sociale pour la facture *</label>
       <input type="text" id="billing-name" autocomplete="organization" aria-describedby="err8" oninput="if(document.getElementById('err8').classList.contains('show')) validatePaymentFields(false)" placeholder="Marie Dupont ou SARL Événements Paris">
+      <div class="legal-payment-summary" id="legal-payment-summary"><p>En cas d’annulation, des frais peuvent être dus selon le délai avant le service. <a href="annulation-remboursement.html" target="_blank" rel="noopener noreferrer">Lire les conditions d’annulation et de remboursement</a>.</p><p id="legal-cups-notice" hidden>Les gobelets sont généralement commandés trois semaines avant l’événement. Après validation du visuel et lancement de la commande non annulable, le prix de l’option reste dû ; les gobelets restent à votre disposition.</p></div>
+      <a class="legal-download" href="conditions/2026-11-09.html" download="CGV-EYWA-2026-11-09.html">Télécharger les CGV applicables</a>
+      <p class="legal-privacy-note">Vos coordonnées servent à gérer votre réservation, son règlement et votre événement. <a href="confidentialite.html" target="_blank" rel="noopener noreferrer">Utilisation de vos données et vos droits</a>.</p>
       <div class="check-group" style="margin-top:1.25rem">
         <label class="check-opt" id="cgv-wrap" onchange="syncCheck(this)">
           <input type="checkbox" id="cgv" aria-describedby="err8">
-          <span>J'ai lu et j'accepte les <strong>conditions générales de vente</strong> d'EYWA. Je comprends que le versement de l’acompte de 50 % confirme ma réservation et bloque la date.</span>
+          <span>J'ai lu et j'accepte les <a class="legal-consent-link" href="conditions/2026-11-09.html" target="_blank" rel="noopener noreferrer">conditions générales de vente</a> d'EYWA, notamment les conditions d’annulation, de report et de remboursement. Je comprends que le versement de l’acompte de 50 % confirme ma réservation et bloque la date.</span>
         </label>
       </div>
       <div class="error-msg" id="err8" role="alert" aria-live="polite"></div>
@@ -513,7 +517,7 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
     document.getElementById('payment-balance').previousElementSibling.textContent=full?'Reste à payer après le règlement':'Solde restant après l’acompte';
     document.querySelector('.payment-due span').textContent=full?'À régler maintenant · paiement intégral':'À régler maintenant · acompte de 50 %';
     document.querySelector('#s8 .step-sub').textContent=specialPrice?specialPriceMessage():EywaLaunchOffer.state.active?'Bénéficiez de −80 % sur la prestation et le déplacement. Les personnalisations sont au tarif normal. Réglez le devis en une fois pour confirmer votre réservation.':'Réglez l’acompte de 50 % pour confirmer votre réservation. Les 50 % restants seront réglés séparément.';
-    document.querySelector('#cgv-wrap span').innerHTML='J’ai lu et j’accepte les <strong>conditions générales de vente</strong> d’EYWA. '+(full?'Je comprends que je règle la totalité du devis affiché pour confirmer ma réservation.':'Je comprends que le versement de l’acompte de 50 % confirme ma réservation et bloque la date.');
+    document.querySelector('#cgv-wrap span').innerHTML='J’ai lu et j’accepte les <a class="legal-consent-link" href="conditions/2026-11-09.html" target="_blank" rel="noopener noreferrer">conditions générales de vente</a> d’EYWA, notamment les conditions d’annulation, de report et de remboursement. '+(full?'Je comprends que je règle la totalité du devis affiché pour confirmer ma réservation.':'Je comprends que le versement de l’acompte de 50 % confirme ma réservation et bloque la date.');
     document.getElementById('btn-pay').textContent=full?'Payer '+formatMoney(depositCents)+' en une fois →':'Payer l’acompte de 50 % →';
     document.getElementById('btn-pay').disabled=!priceReady||!availabilityReady;
     var paymentVisible=document.getElementById('s8').style.display!=='none';
@@ -540,7 +544,8 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
     catch(e){status.textContent=e.message;status.dataset.error='true';await refreshQuotePrice(appliedCode).catch(function(){});}
     finally{button.disabled=false;}
   }
-  function collectBookingDetails(){return {address:document.getElementById('addr').value.trim(),contactName:document.getElementById('contact-nom').value.trim(),phone:EywaBooking.phoneValue('contact-tel')||'',phoneCountry:EywaBooking.phoneCountry('contact-tel'),setupLocation:document.getElementById('setup-lieu').value.trim(),outdoor:radioVals['outdoor-group'],unloadParking:document.getElementById('parking-dl').value.trim(),eventParking:document.getElementById('parking-ev').value.trim(),dressCode:radioVals['dress-group'],dressDetails:document.getElementById('dress-details').value.trim(),referencePhoto:referencePhoto,access60:document.getElementById('ck1').checked,space:document.getElementById('ck2').checked,power220:document.getElementById('ck3').checked,cgv:document.getElementById('cgv').checked,billingName:document.getElementById('billing-name').value.trim()};}
+  try{document.getElementById('legal-cups-notice').hidden=!JSON.parse(P.options||'[]').includes('Gobelets sur mesure');}catch(_){}
+  function collectBookingDetails(){return {address:document.getElementById('addr').value.trim(),contactName:document.getElementById('contact-nom').value.trim(),phone:EywaBooking.phoneValue('contact-tel')||'',phoneCountry:EywaBooking.phoneCountry('contact-tel'),setupLocation:document.getElementById('setup-lieu').value.trim(),outdoor:radioVals['outdoor-group'],unloadParking:document.getElementById('parking-dl').value.trim(),eventParking:document.getElementById('parking-ev').value.trim(),dressCode:radioVals['dress-group'],dressDetails:document.getElementById('dress-details').value.trim(),referencePhoto:referencePhoto,access60:document.getElementById('ck1').checked,space:document.getElementById('ck2').checked,power220:document.getElementById('ck3').checked,cgv:document.getElementById('cgv').checked,cgvVersion:'2026-11-09',billingName:document.getElementById('billing-name').value.trim()};}
   document.querySelectorAll('#dress-group input,#outdoor-group input').forEach(function(input){input.addEventListener('change',function(){if(this.checked)selectRadio(this.closest('.radio-group').id,this.closest('.radio-opt'),this.value);});});
   EywaBooking.mountPhone('contact-tel');
   document.getElementById('addr').value=P.l||'';
@@ -570,7 +575,8 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
   goTo(1);
 </script>
 <script src="brand-options.js?v=20261006-publication" defer></script>
-<script src="eywa-assistant.js?v=20261006-light-bar" defer></script>
+<script src="eywa-assistant.js?v=20261109-confidentialite" defer></script>
+<footer class="legal-site-footer"><nav class="eywa-legal-links" aria-label="Informations légales"><a href="conditions-generales-de-vente.html">CGV</a><a href="annulation-remboursement.html">Annulation et remboursement</a><a href="mentions-legales.html">Mentions légales</a><a href="confidentialite.html">Confidentialité</a></nav></footer>
 </body>
 </html>
 
