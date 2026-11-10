@@ -157,4 +157,34 @@
     padding-top: 0 !important;
     padding-bottom: 0 !important;
   }
+
+  /* Cartes à fond marron, comme le dernier appel : personnalisations (foncé)
+     et « Comment ça marche » (brun) */
+  html.m-cartes body:not(#_a):not(#_b) main > #personnalisation {
+    background: var(--mc-encre) !important;
+  }
+  html.m-cartes body:not(#_a):not(#_b) main > #comment-ca-marche {
+    background: var(--mc-brun) !important;
+  }
+  html.m-cartes body:not(#_a):not(#_b) main > :is(#personnalisation, #comment-ca-marche),
+  html.m-cartes body:not(#_a):not(#_b) main > :is(#personnalisation, #comment-ca-marche) :is(h2, .section-kicker, .perso-plain-lead, .perso-plain-num, .perso-card h3, .perso-card p, .text-link, .journey-text-link) {
+    color: var(--mc-carte) !important;
+    border-color: currentColor;
+  }
+  html.m-cartes body:not(#_a):not(#_b) main > #comment-ca-marche .how-steps > li,
+  html.m-cartes body:not(#_a):not(#_b) main > #comment-ca-marche .how-steps > li * {
+    color: var(--mc-encre) !important;
+  }
+  html.m-cartes body:not(#_a):not(#_b) main > #personnalisation .button {
+    background: var(--mc-carte) !important;
+    color: var(--mc-encre) !important;
+    border-radius: 999px !important;
+  }
+  html.m-cartes body:not(#_a):not(#_b) main > #personnalisation .perso-card-media {
+    border-radius: 20px;
+  }
+  /* Le logo d'exemple ne doit pas hériter de l'arrondi des photos, il rogne le « g » */
+  html.m-cartes body:not(#_a):not(#_b) main .perso-card-logo {
+    border-radius: 0;
+  }
 }

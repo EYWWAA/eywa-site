@@ -1,84 +1,150 @@
 /* Accueil, « Nos personnalisations ».
-   Une seule phrase par personnalisation, en gros caractères et bien aérée :
-   on doit pouvoir la lire d'un coup d'œil sans s'arrêter. Chargée en dernier,
-   après warm-palette et brand-unified, qui ciblent #personnalisation. */
+   Section visuelle : un titre qui parle du bénéfice, puis trois cartes photo
+   (bar, gobelet, mousse). Sur le bar et le gobelet, le logo EYWA sert
+   d'exemple, posé en surimpression. Sur téléphone, les cartes défilent de
+   côté. Chargée en dernier, après warm-palette et brand-unified, qui ciblent
+   #personnalisation. */
 
 html body.eywa-home .perso-plain {
   padding: clamp(56px, 8vw, 104px) 0;
 }
 
 html body.eywa-home .perso-plain .perso-plain-head {
-  max-width: 24ch;
-  margin: 0 0 clamp(34px, 5vw, 56px);
+  max-width: 34ch;
+  margin: 0 0 clamp(30px, 4.5vw, 52px);
 }
 html body.eywa-home .perso-plain .section-title {
-  margin: 0 0 14px;
+  margin: 0 0 16px;
   margin-left: 0;
   padding-left: 0;
   text-align: left;
+  font-size: clamp(36px, 4.6vw, 62px);
+  line-height: 1.04;
 }
 html body.eywa-home .perso-plain .perso-plain-lead {
   margin: 0;
-  max-width: 30ch;
+  max-width: 38ch;
   font-size: clamp(18px, 1.7vw, 22px);
   line-height: 1.45;
-  opacity: .78;
+  opacity: .8;
 }
 
-/* Les trois personnalisations, côte à côte sur grand écran. */
-html body.eywa-home .perso-plain .perso-plain-list {
+/* Les trois cartes */
+html body.eywa-home .perso-plain .perso-cards {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(24px, 3.5vw, 52px);
+  gap: clamp(18px, 2.4vw, 32px);
 }
-html body.eywa-home .perso-plain .perso-plain-list > li {
+html body.eywa-home .perso-plain .perso-card {
   margin: 0;
-  padding-top: 22px;
-  border-top: 1.5px solid rgba(41, 24, 23, .22);
+  padding: 0;
+  border: 0;
 }
 
-/* Intitulé discret au-dessus du titre. */
+html body.eywa-home .perso-plain .perso-card-media {
+  position: relative;
+  margin: 0 0 18px;
+  aspect-ratio: 4 / 5;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #e9e3d8;
+}
+html body.eywa-home .perso-plain .perso-card-media > img:first-child {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Le logo d'exemple, posé sur la façade blanche et sur le gobelet */
+html body.eywa-home .perso-plain .perso-card-logo {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: auto;
+  mix-blend-mode: multiply;
+  opacity: .92;
+  pointer-events: none;
+}
+html body.eywa-home .perso-plain .perso-card-media--bar .perso-card-logo {
+  top: 71%;
+  width: 46%;
+}
+html body.eywa-home .perso-plain .perso-card-media--cup .perso-card-logo {
+  top: 60%;
+  left: 48%;
+  width: 38%;
+  transform: translate(-50%, -50%) rotate(-1deg);
+}
+
+html body.eywa-home .perso-plain .perso-card-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  background: rgba(255, 251, 239, .92);
+  color: #291817;
+  font-size: 12px;
+  line-height: 1.2;
+  letter-spacing: .02em;
+}
+
+/* Intitulé discret au-dessus du titre */
 html body.eywa-home .perso-plain .perso-plain-num {
   display: block;
-  margin-bottom: 14px;
+  margin-bottom: 8px;
   font-size: 12px;
   letter-spacing: .14em;
   text-transform: uppercase;
   opacity: .55;
 }
-html body.eywa-home .perso-plain .perso-plain-list h3 {
-  margin: 0 0 10px;
-  font-size: clamp(22px, 2.1vw, 29px);
+html body.eywa-home .perso-plain .perso-card h3 {
+  margin: 0 0 8px;
+  font-size: clamp(22px, 2.1vw, 28px);
   line-height: 1.15;
   letter-spacing: -.005em;
 }
-html body.eywa-home .perso-plain .perso-plain-list p {
+html body.eywa-home .perso-plain .perso-card p {
   margin: 0;
-  max-width: 26ch;
-  font-size: clamp(16px, 1.35vw, 18px);
+  font-size: clamp(16px, 1.3vw, 17px);
   line-height: 1.5;
   opacity: .8;
 }
 
 html body.eywa-home .perso-plain .perso-plain-cta {
-  margin: clamp(34px, 5vw, 52px) 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 28px;
+  margin: clamp(32px, 4.5vw, 48px) 0 0;
   font-size: clamp(16px, 1.35vw, 18px);
 }
 
+/* Téléphone : les cartes défilent de côté, la suivante dépasse pour inviter à glisser */
 @media (max-width: 860px) {
   html body.eywa-home .perso-plain .perso-plain-head { max-width: none; }
-  html body.eywa-home .perso-plain .perso-plain-list {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0;
+  html body.eywa-home .perso-plain .perso-cards {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin-right: -20px;
+    padding-right: 20px;
   }
-  html body.eywa-home .perso-plain .perso-plain-list > li {
-    padding: 22px 0 24px;
+  html body.eywa-home .perso-plain .perso-cards::-webkit-scrollbar { display: none; }
+  html body.eywa-home .perso-plain .perso-card {
+    flex: 0 0 80%;
+    scroll-snap-align: start;
   }
-  html body.eywa-home .perso-plain .perso-plain-list > li:last-child {
-    border-bottom: 1.5px solid rgba(41, 24, 23, .22);
+  html body.eywa-home .perso-plain .perso-plain-cta .button {
+    width: 100%;
+    text-align: center;
   }
-  html body.eywa-home .perso-plain .perso-plain-list p { max-width: none; }
 }
