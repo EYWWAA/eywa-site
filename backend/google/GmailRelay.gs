@@ -28,6 +28,7 @@ function gmailGet_(path){
 function decode_(data){try{return Utilities.newBlob(Utilities.base64DecodeWebSafe(data)).getDataAsString('UTF-8');}catch(_){return '';}}
 function plain_(part){
  if(part.mimeType==='text/plain'&&part.body&&part.body.data)return decode_(part.body.data);
+ if(part.mimeType==='multipart/alternative'){var direct=(part.parts||[]).find(function(p){return p.mimeType==='text/plain';});if(direct)return plain_(direct);}
  var children=(part.parts||[]).map(plain_).filter(Boolean);if(children.length)return children.join('\n');
  if(part.mimeType==='text/html'&&part.body&&part.body.data)return decode_(part.body.data).replace(/<style[\s\S]*?<\/style>/gi,'').replace(/<script[\s\S]*?<\/script>/gi,'').replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&');
  return '';
