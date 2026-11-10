@@ -9,6 +9,8 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=4">
 
   <meta charset="UTF-8">
+<script>/* Version mobile "cartes" (mobile-cartes-pages.css), active par défaut ; ?mobile=off la coupe pour la session, ?mobile=cartes la rétablit */
+(function(){var c=document.documentElement.classList;c.add('m-cartes');try{var q=new URLSearchParams(location.search).get('mobile');if(q==='off')sessionStorage.setItem('m-cartes-off','1');if(q==='cartes')sessionStorage.removeItem('m-cartes-off');if(sessionStorage.getItem('m-cartes-off'))c.remove('m-cartes');}catch(e){}})();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Réservation EYWA</title>
   <style>
@@ -144,6 +146,7 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
 
 <meta name="robots" content="noindex, follow">
 <link rel="stylesheet" href="legal.css?v=20261109-footer2">
+<link rel="stylesheet" href="mobile-cartes-pages.css?v=20261110-v1">
 </head>
 <body data-eywa-page="reservation" class="quote-booking eywa-warm">
 
