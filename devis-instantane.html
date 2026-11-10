@@ -841,7 +841,7 @@
     var extraHrs = Math.max(0, A.hrs - 1.5);
     var baristasNeeded = Math.ceil(A.guests / (A.hrs * 50));
     var extraBaristas = Math.max(0, baristasNeeded - 1);
-    var pricePerDay = (25000 + extraGuests * 190 + Math.round(extraHrs * 5500) + extraBaristas * 15000 + persoTotal() * 100) / 100;
+    var pricePerDay = (30000 + extraGuests * 231 + Math.round(extraHrs * 6923) + extraBaristas * 15000 + persoTotal() * 100) / 100;
     return Math.round((pricePerDay * A.days + supplementUrgence() + window.eywaTravel.total)*100)/100;
   }
 
@@ -854,7 +854,7 @@
     var extraHrs = Math.max(0, A.hrs - 1.5);
     var baristasNeeded = Math.ceil(A.guests / (A.hrs * 50));
     var extraBaristas = Math.max(0, baristasNeeded - 1);
-    var pricePerDay = (25000 + extraGuests * 190 + Math.round(extraHrs * 5500) + extraBaristas * 15000 + persoTotal() * 100) / 100;
+    var pricePerDay = (30000 + extraGuests * 231 + Math.round(extraHrs * 6923) + extraBaristas * 15000 + persoTotal() * 100) / 100;
     A.totalPrice = calcPrice();
 
     document.getElementById('priceDisplay').innerHTML = EywaLaunchOffer.priceHTML(calcNormalPrice(),persoTotal()*A.days+supplementUrgence());
@@ -867,9 +867,9 @@
     document.getElementById('priceContext').textContent = ctx;
 
     var bd = '';
-    bd += '<div class="brow"><span>Base (50 pers., 1h30)</span><span>' + EywaLaunchOffer.priceHTML(250) + '</span></div>';
-    if (extraGuests > 0) bd += '<div class="brow"><span>+' + extraGuests + ' invité' + (extraGuests>1?'s':'') + ' × 1,90 €</span><span>' + EywaLaunchOffer.priceHTML(extraGuests*190/100) + '</span></div>';
-    if (extraHrs > 0) bd += '<div class="brow"><span>+' + hrsLabel(extraHrs) + ' × 55 €/h</span><span>' + EywaLaunchOffer.priceHTML(Math.round(extraHrs*5500)/100) + '</span></div>';
+    bd += '<div class="brow"><span>Base (50 pers., 1h30)</span><span>' + EywaLaunchOffer.priceHTML(300) + '</span></div>';
+    if (extraGuests > 0) bd += '<div class="brow"><span>+' + extraGuests + ' invité' + (extraGuests>1?'s':'') + ' × 2,31 €</span><span>' + EywaLaunchOffer.priceHTML(extraGuests*231/100) + '</span></div>';
+    if (extraHrs > 0) bd += '<div class="brow"><span>+' + hrsLabel(extraHrs) + ' × 69,23 €/h</span><span>' + EywaLaunchOffer.priceHTML(Math.round(extraHrs*6923)/100) + '</span></div>';
     if (extraBaristas > 0) bd += '<div class="brow"><span>' + extraBaristas + ' barista' + (extraBaristas>1?'s':'') + ' sup. × 150 €</span><span>' + EywaLaunchOffer.priceHTML(extraBaristas*150) + '</span></div>';
     for (var pi = 0; pi < A.personalization.length; pi++) {
       var pn = A.personalization[pi], pp = PERSO_PRIX[pn] || 0;
@@ -896,7 +896,7 @@
     var base = window.location.href.split('?')[0].split('#')[0].replace(/[^/]*$/, '') + 'devis.html';
     var finalType = A.type === 'Autre' && A.typeCustom ? 'Autre : ' + A.typeCustom : A.type;
     var params = new URLSearchParams({
-      v:'20261107-tarifs250b',p: A.prenom, t: finalType,
+      v:'20261110-tarifs300',p: A.prenom, t: finalType,
       g: A.guests, h: A.hrs, dy: A.days,
       d: A.date, ti: A.time, l: A.lieu,
       lf: window.eywaTravel.localFree ? 1 : 0, tw: window.eywaTravel.outwardKm, lng: window.eywaTravel.coordinates[0], lat: window.eywaTravel.coordinates[1], country: window.eywaTravel.country, to: window.eywaTravel.outwardMinutes, tk: window.eywaTravel.roundTripKm, tm: window.eywaTravel.roundTripMinutes, ta: window.eywaTravel.approximate ? 1 : 0, pr: calcNormalPrice(), options: JSON.stringify(A.personalization)
@@ -978,7 +978,7 @@
   <div class="time-grid" id="time-grid"></div>
   <details class="precise-time"><summary>Besoin d’un horaire plus précis ?</summary><div><input type="time" id="precise-time" aria-label="Horaire précis"><button type="button" id="apply-time">Choisir</button></div></details>
 </dialog>
-<script src="devis-pickers.js?v=20261107-tarifs250b"></script>
+<script src="devis-pickers.js?v=20261110-tarifs300"></script>
 <script src="brand-options.js?v=20261006-publication" defer></script>
 <script src="travel-pricing.js?v=20261014-zone20"></script><script src="travel-route.js?v=20261015-local20"></script><script src="travel-origin.js?v=20261006-publication"></script><script src="service-area.js?v=20261007-zone-300km"></script><script src="travel-places.js?v=20261007-zone-300km"></script><script src="travel-form.js?v=20261015-local20"></script>
 <script src="eywa-assistant.js?v=20261109-confidentialite" defer></script>

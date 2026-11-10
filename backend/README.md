@@ -4,7 +4,7 @@ Source du Worker Cloudflare `eywa-booking`. Les tarifs du serveur font autorité
 
 Tests : Node.js 24 ou ultérieur, puis `npm test`. Les tests de paiement, de mails et de Notion utilisent des doubles locaux ; aucun paiement réel n’est réalisé.
 
-Tarifs : base 250 €, invité supplémentaire 1,90 €, heure supplémentaire 55 €, barista supplémentaire 150 €. Personnalisations journalières : habillage 200 €, gobelets 200 €, logo mousse 150 €. Urgence gobelets : 50 € une seule fois. NATHALIE08 : prestation et déplacement à 1 €, options au tarif normal.
+Tarifs : base 300 €, invité supplémentaire 2,31 €, heure supplémentaire 69,23 €, barista supplémentaire 150 €. Personnalisations journalières : habillage 200 €, gobelets 200 €, logo mousse 150 €. Urgence gobelets : 50 € une seule fois. NATHALIE08 : prestation et déplacement à 1 €, options au tarif normal.
 
 Les migrations 0003/0004 ajoutent les devis, l’outbox des messages, les relances, les factures d’acompte, la synchronisation Notion et les verrous des tâches. Elles ne modifient aucune réservation existante. Vérifier le schéma avant de répéter un ALTER TABLE.
 

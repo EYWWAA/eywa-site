@@ -12,16 +12,16 @@ import {createSlots} from '../src/lib/slots.mjs';
 
 const now=new Date('2026-11-07T11:00:00Z');
 const cases=[
- [5,[],1,25000,0,0],
- [5,['Gobelets sur mesure'],1,50000,25000,5000],
- [13,['Gobelets sur mesure'],1,50000,25000,5000],
- [14,['Gobelets sur mesure'],1,45000,20000,0],
- [60,['Gobelets sur mesure'],1,45000,20000,0],
- [5,['Habillage du bar'],1,45000,20000,0],
- [5,['Logo sur les boissons'],1,40000,15000,0],
- [5,['Habillage du bar','Gobelets sur mesure','Logo sur les boissons'],1,85000,60000,5000],
- [5,['Gobelets sur mesure'],2,95000,45000,5000],
- [5,['Gobelets sur mesure'],3,140000,65000,5000]
+ [5,[],1,30000,0,0],
+ [5,['Gobelets sur mesure'],1,55000,25000,5000],
+ [13,['Gobelets sur mesure'],1,55000,25000,5000],
+ [14,['Gobelets sur mesure'],1,50000,20000,0],
+ [60,['Gobelets sur mesure'],1,50000,20000,0],
+ [5,['Habillage du bar'],1,50000,20000,0],
+ [5,['Logo sur les boissons'],1,45000,15000,0],
+ [5,['Habillage du bar','Gobelets sur mesure','Logo sur les boissons'],1,90000,60000,5000],
+ [5,['Gobelets sur mesure'],2,105000,45000,5000],
+ [5,['Gobelets sur mesure'],3,155000,65000,5000]
 ];
 function fixedDate(instant){return class extends Date{constructor(...args){super(...(args.length?args:[instant]));}static now(){return new Date(instant).getTime();}};}
 function helpers(source,end){return source.slice(source.indexOf('  function joursAvantEvenement('),source.indexOf(end,source.indexOf('  function joursAvantEvenement(')));}
@@ -32,7 +32,7 @@ test('Rush only for cups below 14 Paris calendar days, once per event, with upda
   assert.equal(paymentPlan(calculated,{code:'NATHALIE08'},{}).totalCents,100+custom);
   assert.equal(paymentPlan(calculated,{},{}).payableCents,Math.round(total/2));
  }
- const duplicate=await pricing.quote({...quote,d:'2026-11-12',options:['Gobelets sur mesure','Gobelets sur mesure']},undefined,now);assert.equal(duplicate.normalCents,50000);
+ const duplicate=await pricing.quote({...quote,d:'2026-11-12',options:['Gobelets sur mesure','Gobelets sur mesure']},undefined,now);assert.equal(duplicate.normalCents,55000);
 });
 test('Actual browser calculations agree with authoritative server across all urgency cases',async()=>{
  const html=await fs.readFile(new URL('../../devis-instantane.html',import.meta.url),'utf8');

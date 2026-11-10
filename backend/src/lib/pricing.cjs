@@ -17,7 +17,7 @@ async function quote(q,fetcher,now=new Date()){
   if(!Array.isArray(selected)||selected.some(name=>!Object.hasOwn(optionRates,name)))throw Error('Options invalides');
   selected=[...new Set(selected)];
   const staff=Math.max(1,Math.ceil(guests/(hours*50)));
-  const dailyCents=25000+Math.max(0,guests-50)*190+Math.round(Math.max(0,hours-1.5)*5500)+(staff-1)*15000+selected.reduce((n,name)=>n+optionRates[name]*100,0);
+  const dailyCents=30000+Math.max(0,guests-50)*231+Math.round(Math.max(0,hours-1.5)*6923)+(staff-1)*15000+selected.reduce((n,name)=>n+optionRates[name]*100,0);
   const daysUntil=Math.round((Date.parse(date+'T12:00:00Z')-Date.parse(policy.today(now)+'T12:00:00Z'))/86400000);
   const rushCupsCents=selected.includes('Gobelets sur mesure')&&daysUntil>=0&&daysUntil<14?5000:0;
   const normalCents=dailyCents*days+rushCupsCents+Math.round(travel.total*100);

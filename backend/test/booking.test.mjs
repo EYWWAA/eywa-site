@@ -34,7 +34,7 @@ test('Historical second slot holds and paid records still prevent a new discount
 test('Unknown old state fails closed and creates no available promotion',async()=>{
  const DB=database(false),ctx=context(),env={DB,EYWA_LAUNCH_ENABLED:'true'};
  assert.equal((await handle(request('launch-offer'),env,ctx)).status,503);
- assert.equal((await handle(request('launch-checkout','POST',{quote,bookingDetails,offer:true,expectedCents:5000}),env,ctx)).status,503);
+ assert.equal((await handle(request('launch-checkout','POST',{quote,bookingDetails,offer:true,expectedCents:6000}),env,ctx)).status,503);
  assert.equal(DB.raw.prepare('SELECT COUNT(*) AS c FROM eywa_launch_slots').get().c,0);DB.raw.close();
 });
 test('Display responses share a cache, fresh pre-payment verification bypasses it',async()=>{
@@ -55,8 +55,8 @@ test('Full discounted Stripe checkout; changed or unavailable offers never charg
  };
  try{
   let res=await handle(request('launch-checkout','POST',{quote,offer:true,expectedCents:100}),env,ctx);assert.equal(res.status,409);assert.equal(posts,0);
-  res=await handle(request('launch-checkout','POST',{quote,bookingDetails,offer:true,expectedCents:5000}),env,ctx);assert.equal(res.status,200);assert.equal(posts,1);assert.equal(parameters.get('line_items[0][price_data][unit_amount]'),'5000');assert.equal(parameters.has('discounts[0][coupon]'),false);assert.equal(parameters.get('metadata[balance_cents]'),'0');
-  res=await handle(request('launch-checkout','POST',{quote,bookingDetails,offer:true,expectedCents:5000}),env,ctx);assert.equal(res.status,409);assert.equal((await res.json()).code,'DATE_UNAVAILABLE');assert.equal(posts,1);
+  res=await handle(request('launch-checkout','POST',{quote,bookingDetails,offer:true,expectedCents:6000}),env,ctx);assert.equal(res.status,200);assert.equal(posts,1);assert.equal(parameters.get('line_items[0][price_data][unit_amount]'),'6000');assert.equal(parameters.has('discounts[0][coupon]'),false);assert.equal(parameters.get('metadata[balance_cents]'),'0');
+  res=await handle(request('launch-checkout','POST',{quote,bookingDetails,offer:true,expectedCents:6000}),env,ctx);assert.equal(res.status,409);assert.equal((await res.json()).code,'DATE_UNAVAILABLE');assert.equal(posts,1);
  }finally{globalThis.fetch=original;DB.raw.close();}
 });
 test('Signature verification rejects altered and expired events',()=>{
@@ -68,7 +68,7 @@ test('Normal checkout keeps the 50% deposit and rejects foreign origins',async()
  const DB=database(),ctx=context(),env={DB,EYWA_LAUNCH_ENABLED:'false',STRIPE_SECRET_KEY:'test-only'},original=globalThis.fetch;let params;
  globalThis.fetch=async(url,options)=>{params=new URLSearchParams(options.body);return Response.json({id:'cs_test_deposit',url:'https://checkout.stripe.com/c/pay/test'})};
  try{
-  const res=await handle(request('launch-checkout','POST',{quote,bookingDetails,offer:false,expectedCents:12500}),env,ctx);assert.equal(res.status,200);assert.equal(params.get('line_items[0][price_data][unit_amount]'),'12500');assert.equal(params.get('metadata[balance_cents]'),'12500');assert.equal(params.has('discounts[0][coupon]'),false);
+  const res=await handle(request('launch-checkout','POST',{quote,bookingDetails,offer:false,expectedCents:15000}),env,ctx);assert.equal(res.status,200);assert.equal(params.get('line_items[0][price_data][unit_amount]'),'15000');assert.equal(params.get('metadata[balance_cents]'),'15000');assert.equal(params.has('discounts[0][coupon]'),false);
   const foreign=new Request('https://test.example/launch-checkout',{method:'POST',headers:{Origin:'https://other.example'},body:'{}'});assert.equal((await handle(foreign,env,ctx)).status,403);
  }finally{globalThis.fetch=original;DB.raw.close();}
 });

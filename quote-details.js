@@ -2,6 +2,9 @@
 (function () {
   'use strict';
   const p = new URLSearchParams(location.search || location.hash.replace(/^#/, '?'));
+  const pdfLink=document.getElementById('quote-pdf-link');
+  if(pdfLink&&/^[a-f0-9-]{36}$/.test(p.get('qid')||'')){pdfLink.href='https://eywa-booking.eywa-booking-cloudflare.workers.dev/quote-pdf?id='+encodeURIComponent(p.get('qid'));pdfLink.hidden=false;}
+
   const money = n => new Intl.NumberFormat('fr-FR', {style:'currency',currency:'EUR'}).format(n);
   const number = (key, fallback, max) => { const n = Number(p.get(key)); return Number.isFinite(n) && n > 0 ? Math.min(n, max) : fallback; };
   const guests = Math.round(number('g',50,2000)), hours = number('h',1.5,24), days = Math.round(number('dy',1,365));
@@ -15,7 +18,7 @@
   try { selected = JSON.parse(p.get('options') || '[]'); } catch (_) {}
   if (!Array.isArray(selected)) selected = [];
   options.forEach(o => o.selected = selected.includes(o.name));
-  const service = (25000 + Math.max(0,guests-50)*190 + Math.round(Math.max(0,hours-1.5)*5500) + (staff-1)*15000)*days/100;
+  const service = (30000 + Math.max(0,guests-50)*231 + Math.round(Math.max(0,hours-1.5)*6923) + (staff-1)*15000)*days/100;
   function joursAvantEvenement(iso) {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(iso || '')) return null;
     var parsed=new Date(iso+'T12:00:00Z');if(isNaN(parsed)||parsed.toISOString().slice(0,10)!==iso)return null;
@@ -79,9 +82,9 @@
   };
   function render(){
     const lines=document.getElementById('line-items');lines.replaceChildren();
-    lines.append(makeLine('Formule classique',250*days,'Un coffee bar, un barista professionnel et des boissons préparées à la demande. Le forfait comprend 1 h 30 de service pour jusqu’à 50 invités.',serviceTime));
-    if(guests>50)lines.append(makeLine('Invités supplémentaires',(guests-50)*190*days/100,(guests-50)+' invités au-delà du forfait de base, à 1,90 € par invité et par jour.'));
-    if(hours>1.5)lines.append(makeLine('Prolongation du service',Math.round((hours-1.5)*5500)*days/100,'55 € par heure supplémentaire. '+duration+' de service'+(days>1?' par jour.':'.')));
+    lines.append(makeLine('Formule classique',300*days,'Un coffee bar, un barista professionnel et des boissons préparées à la demande. Le forfait comprend 1 h 30 de service pour jusqu’à 50 invités.',serviceTime));
+    if(guests>50)lines.append(makeLine('Invités supplémentaires',(guests-50)*231*days/100,(guests-50)+' invités au-delà du forfait de base, à 2,31 € par invité et par jour.'));
+    if(hours>1.5)lines.append(makeLine('Prolongation du service',Math.round((hours-1.5)*6923)*days/100,'69,23 € par heure supplémentaire. '+duration+' de service'+(days>1?' par jour.':'.')));
     if(staff>1)lines.append(makeLine('Renfort barista',(staff-1)*150*days,(staff-1)+' barista(s) supplémentaire(s) pour adapter l’équipe au nombre d’invités et à la durée du service.'));
     options.filter(o=>o.selected).forEach(o=>lines.append(makeLine(o.name,o.price*days,o.description,null,o.price*days)));
     if(rushCups()>0)lines.append(makeLine('Impression accélérée des gobelets',rushCups(),'Supplément unique de 50 € pour les gobelets personnalisés commandés moins de 14 jours avant l’événement.',null,rushCups()));
@@ -91,7 +94,7 @@
     const total=Math.round((service+travel+options.filter(o=>o.selected).reduce((n,o)=>n+o.price*days,0)+rushCups())*100)/100;
     if(hasTravel)document.querySelector('.price-lbl').textContent='Prestation et trajet aller-retour · hébergement éventuel non compris';
     document.getElementById('price-main').innerHTML=EywaLaunchOffer.priceHTML(total,protectedAmount);document.getElementById('dock-total').innerHTML=EywaLaunchOffer.priceHTML(total,protectedAmount);
-    const next=new URLSearchParams(p);next.set('v','20261107-tarifs350');next.set('pr',total);next.set('options',JSON.stringify(options.filter(o=>o.selected).map(o=>o.name)));next.set('dy',days);
+    const next=new URLSearchParams(p);next.set('v','20261110-tarifs300');next.set('pr',total);next.set('options',JSON.stringify(options.filter(o=>o.selected).map(o=>o.name)));next.set('dy',days);
     history.replaceState(null,'',location.pathname+'?'+next.toString()+location.hash);
     ['main','bottom','dock'].forEach(id=>{const button=document.getElementById('btn-reserve-'+id);button.href=lodging?'contact.html':'reservation.html?'+next.toString();if(lodging)button.textContent='Finaliser avec EYWA';});
     if (window.EywaQuoteValidity) window.EywaQuoteValidity.applyToQuote(next);

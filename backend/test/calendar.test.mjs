@@ -15,11 +15,11 @@ test('Paris calendar: D+3 minimum includes DST and rejects yesterday, today, D+1
  assert.equal(policy.minimumDate(new Date('2026-10-24T22:30:00Z')),'2026-10-28');
  assert.deepEqual(policy.occupiedDays({d:'2026-10-27',dy:1,ti:'23:00',h:2},now),['2026-10-27','2026-10-28']);
 });
-test('Price base 250, bar 200: launch excludes every personalization and includes travel',async()=>{
- const basic=await pricing.quote(quote);assert.equal(basic.normalCents,25000);assert.equal(basic.discountedCents,5000);
- const custom=await pricing.quote({...quote,options:['Habillage du bar','Gobelets sur mesure','Logo sur les boissons']});assert.equal(custom.normalCents,80000);assert.equal(custom.personalizationCents,55000);assert.equal(custom.discountedCents,60000);
- const multi=await pricing.quote({...quote,dy:2,options:['Habillage du bar']});assert.equal(multi.normalCents,90000);assert.equal(multi.discountedCents,50000);
- const {normalCents}=await pricing.quote({...quote,g:76});assert.equal(normalCents,44940);
+test('Price base 300, bar 200: launch excludes every personalization and includes travel',async()=>{
+ const basic=await pricing.quote(quote);assert.equal(basic.normalCents,30000);assert.equal(basic.discountedCents,6000);
+ const custom=await pricing.quote({...quote,options:['Habillage du bar','Gobelets sur mesure','Logo sur les boissons']});assert.equal(custom.normalCents,85000);assert.equal(custom.personalizationCents,55000);assert.equal(custom.discountedCents,61000);
+ const multi=await pricing.quote({...quote,dy:2,options:['Habillage du bar']});assert.equal(multi.normalCents,100000);assert.equal(multi.discountedCents,52000);
+ const {normalCents}=await pricing.quote({...quote,g:76});assert.equal(normalCents,51006);
 });
 test('Phone format: France, Belgium, UK, international override and invalid numbers',()=>{
  assert.equal(phone.normalize('06 12 34 56 78','FR'),'+33612345678');assert.equal(phone.normalize('0491 12 34 56','BE'),'+32491123456');assert.equal(phone.normalize('+44 20 7946 0018','FR'),'+442079460018');
@@ -57,7 +57,7 @@ test('Special code gives full 1 euro, keeps launch slot available, stores dress 
   let response=await handle(request('launch-checkout','POST',{quote,offer:true,code:'wrong',expectedCents:100,bookingDetails}),env,ctx);assert.equal(response.status,400);assert.equal(posts,0);
   response=await handle(request('launch-checkout','POST',{quote,offer:true,code:'1€',expectedCents:100,bookingDetails:{...bookingDetails,dressCode:'Autre',dressDetails:'Bleu'}}),env,ctx);assert.equal(response.status,200);assert.equal(posts,1);assert.equal(params.get('line_items[0][price_data][unit_amount]'),'100');assert.equal(params.get('metadata[balance_cents]'),'0');assert.equal(params.get('metadata[payment_kind]'),'full_special');assert.equal(params.has('metadata[eywa_claim]'),false);
   assert.equal(DB.raw.prepare("SELECT state FROM eywa_launch_slots WHERE slot=1").get().state,'available');const stored=JSON.parse(DB.raw.prepare('SELECT details_json FROM eywa_bookings').get().details_json);assert.equal(stored.phone,'+33612345678');assert.equal(stored.dressDetails,'Bleu');assert(!params.toString().includes('Bleu'));
-  response=await handle(request('launch-checkout','POST',{quote,offer:false,expectedCents:12500,bookingDetails}),env,ctx);assert.equal(response.status,409);assert.equal((await response.json()).code,'DATE_UNAVAILABLE');assert.equal(posts,1);
+  response=await handle(request('launch-checkout','POST',{quote,offer:false,expectedCents:15000,bookingDetails}),env,ctx);assert.equal(response.status,409);assert.equal((await response.json()).code,'DATE_UNAVAILABLE');assert.equal(posts,1);
  }finally{globalThis.fetch=original;DB.raw.close();}
 });
 test('Launch checkout charges bar at full price and rejects missing mandatory power or bad phone',async()=>{
@@ -65,9 +65,9 @@ test('Launch checkout charges bar at full price and rejects missing mandatory po
  globalThis.fetch=async(url,options)=>{posts++;params=new URLSearchParams(options.body);return Response.json({id:'cs_test_custom',url:'https://checkout.stripe.com/c/pay/test'});};
  try{
  const custom={...quote,options:['Habillage du bar']};
- for(const invalid of [{...bookingDetails,power220:false},{...bookingDetails,phone:'123456'},{...bookingDetails,dressCode:'Autre',dressDetails:''}]){const response=await handle(request('launch-checkout','POST',{quote:custom,offer:true,expectedCents:25000,bookingDetails:invalid}),env,ctx);assert.equal(response.status,400);}
+ for(const invalid of [{...bookingDetails,power220:false},{...bookingDetails,phone:'123456'},{...bookingDetails,dressCode:'Autre',dressDetails:''}]){const response=await handle(request('launch-checkout','POST',{quote:custom,offer:true,expectedCents:26000,bookingDetails:invalid}),env,ctx);assert.equal(response.status,400);}
  assert.equal(posts,0);assert.equal(DB.raw.prepare('SELECT COUNT(*) AS n FROM eywa_bookings').get().n,0);
- const response=await handle(request('launch-checkout','POST',{quote:custom,offer:true,expectedCents:25000,bookingDetails}),env,ctx);assert.equal(response.status,200);assert.equal(params.get('line_items[0][price_data][unit_amount]'),'5000');assert.equal(params.get('line_items[1][price_data][unit_amount]'),'20000');assert.equal(params.has('discounts[0][coupon]'),false);
+ const response=await handle(request('launch-checkout','POST',{quote:custom,offer:true,expectedCents:26000,bookingDetails}),env,ctx);assert.equal(response.status,200);assert.equal(params.get('line_items[0][price_data][unit_amount]'),'6000');assert.equal(params.get('line_items[1][price_data][unit_amount]'),'20000');assert.equal(params.has('discounts[0][coupon]'),false);
  }finally{globalThis.fetch=original;DB.raw.close();}
 });
 test('Signed webhook locks paid date even if the customer never returns from Stripe',async()=>{
