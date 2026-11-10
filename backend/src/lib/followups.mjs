@@ -31,7 +31,7 @@ const benefits={
 export function reminderMail(q,day,stopUrl){
  const index=reminderDays.indexOf(day);if(index<0)throw Error('INVALID_REMINDER_DAY');
  const [heading,value]=benefits[segment(q.eventType)][index];
- const content=shell({heading,intro:'Bonjour '+q.firstName+', '+value,rows:eventRows(q),amount:q.totalCents,amountLabel:'Votre proposition EYWA',buttons:[['Retrouver mon devis',q.documentUrl],['Arrêter ces relances',stopUrl]],note:'Cette demande ne réserve pas votre date. Les relances s’arrêtent dès qu’un paiement lié à votre devis est confirmé, ou si vous choisissez de ne plus les recevoir.'});
+ const content=shell({heading,intro:'Bonjour '+q.firstName+', '+value,rows:eventRows(q),amount:q.totalCents,amountLabel:'Votre proposition EYWA',buttons:[['Retrouver mon devis',(q.quoteUrl||q.documentUrl)],['Arrêter ces relances',stopUrl]],note:'Cette demande ne réserve pas votre date. Les relances s’arrêtent dès qu’un paiement lié à votre devis est confirmé, ou si vous choisissez de ne plus les recevoir.'});
  return {subject:heading+' — EYWA',...content};
 }
 export async function registerQuote(env,q,now=Date.now()){

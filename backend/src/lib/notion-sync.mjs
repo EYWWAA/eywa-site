@@ -17,7 +17,7 @@ export function createNotionSync(env,fetcher=fetch){
  async function contact(q){
   const d=await api('data_sources/'+contactsSource+'/query','POST',{filter:{property:'Email',email:{equals:q.email}},page_size:2});
   if(d.results.length)return d.results[0].id;
-  return (await api('pages','POST',{parent:{data_source_id:contactsSource},properties:{Contact:{title:rich(q.name)},Email:{email:q.email},'Téléphone':{phone_number:q.phone||null},Organisation:{rich_text:rich(q.company)},Source:{url:q.documentUrl}}})).id;
+  return (await api('pages','POST',{parent:{data_source_id:contactsSource},properties:{Contact:{title:rich(q.name)},Email:{email:q.email},'Téléphone':{phone_number:q.phone||null},Organisation:{rich_text:rich(q.company)},Source:{url:(q.quoteUrl||q.documentUrl)}}})).id;
  }
  async function appendOnce(page,event,blocks){
   if(await sql('SELECT event_id FROM eywa_sync_events WHERE event_id=? AND notion_block_id IS NOT NULL',event.id).first())return;
@@ -46,7 +46,7 @@ export function createNotionSync(env,fetcher=fetch){
   const paid=invoice?JSON.parse(invoice.data_json):null;
   const sent=await sql("SELECT sent_at FROM eywa_email_outbox WHERE id=? AND status='sent'",'quote:'+q.id+':client').first();
   const contactId=job.contact_id||await contact(q);
-  const properties={Dossier:{title:rich(q.name+' — '+q.date)},Client:{relation:[{id:contactId}]},Date:{date:{start:q.date}},Total:{number:(paid?.totalCents??q.totalCents)/100},'Réglé':{number:(paid?.paidCents||0)/100},Devis:{url:q.documentUrl},Facture:{url:invoice?invoiceURL(invoice)+'&format=pdf':null},'Référence':{rich_text:rich(q.reference)},Statut:{select:state?.status==='paid'?{name:'Réservé'}:sent?{name:'Devis envoyé'}:null}};
+  const properties={Dossier:{title:rich(q.name+' — '+q.date)},Client:{relation:[{id:contactId}]},Date:{date:{start:q.date}},Total:{number:(paid?.totalCents??q.totalCents)/100},'Réglé':{number:(paid?.paidCents||0)/100},Devis:{url:(q.quoteUrl||q.documentUrl)},Facture:{url:invoice?invoiceURL(invoice)+'&format=pdf':null},'Référence':{rich_text:rich(q.reference)},Statut:{select:state?.status==='paid'?{name:'Réservé'}:sent?{name:'Devis envoyé'}:null}};
   let pageId=job.page_id;
   if(!pageId){const found=await api('data_sources/'+dossiersSource+'/query','POST',{filter:{property:'Référence',rich_text:{equals:q.reference}},page_size:2});pageId=found.results[0]?.id;}
   if(pageId){
@@ -54,19 +54,19 @@ export function createNotionSync(env,fetcher=fetch){
    if(state?.status!=='paid'&&['Annulé','Réservé'].includes(current.properties?.Statut?.select?.name)){await stopQuote(env,q.id);properties.Statut={select:{name:current.properties.Statut.select.name}};}
    await api('pages/'+pageId,'PATCH',{properties});
   }else{
-   const contents=[paragraph('Contact : '+q.name+' · '+q.email+(q.phone?' · '+q.phone:'')),paragraph('Lieu : '+q.location+'\nService : '+q.time+' · '+q.hours+' h · '+q.guests+' invités · '+q.days+' jour(s)\nOptions : '+(q.options?.join(', ')||'Aucune')),heading('Devis'),paragraph('Référence : '+q.reference+'\nMontant proposé : '+(q.totalCents/100).toFixed(2)+' €\n'+q.documentUrl),...(q.details?[paragraph('Demande du client : '+q.details)]:[]),heading('Échanges et documents')];
+   const contents=[paragraph('Contact : '+q.name+' · '+q.email+(q.phone?' · '+q.phone:'')),paragraph('Lieu : '+q.location+'\nService : '+q.time+' · '+q.hours+' h · '+q.guests+' invités · '+q.days+' jour(s)\nOptions : '+(q.options?.join(', ')||'Aucune')),heading('Devis'),paragraph('Référence : '+q.reference+'\nMontant proposé : '+(q.totalCents/100).toFixed(2)+' €\n'+(q.quoteUrl||q.documentUrl)),...(q.details?[paragraph('Demande du client : '+q.details)]:[]),heading('Échanges et documents')];
    pageId=(await api('pages','POST',{parent:{data_source_id:dossiersSource},properties,children:contents})).id;
   }
   await sql('UPDATE eywa_notion_jobs SET page_id=?,contact_id=? WHERE quote_id=?',pageId,contactId,q.id).run();
   const mailRows=(await sql("SELECT * FROM eywa_email_outbox WHERE quote_id=? AND status='sent' ORDER BY created_at",q.id).all()).results;
   for(const m of mailRows){const p=JSON.parse(m.payload_json),event={id:m.id,quoteId:q.id,title:p.subject+' · '+new Date(m.sent_at).toLocaleString('fr-FR',{timeZone:'Europe/Paris'}),text:p.text,to:m.recipient};await appendOnce(pageId,event,[paragraph('À : '+m.recipient),...chunks(p.text).map(paragraph)]);}
   const quotePDF=await sql('SELECT pdf_base64 FROM eywa_quote_pdfs WHERE quote_id=?',q.id).first();
-  if(quotePDF)await attachDocument(pageId,q,{id:'quote-pdf:'+q.id,pdf:quotePDF.pdf_base64,title:'Devis '+q.reference,filename:'Devis-'+q.reference+'.pdf',url:q.documentUrl});
+  if(quotePDF)await attachDocument(pageId,q,{id:'quote-pdf:'+q.id,pdf:quotePDF.pdf_base64,title:'Devis '+q.reference,filename:'Devis-'+q.reference+'.pdf',url:(q.quoteUrl||q.documentUrl)});
   if(invoice)await attachDocument(pageId,q,{id:'invoice:'+invoice.session_id,pdf:invoice.pdf_base64,title:'Facture '+invoiceNumber(invoice),filename:invoiceNumber(invoice)+'.pdf',url:invoiceURL(invoice)});
   if(invoice){
    const booking=await sql('SELECT details_json FROM eywa_bookings WHERE session_id=?',invoice.session_id).first();
    if(booking){const d=JSON.parse(booking.details_json),info={id:'organisation:'+invoice.session_id,quoteId:q.id,title:'Organisation confirmée de la prestation',text:['Adresse : '+d.address,'Contact sur place : '+d.contactName+' · '+d.phone,'Emplacement : '+d.setupLocation,'Extérieur : '+d.outdoor,'Déchargement : '+d.unloadParking,'Stationnement : '+(d.eventParking||'Non précisé'),'Tenue : '+d.dressCode+(d.dressDetails?' — '+d.dressDetails:''),'Accès 60 min avant : '+(d.access60?'confirmé':'à vérifier'),'Espace 2 m × 1 m : '+(d.space?'confirmé':'à vérifier'),'Prise 220 V à moins de 10 m : '+(d.power220?'confirmée':'à vérifier'),'Facturation : '+d.billingName].join('\n')};await appendOnce(pageId,info,chunks(info.text).map(paragraph));
-    if(d.referencePhoto){const m=/^data:image\/(jpeg|png|webp);base64,(.+)$/.exec(d.referencePhoto);if(m)await attachDocument(pageId,q,{id:'reference-photo:'+invoice.session_id,pdf:m[2],title:'Photo de référence du client',filename:'Reference-'+q.id+'.'+(m[1]==='jpeg'?'jpg':m[1]),contentType:'image/'+m[1],url:q.documentUrl});}
+    if(d.referencePhoto){const m=/^data:image\/(jpeg|png|webp);base64,(.+)$/.exec(d.referencePhoto);if(m)await attachDocument(pageId,q,{id:'reference-photo:'+invoice.session_id,pdf:m[2],title:'Photo de référence du client',filename:'Reference-'+q.id+'.'+(m[1]==='jpeg'?'jpg':m[1]),contentType:'image/'+m[1],url:(q.quoteUrl||q.documentUrl)});}
    }
   }
   const messages=(await sql('SELECT * FROM eywa_sync_events WHERE quote_id=? AND notion_block_id IS NULL ORDER BY created_at LIMIT 10',q.id).all()).results;
