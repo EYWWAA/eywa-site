@@ -9,6 +9,8 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=4">
 
   <meta charset="utf-8">
+  <script>/* Version mobile "cartes" (mobile-cartes.css), active par défaut ; ?mobile=off la coupe pour la session, ?mobile=cartes la rétablit */
+  (function(){var c=document.documentElement.classList;c.add('m-cartes');try{var q=new URLSearchParams(location.search).get('mobile');if(q==='off')sessionStorage.setItem('m-cartes-off','1');if(q==='cartes')sessionStorage.removeItem('m-cartes-off');if(sessionStorage.getItem('m-cartes-off'))c.remove('m-cartes');}catch(e){}})();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
   
@@ -235,6 +237,7 @@ body.eywa-home #savoir-faire .eywa-photo-duo img{min-width:0;min-height:0;object
 <meta name="twitter:description" content="Coffee catering et bar à café mobile pour vos événements. Baristas, boissons à volonté et personnalisation. Basés à Charleville-Mézières, déplacement sur 300 km.">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","@id":"https://eywacoffeecatering.com/#webpage","url":"https://eywacoffeecatering.com/","name":"EYWA Coffee Catering | Bar à café mobile événementiel","description":"Coffee catering et bar à café mobile pour vos événements. Baristas, boissons à volonté et personnalisation. Basés à Charleville-Mézières, déplacement sur 300 km.","inLanguage":"fr-FR","isPartOf":{"@id":"https://eywacoffeecatering.com/#website"},"about":{"@id":"https://eywacoffeecatering.com/#coffee-catering"}}</script>
 <link rel="stylesheet" href="legal.css?v=20261109-footer2">
+<link rel="stylesheet" href="mobile-cartes.css?v=20261110-v1">
 </head>
 <body data-eywa-page="home" class="eywa-home eywa-photo-opening eywa-warm">
   <header class="wrap nav">
