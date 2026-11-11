@@ -34,3 +34,10 @@ body.eywa-home #savoir-faire .reference-menu-link{border-color:#fafaf866}
  body.eywa-home #services .editorial-copy,body.eywa-home #savoir-faire .craft-editorial-copy{padding:38px 24px}
 }
 body.eywa-home #savoir-faire .craft-editorial-copy .section-kicker{text-align:left}
+
+/* Le bloc sous « Du bon café » n'a plus de photo : le panneau prend toute la
+   largeur, et c'est la longueur des lignes qui est bornée, pas le panneau,
+   pour ne pas laisser apparaître le fond gris de la section. */
+body.eywa-home #savoir-faire .craft-editorial-split--solo{grid-template-columns:minmax(0,1fr)}
+body.eywa-home #savoir-faire .craft-editorial-split--solo .craft-editorial-copy{max-width:none;width:100%}
+body.eywa-home #savoir-faire .craft-editorial-split--solo .craft-editorial-copy :is(p,ul,li){max-width:68ch}
