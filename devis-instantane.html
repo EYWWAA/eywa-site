@@ -298,6 +298,9 @@
 /* Bouton de repli : on le distingue des vrais résultats, c'est un choix
    par défaut quand la recherche d'adresse ne répond pas. */
 .travel-result-fallback{background:#f3ece4;border-style:dashed;font-weight:500}
+/* Les autres lieux trouvés, repliés sous le premier qui a été retenu. */
+.travel-others{margin:10px 0 0}
+.travel-others summary{cursor:pointer;font-size:13px;opacity:.75;padding:4px 0}
 </style>
 <link rel="stylesheet" href="soft-blush.css?v=20261007-etapes-detaillees">
 <link rel="stylesheet" href="quote-site-style.css?v=20261007-typographie">
@@ -407,9 +410,9 @@
     <!-- S2 : Lieu -->
     <div class="step" id="s2">
       <div class="question">Où se déroule votre événement&nbsp;?</div>
-      <div class="question-sub">Saisissez votre adresse ou votre ville, puis sélectionnez le lieu correspondant.</div>
-      <input type="text" id="lieu-input" placeholder="Rue, code postal et ville" oninput="checkS2()">
-      <button type="button" class="btn-fq" onclick="findEventAddress()">Rechercher le lieu</button>
+      <div class="question-sub">La ville suffit&nbsp;: elle sert à estimer le déplacement. L’adresse exacte vous sera demandée à la réservation.</div>
+      <input type="text" id="lieu-input" placeholder="Ville ou code postal" oninput="checkS2()">
+      <button type="button" class="btn-fq" onclick="findEventAddress()">Continuer</button>
       <div id="travel-results"></div><p id="travel-status" role="status" aria-live="polite"></p><p style="font-size:11px">Lieux : <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OpenStreetMap</a>. Votre lieu est transmis aux services de recherche et d’itinéraire.</p>
       <p style="font-size:13px;line-height:1.5">Dans un <a href="zone-intervention.html?v=20261007-zone-300km">rayon de 300 km autour de Charleville-Mézières</a>. Au-delà, <a href="contact.html">contactez-nous</a> pour une demande spécifique.</p>
       <div class="btn-row">

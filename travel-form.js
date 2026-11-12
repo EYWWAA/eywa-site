@@ -29,6 +29,20 @@
     });
     results.append(bouton);
   }
+
+  /* Les autres résultats, repliés : on ne les montre que pour corriger. */
+  function proposerAutresLieux(autres){
+    var bloc=document.createElement('details');bloc.className='travel-others';
+    var titre=document.createElement('summary');titre.textContent='Ce n’est pas le bon lieu ?';
+    bloc.append(titre);
+    autres.forEach(function(feature){
+      var b=document.createElement('button');b.type='button';b.className='travel-result';
+      b.textContent=feature.properties.label;
+      b.addEventListener('click',function(){version++;selectAddress(feature,version);});
+      bloc.append(b);
+    });
+    results.append(bloc);
+  }
   window.findEventAddress=async function(){
     window.checkS2();var ticket=version,query=input.value.trim();
     if(query.length<3){status.textContent='Indiquez une adresse ou une ville pour rechercher le lieu.';return;}
@@ -36,17 +50,18 @@
     var controller=new AbortController(),timeout=setTimeout(function(){controller.abort();},15000);
     try{
       var features=await EywaTravelPlaces.search(query,{signal:controller.signal});if(ticket!==version)return;
-      if(!features.length){proposerSansDeplacement('Adresse introuvable. Essayez avec la rue, le code postal et la ville, ou continuez sans.');return;}
-      status.textContent='Sélectionnez le lieu correspondant à votre événement :';
-      features.forEach(function(feature){
-        var button=document.createElement('button');button.type='button';button.className='travel-result';button.textContent=feature.properties.label;
-        button.addEventListener('click',function(){selectAddress(feature,ticket);});results.append(button);
-      });
+      if(!features.length){proposerSansDeplacement('Lieu introuvable. Réessayez avec la ville ou le code postal, ou continuez sans.');return;}
+      /* Le lieu ne sert qu'à estimer le déplacement : l'adresse exacte est
+         demandée à la réservation. On retient donc le premier résultat sans
+         rien faire cliquer, et on laisse les autres accessibles au cas où la
+         ville trouvée ne serait pas la bonne. */
+      selectAddress(features[0],ticket);
+      if(features.length>1)proposerAutresLieux(features.slice(1));
     }catch(e){if(ticket===version)proposerSansDeplacement('La recherche d’adresse est momentanément indisponible.');}
     finally{clearTimeout(timeout);}
   };
   async function selectAddress(feature,ticket){
-    if(ticket!==version)return;ticket=++version;results.replaceChildren();
+    if(ticket!==version)return;ticket=++version;
     input.value=feature.properties.label;status.textContent='Vérification du lieu…';
     try{
       if(!window.EywaServiceArea)throw new Error();
