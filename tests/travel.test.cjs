@@ -3,8 +3,8 @@ const test=require('node:test');
 const pricing=require('../travel-pricing.js');
 const route=require('../travel-route.js');
 const fs=require('node:fs'),vm=require('node:vm');
-test('round-trip price includes km and driving, rounded to cents',()=>{
- assert.equal(pricing.calculate(200,180).total,92);
+test('le trajet aller-retour est facturé au kilomètre, arrondi au centime',()=>{
+ assert.equal(pricing.calculate(200,180).total,70);
  assert.equal(pricing.calculate(0,0).total,0);
  assert.throws(()=>pricing.calculate(-1,0));assert.throws(()=>pricing.calculate(1,NaN));
 });
@@ -35,7 +35,7 @@ test('quote counts travel once across several days, retaining cents',()=>{
  assert.equal(rush.result,1342.57);
 });
 
-test('20 km gratuits ; au-delà, trajet complet, y compris les 20 premiers km',()=>{assert.equal(pricing.calculate(40,60,20).total,0);assert.equal(pricing.calculate(50,60,25).total,26.5);assert.equal(pricing.calculate(45,60,25).total,25.25);assert.equal(pricing.calculate(41,60,20.01).total,24.25);assert.throws(()=>pricing.calculate(50,60,NaN));});
+test('20 km gratuits ; au-delà, trajet complet, y compris les 20 premiers km',()=>{assert.equal(pricing.calculate(40,60,20).total,0);assert.equal(pricing.calculate(50,60,25).total,17.5);assert.equal(pricing.calculate(45,60,25).total,15.75);assert.equal(pricing.calculate(41,60,20.01).total,14.35);assert.throws(()=>pricing.calculate(50,60,NaN));});
 
 test('Place de la Gare à Charleville : lieu conservé, gratuit sans aucune requête routière',async()=>{
  let calls=0;const destination=[4.72503,49.76786];
@@ -50,7 +50,7 @@ test('rayon gratuit de 20 km inclus ; juste au-delà, calcul complet et erreur s
  let calls=0;const fetcher=async()=>{calls++;return {ok:true,json:async()=>({distance:25,duration:30,distanceUnit:'kilometer',timeUnit:'minute'})}};
  assert.equal((await route.eventTrip(origin,point(20),'FR',fetcher)).localFree,true);assert.equal(calls,0);
  const outside=await route.eventTrip(origin,point(20.001),'FR',fetcher);assert.equal(calls,2);
- assert.equal(pricing.calculate(outside.roundTripKm,outside.roundTripMinutes,outside.outwardKm).total,26.5);
+ assert.equal(pricing.calculate(outside.roundTripKm,outside.roundTripMinutes,outside.outwardKm).total,17.5);
  await assert.rejects(route.eventTrip(origin,point(25),'FR',async()=>{throw Error('Routing unavailable')}));
  await assert.rejects(route.eventTrip(origin,[NaN,49.77],'FR',fetcher));
 });
