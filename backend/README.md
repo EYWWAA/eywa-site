@@ -14,7 +14,7 @@ Secrets à configurer uniquement dans Cloudflare : `STRIPE_SECRET_KEY`, `STRIPE_
 
 Le relais Google se trouve dans `google/` ; il est exécuté avec le compte EYWA et refuse les appels sans secret. Sa publication publique, les portées Gmail et l’intégration Notion doivent être explicitement autorisées. La connexion Notion ne doit accéder qu’aux bases Contacts et Dossiers EYWA.
 
-Les relances J1/J3/J7/J15/J25 sont liées au consentement facultatif du devis et s’arrêtent après paiement, désinscription, date de l’événement ou arrêt manuel du suivi dans Notion. Les anciennes demandes sans consentement ne sont pas relancées.
+Les relances J1/J3/J7/J15/J25 partent pour tout devis, sans case à cocher : elles prolongent une demande que la personne vient de faire. Chaque message porte en pied de page, en petits caractères, un lien pour les arrêter. Elles cessent après paiement, désinscription, date de l’événement ou arrêt manuel du suivi dans Notion.
 
 Les factures créées au paiement avant prestation sont des factures d’acompte, dans une série EYWA-WEB distincte ; la facture finale de prestation réalisée reste à établir ensuite. Les anciens paiements ne sont pas repris silencieusement.
 
