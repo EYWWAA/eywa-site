@@ -4,9 +4,27 @@
   var input=document.getElementById('lieu-input'), status=document.getElementById('travel-status'), results=document.getElementById('travel-results');
   var version=0;
   window.eywaTravel=null;
+
+  function suivant(actif){
+    var next=document.getElementById('btn2');
+    if(!next)return;
+    next.disabled=!actif;next.classList.toggle('disabled',!actif);
+  }
+  /* Déplacement non calculé : le devis reste possible, le trajet est chiffré
+     ensuite avec Louis. C'est l'état par défaut dès que le champ est rempli. */
+  function deplacementAConfirmer(){
+    return {total:0,localFree:false,roundTripKm:0,roundTripMinutes:0,
+      outwardKm:0,outwardMinutes:0,lodgingRequired:false,coordinates:null,
+      country:'FR',label:input.value.trim(),approximate:true,pending:true};
+  }
+  /* Le lieu ne doit jamais bloquer le devis : dès trois caractères saisis, on
+     peut continuer. Une recherche réussie remplace ensuite cet état par le
+     trajet réel. Si les scripts de recherche ou le réseau sont en panne, le
+     visiteur passe quand même. */
   window.checkS2=function(){
-    version++;window.eywaTravel=null;results.replaceChildren();status.textContent='';
-    var next=document.getElementById('btn2');next.disabled=true;next.classList.add('disabled');
+    version++;results.replaceChildren();status.textContent='';
+    if(input.value.trim().length>=3){window.eywaTravel=deplacementAConfirmer();suivant(true);}
+    else{window.eywaTravel=null;suivant(false);}
   };
 
   /* Si la recherche ou le trajet échouent, le devis ne doit pas être bloqué :
@@ -20,12 +38,10 @@
     bouton.textContent='Continuer sans le déplacement';
     bouton.addEventListener('click',function(){
       version++;
-      window.eywaTravel={total:0,localFree:false,roundTripKm:0,roundTripMinutes:0,
-        outwardKm:0,outwardMinutes:0,lodgingRequired:false,coordinates:null,
-        country:'FR',label:input.value.trim(),approximate:true,pending:true};
+      window.eywaTravel=deplacementAConfirmer();
       results.replaceChildren();
       status.textContent='Déplacement à confirmer. Votre devis affiche le prix de la prestation ; nous chiffrons le trajet avec vous.';
-      var next=document.getElementById('btn2');next.disabled=false;next.classList.remove('disabled');
+      suivant(true);
     });
     results.append(bouton);
   }
@@ -46,6 +62,8 @@
   window.findEventAddress=async function(){
     window.checkS2();var ticket=version,query=input.value.trim();
     if(query.length<3){status.textContent='Indiquez une adresse ou une ville pour rechercher le lieu.';return;}
+    if(typeof EywaTravelPlaces==='undefined'){
+      proposerSansDeplacement('La recherche de lieu n’a pas pu être chargée.');return;}
     status.textContent='Recherche de votre lieu…';
     var controller=new AbortController(),timeout=setTimeout(function(){controller.abort();},15000);
     try{
@@ -78,7 +96,7 @@
       window.eywaTravel=Object.assign(cost,{localFree:trip.localFree===true,coordinates:feature.geometry.coordinates,country:feature.properties.countrycode,outwardMinutes:trip.outwardMinutes,lodgingRequired:trip.lodgingRequired,label:input.value,approximate:feature.properties.type!=='housenumber'});
       status.textContent=trip.localFree?'Lieu reconnu. Déplacement gratuit dans le rayon de 20 km.':'';
       
-      var next=document.getElementById('btn2');next.disabled=false;next.classList.remove('disabled');
+      suivant(true);
     }catch(e){if(ticket===version)proposerSansDeplacement('Le lieu est reconnu, mais le trajet n’a pas pu être calculé.');}
   }
   window.checkS2();
