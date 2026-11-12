@@ -12,14 +12,28 @@
   if(!parts.length)return null;
   return {geometry:feature.geometry,properties:{label:parts.join(', '),type:p.housenumber?'housenumber':'place',countrycode:(p.countrycode||'').toUpperCase()}};
  }
+ /* Photon sert la recherche internationale, l'IGN ne couvre que la France.
+    Photon doit donc avoir son propre délai, court : sans lui, un service
+    muet consommait tout le délai global et le repli IGN n'était jamais
+    atteint, la recherche échouait alors même pour une adresse française. */
+ var PHOTON_DELAI=3500;
  async function search(query,options){
   options=options||{};var fetcher=options.fetch||root.fetch.bind(root);
   var params=new URLSearchParams({q:query,lang:'fr',limit:'8',lat:'49.778496',lon:'4.740663'});
   try{
-   var response=await fetcher('https://photon.komoot.io/api/?'+params,{signal:options.signal});
-   if(!response.ok)throw new Error('Recherche indisponible.');
-   var data=await response.json();var result=(data.features||[]).map(normalize).filter(Boolean);
-   if(result.length)return result.slice(0,5);
+   var minuteur=null,signal=options.signal;
+   if(typeof AbortController==='function'){
+    var ctrl=new AbortController();
+    minuteur=setTimeout(function(){ctrl.abort();},PHOTON_DELAI);
+    if(signal)signal.addEventListener('abort',function(){ctrl.abort();},{once:true});
+    signal=ctrl.signal;
+   }
+   try{
+    var response=await fetcher('https://photon.komoot.io/api/?'+params,{signal:signal});
+    if(!response.ok)throw new Error('Recherche indisponible.');
+    var data=await response.json();var result=(data.features||[]).map(normalize).filter(Boolean);
+    if(result.length)return result.slice(0,5);
+   }finally{if(minuteur)clearTimeout(minuteur);}
   }catch(e){if(options.signal&&options.signal.aborted)throw e;}
   var fallback=await fetcher('https://data.geopf.fr/geocodage/search?limit=5&q='+encodeURIComponent(query),{signal:options.signal});
   if(!fallback.ok)throw new Error('Recherche indisponible.');

@@ -8,6 +8,27 @@
     version++;window.eywaTravel=null;results.replaceChildren();status.textContent='';
     var next=document.getElementById('btn2');next.disabled=true;next.classList.add('disabled');
   };
+
+  /* Si la recherche ou le trajet échouent, le devis ne doit pas être bloqué :
+     on laisse continuer avec un déplacement « à confirmer », chiffré avec
+     Louis plus tard. Le prix de la prestation, lui, reste exact. */
+  function proposerSansDeplacement(message){
+    results.replaceChildren();
+    status.textContent=message;
+    var bouton=document.createElement('button');
+    bouton.type='button';bouton.className='travel-result travel-result-fallback';
+    bouton.textContent='Continuer sans le déplacement';
+    bouton.addEventListener('click',function(){
+      version++;
+      window.eywaTravel={total:0,localFree:false,roundTripKm:0,roundTripMinutes:0,
+        outwardKm:0,outwardMinutes:0,lodgingRequired:false,coordinates:null,
+        country:'FR',label:input.value.trim(),approximate:true,pending:true};
+      results.replaceChildren();
+      status.textContent='Déplacement à confirmer. Votre devis affiche le prix de la prestation ; nous chiffrons le trajet avec vous.';
+      var next=document.getElementById('btn2');next.disabled=false;next.classList.remove('disabled');
+    });
+    results.append(bouton);
+  }
   window.findEventAddress=async function(){
     window.checkS2();var ticket=version,query=input.value.trim();
     if(query.length<3){status.textContent='Indiquez une adresse ou une ville pour rechercher le lieu.';return;}
@@ -15,13 +36,13 @@
     var controller=new AbortController(),timeout=setTimeout(function(){controller.abort();},15000);
     try{
       var features=await EywaTravelPlaces.search(query,{signal:controller.signal});if(ticket!==version)return;
-      if(!features.length){status.textContent='Adresse introuvable. Essayez avec la rue, le code postal et la ville.';return;}
+      if(!features.length){proposerSansDeplacement('Adresse introuvable. Essayez avec la rue, le code postal et la ville, ou continuez sans.');return;}
       status.textContent='Sélectionnez le lieu correspondant à votre événement :';
       features.forEach(function(feature){
         var button=document.createElement('button');button.type='button';button.className='travel-result';button.textContent=feature.properties.label;
         button.addEventListener('click',function(){selectAddress(feature,ticket);});results.append(button);
       });
-    }catch(e){if(ticket===version)status.textContent='La recherche est indisponible. Réessayez dans un instant ou contactez-nous pour votre devis.';}
+    }catch(e){if(ticket===version)proposerSansDeplacement('La recherche d’adresse est momentanément indisponible.');}
     finally{clearTimeout(timeout);}
   };
   async function selectAddress(feature,ticket){
@@ -43,7 +64,7 @@
       status.textContent=trip.localFree?'Lieu reconnu. Déplacement gratuit dans le rayon de 20 km.':'';
       
       var next=document.getElementById('btn2');next.disabled=false;next.classList.remove('disabled');
-    }catch(e){if(ticket===version)status.textContent='Le lieu est reconnu, mais le trajet n’a pas pu être calculé. Réessayez ou contactez-nous pour votre devis.';}
+    }catch(e){if(ticket===version)proposerSansDeplacement('Le lieu est reconnu, mais le trajet n’a pas pu être calculé.');}
   }
   window.checkS2();
 })();
