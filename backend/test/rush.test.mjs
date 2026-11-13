@@ -4,6 +4,7 @@ import fs from 'node:fs/promises';
 import vm from 'node:vm';
 import pricing from '../src/lib/pricing.cjs';
 import policy from '../src/lib/booking-policy.cjs';
+import personalizations from '../../personalization-policy.js';
 import {paymentPlan} from '../src/lib/payment-plan.mjs';
 import {createCheckout} from '../src/checkout.mjs';
 import {database,quote,bookingDetails} from './booking.test.mjs';
@@ -45,7 +46,7 @@ test('Actual browser calculations agree with authoritative server across all urg
   const ctx={Date:DateClass,Intl,A:{date,personalization:names,guests:50,hrs:1.5,days},window:{eywaTravel:{total:0}},persoTotal:()=>names.reduce((n,x)=>n+({'Habillage du bar':200,'Gobelets sur mesure':200,'Logo sur les boissons':150}[x]),0)};vm.createContext(ctx);
   assert.equal(vm.runInContext(instantHelpers+calc+';calcNormalPrice()',ctx)*100,total);
   const details={Date:DateClass,Intl,p:new URLSearchParams({d:date}),options:[{id:'cups',selected:names.includes('Gobelets sur mesure')}]};vm.createContext(details);assert.equal(vm.runInContext(detailHelpers+';rushCups()',details)*100,rush);
-  const reservation={Date:DateClass,Intl,P:{d:date,dy:days,options:JSON.stringify(names)}};vm.createContext(reservation);assert.equal(vm.runInContext(bookingHelpers+';personalizationCents()',reservation),custom);
+  const reservation={EywaPersonalizations:personalizations,Date:DateClass,Intl,P:{d:date,dy:days,options:JSON.stringify(names)}};vm.createContext(reservation);assert.equal(vm.runInContext(bookingHelpers+';personalizationCents()',reservation),custom);
  }
 });
 test('Paris midnight and DST use calendar days consistently in server and browser',async()=>{

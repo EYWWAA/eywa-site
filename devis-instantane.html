@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
 <meta property="og:image" content="https://eywacoffeecatering.com/assets/og-eywa-20261030.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Le coffee bar mobile EYWA"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://eywacoffeecatering.com/assets/og-eywa-20261030.jpg"><script src="booking-policy.js?v=20261024"></script>
+<script src="personalization-policy.js?v=20261113-options"></script>
 <script src="theme-comparison.js?v=20261015-marrons"></script>
   <link rel="icon" href="/favicon.ico?v=4" sizes="any">
   <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png?v=4">
@@ -325,6 +326,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","@id":"https://eywacoffeecatering.com/devis-instantane.html#webpage","url":"https://eywacoffeecatering.com/devis-instantane.html","name":"Devis coffee catering et bar à café mobile | EYWA","description":"Obtenez votre devis de coffee catering instantané : indiquez le lieu, la durée et le nombre d’invités. Tarif détaillé, gratuit et sans engagement.","inLanguage":"fr-FR","isPartOf":{"@id":"https://eywacoffeecatering.com/#website"},"about":{"@id":"https://eywacoffeecatering.com/#coffee-catering"}}</script>
 <link rel="stylesheet" href="legal.css?v=20261109-footer2">
 <style id="personalization-without-photos">
+#s5 .perso-card[hidden]{display:none!important}
 #s5 .perso-card{height:auto;min-height:78px;background:var(--cream);border:1px solid var(--border);border-radius:8px;overflow:hidden}
 #s5 .perso-card::before{display:none}
 #s5 .perso-body{padding:16px 18px;align-items:center;gap:18px}
@@ -493,6 +495,20 @@
           <div class="perso-info">
             <div class="perso-name">Gobelets sur mesure</div>
             <div class="perso-sub">Logo, couleurs ou message de l'événement</div>
+          </div>
+          <div class="perso-check">
+            <svg class="perso-check-icon" width="12" height="10" viewBox="0 0 12 10" fill="none">
+              <path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="perso-card" data-val="Gobelets avec stickers" onclick="togglePerso(this)">
+        <div class="perso-body">
+          <div class="perso-info">
+            <div class="perso-name">Gobelets avec stickers</div>
+            <div class="perso-sub">Un sticker personnalisé sur chaque gobelet pour votre mariage ou fête privée</div>
           </div>
           <div class="perso-check">
             <svg class="perso-check-icon" width="12" height="10" viewBox="0 0 12 10" fill="none">
@@ -672,6 +688,7 @@
   }
 
   function showStep(id) {
+    if(id==='s5')syncPersonalizationOptions();
     document.querySelectorAll('.step').forEach(function(s) { s.classList.remove('active'); });
     var el = document.getElementById(id);
     if (el) {
@@ -796,12 +813,18 @@
   }
 
   /* S5 */
+  function personalizationEventType(){return A.type==='Autre'&&A.typeCustom?'Autre : '+A.typeCustom:A.type;}
+  function syncPersonalizationOptions(){
+    var type=personalizationEventType();
+    A.personalization=EywaPersonalizations.filter(type,A.personalization);
+    document.querySelectorAll('#s5 .perso-card').forEach(function(card){
+      var name=card.dataset.val;card.hidden=!EywaPersonalizations.available(type,name);
+      var selected=A.personalization.includes(name);card.classList.toggle('selected',selected);card.setAttribute('aria-pressed',String(selected));
+    });
+  }
   function togglePerso(el) {
-    el.classList.toggle('selected');
-    var val = el.dataset.val;
-    var idx = A.personalization.indexOf(val);
-    if (idx === -1) A.personalization.push(val);
-    else A.personalization.splice(idx, 1);
+    A.personalization=EywaPersonalizations.toggle(personalizationEventType(),A.personalization,el.dataset.val);
+    syncPersonalizationOptions();
   }
 
   /* S6 */
@@ -818,14 +841,7 @@
   }
 
   /* Prix */
-  /* Options de personnalisation, facturees a la carte quel que soit le type
-     d'evenement. Decision de Louis du 22/08/2026 : meme tarif de base pour
-     tous, c'est la personnalisation qui fait monter le panier. */
-  var PERSO_PRIX = {
-    'Habillage du bar': 200,
-    'Gobelets sur mesure': 200,
-    'Logo sur les boissons': 150
-  };
+  var PERSO_PRIX = EywaPersonalizations.rates;
   function persoTotal() {
     var t = 0;
     for (var i = 0; i < A.personalization.length; i++) t += (PERSO_PRIX[A.personalization[i]] || 0);
@@ -894,7 +910,7 @@
     var base = window.location.href.split('?')[0].split('#')[0].replace(/[^/]*$/, '') + 'devis.html';
     var finalType = A.type === 'Autre' && A.typeCustom ? 'Autre : ' + A.typeCustom : A.type;
     var params = new URLSearchParams({
-      v:'20261110-tarifs300',p: A.prenom, t: finalType,
+      v:'20261113-forfait-options',p: A.prenom, t: finalType,
       g: A.guests, h: A.hrs, dy: A.days,
       d: A.date, ti: A.time, l: A.lieu,
       ...(window.eywaTravel.pending ? {} : {lf: window.eywaTravel.localFree ? 1 : 0, tw: window.eywaTravel.outwardKm, lng: window.eywaTravel.coordinates[0], lat: window.eywaTravel.coordinates[1], country: window.eywaTravel.country, to: window.eywaTravel.outwardMinutes, tk: window.eywaTravel.roundTripKm, tm: window.eywaTravel.roundTripMinutes, ta: window.eywaTravel.approximate ? 1 : 0}), pr: calcNormalPrice(), options: JSON.stringify(A.personalization)
@@ -976,7 +992,7 @@
   <div class="time-grid" id="time-grid"></div>
   <details class="precise-time"><summary>Besoin d’un horaire plus précis ?</summary><div><input type="time" id="precise-time" aria-label="Horaire précis"><button type="button" id="apply-time">Choisir</button></div></details>
 </dialog>
-<script src="devis-pickers.js?v=20261110-tarifs300"></script>
+<script src="devis-pickers.js?v=20261113-forfait-options"></script>
 <script src="brand-options.js?v=20261006-publication" defer></script>
 <script src="travel-pricing.js?v=20261014-zone20"></script><script src="travel-route.js?v=20261015-local20"></script><script src="travel-origin.js?v=20261006-publication"></script><script src="service-area.js?v=20261007-zone-300km"></script><script src="travel-places.js?v=20261007-zone-300km"></script><script src="travel-form.js?v=20261015-local20"></script>
 <script src="eywa-assistant.js?v=20261109-confidentialite" defer></script>

@@ -12,8 +12,9 @@
   const options = [
     {id:'bar',name:'Habillage du bar',price:200,description:'Signalétique personnalisée et habillage du coffee bar avec votre logo, vos couleurs ou le visuel de votre campagne. Un élément visuel fort qui harmonise votre événement et rend votre marque immédiatement reconnaissable. Nous validons ensemble les fichiers graphiques et le rendu avant production.'},
     {id:'cups',name:'Gobelets sur mesure',price:200,description:'Votre logo, votre slogan ou un QR code sur les gobelets : nous nous chargeons de la personnalisation. Le type de gobelet, la finition, le design et la quantité sont définis avec vous. Transmettez votre fichier graphique au format vectoriel ou PDF haute définition. Les gobelets sont généralement commandés trois semaines avant l’événement. Après validation du visuel et lancement de la commande non annulable, le prix de cette option reste dû en cas d’annulation ; les gobelets restent à votre disposition. Les délais de production et tout ajustement de prix sont confirmés avant fabrication.'},
+    {id:'stickers',name:'Gobelets avec stickers',price:100,description:'Des gobelets habillés d’un sticker personnalisé pour votre mariage ou votre événement privé. Le visuel est validé ensemble avant la préparation.'},
     {id:'logo',name:'Logo sur les boissons',price:150,description:'Transformez vos boissons en support de communication avec votre logo, un message ou un motif personnalisé sur la mousse. Une attention qui prolonge votre identité jusque dans la tasse et invite vos invités à partager leur expérience. Le visuel et les boissons compatibles sont validés avec vous avant l’événement.'}
-  ];
+  ].filter(o=>EywaPersonalizations.available(p.get('t'),o.name));
   let selected = [];
   try { selected = JSON.parse(p.get('options') || '[]'); } catch (_) {}
   if (!Array.isArray(selected)) selected = [];
@@ -92,7 +93,7 @@
     const total=Math.round((service+travel+options.filter(o=>o.selected).reduce((n,o)=>n+o.price*days,0)+rushCups())*100)/100;
     if(hasTravel)document.querySelector('.price-lbl').textContent='Prestation et trajet aller-retour · hébergement éventuel non compris';
     document.getElementById('price-main').innerHTML=EywaLaunchOffer.priceHTML(total,protectedAmount);document.getElementById('dock-total').innerHTML=EywaLaunchOffer.priceHTML(total,protectedAmount);
-    const next=new URLSearchParams(p);next.set('v','20261110-tarifs300');next.set('pr',total);next.set('options',JSON.stringify(options.filter(o=>o.selected).map(o=>o.name)));next.set('dy',days);
+    const next=new URLSearchParams(p);next.set('v','20261113-forfait-options');next.set('pr',total);next.set('options',JSON.stringify(options.filter(o=>o.selected).map(o=>o.name)));next.set('dy',days);
     history.replaceState(null,'',location.pathname+'?'+next.toString()+location.hash);
     ['main','bottom','dock'].forEach(id=>{const button=document.getElementById('btn-reserve-'+id);button.href=lodging?'contact.html':'reservation.html?'+next.toString();if(lodging)button.textContent='Finaliser avec EYWA';});
     if (window.EywaQuoteValidity) window.EywaQuoteValidity.applyToQuote(next);
@@ -102,7 +103,12 @@
     const info=document.createElement('div');info.className='upsell-info';const name=document.createElement('h3');name.className='upsell-name';name.textContent=o.name;
     info.append(name,makeDescription(o.description,o.name));
     const toggle=document.createElement('label');toggle.className='toggle';const input=document.createElement('input');input.type='checkbox';input.checked=o.selected;input.setAttribute('aria-label','Ajouter : '+o.name);const slider=document.createElement('span');slider.className='slider';toggle.append(input,slider);
-    input.addEventListener('change',()=>{o.selected=input.checked;card.classList.toggle('on',o.selected);render();});card.append(info,toggle);document.getElementById('quote-options').append(card);
+    input.addEventListener('change',()=>{
+      if(input.checked&&EywaPersonalizations.cupOptions.includes(o.name))options.filter(other=>other!==o&&EywaPersonalizations.cupOptions.includes(other.name)).forEach(other=>other.selected=false);
+      o.selected=input.checked;
+      document.querySelectorAll('#quote-options input').forEach((toggle,i)=>{toggle.checked=options[i].selected;toggle.closest('.upsell-item').classList.toggle('on',options[i].selected);});
+      render();
+    });card.append(info,toggle);document.getElementById('quote-options').append(card);
   });
   render();
   EywaLaunchOffer.onChange(render);

@@ -13,7 +13,7 @@ export function database(seed=true){
  return {raw,prepare(sql){return {bind(...args){const statement=raw.prepare(sql);return {first:async()=>statement.get(...args)||null,all:async()=>({results:statement.all(...args)}),run:async()=>statement.run(...args),_run:()=>statement.run(...args)}}}},async batch(statements){raw.exec('BEGIN IMMEDIATE');try{const out=statements.map(s=>({success:true,meta:s._run()}));raw.exec('COMMIT');return out;}catch(e){raw.exec('ROLLBACK');throw e;}}};
 }
 export const bookingDetails={address:'Place de la Gare, Charleville-Mézières',contactName:'Contact de contrôle',phone:'+33612345678',phoneCountry:'FR',setupLocation:'Hall',outdoor:'Non',unloadParking:'Cour',eventParking:'Parking',dressCode:'Tenue barista (tablier)',dressDetails:'',access60:true,space:true,power220:true,cgv:true,billingName:'Fixture de contrôle'};
-export const quote={g:50,h:1.5,dy:1,ti:'14:00',d:'2027-11-15',country:'FR',lat:49.8,lng:4.8,options:[]};
+export const quote={t:'Mariage',g:50,h:1.5,dy:1,ti:'14:00',d:'2027-11-15',country:'FR',lat:49.8,lng:4.8,options:[]};
 export const request=(route,method='GET',body)=>new Request('https://test.example/'+route,{method,headers:{Origin:'https://eywacoffeecatering.com','Content-Type':'application/json'},body:body?JSON.stringify(body):undefined});
 export function context(){const tasks=[];return {waitUntil:p=>tasks.push(p),done:()=>Promise.all(tasks)}}
 test('D1 SQL: one concurrent claim, verified payment, no reset after payment',async()=>{

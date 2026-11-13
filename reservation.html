@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
 <meta property="og:image" content="https://eywacoffeecatering.com/assets/og-eywa-20261030.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Le coffee bar mobile EYWA"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://eywacoffeecatering.com/assets/og-eywa-20261030.jpg"><script src="booking-policy.js?v=20261024"></script>
+<script src="personalization-policy.js?v=20261113-options"></script>
 <script src="theme-comparison.js?v=20261015-marrons"></script>
   <link rel="icon" href="/favicon.ico?v=4" sizes="any">
   <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png?v=4">
@@ -507,7 +508,7 @@ html body.eywa-warm .check-opt:focus-within{outline:2px solid #8a6959;outline-of
     return Math.round((Date.parse(iso+'T12:00:00Z')-Date.parse(today+'T12:00:00Z'))/86400000);
   }
   function rushCupsCents(){var names=[];try{names=JSON.parse(P.options||'[]');}catch(_){}var j=joursAvantEvenement(P.d);return Array.isArray(names)&&names.includes('Gobelets sur mesure')&&j!==null&&j>=0&&j<14?5000:0;}
-  function personalizationCents(){var rates={'Habillage du bar':200,'Gobelets sur mesure':200,'Logo sur les boissons':150},names=[];try{names=JSON.parse(P.options||'[]');}catch(_){}return Array.isArray(names)?[...new Set(names)].reduce(function(n,name){return n+(rates[name]||0);},0)*Math.max(1,Number(P.dy)||1)*100+ (Array.isArray(names)?rushCupsCents():0):0;}
+  function personalizationCents(){var rates=EywaPersonalizations.rates,names=[];try{names=JSON.parse(P.options||'[]');}catch(_){}return Array.isArray(names)?[...new Set(names)].reduce(function(n,name){return n+(rates[name]||0);},0)*Math.max(1,Number(P.dy)||1)*100+ (Array.isArray(names)?rushCupsCents():0):0;}
   function applyOfferPrice(){
     var full=specialPrice||EywaLaunchOffer.state.active;
     totalCents=specialPrice?specialTotalCents:Math.round(EywaLaunchOffer.amount(normalTotalCents/100,personalizationCents()/100)*100);

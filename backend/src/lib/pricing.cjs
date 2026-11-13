@@ -1,7 +1,7 @@
 'use strict';
 const travelPricing=require('./travel-pricing.cjs'),route=require('./travel-route.cjs');
-const policy=require('./booking-policy.cjs');
-const origin=[4.740663,49.778496],optionRates={'Habillage du bar':200,'Gobelets sur mesure':200,'Logo sur les boissons':150};
+const policy=require('./booking-policy.cjs'),personalizations=require('../../../personalization-policy.js');
+const origin=[4.740663,49.778496],optionRates=personalizations.rates;
 function numeric(value,min,max,label){const n=Number(value);if(!Number.isFinite(n)||n<min||n>max)throw Error(label+' invalide');return n;}
 async function quote(q,fetcher,now=new Date()){
   const guests=numeric(q.g,1,2000,'Nombre d’invités'),hours=numeric(q.h,0.5,24,'Durée'),days=numeric(q.dy||1,1,365,'Nombre de jours');
@@ -14,8 +14,7 @@ async function quote(q,fetcher,now=new Date()){
   if(trip.lodgingRequired)throw Error('L’hébergement doit être validé avec EYWA avant le paiement');
   const travel=travelPricing.calculate(trip.roundTripKm,trip.roundTripMinutes,trip.outwardKm);
   let selected=[];try{selected=typeof q.options==='string'?JSON.parse(q.options):q.options||[];}catch(_){throw Error('Options invalides');}
-  if(!Array.isArray(selected)||selected.some(name=>!Object.hasOwn(optionRates,name)))throw Error('Options invalides');
-  selected=[...new Set(selected)];
+  selected=personalizations.validate(q.t,selected);
   const staff=Math.max(1,Math.ceil(guests/(hours*50)));
   const dailyCents=30000+Math.max(0,guests-50)*231+Math.round(Math.max(0,hours-1.5)*6923)+(staff-1)*15000+selected.reduce((n,name)=>n+optionRates[name]*100,0);
   const daysUntil=Math.round((Date.parse(date+'T12:00:00Z')-Date.parse(policy.today(now)+'T12:00:00Z'))/86400000);

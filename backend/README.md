@@ -19,3 +19,5 @@ Les relances J1/J3/J7/J15/J25 partent pour tout devis, sans case à cocher : ell
 Les factures créées au paiement avant prestation sont des factures d’acompte, dans une série EYWA-WEB distincte ; la facture finale de prestation réalisée reste à établir ensuite. Les anciens paiements ne sont pas repris silencieusement.
 
 Avant toute publication, lire et sauvegarder le code actif et les paramètres distants ; préserver liaisons et secrets. Publier le serveur compatible, vérifier tarifs/calendrier, puis activer progressivement les fournisseurs et seulement ensuite le nouveau formulaire. Ne jamais créer de réservation ou paiement réel pour un test automatisé.
+
+Options du 13 novembre : les gobelets avec stickers (100 €/jour) et le logo sur les boissons (150 €/jour) sont réservés aux mariages et événements privés. Les gobelets imprimés restent à 200 €/jour. Les deux types de gobelets sont exclusifs. Le client ne voit que le montant global et les prestations choisies ; les lignes de calcul restent internes.
