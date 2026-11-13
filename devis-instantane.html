@@ -866,25 +866,13 @@
     if (dateStr) ctx += ' · ' + dateStr;
     document.getElementById('priceContext').textContent = ctx;
 
-    var bd = '';
-    bd += '<div class="brow"><span>Base (50 pers., 1h30)</span><span>' + EywaLaunchOffer.priceHTML(300) + '</span></div>';
-    if (extraGuests > 0) bd += '<div class="brow"><span>+' + extraGuests + ' invité' + (extraGuests>1?'s':'') + ' × 2,31 €</span><span>' + EywaLaunchOffer.priceHTML(extraGuests*231/100) + '</span></div>';
-    if (extraHrs > 0) bd += '<div class="brow"><span>+' + hrsLabel(extraHrs) + ' × 69,23 €/h</span><span>' + EywaLaunchOffer.priceHTML(Math.round(extraHrs*6923)/100) + '</span></div>';
-    if (extraBaristas > 0) bd += '<div class="brow"><span>' + extraBaristas + ' barista' + (extraBaristas>1?'s':'') + ' sup. × 150 €</span><span>' + EywaLaunchOffer.priceHTML(extraBaristas*150) + '</span></div>';
+    var bd = '<div class="brow"><span>Prestation de coffee catering EYWA</span></div>';
     for (var pi = 0; pi < A.personalization.length; pi++) {
-      var pn = A.personalization[pi], pp = PERSO_PRIX[pn] || 0;
-      if (pp > 0) bd += '<div class="brow"><span>' + pn + '</span><span>' + EywaLaunchOffer.money(pp) + '</span></div>';
+      var pn = A.personalization[pi];
+      if (Object.prototype.hasOwnProperty.call(PERSO_PRIX,pn)) bd += '<div class="brow"><span>' + pn + '</span></div>';
     }
-    if(supplementUrgence()>0)bd += '<div class="brow"><span>Impression accélérée des gobelets (moins de 14 jours)</span><span>'+EywaLaunchOffer.money(supplementUrgence())+'</span></div>';
-    if (A.days > 1) {
-      bd += '<div class="brow total"><span>Par jour</span><span>' + EywaLaunchOffer.priceHTML(pricePerDay,persoTotal()) + '</span></div>';
-      bd += '<div class="brow"><span>× ' + A.days + ' jours</span><span>' + EywaLaunchOffer.priceHTML(pricePerDay*A.days,persoTotal()*A.days) + '</span></div>';
-    }
-    bd += '<div class="brow"><span>' + (window.eywaTravel.localFree ? 'Déplacement dans la zone des 20 km' : 'Déplacement aller-retour (' + window.eywaTravel.roundTripKm.toFixed(1) + ' km)') + '</span><span>' + EywaLaunchOffer.priceHTML(window.eywaTravel.total) + '</span></div>';
-    if(window.eywaTravel.lodgingRequired)bd += '<div class="brow"><span>Hébergement (trajet aller supérieur à 4 h)</span><span>À confirmer</span></div>';
-    bd += '<div class="brow total"><span>Estimation totale</span><span>' + EywaLaunchOffer.priceHTML(calcNormalPrice(),persoTotal()*A.days+supplementUrgence()) + '</span></div>';
+    if(window.eywaTravel.lodgingRequired)bd += '<div class="brow note"><span>Hébergement à confirmer avec EYWA avant réservation.</span></div>';
     if(EywaLaunchOffer.state.active)bd += '<div class="brow note"><span>Paiement intégral à la réservation. Offre valable pour la première réservation réglée intégralement.</span></div>';
-    bd += '<div class="brow note"><span>Déplacement gratuit dans un rayon de 20 km autour de Charleville-Mézières. Au-delà, trajet complet à 0,25 €/km + 14 €/h de conduite aller-retour, sans déduire les 20 premiers kilomètres. Péages inclus. Hébergement éventuel non compris.</span></div>';
     document.getElementById('breakdown').innerHTML = bd;
 
     showStep('sPrix');

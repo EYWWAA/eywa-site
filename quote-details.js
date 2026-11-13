@@ -82,13 +82,11 @@
   };
   function render(){
     const lines=document.getElementById('line-items');lines.replaceChildren();
-    lines.append(makeLine('Formule classique',300*days,'Un coffee bar, un barista professionnel et des boissons préparées à la demande. Le forfait comprend 1 h 30 de service pour jusqu’à 50 invités.',serviceTime));
-    if(guests>50)lines.append(makeLine('Invités supplémentaires',(guests-50)*231*days/100,(guests-50)+' invités au-delà du forfait de base, à 2,31 € par invité et par jour.'));
-    if(hours>1.5)lines.append(makeLine('Prolongation du service',Math.round((hours-1.5)*6923)*days/100,'69,23 € par heure supplémentaire. '+duration+' de service'+(days>1?' par jour.':'.')));
-    if(staff>1)lines.append(makeLine('Renfort barista',(staff-1)*150*days,(staff-1)+' barista(s) supplémentaire(s) pour adapter l’équipe au nombre d’invités et à la durée du service.'));
-    options.filter(o=>o.selected).forEach(o=>lines.append(makeLine(o.name,o.price*days,o.description,null,o.price*days)));
-    if(rushCups()>0)lines.append(makeLine('Impression accélérée des gobelets',rushCups(),'Supplément unique de 50 € pour les gobelets personnalisés commandés moins de 14 jours avant l’événement.',null,rushCups()));
-    if(!hasTravel||travel>0)lines.append(makeLine('Déplacement aller-retour',hasTravel?travel:'À confirmer','Trajet aller-retour selon le lieu de votre événement.'));
+    const packageLine=document.createElement('article');packageLine.className='quote-line';
+    const packageTitle=document.createElement('h3');packageTitle.textContent='Prestation de coffee catering EYWA';packageLine.append(packageTitle);
+    const packageCopy=document.createElement('p');packageCopy.textContent=duration+' de service pour jusqu’à '+guests+' invités'+(days>1?' par jour · '+days+' jours':'')+'.';packageLine.append(packageCopy);
+    options.filter(o=>o.selected).forEach(o=>{const item=document.createElement('p');item.textContent=o.name;packageLine.append(item);});
+    lines.append(packageLine);
     if(lodging)lines.append(makeLine('Hébergement du barista','À confirmer','Le trajet aller dépasse quatre heures. Un logement sur place est à prévoir pour le ou les baristas. Le nombre de nuits et le montant seront précisés avec vous avant réservation. Ce coût n’est pas inclus dans le total affiché.'));
     const protectedAmount=options.filter(o=>o.selected).reduce((n,o)=>n+o.price*days,0)+rushCups();
     const total=Math.round((service+travel+options.filter(o=>o.selected).reduce((n,o)=>n+o.price*days,0)+rushCups())*100)/100;

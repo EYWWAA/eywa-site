@@ -35,5 +35,5 @@ test('Detailed quote service formula stays aligned with the server and preserves
  const script=await fs.readFile(new URL('../../quote-details.js',import.meta.url),'utf8');
  const formula=script.match(/const service = ([^;]+);/)[1];
  for(const [changes,expected] of cases){const q={...basic,...changes};const context={guests:q.g,hours:q.h,days:q.dy,staff:Math.max(1,Math.ceil(q.g/(q.h*50)))};vm.createContext(context);const actual=vm.runInContext(formula,context);const options=q.options.includes('Habillage du bar')?20000*q.dy:0;assert.equal(Math.round(actual*100)+options,expected);}
- assert(script.includes('69,23 € par heure supplémentaire.'));assert(script.includes('à 2,31 € par invité'));
+ assert(!script.includes('69,23 € par heure supplémentaire.'));assert(!script.includes('à 2,31 € par invité'));
 });

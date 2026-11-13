@@ -20,10 +20,11 @@ test('free travel disappears from quote documents without changing the saved sna
  }
  assert.equal(JSON.stringify(q),before);
 });
-test('paid travel and every selected option remain itemised in the print layout',()=>{
+test('the quote presents the package and selected options with only a global price',()=>{
  const items=[...q.lineItems.slice(0,1),{title:'Habillage du bar',normalCents:20000,personalization:true},{title:'Déplacement aller-retour',normalCents:6500}];
  const mail=quoteMail({...q,lineItems:items,totalCents:51500,normalCents:51500},false,{document:true});
- for(const value of ['Habillage du bar','Déplacement aller-retour','200,00','65,00','515,00'])assert(mail.html.includes(value));
+ for(const value of ['Habillage du bar','Déplacement pris en compte','515,00'])assert(mail.html.includes(value));
+ assert(!mail.html.includes('200,00'));assert(!mail.html.includes('65,00'));
  assert(mail.html.includes('@page{size:A4'));
 });
 test('the PDF is concise while the email retains the full client message safely escaped',()=>{
@@ -32,3 +33,10 @@ test('the PDF is concise while the email retains the full client message safely 
  assert(mail.html.includes('&lt;script&gt;message&lt;/script&gt;'));assert(!pdf.html.includes('&lt;script&gt;message'));
  assert(pdf.html.includes('Client &lt;Exemple&gt;'));assert(pdf.html.includes('Consulter mon devis et réserver'));
 });
+
+ test('calculation rates and extra guest, time and staff lines never appear in client or internal quote messages',()=>{
+ const detailed={...q,guests:100,hours:3,staff:2,options:['Habillage du bar'],normalCents:71935,totalCents:71935,lineItems:[{title:'Formule de base',normalCents:30000},{title:'Invités supplémentaires',description:'50 × 2,31 €',normalCents:11550},{title:'Temps de service supplémentaire',description:'1.5 h × 69,23 €',normalCents:10385},{title:'Renfort barista',normalCents:15000},{title:'Habillage du bar',normalCents:20000,personalization:true}]};
+ for(const mail of [quoteMail(detailed),quoteMail(detailed,true),quoteMail(detailed,false,{document:true})]){
+  for(const text of [mail.html,mail.text]){assert(!/Invités supplémentaires|Temps de service supplémentaire|Renfort barista|Formule de base|2,31|69,23|115,50|103,85|200,00/.test(text));assert(text.includes('719,35'));assert(text.includes('Habillage du bar'));}
+ }
+ });
