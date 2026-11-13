@@ -34,3 +34,27 @@ body.eywa-home #savoir-faire .reference-menu-link{border-color:#fafaf866}
  body.eywa-home #services .editorial-copy,body.eywa-home #savoir-faire .craft-editorial-copy{padding:38px 24px}
 }
 body.eywa-home #savoir-faire .craft-editorial-copy .section-kicker{text-align:left}
+
+/* Le bloc sous « Du bon café » n'a plus de photo : le panneau prend toute la
+   largeur, et c'est la longueur des lignes qui est bornée, pas le panneau,
+   pour ne pas laisser apparaître le fond gris de la section. */
+body.eywa-home #savoir-faire .craft-editorial-split--solo{grid-template-columns:minmax(0,1fr)}
+body.eywa-home #savoir-faire .craft-editorial-split--solo .craft-editorial-copy{max-width:none;width:100%}
+body.eywa-home #savoir-faire .craft-editorial-split--solo .craft-editorial-copy :is(p,ul,li){max-width:68ch}
+
+/* Savoir-faire sur ordinateur : la section traînait sur plus de 1000 px avec
+   la moitié droite vide. La bannière est contenue et arrondie comme sur
+   téléphone, et les deux blocs de texte passent côte à côte. */
+@media (min-width: 861px) {
+  body.eywa-home #savoir-faire{padding-bottom:clamp(40px,5vw,72px)}
+  body.eywa-home #savoir-faire .reference-craft-hero{
+    width:min(1240px,calc(100% - 64px));margin:0 auto clamp(28px,3vw,44px);
+    border-radius:22px;overflow:hidden;min-height:clamp(320px,26vw,420px);padding:56px 0}
+  body.eywa-home #savoir-faire .reference-craft-lower{padding-top:0}
+  body.eywa-home #savoir-faire .craft-duo{
+    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(28px,3.5vw,56px);align-items:start}
+  body.eywa-home #savoir-faire .craft-duo :is(p,ul){max-width:46ch}
+  body.eywa-home #savoir-faire .craft-item h3{margin-top:0}
+  body.eywa-home #savoir-faire .craft-editorial-copy{padding:clamp(28px,3.4vw,48px) clamp(28px,3.4vw,48px)}
+  body.eywa-home #savoir-faire .craft-menu-note{margin-top:clamp(18px,2vw,26px);padding-top:0}
+}

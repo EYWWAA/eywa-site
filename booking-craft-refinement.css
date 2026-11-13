@@ -14,8 +14,9 @@ body.eywa-home #reservation .md-btn:hover{background:var(--accent);color:#ffffff
 body.eywa-home #reservation .md-sep{background:#fafaf833}
 body.eywa-home #reservation .md-cta{justify-content:center}
 /* Le titre retrouve sa photo de fond. */
-body.eywa-home #savoir-faire .reference-craft-hero{position:relative;min-height:360px;padding:64px 0;background:#0a0a0a;isolation:isolate}
-body.eywa-home #savoir-faire .reference-craft-photo{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 58%;filter:none;transform:none;z-index:-2}
+/* Proportion reprise du téléphone : la bannière était trop basse sur ordinateur. */
+body.eywa-home #savoir-faire .reference-craft-hero{position:relative;min-height:clamp(360px,34vw,520px);padding:72px 0;background:#0a0a0a;isolation:isolate}
+body.eywa-home #savoir-faire .reference-craft-photo{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 58%;filter:brightness(.82);transform:none;z-index:-2}
 body.eywa-home #savoir-faire .reference-craft-hero::before{content:'';position:absolute;inset:0;background:#0a0a0a99;z-index:-1}
 body.eywa-home #savoir-faire .reference-craft-hero h2,body.eywa-home #savoir-faire .reference-craft-hero h2 em{color:#fafaf8}
 /* Une grande photographie et du texte, au lieu de deux petites cartes. */

@@ -1,8 +1,10 @@
 /* Prix du trajet aller-retour. Les 20 km à l'aller sont gratuits ; au-delà,
-   le trajet complet est facturé, sans retrancher les 20 premiers kilomètres. */
+   le trajet complet est facturé, sans retrancher les 20 premiers kilomètres.
+   Un seul tarif au kilomètre, sans part horaire : la facture est lisible d'un
+   coup d'œil et le client peut la recalculer lui-même. */
 (function(root){
   'use strict';
-  var RATE_PER_KM=0.25, RATE_PER_HOUR=14, FREE_OUTWARD_KM=20;
+  var RATE_PER_KM=0.35, RATE_PER_HOUR=0, FREE_OUTWARD_KM=20;
   function calculate(roundTripKm,roundTripMinutes,outwardKm){
     if(typeof roundTripKm!=='number'||!Number.isFinite(roundTripKm)||roundTripKm<0||
        typeof roundTripMinutes!=='number'||!Number.isFinite(roundTripMinutes)||roundTripMinutes<0){

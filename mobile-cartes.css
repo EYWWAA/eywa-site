@@ -1,0 +1,190 @@
+/* Version mobile "cartes" de l'accueil : un seul fond, chaque section dans un encadré arrondi.
+   Active uniquement sous 760 px et quand <html> porte la classe m-cartes
+   (posée par défaut par le script en tête d'index.html, ?mobile=off la retire).
+   Le body:not(#_a):not(#_b) donne deux id de spécificité : warm-palette.css et
+   home-black-variants.css ciblent les sections par id avec !important. */
+
+@media (max-width: 760px) {
+  html.m-cartes {
+    --mc-fond: #e9e3d8;
+    --mc-carte: #fffbef;
+    --mc-carte-2: #f3ece0;
+    --mc-brun: #986039;
+    --mc-encre: #241a17;
+    --mc-rayon: 28px;
+    --mc-marge: 12px;
+  }
+
+  html.m-cartes body:not(#_a):not(#_b),
+  html.m-cartes body:not(#_a):not(#_b) main {
+    background: var(--mc-fond) !important;
+  }
+
+  html.m-cartes body:not(#_a):not(#_b) main {
+    padding: var(--mc-marge) 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--mc-marge);
+  }
+
+  /* Chaque bloc de la page devient une carte */
+  html.m-cartes body:not(#_a):not(#_b) main > section,
+  html.m-cartes body:not(#_a):not(#_b) main > .home-opening,
+  html.m-cartes body:not(#_a):not(#_b) .eywa-site-footer {
+    margin: 0 var(--mc-marge) !important;
+    padding: 28px 20px !important;
+    background: var(--mc-carte) !important;
+    border-radius: var(--mc-rayon);
+    overflow: hidden;
+    box-shadow: none !important;
+    border: 0 !important;
+  }
+
+  html.m-cartes body:not(#_a):not(#_b) .eywa-site-footer {
+    margin-bottom: 96px !important;
+  }
+
+  /* Les fonds internes des sections s'effacent, la carte suffit */
+  html.m-cartes body:not(#_a):not(#_b) main :is(.hero, .hero-editorial, .hero-editorial-content,
+    .hero-copy, .visual-split, .editorial-photo, .editorial-copy, .reference-craft-hero,
+    .reference-craft-lower, .craft-editorial-split, .craft-editorial-split > *, .wrap, .section-head) {
+    background-color: transparent !important;
+  }
+
+  html.m-cartes body:not(#_a):not(#_b) main .wrap,
+  html.m-cartes body:not(#_a):not(#_b) .eywa-site-footer .wrap {
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  /* Accueil : pas de hauteur forcée, le contenu respire dans la carte */
+  html.m-cartes body:not(#_a):not(#_b) .home-opening,
+  html.m-cartes body:not(#_a):not(#_b) .hero-editorial,
+  html.m-cartes body:not(#_a):not(#_b) .hero-editorial-content {
+    min-height: 0 !important;
+    height: auto !important;
+  }
+  html.m-cartes body:not(#_a):not(#_b) .hero-editorial,
+  html.m-cartes body:not(#_a):not(#_b) .hero-editorial-content,
+  html.m-cartes body:not(#_a):not(#_b) .editorial-copy,
+  html.m-cartes body:not(#_a):not(#_b) .eywa-coffee-final-copy {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  /* Le bandeau défilant devient une pilule */
+  html.m-cartes body:not(#_a):not(#_b) main > .event-marquee {
+    margin: 0 var(--mc-marge) !important;
+    border-radius: 999px;
+    overflow: hidden;
+    background: var(--mc-encre) !important;
+  }
+
+  /* Photos arrondies dans les cartes */
+  html.m-cartes body:not(#_a):not(#_b) main img,
+  html.m-cartes body:not(#_a):not(#_b) main figure {
+    border-radius: 20px;
+  }
+  html.m-cartes body:not(#_a):not(#_b) main figure {
+    padding: 0 !important;
+    margin: 0 0 20px !important;
+    overflow: hidden;
+  }
+
+  /* Le savoir-faire : la photo pleine largeur reprend sa place dans la carte */
+  html.m-cartes body:not(#_a):not(#_b) .reference-craft-hero {
+    padding: 0 !important;
+    margin-bottom: 20px;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  html.m-cartes body:not(#_a):not(#_b) .reference-craft-lower,
+  html.m-cartes body:not(#_a):not(#_b) .craft-editorial-split {
+    width: auto !important;
+  }
+
+  /* Étapes "Comment ça marche" et questions : sous-cartes */
+  html.m-cartes body:not(#_a):not(#_b) .how-steps > li,
+  html.m-cartes body:not(#_a):not(#_b) .faq-list > * {
+    background: var(--mc-carte-2) !important;
+    border-radius: 18px;
+    padding: 18px 16px !important;
+    margin: 0 0 10px !important;
+    border: 0 !important;
+  }
+
+  html.m-cartes body:not(#_a):not(#_b) .mini-devis {
+    background: var(--mc-carte-2) !important;
+    border-radius: 20px;
+    border: 0 !important;
+  }
+
+  /* Une carte de couleur pour rythmer, comme sur la référence */
+  html.m-cartes body:not(#_a):not(#_b) main > .reference-benefits {
+    background: var(--mc-brun) !important;
+  }
+  html.m-cartes body:not(#_a):not(#_b) main > .reference-benefits,
+  html.m-cartes body:not(#_a):not(#_b) main > .reference-benefits h2 {
+    color: var(--mc-carte) !important;
+  }
+  html.m-cartes body:not(#_a):not(#_b) main > .reference-benefits .button {
+    background: var(--mc-carte) !important;
+    color: var(--mc-brun) !important;
+    border-radius: 999px;
+  }
+
+  /* Le dernier appel : carte sombre, photo au-dessus, sans voile */
+  html.m-cartes body:not(#_a):not(#_b) main > .cta-on-photo {
+    background: var(--mc-encre) !important;
+  }
+  html.m-cartes body:not(#_a):not(#_b) .cta-on-photo::before,
+  html.m-cartes body:not(#_a):not(#_b) .cta-on-photo::after,
+  html.m-cartes body:not(#_a):not(#_b) .cta-on-photo .cta-photo::before,
+  html.m-cartes body:not(#_a):not(#_b) .cta-on-photo .cta-photo::after {
+    display: none !important;
+  }
+  html.m-cartes body:not(#_a):not(#_b) .cta-on-photo .cta-photo {
+    position: static !important;
+  }
+  html.m-cartes body:not(#_a):not(#_b) .cta-on-photo .eywa-coffee-final,
+  html.m-cartes body:not(#_a):not(#_b) .cta-on-photo .eywa-coffee-final-copy {
+    position: static !important;
+    background: transparent !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* Cartes à fond marron, comme le dernier appel : personnalisations (foncé)
+     et « Comment ça marche » (brun) */
+  html.m-cartes body:not(#_a):not(#_b) main > #personnalisation {
+    background: var(--mc-encre) !important;
+  }
+  html.m-cartes body:not(#_a):not(#_b) main > #comment-ca-marche {
+    background: var(--mc-brun) !important;
+  }
+  html.m-cartes body:not(#_a):not(#_b) main > :is(#personnalisation, #comment-ca-marche),
+  html.m-cartes body:not(#_a):not(#_b) main > :is(#personnalisation, #comment-ca-marche) :is(h2, .section-kicker, .perso-plain-lead, .perso-plain-num, .perso-card h3, .perso-card p, .text-link, .journey-text-link) {
+    color: var(--mc-carte) !important;
+    border-color: currentColor;
+  }
+  html.m-cartes body:not(#_a):not(#_b) main > #comment-ca-marche .how-steps > li,
+  html.m-cartes body:not(#_a):not(#_b) main > #comment-ca-marche .how-steps > li * {
+    color: var(--mc-encre) !important;
+  }
+  html.m-cartes body:not(#_a):not(#_b) main > #personnalisation .button {
+    background: var(--mc-carte) !important;
+    color: var(--mc-encre) !important;
+    border-radius: 999px !important;
+  }
+  html.m-cartes body:not(#_a):not(#_b) main > #personnalisation .perso-card-media {
+    border-radius: 20px;
+  }
+  /* Le logo d'exemple ne doit pas hériter de l'arrondi des photos, il rogne le « g » */
+  html.m-cartes body:not(#_a):not(#_b) main .perso-card-logo {
+    border-radius: 0;
+  }
+}

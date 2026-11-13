@@ -9,6 +9,8 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=4">
 
   <meta charset="utf-8">
+<script>/* Version mobile "cartes" (mobile-cartes-pages.css), active par défaut ; ?mobile=off la coupe pour la session, ?mobile=cartes la rétablit */
+(function(){var c=document.documentElement.classList;c.add('m-cartes');try{var q=new URLSearchParams(location.search).get('mobile');if(q==='off')sessionStorage.setItem('m-cartes-off','1');if(q==='cartes')sessionStorage.removeItem('m-cartes-off');if(sessionStorage.getItem('m-cartes-off'))c.remove('m-cartes');}catch(e){}})();</script>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   
   
@@ -50,6 +52,7 @@
 <meta name="twitter:description" content="Espresso, cappuccino, latte, matcha, chai, chocolat chaud et thé : découvrez les boissons préparées à la demande par les baristas EYWA pour vos événements.">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","@id":"https://eywacoffeecatering.com/menu.html#webpage","url":"https://eywacoffeecatering.com/menu.html","name":"Carte du coffee bar : café, matcha et boissons | EYWA","description":"Espresso, cappuccino, latte, matcha, chai, chocolat chaud et thé : découvrez les boissons préparées à la demande par les baristas EYWA pour vos événements.","inLanguage":"fr-FR","isPartOf":{"@id":"https://eywacoffeecatering.com/#website"},"about":{"@id":"https://eywacoffeecatering.com/#coffee-catering"}}</script>
 <link rel="stylesheet" href="legal.css?v=20261109-footer2">
+<link rel="stylesheet" href="mobile-cartes-pages.css?v=20261110-v1">
 </head>
 <body data-eywa-page="menu" class="menu-body eywa-warm">
   <header class="wrap nav">

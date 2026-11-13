@@ -31,7 +31,7 @@ const benefits={
 export function reminderMail(q,day,stopUrl){
  const index=reminderDays.indexOf(day);if(index<0)throw Error('INVALID_REMINDER_DAY');
  const [heading,value]=benefits[segment(q.eventType)][index];
- const content=shell({heading,intro:'Bonjour '+q.firstName+', '+value,rows:eventRows(q),amount:q.totalCents,amountLabel:'Votre proposition EYWA',buttons:[['Retrouver mon devis',(q.quoteUrl||q.documentUrl)],['Arrêter ces relances',stopUrl]],note:'Cette demande ne réserve pas votre date. Les relances s’arrêtent dès qu’un paiement lié à votre devis est confirmé, ou si vous choisissez de ne plus les recevoir.'});
+ const content=shell({heading,intro:'Bonjour '+q.firstName+', '+value,rows:eventRows(q),amount:q.totalCents,amountLabel:'Votre proposition EYWA',buttons:[['Retrouver mon devis',(q.quoteUrl||q.documentUrl)]],note:'Cette demande ne réserve pas votre date. Les relances s’arrêtent dès qu’un paiement lié à votre devis est confirmé.',footerLink:['Ne plus recevoir ces relances',stopUrl]});
  return {subject:heading+' — EYWA',...content};
 }
 export async function registerQuote(env,q,now=Date.now()){
@@ -41,7 +41,11 @@ export async function registerQuote(env,q,now=Date.now()){
  const eventAt=Date.parse(q.date+'T00:00:00+02:00');
  await env.DB.batch([
   sql('INSERT INTO eywa_quote_state(quote_id,event_at,created_at) VALUES(?,?,?) ON CONFLICT DO NOTHING',q.id,eventAt,now),
-  ...(q.followupConsent===true?reminderDays:[]).map(day=>sql('INSERT INTO eywa_reminders(quote_id,day,due_at) SELECT ?,?,? WHERE ?<? ON CONFLICT DO NOTHING',q.id,day,now+day*86400000,now+day*86400000,eventAt)),
+  /* Relances systématiques : la personne vient de demander ce devis, le
+     suivi en est le prolongement direct. Chaque message porte en pied de
+     page un lien pour les arrêter, et elles cessent dès qu'un paiement
+     est confirmé ou que la date de l'événement est passée. */
+  ...reminderDays.map(day=>sql('INSERT INTO eywa_reminders(quote_id,day,due_at) SELECT ?,?,? WHERE ?<? ON CONFLICT DO NOTHING',q.id,day,now+day*86400000,now+day*86400000,eventAt)),
   sql('INSERT INTO eywa_notion_jobs(quote_id) VALUES(?) ON CONFLICT(quote_id) DO UPDATE SET version=version+1',q.id)
  ]);
 }
