@@ -1,5 +1,6 @@
 import {paymentPlan} from './lib/payment-plan.mjs';
 import bookingDetails from './lib/booking-details.cjs';
+import bookingPolicy from './lib/booking-policy.cjs';
 import {reconcileBookings} from './lib/bookings.mjs';
 export function createCheckout(deps){
  const {quote,getSlots,getBookings,json,reconcile,request,settings}=deps;
@@ -19,6 +20,7 @@ export function createCheckout(deps){
   details.eventSummary={date:body.quote.d,lineItems:calculated.lineItems,staff:calculated.staff,normalCents:calculated.normalCents,time:body.quote.ti,guests:Number(body.quote.g),hours:Number(body.quote.h),days:Number(body.quote.dy||1),location:body.quote.l,eventType:body.quote.t,options:(()=>{try{return typeof body.quote.options==='string'?JSON.parse(body.quote.options):body.quote.options||[];}catch{return [];}})(),firstName:body.quote.p};
   let slot,slots,booking,bookings;
   details.eventSummary.travelMinutes=calculated.trip?.outwardMinutes>0?Math.ceil(calculated.trip.outwardMinutes):null;
+  details.eventSummary.serviceEndDate=bookingPolicy.occupiedDays(body.quote).at(-1);
   try{
     bookings=await getBookings();await bookings.ready();await reconcileBookings(bookings,request);
     booking=await bookings.claim(calculated.dates,normal,payable,kind,details);
@@ -36,7 +38,7 @@ export function createCheckout(deps){
       cancel_url:'https://eywacoffeecatering.com/reservation.html?'+new URLSearchParams({...body.quote,pr:normal/100}).toString(),
       expires_at:String(Math.floor(Date.now()/1000)+1860),
       'metadata[payment_kind]':kind,'metadata[quote_total_cents]':String(totalCents),'metadata[normal_total_cents]':String(normal),'metadata[balance_cents]':String(totalCents-payable),
-      'metadata[event_date]':calculated.dates[0],'metadata[event_end_date]':calculated.dates.at(-1),'metadata[eywa_booking]':booking.id
+      'metadata[event_date]':details.eventSummary.date,'metadata[event_end_date]':details.eventSummary.serviceEndDate,'metadata[eywa_booking]':booking.id
     };
     let nextLine=1;
     const rush=calculated.rushCupsCents||0,customization=calculated.personalizationCents-rush;
