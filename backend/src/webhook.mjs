@@ -18,7 +18,7 @@ export function createWebhook(deps){
     const session=payload.data.object;
     {
       const bookings=await getBookings();
-      if(['checkout.session.completed','checkout.session.async_payment_succeeded'].includes(payload.type)){await bookings.paid(session);await deps.notifyPayment?.(session);}
+      if(['checkout.session.completed','checkout.session.async_payment_succeeded'].includes(payload.type)){if(session.metadata?.eywa_balance){await deps.balancePaid?.(session);return {statusCode:200,body:'ok'};}await bookings.paid(session);await deps.notifyPayment?.(session);}
       else if(['checkout.session.expired','checkout.session.async_payment_failed'].includes(payload.type)){const id=session.metadata?.eywa_booking||(await bookings.bySession(session.id))?.id;if(id)await bookings.release(id,session.id);}
     }
     if(session.metadata&&session.metadata.eywa_claim){

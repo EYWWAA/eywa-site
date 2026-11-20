@@ -15,11 +15,12 @@ import {createStripe} from './lib/stripe.mjs';
 import {createCheckout} from './checkout.mjs';
 import {createPaymentStatus} from './paymentStatus.mjs';
 import {createWebhook} from './webhook.mjs';
+import {queueBalanceInvoices,balanceCheckout,recordBalancePayment} from './lib/balance.mjs';
 const origin='https://eywacoffeecatering.com';
 export async function handle(request,env,ctx,displayCache){
  const url=new URL(request.url),route=url.pathname.replace(/^\/\.netlify\/functions\//,'/');
  const stripe=createStripe(env),slots=createSlots(env.DB),bookings=createBookings(env.DB),deps={...stripe,quote:async(q)=>{const c=await pricing.quote(q);return {...c,...quoteLines(q,c)};},getSlots:async()=>slots,getBookings:async()=>bookings,settings:env};
- const mailer=createMailer(env),quotes=quoteEmails(env,deps,mailer);deps.findQuote=quotes.find;deps.notifyPayment=paymentAutomation(env,stripe,mailer);
+ const mailer=createMailer(env),quotes=quoteEmails(env,deps,mailer);deps.findQuote=quotes.find;deps.notifyPayment=paymentAutomation(env,stripe,mailer);deps.balancePaid=s=>recordBalancePayment(env,s);
  const send=result=>new Response(result.statusCode===204?null:result.body,{status:result.statusCode,headers:result.headers});
  if(request.method==='OPTIONS')return send(stripe.json(204,{}));
  if(route==='/launch-offer'){
@@ -51,6 +52,7 @@ export async function handle(request,env,ctx,displayCache){
   if(!row)return new Response('Document en cours de préparation.',{status:503,headers:{'Cache-Control':'no-store'}});
   return new Response(Uint8Array.from(atob(row.pdf_base64),c=>c.charCodeAt(0)),{headers:{'Content-Type':'application/pdf','Content-Disposition':'attachment; filename="Devis-EYWA.pdf"','Cache-Control':'private, no-store','X-Robots-Tag':'noindex, nofollow','Referrer-Policy':'no-referrer'}});
  }
+ if(route==='/balance-pay'&&request.method==='GET'){try{return await balanceCheckout(env,stripe.request,url.searchParams.get('token'));}catch{return new Response('Le paiement n’a pas pu être préparé. Réessayez ou contactez Eywa au 07 49 90 21 56.',{status:503,headers:{'Content-Type':'text/plain; charset=utf-8'}});}}
  if(route==='/invoice'&&request.method==='GET')return invoiceResponse(env,url.searchParams.get('token'),url.searchParams.get('format')==='pdf');
  if(route==='/message-view'&&request.method==='GET'){
   const qid=url.searchParams.get('qid'),id=url.searchParams.get('message');if(!/^[a-f0-9-]{36}$/.test(qid||'')||String(id||'').length>250)return new Response('Message introuvable',{status:404});
@@ -99,7 +101,7 @@ export async function runAutomation(env){
   const pending=(await sql("SELECT b.session_id FROM eywa_bookings b WHERE b.state='paid' AND json_extract(b.details_json,'$.automationVersion')='20261109' AND (NOT EXISTS (SELECT 1 FROM eywa_invoices i WHERE i.session_id=b.session_id) OR NOT EXISTS (SELECT 1 FROM eywa_email_outbox e WHERE e.id='payment:'||b.session_id||':admin')) LIMIT 10").all()).results;
   for(const row of pending){try{await notify(await stripe.request('checkout/sessions/'+encodeURIComponent(row.session_id)));}catch{/* Retry next scheduled execution; do not alter payment state. */}}
   try{await notion.refreshStops();}catch{/* Email delivery continues; Notion retries separately. */}
-  await queueFollowups(env,mailer);await mailer.flush();
+  await queueFollowups(env,mailer);try{await queueBalanceInvoices(env,mailer);}catch{/* Retry at the next run. */}await mailer.flush();
   try{await syncGmail(env);}catch{/* Keep the previous cursor for a safe retry. */}
   await notion.flush();
  }finally{await sql('UPDATE eywa_job_locks SET until_at=0 WHERE name=?','automation').run();}
