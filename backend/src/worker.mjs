@@ -16,10 +16,13 @@ import {createCheckout} from './checkout.mjs';
 import {createPaymentStatus} from './paymentStatus.mjs';
 import {createWebhook} from './webhook.mjs';
 import {queueBalanceInvoices,balanceCheckout,recordBalancePayment} from './lib/balance.mjs';
+import {crmHTTP,crmAutomation} from './lib/crm-http.mjs';
+import {occupiedTimelineDays} from './lib/crm.mjs';
 const origin='https://eywacoffeecatering.com';
 export async function handle(request,env,ctx,displayCache){
  const url=new URL(request.url),route=url.pathname.replace(/^\/\.netlify\/functions\//,'/');
- const stripe=createStripe(env),slots=createSlots(env.DB),bookings=createBookings(env.DB),deps={...stripe,quote:async(q)=>{const c=await pricing.quote(q);return {...c,...quoteLines(q,c)};},getSlots:async()=>slots,getBookings:async()=>bookings,settings:env};
+ if(url.pathname==='/espace'||url.pathname.startsWith('/espace/'))return crmHTTP(request,env,ctx);
+ const stripe=createStripe(env),slots=createSlots(env.DB),bookings=createBookings(env.DB),deps={...stripe,quote:async(q)=>{const c=await pricing.quote(q);return {...c,...quoteLines(q,c),dates:await occupiedTimelineDays(env,q,c)};},getSlots:async()=>slots,getBookings:async()=>bookings,settings:env};
  const mailer=createMailer(env),quotes=quoteEmails(env,deps,mailer);deps.findQuote=quotes.find;deps.notifyPayment=paymentAutomation(env,stripe,mailer);deps.balancePaid=s=>recordBalancePayment(env,s);
  const send=result=>new Response(result.statusCode===204?null:result.body,{status:result.statusCode,headers:result.headers});
  if(request.method==='OPTIONS')return send(stripe.json(204,{}));
@@ -104,6 +107,7 @@ export async function runAutomation(env){
   await queueFollowups(env,mailer);try{await queueBalanceInvoices(env,mailer);}catch{/* Retry at the next run. */}await mailer.flush();
   try{await syncGmail(env);}catch{/* Keep the previous cursor for a safe retry. */}
   await notion.flush();
+  try{await crmAutomation(env);}catch{/* Le CRM réessaiera sans interrompre les devis et paiements. */}
  }finally{await sql('UPDATE eywa_job_locks SET until_at=0 WHERE name=?','automation').run();}
 }
 export default {fetch:(request,env,ctx)=>handle(request,env,ctx,caches.default),scheduled:(_event,env,ctx)=>ctx.waitUntil(runAutomation(env))};

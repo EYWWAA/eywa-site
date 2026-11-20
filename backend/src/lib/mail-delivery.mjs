@@ -5,6 +5,10 @@ export function createMailer(env,fetcher=fetch){
   if(env.EYWA_AUTOMATION_ENABLED!=='true')return;
   const now=Date.now();const row=await sql("UPDATE eywa_email_outbox SET status='sending',lease_until=?,attempts=attempts+1 WHERE id=? AND ((status='pending' AND next_attempt<=?) OR (status='sending' AND lease_until<?)) RETURNING *",now+120000,id,now,now).first();if(!row)return;
   try{
+   if(row.kind==='crm-review'){
+    const enabled=await sql("SELECT id FROM eywa_crm_events WHERE 'crm-review:'||id=? AND status='completed' AND review_eligible=1 AND review_state='queued' AND json_extract(data_json,'$.email')=? AND EXISTS(SELECT 1 FROM eywa_crm_settings WHERE id=1 AND json_extract(data_json,'$.reviewEnabled')=1)",row.id,row.recipient).first();
+    if(!enabled){await sql("UPDATE eywa_email_outbox SET status='pending',lease_until=0,next_attempt=? WHERE id=?",now+86400000,id).run();return;}
+   }
    if(row.kind==='reminder'){
     const allowed=await sql("SELECT quote_id FROM eywa_quote_state s WHERE quote_id=? AND status='open' AND event_at>? AND NOT EXISTS (SELECT 1 FROM eywa_bookings b WHERE b.state IN ('held','paid') AND json_extract(b.details_json,'$.quoteId')=s.quote_id)",row.quote_id,now).first();
     if(!allowed){await sql("DELETE FROM eywa_email_outbox WHERE id=? AND status='sending'",id).run();return;}

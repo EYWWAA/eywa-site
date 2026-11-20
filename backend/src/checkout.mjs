@@ -18,6 +18,7 @@ export function createCheckout(deps){
   details.quoteId=savedQuote?.id||null;details.automationVersion='20261109';
   details.eventSummary={date:body.quote.d,lineItems:calculated.lineItems,staff:calculated.staff,normalCents:calculated.normalCents,time:body.quote.ti,guests:Number(body.quote.g),hours:Number(body.quote.h),days:Number(body.quote.dy||1),location:body.quote.l,eventType:body.quote.t,options:(()=>{try{return typeof body.quote.options==='string'?JSON.parse(body.quote.options):body.quote.options||[];}catch{return [];}})(),firstName:body.quote.p};
   let slot,slots,booking,bookings;
+  details.eventSummary.travelMinutes=calculated.trip?.outwardMinutes>0?Math.ceil(calculated.trip.outwardMinutes):null;
   try{
     bookings=await getBookings();await bookings.ready();await reconcileBookings(bookings,request);
     booking=await bookings.claim(calculated.dates,normal,payable,kind,details);
