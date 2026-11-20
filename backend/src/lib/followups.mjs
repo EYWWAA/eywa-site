@@ -1,7 +1,7 @@
 import {escape,safeURL} from './mail-templates.mjs';
-/* Trois relances recopiées des mails d'Always Kind Co et validées par Louis le 20/11/2026.
+/* Trois relances (J+1, J+3, J+5 comme Always Kind Co) recopiées des mails d'Always Kind Co et validées par Louis le 20/11/2026.
    Mêmes textes pour tous les types d'événements ; le reste viendra plus tard. */
-export const reminderDays=[1,3,7];
+export const reminderDays=[1,3,5];
 export function segment(type=''){
  if(/mariage|wedding/i.test(type))return 'wedding';
  if(/anniversaire|privé|famille|baptême|communion/i.test(type))return 'private';
