@@ -1,38 +1,29 @@
-import {shell,eventRows} from './mail-templates.mjs';
-export const reminderDays=[1,3,7,15,25];
+import {escape,safeURL} from './mail-templates.mjs';
+/* Trois relances recopiées des mails d'Always Kind Co et validées par Louis le 20/11/2026.
+   Mêmes textes pour tous les types d'événements ; le reste viendra plus tard. */
+export const reminderDays=[1,3,7];
 export function segment(type=''){
  if(/mariage|wedding/i.test(type))return 'wedding';
  if(/anniversaire|privé|famille|baptême|communion/i.test(type))return 'private';
  return 'business';
 }
-const benefits={
- business:[
-  ['Un accueil à l’image de votre entreprise','Un coffee bar crée un point de rencontre naturel : vos invités prennent le temps d’échanger autour d’une boisson préparée à la demande.'],
-  ['Votre marque jusque dans la tasse','Un bar et des gobelets à vos couleurs, ou votre logo sur la mousse, peuvent prolonger votre univers de marque. Ces personnalisations restent des options à choisir dans le devis.'],
-  ['Une pause qui facilite les échanges','Sur un salon, un lancement ou un rendez-vous d’équipe, le comptoir invite à s’arrêter et à engager la conversation. Nous adaptons l’accueil au format de votre événement.'],
-  ['Un coffee bar pris en charge de A à Z','Installation, matériel, service et rangement sont organisés par notre équipe. Nous faisons le point avec vous sur l’accès, l’emplacement et la prise électrique pour préparer notre venue.'],
-  ['Votre projet est-il toujours d’actualité ?','Si votre événement est toujours prévu, votre devis rassemble la proposition et les options. Vous pouvez nous répondre avec vos questions ; nous vérifierons les disponibilités avant toute réservation.']
- ],
- private:[
-  ['Une attention pour chacun de vos invités','Café, matcha, chai ou chocolat chaud : chaque invité choisit sa boisson, préparée à la demande. Un moment pour se retrouver et profiter ensemble.'],
-  ['Un comptoir autour duquel on se retrouve','Le coffee bar apporte un lieu de rencontre à votre fête, où l’on peut discuter en regardant les boissons se préparer. Nous pouvons parler ensemble des goûts de vos invités.'],
-  ['Vous profitez, nous assurons le service','Vous nous confiez le coffee bar : nous apportons le matériel et prenons en charge l’installation, le service et le rangement. Vous gardez votre attention pour vos proches.'],
-  ['Préparons les petits détails ensemble','Boissons chaudes ou glacées, emplacement du comptoir, accès : un échange en amont permet d’adapter notre venue à votre fête. Une prise électrique 220 V standard à moins de 10 m est nécessaire.'],
-  ['Votre fête est-elle toujours prévue ?','Votre devis reste le point de départ pour en parler. Répondez-nous si votre projet a évolué : nous reverrons les détails et les disponibilités avant réservation.']
- ],
- wedding:[
-  ['Un moment pour se retrouver autour du café','Pour votre mariage ou le brunch du lendemain, un coffee bar offre à vos proches une boisson préparée à la demande et un comptoir autour duquel prolonger les échanges.'],
-  ['Une attention qui accompagne votre journée','Vos invités choisissent leur boisson selon leurs envies. Nous pouvons voir ensemble la carte, les boissons chaudes ou glacées et les éventuelles personnalisations.'],
-  ['Profitez de vos proches pendant le service','Notre équipe apporte le matériel et assure l’installation, le coffee bar et le rangement. Nous coordonnons avec vous les horaires et les conditions d’accueil du lieu.'],
-  ['Une préparation avec votre lieu de réception','Avant le jour J, nous vérifions ensemble l’emplacement, l’accès et la prise électrique 220 V standard à moins de 10 m. Ces détails permettent de préparer sereinement notre installation.'],
-  ['Où en êtes-vous dans les préparatifs ?','Si le coffee bar fait toujours partie de votre projet, répondez-nous avec vos questions. Votre devis nous permet de reprendre les détails et de vérifier la disponibilité de votre date.']
- ]
-};
+const longDate=iso=>{const d=new Date(String(iso||'')+'T12:00:00Z');return isNaN(d)?'':new Intl.DateTimeFormat('fr-FR',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}).format(d);};
+function messages(q){
+ const where=[longDate(q.date)&&'du '+longDate(q.date),q.location&&'à '+q.location].filter(Boolean).join(' ');
+ return [
+  ['Merci d’avoir pensé à EYWA',['Merci beaucoup d’avoir pensé à EYWA pour votre événement !','Si vous avez des questions ou si vous souhaitez modifier quoi que ce soit, n’hésitez pas à m’écrire à tout moment !','Cliquez sur le bouton ci-dessous pour consulter votre devis.']],
+  ['Votre devis EYWA',['Je reviens vers vous pour savoir si vous avez des questions sur votre devis. Si vous avez un budget idéal à respecter, dites-le-moi. Je serai ravi de trouver une solution avec vous.','Prêt à réserver ? Cliquez simplement sur le bouton ci-dessous.']],
+  ['Toujours disponible pour votre événement',['Nous sommes toujours disponibles pour votre événement'+(where?' '+where:'')+' !','Pensez à réserver dès maintenant pour bloquer votre date. Cliquez simplement sur le bouton ci-dessous.','Merci,']]
+ ];
+}
 export function reminderMail(q,day,stopUrl){
  const index=reminderDays.indexOf(day);if(index<0)throw Error('INVALID_REMINDER_DAY');
- const [heading,value]=benefits[segment(q.eventType)][index];
- const content=shell({heading,intro:'Bonjour '+q.firstName+', '+value,rows:eventRows(q),amount:q.totalCents,amountLabel:'Votre proposition EYWA',buttons:[['Retrouver mon devis',(q.quoteUrl||q.documentUrl)]],note:'Cette demande ne réserve pas votre date. Les relances s’arrêtent dès qu’un paiement lié à votre devis est confirmé.',footerLink:['Ne plus recevoir ces relances',stopUrl]});
- return {subject:heading+' — EYWA',...content};
+ const [subject,paragraphs]=messages(q)[index],link=q.quoteUrl||q.documentUrl,href=safeURL(link),stop=safeURL(stopUrl);
+ const hello='Bonjour '+(q.firstName||'')+',';
+ const p=t=>`<p style="margin:0 0 16px;font-size:15px;line-height:1.65">${escape(t)}</p>`;
+ const html=`<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escape(subject)}</title></head><body style="margin:0;background:#ffffff;color:#291817;font-family:Arial,Helvetica,sans-serif"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:28px 16px"><table role="presentation" width="560" cellpadding="0" cellspacing="0" style="width:100%;max-width:560px"><tr><td>${p(hello)}${paragraphs.map(p).join('')}${p('Louis Le Poulain')}${href?`<p style="margin:24px 0"><a href="${href}" target="_blank" rel="noopener" style="display:inline-block;padding:14px 24px;border-radius:5px;background:#291817;color:#ffffff;text-decoration:none;font-weight:bold;font-size:15px">Voir le devis</a></p>`:''}${stop?`<p style="margin:32px 0 0;font-size:11px;color:#9a8d82"><a href="${stop}" target="_blank" rel="noopener" style="color:#9a8d82">Ne plus recevoir ces relances</a></p>`:''}</td></tr></table></td></tr></table></body></html>`;
+ const text=[hello,...paragraphs,'Louis Le Poulain',link?'Voir le devis : '+link:'',stopUrl?'Ne plus recevoir ces relances : '+stopUrl:''].filter(Boolean).join('\n\n');
+ return {subject,html,text};
 }
 export async function registerQuote(env,q,now=Date.now()){
  const sql=(s,...v)=>env.DB.prepare(s).bind(...v);
@@ -62,10 +53,14 @@ export async function queueFollowups(env,mailer,now=Date.now()){
  const sql=(s,...v)=>env.DB.prepare(s).bind(...v);
  const rows=(await sql("SELECT r.*,q.data_json FROM eywa_reminders r JOIN eywa_quote_state s ON s.quote_id=r.quote_id JOIN eywa_quotes q ON q.id=r.quote_id WHERE r.state='pending' AND r.due_at<=? AND s.status='open' AND s.event_at>? AND EXISTS (SELECT 1 FROM eywa_email_outbox o WHERE o.id='quote:'||q.id||':client' AND o.status='sent') ORDER BY r.due_at LIMIT 10",now,now).all()).results;
  for(const row of rows){
+  // Relances J+15 et J+25 déjà programmées avant le 20/11/2026 : on ne les envoie plus.
+  if(!reminderDays.includes(row.day)){await sql("UPDATE eywa_reminders SET state='skipped' WHERE quote_id=? AND day=?",row.quote_id,row.day).run();continue;}
   // If the worker was unavailable, do not send a burst of missed messages.
   const newer=await sql("SELECT day FROM eywa_reminders WHERE quote_id=? AND day>? AND due_at<=? AND state='pending' LIMIT 1",row.quote_id,row.day,now).first();
   if(newer||now-row.due_at>86400000){await sql("UPDATE eywa_reminders SET state='skipped' WHERE quote_id=? AND day=?",row.quote_id,row.day).run();continue;}
   const q=JSON.parse(row.data_json),id='reminder:'+q.id+':'+row.day;
+  // « Toujours disponibles » : seulement si aucune réservation ne prend la date.
+  if(row.day===reminderDays.at(-1)){const end=new Date(Date.parse(q.date+'T12:00:00Z')+(Math.max(1,Number(q.days)||1)-1)*86400000).toISOString().slice(0,10);if(await sql('SELECT 1 FROM eywa_booking_days WHERE day>=? AND day<=? LIMIT 1',q.date,end).first()){await sql("UPDATE eywa_reminders SET state='skipped' WHERE quote_id=? AND day=?",row.quote_id,row.day).run();continue;}}
   const stop='https://eywa-booking.eywa-booking-cloudflare.workers.dev/followup-stop?id='+q.id;
   const payload=reminderMail(q,row.day,stop);
   await env.DB.batch([
