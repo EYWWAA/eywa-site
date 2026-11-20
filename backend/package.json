@@ -4,8 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test test/*.test.mjs",
-    "deploy": "wrangler deploy --config wrangler.jsonc",
+    "build:crm": "node tools/build-crm.mjs",
+    "test": "node --check admin/app.js && node --test test/*.test.mjs",
+    "deploy": "node tools/build-crm.mjs && wrangler deploy --config wrangler.jsonc --keep-vars",
     "dev": "wrangler dev --config wrangler.jsonc"
   },
   "devDependencies": {
