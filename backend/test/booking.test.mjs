@@ -8,7 +8,7 @@ import {verify} from '../src/webhook.mjs';
 import {createHmac} from 'node:crypto';
 export function database(seed=true){
  const raw=new DatabaseSync(':memory:');
- for(const name of ['0001_launch_slots.sql','0002_booking_calendar.sql','0007_crm.sql'])raw.exec(fs.readFileSync(new URL('../migrations/'+name,import.meta.url),'utf8'));
+ for(const name of ['0001_launch_slots.sql','0002_booking_calendar.sql','0007_crm.sql','0008_suppliers.sql','0009_quote_tracking.sql'])raw.exec(fs.readFileSync(new URL('../migrations/'+name,import.meta.url),'utf8'));
  if(seed)raw.exec("INSERT INTO eywa_launch_slots(slot,state) VALUES(1,'available'),(2,'available');INSERT INTO eywa_migration VALUES(1,'test-only','fixture');INSERT INTO eywa_booking_import VALUES(1,'test-only','fixture');");
  return {raw,prepare(sql){return {bind(...args){const statement=raw.prepare(sql);return {first:async()=>statement.get(...args)||null,all:async()=>({results:statement.all(...args)}),run:async()=>statement.run(...args),_run:()=>statement.run(...args)}}}},async batch(statements){raw.exec('BEGIN IMMEDIATE');try{const out=statements.map(s=>({success:true,meta:s._run()}));raw.exec('COMMIT');return out;}catch(e){raw.exec('ROLLBACK');throw e;}}};
 }

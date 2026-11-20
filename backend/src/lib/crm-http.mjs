@@ -1,15 +1,19 @@
 import {crmSession,requestCode,verifyCode,logout,cleanAuth} from './crm-auth.mjs';
 import {createCRM} from './crm.mjs';
 import {createMailer} from './mail-delivery.mjs';
+import {createCorrespondence} from './crm-correspondence.mjs';
 import {stopQuote} from './followups.mjs';
-import {html,css,js} from './crm-assets.mjs';
-const headers={'Cache-Control':'private, no-store','Pragma':'no-cache','X-Robots-Tag':'noindex, nofollow','Referrer-Policy':'no-referrer','X-Content-Type-Options':'nosniff','X-Frame-Options':'DENY','Content-Security-Policy':"default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' https://eywacoffeecatering.com data:; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"};
+import {html,css,js,icon,touchIcon} from './crm-assets.mjs';
+const headers={'Cache-Control':'private, no-store','Pragma':'no-cache','X-Robots-Tag':'noindex, nofollow','Referrer-Policy':'no-referrer','X-Content-Type-Options':'nosniff','X-Frame-Options':'DENY','Content-Security-Policy':"default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' https://eywacoffeecatering.com data:; connect-src 'self'; manifest-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"};
 const json=(status,data,extra={})=>new Response(JSON.stringify(data),{status,headers:{...headers,'Content-Type':'application/json; charset=utf-8',...extra}});
 export async function crmHTTP(request,env,ctx){
  const u=new URL(request.url),path=u.pathname;
  if(path==='/espace'||path==='/espace/')return new Response(html,{headers:{...headers,'Content-Type':'text/html; charset=utf-8'}});
  if(path==='/espace/style.css')return new Response(css,{headers:{...headers,'Content-Type':'text/css; charset=utf-8'}});
  if(path==='/espace/app.js')return new Response(js,{headers:{...headers,'Content-Type':'text/javascript; charset=utf-8'}});
+ if(path==='/espace/icon.svg')return new Response(icon,{headers:{...headers,'Content-Type':'image/svg+xml'}});
+ if(path==='/espace/apple-touch-icon.png')return new Response(Uint8Array.from(atob(touchIcon),c=>c.charCodeAt(0)),{headers:{...headers,'Content-Type':'image/png'}});
+ if(path==='/espace/manifest.webmanifest')return new Response(JSON.stringify({id:'/espace/',name:'EYWA · Mon espace',short_name:'EYWA',start_url:'/espace/',scope:'/espace/',display:'standalone',lang:'fr',theme_color:'#243d32',background_color:'#f6f3ec',icons:[{src:'/espace/icon.svg',sizes:'any',type:'image/svg+xml'}]}),{headers:{...headers,'Content-Type':'application/manifest+json'}});
  if(!path.startsWith('/espace/api/'))return json(404,{error:'Page introuvable.'});
  try{
   if(!['GET','POST'].includes(request.method))return json(405,{error:'Méthode non autorisée.'});
@@ -24,7 +28,15 @@ export async function crmHTTP(request,env,ctx){
   const crm=createCRM(env);
   if(path==='/espace/api/overview'&&request.method==='GET'){await crm.sync();return json(200,await crm.overview());}
   if(path==='/espace/api/event'&&request.method==='GET')return json(200,await crm.details(u.searchParams.get('id')||''));
+  if(path==='/espace/api/draft-preview'&&request.method==='GET'){
+   const mail=await createCorrespondence(env).preview(u.searchParams.get('id')||'');
+   return new Response(mail.html,{headers:{...headers,'Content-Type':'text/html; charset=utf-8','Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'; img-src https://eywacoffeecatering.com; base-uri 'none'; frame-ancestors 'none'; form-action 'none'"}});
+  }
   if(path==='/espace/api/action'&&request.method==='POST'){
+   const correspondence=createCorrespondence(env);
+   if(body.action==='quote-tracking')return json(200,await correspondence.saveTracking(body));
+   if(body.action==='mail-draft')return json(200,await correspondence.saveDraft(body));
+   if(body.action==='mail-send')return json(200,await correspondence.send(body,createMailer(env)));
    if(body.action==='stop-followups'){const qid=String(body.id||'');if(!/^[a-f0-9-]{36}$/.test(qid))return json(400,{error:'Devis invalide.'});await stopQuote(env,qid);return json(200,{ok:true});}
    return json(200,await crm.mutate(body.action,body));
   }

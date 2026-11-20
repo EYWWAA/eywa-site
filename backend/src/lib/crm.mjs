@@ -1,6 +1,8 @@
 import {randomUUID} from 'node:crypto';
 import policy from './booking-policy.cjs';
 import {escape,safeURL} from './mail-templates.mjs';
+import {createOrders} from './crm-orders.mjs';
+import {createCorrespondence} from './crm-correspondence.mjs';
 export const defaultSettings={loadingMinutes:30,setupMinutes:60,cleanupMinutes:45,travelMinutes:30,reviewEnabled:true,reviewUrl:'https://search.google.com/local/writereview?placeid=ChIJzVp-mvUAbgUR1IO2D4738BY',reviewDelayDays:1};
 const fail=(message,status=400)=>{throw Object.assign(Error(message),{status});};
 const parse=s=>{try{return JSON.parse(s||'{}');}catch{return {};}};
@@ -41,6 +43,7 @@ export async function occupiedTimelineDays(env,q,calculated){
  return [...new Set([...dates,...calculated.dates])].sort();
 }
 export function createCRM(env){
+ const procurement=createOrders(env),correspondence=createCorrespondence(env);
  const sql=(s,...v)=>env.DB.prepare(s).bind(...v);
  async function settings(){return {...defaultSettings,...parse((await sql('SELECT data_json FROM eywa_crm_settings WHERE id=1').first())?.data_json)};}
  async function event(id){const row=await sql('SELECT * FROM eywa_crm_events WHERE id=?',id).first();if(!row)fail('Événement introuvable.',404);return {...row,data:parse(row.data_json)};}
@@ -67,15 +70,15 @@ export function createCRM(env){
  async function overview(){
   const [eventRows,quotes,taskRows,resources,assignments,blocks,errors,config,finances]=await Promise.all([
    sql('SELECT * FROM eywa_crm_events ORDER BY starts_at DESC LIMIT 1500').all(),
-   sql('SELECT q.id,q.data_json,q.created_at,s.status AS state FROM eywa_quotes q LEFT JOIN eywa_quote_state s ON s.quote_id=q.id ORDER BY q.created_at DESC LIMIT 1500').all(),
+   sql('SELECT q.id,q.data_json,q.created_at,s.status AS state,t.stage,t.next_action_date FROM eywa_quotes q LEFT JOIN eywa_quote_state s ON s.quote_id=q.id LEFT JOIN eywa_crm_quote_tracking t ON t.quote_id=q.id ORDER BY q.created_at DESC LIMIT 1500').all(),
    sql('SELECT * FROM eywa_crm_tasks ORDER BY due_date,title LIMIT 5000').all(),
    sql('SELECT * FROM eywa_crm_resources ORDER BY kind,name').all(),sql('SELECT * FROM eywa_crm_assignments').all(),sql('SELECT * FROM eywa_crm_blocks ORDER BY from_date').all(),
    sql("SELECT id,kind,quote_id,attempts,last_error,next_attempt FROM eywa_email_outbox WHERE status='pending' AND attempts>0 ORDER BY created_at DESC LIMIT 20").all(),settings(),
    sql("SELECT i.quote_id,json_extract(i.data_json,'$.name') AS name,json_extract(i.data_json,'$.email') AS email,json_extract(i.data_json,'$.balanceCents') AS balance_cents,json_extract(i.data_json,'$.paidCents') AS paid_cents,EXISTS(SELECT 1 FROM eywa_invoices s JOIN eywa_balance_payments p ON p.token=s.token WHERE s.session_id='balance:'||i.session_id) AS settled FROM eywa_invoices i WHERE json_extract(i.data_json,'$.kind') IS NULL").all()
   ]);
   const events=eventRows.results.map(e=>({...e,data_json:undefined,data:parse(e.data_json)}));
-  const dossiers=quotes.results.map(r=>{const q=parse(r.data_json);return {id:r.id,createdAt:r.created_at,state:r.state||'open',reference:q.reference,name:q.name,email:q.email,phone:q.phone,company:q.company,eventType:q.eventType,date:q.date,time:q.time,hours:q.hours,days:q.days,guests:q.guests,location:q.location,options:q.options,totalCents:q.totalCents,quoteUrl:q.quoteUrl};});
-  return {events,quotes:dossiers,tasks:taskRows.results,resources:resources.results,assignments:assignments.results,blocks:blocks.results,errors:errors.results,settings:config,finances:finances.results,now:Date.now(),limited:eventRows.results.length===1500||quotes.results.length===1500};
+  const dossiers=quotes.results.map(r=>{const q=parse(r.data_json);return {id:r.id,createdAt:r.created_at,state:r.state||'open',stage:r.stage||'new',nextActionDate:r.next_action_date,reference:q.reference,name:q.name,email:q.email,phone:q.phone,company:q.company,eventType:q.eventType,date:q.date,time:q.time,hours:q.hours,days:q.days,guests:q.guests,location:q.location,options:q.options,totalCents:q.totalCents,quoteUrl:q.quoteUrl};});
+  return {events,quotes:dossiers,tasks:taskRows.results,resources:resources.results,assignments:assignments.results,blocks:blocks.results,errors:errors.results,settings:config,finances:finances.results,suppliers:await procurement.suppliers(),now:Date.now(),limited:eventRows.results.length===1500||quotes.results.length===1500};
  }
  async function details(id){
   const saved=id.startsWith('quote-')?await sql('SELECT id,data_json FROM eywa_quotes WHERE id=?',id.slice(6)).first():null;
@@ -86,10 +89,13 @@ export function createCRM(env){
    sql("SELECT id,payload_json,status,kind,created_at,sent_at,last_error FROM eywa_email_outbox WHERE quote_id=? ORDER BY created_at DESC LIMIT 100",qid).all(),
    sql('SELECT data_json,created_at FROM eywa_sync_events WHERE quote_id=? ORDER BY created_at DESC LIMIT 100',qid).all()
   ]):[{results:[]},{results:[]},{results:[]}];
-  return {...e,invoices:invoices.results.map(i=>({seq:i.seq,token:i.token,createdAt:i.created_at,data:parse(i.data_json)})),messages:[...messages.results.map(m=>({id:m.id,status:m.status,kind:m.kind,at:m.sent_at||m.created_at,subject:parse(m.payload_json).subject,text:parse(m.payload_json).text,lastError:m.last_error})),...received.results.map(m=>({...parse(m.data_json),at:m.created_at,status:'received'}))].sort((a,b)=>b.at-a.at)};
+  const source=qid?parse((await sql('SELECT data_json FROM eywa_quotes WHERE id=?',qid).first())?.data_json):{};
+  const booking=e.booking_id?parse((await sql('SELECT details_json FROM eywa_bookings WHERE id=?',e.booking_id).first())?.details_json):{};
+  return {...e,originalQuote:source,correspondence:qid?await correspondence.details(qid):null,clientMessage:source.details||'',referencePhoto:booking.referencePhoto||'',procurement:e.quoteOnly?null:await procurement.details(e.id),invoices:invoices.results.map(i=>({seq:i.seq,token:i.token,createdAt:i.created_at,data:parse(i.data_json)})),messages:[...messages.results.map(m=>({id:m.id,status:m.status,kind:m.kind,at:m.sent_at||m.created_at,subject:parse(m.payload_json).subject,text:parse(m.payload_json).text,lastError:m.last_error})),...received.results.map(m=>({...parse(m.data_json),at:m.created_at,status:'received'}))].sort((a,b)=>b.at-a.at)};
  }
  async function audit(action,id){await sql('INSERT INTO eywa_crm_audit(action,entity,at) VALUES(?,?,?)',action,id,Date.now()).run();}
  async function mutate(action,b,now=Date.now()){
+  if(action==='supplier'||action==='order')return procurement.mutate(action,b,now);
   if(action==='settings'){
    const current=await settings(),next={...current};
    for(const key of ['loadingMinutes','setupMinutes','cleanupMinutes','travelMinutes']){const n=Number(b[key]);if(!Number.isInteger(n)||n<0||n>2880)fail('Durée invalide.');next[key]=n;}
