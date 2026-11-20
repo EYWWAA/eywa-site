@@ -86,7 +86,8 @@
     const packageLine=document.createElement('article');packageLine.className='quote-line';
     const packageTitle=document.createElement('h3');packageTitle.textContent='Prestation de coffee catering EYWA';packageLine.append(packageTitle);
     const packageCopy=document.createElement('p');packageCopy.textContent=duration+' de service pour jusqu’à '+guests+' invités'+(days>1?' par jour · '+days+' jours':'')+'.';packageLine.append(packageCopy);
-    options.filter(o=>o.selected).forEach(o=>{const item=document.createElement('p');item.textContent=o.name;packageLine.append(item);});
+    options.filter(o=>o.selected).forEach(o=>{const item=document.createElement('p');item.textContent=o.name+' : '+(o.price*days).toLocaleString('fr-FR')+' €'+(days>1?' ('+days+' jours)':'');packageLine.append(item);});
+    if(rushCups())packageLine.append(Object.assign(document.createElement('p'),{textContent:'Impression accélérée des gobelets : '+rushCups()+' €'}));
     lines.append(packageLine);
     if(lodging)lines.append(makeLine('Hébergement du barista','À confirmer','Le trajet aller dépasse quatre heures. Un logement sur place est à prévoir pour le ou les baristas. Le nombre de nuits et le montant seront précisés avec vous avant réservation. Ce coût n’est pas inclus dans le total affiché.'));
     const protectedAmount=options.filter(o=>o.selected).reduce((n,o)=>n+o.price*days,0)+rushCups();

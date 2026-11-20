@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta property="og:image" content="https://eywacoffeecatering.com/assets/og-eywa-20261030.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Le coffee bar mobile EYWA"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://eywacoffeecatering.com/assets/og-eywa-20261030.jpg"><script src="booking-policy.js?v=20261024"></script>
-<script src="personalization-policy.js?v=20261113-options"></script>
+<script src="personalization-policy.js?v=20261120-logo-prix"></script>
 <script src="theme-comparison.js?v=20261015-marrons"></script>
   <link rel="icon" href="/favicon.ico?v=4" sizes="any">
   <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png?v=4">
@@ -333,6 +333,7 @@
 #s5 .perso-name{color:var(--text);font-size:16px}
 #s5 .perso-sub{color:var(--muted);font-size:13px;line-height:1.5;margin-top:4px}
 #s5 .perso-card.selected{border-color:var(--gold);background:#f1e8dc}
+#s5 .perso-price{color:var(--text);font-size:14px;font-weight:600;margin-top:6px}
 #s5 .perso-check{border-color:var(--border);background:transparent;flex-shrink:0}
 #s5 .perso-card.selected .perso-check{background:var(--gold);border-color:var(--gold)}
 </style>
@@ -820,6 +821,10 @@
     document.querySelectorAll('#s5 .perso-card').forEach(function(card){
       var name=card.dataset.val;card.hidden=!EywaPersonalizations.available(type,name);
       var selected=A.personalization.includes(name);card.classList.toggle('selected',selected);card.setAttribute('aria-pressed',String(selected));
+      /* Prix de l'option affiché sur la carte (Louis, 20/11/2026). */
+      var info=card.querySelector('.perso-info'),price=card.querySelector('.perso-price'),days=Math.max(1,Number(A.days)||1);
+      if(!price){price=document.createElement('div');price.className='perso-price';info.append(price);}
+      price.textContent='+ '+(EywaPersonalizations.rates[name]*days).toLocaleString('fr-FR')+' €'+(days>1?' pour '+days+' jours':'')+(name==='Gobelets sur mesure'?' · + 50 € si l’événement est dans moins de 14 jours':'');
     });
   }
   function togglePerso(el) {

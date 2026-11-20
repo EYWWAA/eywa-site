@@ -12,7 +12,7 @@
   }
   function available(type,name){
     return Object.prototype.hasOwnProperty.call(rates,name)&&
-      ((name!=='Gobelets avec stickers'&&name!=='Logo sur les boissons')||isPrivate(type));
+      (name!=='Gobelets avec stickers'||isPrivate(type));
   }
   function filter(type,names){return Array.isArray(names)?Array.from(new Set(names)).filter(function(name){return available(type,name);}):[];}
   function validate(type,names){
