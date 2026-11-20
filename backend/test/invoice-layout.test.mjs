@@ -7,8 +7,8 @@ test('classic invoice bills only the actual advance and distinguishes the remain
  const before=JSON.stringify(row),html=invoiceHTML(row);
  assert(html.includes('Client &lt;Exemple&gt;'));assert(html.includes('EYWA-WEB-2026-000008'));
  assert(html.includes('359,68'));assert(html.includes('359,67'));assert(html.includes('719,35'));
- assert(html.includes('Montant de cette facture'));assert(/Reste à payer sur cette facture<\/td><td class="n">0,00 €/.test(html));
- assert(html.includes('Solde de la commande'));assert(!/prestation|forfait\b|animation/i.test(html));assert(html.includes('293 B'));assert.equal(JSON.stringify(row),before);
+ assert(html.includes('Montant de cette facture'));
+ assert(html.includes('Solde restant à régler'));assert(!/prestation|forfait\b|animation/i.test(html));assert(html.includes('293 B'));assert.equal(JSON.stringify(row),before);
 });
 test('website quote downloads the dedicated PDF instead of printing the entire website',async()=>{
  const html=await fs.readFile(new URL('../../devis.html',import.meta.url),'utf8');
