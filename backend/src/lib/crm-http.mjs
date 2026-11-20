@@ -2,6 +2,7 @@ import {crmSession,requestCode,verifyCode,logout,cleanAuth} from './crm-auth.mjs
 import {createCRM} from './crm.mjs';
 import {createMailer} from './mail-delivery.mjs';
 import {createCorrespondence} from './crm-correspondence.mjs';
+import {createCalendar} from './crm-calendar.mjs';
 import {stopQuote} from './followups.mjs';
 import {html,css,js,icon,touchIcon} from './crm-assets.mjs';
 const headers={'Cache-Control':'private, no-store','Pragma':'no-cache','X-Robots-Tag':'noindex, nofollow','Referrer-Policy':'no-referrer','X-Content-Type-Options':'nosniff','X-Frame-Options':'DENY','Content-Security-Policy':"default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' https://eywacoffeecatering.com data:; connect-src 'self'; manifest-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"};
@@ -34,6 +35,7 @@ export async function crmHTTP(request,env,ctx){
   }
   if(path==='/espace/api/action'&&request.method==='POST'){
    const correspondence=createCorrespondence(env);
+   if(body.action==='calendar-refresh')return json(200,await createCalendar(env).sync(true));
    if(body.action==='quote-tracking')return json(200,await correspondence.saveTracking(body));
    if(body.action==='mail-draft')return json(200,await correspondence.saveDraft(body));
    if(body.action==='mail-send')return json(200,await correspondence.send(body,createMailer(env)));
@@ -44,5 +46,5 @@ export async function crmHTTP(request,env,ctx){
  }catch(e){return json(e.status||503,{error:e.status?e.message:'L’espace est temporairement indisponible. Réessayez.'});}
 }
 export async function crmAutomation(env){
- const crm=createCRM(env),mailer=createMailer(env);await crm.sync();await crm.reviewQueue(mailer);await crm.alerts(mailer);await cleanAuth(env);
+ const crm=createCRM(env),mailer=createMailer(env);await createCalendar(env).sync();await crm.sync();await crm.reviewQueue(mailer);await crm.alerts(mailer);await cleanAuth(env);
 }

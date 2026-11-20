@@ -6,8 +6,9 @@ import {randomBytes,createHash} from 'node:crypto';
 import {crmHTTP} from '../src/lib/crm-http.mjs';
 import {createCRM} from '../src/lib/crm.mjs';
 import {registerQuote} from '../src/lib/followups.mjs';
+import {createCalendar,readCalendar} from '../src/lib/crm-calendar.mjs';
 const raw=new DatabaseSync(':memory:');
-for(const f of ['0001_launch_slots.sql','0002_booking_calendar.sql','0003_transactional_email.sql','0004_automation.sql','0006_balance_invoices.sql','0007_crm.sql','0008_suppliers.sql','0009_quote_tracking.sql'])raw.exec(fs.readFileSync(new URL('../migrations/'+f,import.meta.url),'utf8'));
+for(const f of ['0001_launch_slots.sql','0002_booking_calendar.sql','0003_transactional_email.sql','0004_automation.sql','0006_balance_invoices.sql','0007_crm.sql','0008_suppliers.sql','0009_quote_tracking.sql','0010_external_calendar.sql'])raw.exec(fs.readFileSync(new URL('../migrations/'+f,import.meta.url),'utf8'));
 const DB={prepare(s){return{bind(...args){const q=raw.prepare(s);return{first:async()=>q.get(...args)||null,all:async()=>({results:q.all(...args)}),run:async()=>q.run(...args),_run:()=>q.run(...args)}}}},async batch(rows){raw.exec('BEGIN IMMEDIATE');try{const result=rows.map(r=>({meta:r._run()}));raw.exec('COMMIT');return result;}catch(e){raw.exec('ROLLBACK');throw e;}}};
 const env={DB,EYWA_AUTOMATION_ENABLED:'false'},crm=createCRM(env);
 const now=new Date(),date=(n)=>new Date(now.getFullYear(),now.getMonth(),now.getDate()+n,12).toLocaleDateString('sv-SE');
@@ -19,6 +20,7 @@ for(const [n,name,type,guests,hours]of [[5,'Maison Atelier · Démonstration','�
  const task=raw.prepare('SELECT id FROM eywa_crm_tasks WHERE event_id=? LIMIT 1').get(id);await crm.mutate('task',{id:task.id,done:true});
  if(n===5)raw.prepare("UPDATE eywa_crm_events SET data_json=json_set(data_json,'$.options',json(?)) WHERE id=?").run('["Gobelets sur mesure","Habillage du bar"]',id);
 }
+await createCalendar(env).replace(readCalendar('BEGIN:VCALENDAR\r\nVERSION:2.0\r\nBEGIN:VEVENT\r\nUID:calendar-fixture\r\nSUMMARY:EYWA - Déjeuner partenaire · Aperçu\r\nDTSTART;TZID=Europe/Paris:'+date(10).replaceAll('-','')+'T120000\r\nDTEND;TZID=Europe/Paris:'+date(10).replaceAll('-','')+'T140000\r\nLOCATION:Lieu fictif\r\nDESCRIPTION:Horaire provisoire. À confirmer avec le client.\r\nEND:VEVENT\r\nEND:VCALENDAR'));
 const server=http.createServer(async(req,res)=>{
  try{
   const url='http://127.0.0.1:8157'+req.url;

@@ -42,3 +42,15 @@ Aucun service payant supplémentaire, aucune API de SMS ou de signature n’est 
 ## Vérification locale
 
 `node tools/preview-crm.mjs` lance un aperçu isolé sur 127.0.0.1:8157. Données fictives uniquement, base en mémoire, aucune connexion à Stripe, Gmail ou Notion. Le chemin `/preview-login` n’existe que dans cet outil local et n’est pas déployé.
+
+
+## Connexion Google Agenda
+
+- Événements importés en lecture seule, distincts des réservations payées et événements manuels. Aucun e-mail client, aucune facture, aucun avis automatique à partir de cet import. Les modifications se font dans Google Agenda.
+- Le secret Cloudflare `EYWA_CALENDAR_ICS_URL` contient le lien privé iCal Google. Ne jamais le placer dans Git, une réponse, une capture, un journal ou le JavaScript du navigateur. La mise en place de cet accès durable nécessite l’accord explicite de Louis. Aucun agenda n’est rendu public.
+- Le flux donne techniquement accès au contenu de l’agenda choisi. Mode par défaut `eywa` dans eywa_crm_calendar_state : seuls les titres comportant EYWA sont conservés. Le mode `busy` reprend les créneaux occupés, uniquement si Louis le demande. Les agendas secondaires, jours fériés, numéros de semaine et tâches Notion ne sont pas lus par ce flux du calendrier personnel.
+- Synchronisation toutes les 15 minutes via le cron existant, ou bouton Actualiser l’agenda. Les créneaux importés occupés bloquent la journée entière, comme le calendrier de réservation existant. Pas d’ajout automatique d’un trajet ou d’un temps de préparation inconnu. Les titres et coordonnées ne sont jamais exposés par l’API publique de disponibilité.
+- Le lecteur iCalendar gère les fuseaux fournis, Europe/Paris si VTIMEZONE manque, récurrences, exclusions, modifications d’occurrences, annulations et fin exclusive des journées. Une réponse invalide conserve le dernier état. Remplacement du cache et des blocages dans une seule transaction.
+- Si un agenda connecté n’a pas été actualisé depuis six heures, le site suspend les nouvelles réservations jusqu’à l’actualisation. Un import initial ponctuel n’active pas cette règle sans connexion durable.
+- Fenêtre importée : 31 jours passés et 366 jours à venir. Maximum 1 500 occurrences et 2 Mo téléchargés ; dépassement signalé comme échec, aucun effacement silencieux des anciens créneaux.
+- Migration supplémentaire : 0010_external_calendar.sql, à appliquer avant le Worker. Le paquet npm ical.js 2.2.1 est verrouillé dans package-lock.json.

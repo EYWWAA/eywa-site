@@ -1,10 +1,10 @@
 import {randomUUID} from 'node:crypto';
 export function createBookings(db){
  const q=(sql,...p)=>db.prepare(sql).bind(...p);
- async function ready(){if(!await q('SELECT id FROM eywa_booking_import WHERE id=1').first())throw Error('Calendar history not imported');}
+ async function ready(){if(!await q('SELECT id FROM eywa_booking_import WHERE id=1').first())throw Error('Calendar history not imported');const external=await q('SELECT enabled,last_success FROM eywa_crm_calendar_state WHERE id=1').first();if(external?.enabled&&(!external.last_success||Date.now()-external.last_success>6*3600000))throw Error('External calendar needs refresh');}
  return {
   ready,
-  async busy(from,to){await ready();return (await q("WITH RECURSIVE dates(day) AS (SELECT ? UNION ALL SELECT date(day,'+1 day') FROM dates WHERE day<?) SELECT day FROM dates WHERE day IN (SELECT day FROM eywa_booking_days) OR EXISTS(SELECT 1 FROM eywa_crm_blocks WHERE from_date<=day AND to_date>=day) ORDER BY day",from,to).all()).results.map(r=>r.day);},
+  async busy(from,to){await ready();return (await q("WITH RECURSIVE dates(day) AS (SELECT ? UNION ALL SELECT date(day,'+1 day') FROM dates WHERE day<?) SELECT day FROM dates WHERE day IN (SELECT day FROM eywa_booking_days) OR EXISTS(SELECT 1 FROM eywa_crm_blocks WHERE from_date<=day AND to_date>=day) OR day IN (SELECT day FROM eywa_crm_calendar_days) ORDER BY day",from,to).all()).results.map(r=>r.day);},
   async claim(dates,normal,payable,kind,details){
    await ready();const id=randomUUID();
    const statements=[q('INSERT INTO eywa_bookings(id,state,start_date,end_date,normal_cents,payable_cents,payment_kind,details_json) VALUES(?,?,?,?,?,?,?,?)',id,'held',details.eventSummary?.date||dates[0],details.eventSummary?.serviceEndDate||dates.at(-1),normal,payable,kind,JSON.stringify(details)),q("WITH RECURSIVE dates(day) AS (SELECT ? UNION ALL SELECT date(day,'+1 day') FROM dates WHERE day<?) INSERT INTO eywa_booking_days(day,booking_id) SELECT day,? FROM dates",dates[0],dates.at(-1),id)];
