@@ -28,7 +28,7 @@ Connexion par code à usage unique (10 minutes), envoyé uniquement à contact.e
 
 ## Références de fonctionnement
 
-Les fonctions utiles ont été rapprochées de la documentation publique Flashquotes : https://docs.flashquotes.com/events/event-brief et https://docs.flashquotes.com/pipeline. L’espace EYWA conserve sa propre présentation. Aucun compte Flashquotes, inscription à une démo ou test de leur interface privée n’a été effectué. La fiche fournisseur provient de la page Notion 40150db31fe080049beecbe56d5b0683. Le minimum de 250 unités PixePrint provient de sa fiche produit ; les délais annoncés sont des notes à reconfirmer et non des règles activées automatiquement.
+Les fonctions utiles ont été rapprochées de la documentation publique Flashquotes : https://docs.flashquotes.com/events/event-brief. L’espace EYWA conserve sa propre présentation. Aucun compte Flashquotes, inscription à une démo ou test de leur interface privée n’a été effectué. La fiche fournisseur provient de la page Notion 40150db31fe080049beecbe56d5b0683. Le minimum de 250 unités PixePrint provient de sa fiche produit ; les délais annoncés sont des notes à reconfirmer et non des règles activées automatiquement.
 
 ## Publication
 

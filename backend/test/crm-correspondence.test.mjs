@@ -46,3 +46,7 @@ test('correspondence: preview requires login; writes require owner session and C
  }finally{env.DB.raw.close();}
 });
 test('correspondence: template rejects executable links and includes safe quoted URL',()=>{const p=personalMail({...q,quoteUrl:'javascript:alert(1)'},{subject:'Test',body_text:'Bonjour'});assert(!p.html.includes('href="javascript:'));assert(!p.html.includes('Voir le devis</a>'));});
+
+test('correspondence: Gmail history distinguishes owner sends, customer replies and archived documents',async()=>{
+ const env=await setup();try{for(const [id,from]of [['out','Louis <contact.eywa08@gmail.com>'],['in','Client <fixture@example.invalid>'],['doc',null]])env.DB.raw.prepare('INSERT INTO eywa_sync_events(event_id,quote_id,data_json,created_at) VALUES(?,?,?,?)').run(id,q.id,JSON.stringify({id,from,title:id}),Date.now());const messages=(await createCRM(env).details('quote-'+q.id)).messages;assert.equal(messages.find(m=>m.id==='out').status,'sent');assert.equal(messages.find(m=>m.id==='in').status,'received');assert.equal(messages.find(m=>m.id==='doc').status,'archived');}finally{env.DB.raw.close();}
+});
