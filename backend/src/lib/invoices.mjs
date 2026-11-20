@@ -2,24 +2,65 @@ import {randomBytes} from 'node:crypto';
 import {escape,money} from './mail-templates.mjs';
 export const invoiceNumber=row=>'EYWA-WEB-'+new Date(row.created_at).toLocaleDateString('en-CA',{timeZone:'Europe/Paris',year:'numeric'})+'-'+String(row.seq).padStart(6,'0');
 export const invoiceURL=row=>'https://eywa-booking.eywa-booking-cloudflare.workers.dev/invoice?token='+row.token;
+// Libellés de facture validés par Louis le 20/11/2026 : jamais « prestation », « forfait » ni « animation »
+// (qualification URSSAF en vente de boissons). Un prix pour les boissons, déplacement compris, puis un prix par option.
+const OPTION_NAMES={'Habillage du bar':'Habillage du bar à vos couleurs','Gobelets sur mesure':'Gobelets personnalisés à votre logo','Gobelets avec stickers':'Gobelets avec stickers personnalisés','Logo sur les boissons':'Logo dessiné sur la mousse'};
+const longDate=value=>/^\d{4}-\d{2}-\d{2}$/.test(value||'')?new Date(value+'T12:00:00Z').toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}):value||'date à préciser';
+const hoursLabel=value=>{const n=Number(value);if(!Number.isFinite(n))return String(value||'');const m=Math.round(n*60);return Math.floor(m/60)+' h'+(m%60?' '+String(m%60).padStart(2,'0'):'');};
+export function orderLines(q){
+ const lines=Array.isArray(q.lines)?q.lines:[],extras=[],discounts=[];let drinks=0;
+ for(const l of lines){
+  const cents=Number(l.cents);if(!Number.isSafeInteger(cents))continue;
+  if(cents<0)discounts.push({title:'Remise appliquée',description:l.description||'',cents});
+  else if(l.personalization||/^Impression accélérée/.test(l.title||''))extras.push({title:OPTION_NAMES[l.title]||l.title,description:/^Impression accélérée/.test(l.title||'')?'Commande à moins de 14 jours de l’événement':'',cents});
+  else drinks+=cents;
+ }
+ const days=Number(q.days)>1?' par jour, '+q.days+' jours':'';
+ const description='Événement du '+longDate(q.date)+(q.location?' à '+q.location:'')+(q.guests?', jusqu’à '+q.guests+' invités':'')+(q.hours?', '+hoursLabel(q.hours)+' de service'+days:'')+', déplacement compris';
+ return [{title:'Boissons chaudes préparées et servies sur place',description,cents:drinks},...extras,...discounts];
+}
 export function invoiceHTML(row){
- const q=JSON.parse(row.data_json),number=invoiceNumber(row),issued=new Date(row.created_at).toLocaleDateString('fr-FR',{timeZone:'Europe/Paris'});
- const date=value=>/^\d{4}-\d{2}-\d{2}$/.test(value||'')?new Date(value+'T12:00:00Z').toLocaleDateString('fr-FR',{timeZone:'UTC'}):value||'À préciser';
+ const q=JSON.parse(row.data_json),number=invoiceNumber(row),issued=new Date(row.created_at).toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric',timeZone:'Europe/Paris'});
  const address=q.billingAddress||{};
- const buyerAddress=[address.line1,address.line2,[address.postal_code,address.city].filter(Boolean).join(' '),address.country].filter(Boolean);
- const description=q.balanceCents?'Acompte de réservation - prestation coffee catering':'Paiement intégral avant prestation - coffee catering';
- const options=(q.options||[]).join(', ');
- // This invoice bills the advance actually received. The booking balance is
- // shown separately and is not misrepresented as an amount billed or paid.
+ const buyer=[q.billingName||q.name,q.company&&q.company!==(q.billingName||q.name)?q.company:'',address.line1,address.line2,[address.postal_code,address.city].filter(Boolean).join(' '),address.country&&address.country!=='FR'?address.country:'',q.email].filter(Boolean);
+ const lines=orderLines(q),full=!q.balanceCents;
+ const p=(v,cls)=>'<p'+(cls?' class="'+cls+'"':'')+'>'+escape(v)+'</p>';
+ // Cette facture ne facture que le versement réellement reçu ; la commande est rappelée pour information.
  return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>${escape(number)}</title><style>
- @page{size:A4;margin:16mm}*{box-sizing:border-box}body{margin:0;font:10pt/1.4 Arial,Helvetica,sans-serif;color:#202124}table{width:100%;border-collapse:collapse;table-layout:fixed}td,th{vertical-align:top;overflow-wrap:anywhere;word-wrap:break-word}h1{font-size:22pt;line-height:1.15;margin:0 0 10pt;font-weight:600}p{margin:0 0 5pt}.muted{color:#60646c}.header{margin-bottom:14pt}.header td:last-child{text-align:right}.badge{display:inline-block;color:#146c43;font-size:8pt;font-weight:bold;border:1pt solid #c3dfcd;padding:3pt 6pt;border-radius:3pt}.metadata{font-size:9pt;line-height:1.4;margin-top:6pt}.parties{margin-bottom:12pt}.parties td{width:50%;padding-right:20pt;line-height:1.35}.label{font-size:8pt;letter-spacing:.7pt;color:#60646c;font-weight:bold;margin-bottom:6pt}.event{font-size:9pt;border-top:.5pt solid #dadce0;padding-top:12pt;margin-bottom:12pt}.lines th{font-size:8pt;color:#60646c;font-weight:normal;text-align:left;border-bottom:1pt solid #8c8f94;padding:8pt 5pt}.lines td{padding:8pt 5pt;border-bottom:.5pt solid #dadce0}.lines .qty{width:35pt;text-align:center}.lines .unit,.lines .amount{width:85pt;text-align:right;white-space:nowrap}.summary{margin-top:10pt}.summary td{padding:4pt 0}.summary td:last-child{width:90pt;text-align:right;white-space:nowrap}.summary .total td{border-top:1pt solid #202124;padding-top:8pt;font-size:13pt;font-weight:bold}.booking{margin-top:12pt;padding-top:12pt;border-top:.5pt solid #dadce0;font-size:9pt}.booking p{margin:0 0 5pt}footer{margin-top:12pt;padding-top:10pt;border-top:.5pt solid #dadce0;color:#60646c;font-size:8pt;line-height:1.5}tr,footer{page-break-inside:avoid}a{color:inherit;text-decoration:none}
- </style></head><body><table class="header"><tr><td style="width:45%"><img src="https://eywacoffeecatering.com/assets/brand/eywa-wordmark-email.png?v=20261024" alt="EYWA Coffee Catering" width="150" height="43"></td><td style="width:55%"><h1>Facture d’acompte</h1><strong>${escape(number)}</strong><div class="metadata">Date d’émission : ${escape(issued)}<br>Versement reçu le : ${escape(q.paymentDate)}<br>Mode de paiement : carte bancaire</div><p style="margin-top:8pt"><span class="badge">ACOMPTE ACQUITTÉ</span></p></td></tr></table>
- <table class="parties"><tr><td><p class="label">ÉMETTEUR</p><strong>Louis Le Poulain EI</strong><br>EYWA Coffee Catering<br>87 ter rue Gustave Gailly<br>08090 Montcy-Notre-Dame, France<br>SIRET 910 174 390 00039<br>RCS Sedan 910 174 390<br>contact.eywa08@gmail.com<br>07 49 90 21 56</td><td><p class="label">FACTURÉ À</p><strong>${escape(q.billingName||q.name)}</strong>${q.company&&q.company!==(q.billingName||q.name)?'<br>'+escape(q.company):''}${buyerAddress.map(v=>'<br>'+escape(v)).join('')}<br>${escape(q.email)}</td></tr></table>
- <div class="event"><p><strong>${escape(q.eventType||'Coffee bar événementiel')} - ${escape(date(q.date))}</strong></p><p>${escape(q.location)}</p><p>${escape(q.guests)} invités · ${escape(q.hours)} h de service par jour · ${escape(q.days)} jour(s)</p>${options?'<p>Personnalisations : '+escape(options)+'</p>':''}<p>Devis de référence : ${escape(q.reference||'Réservation EYWA')}</p></div>
- <table class="lines"><thead><tr><th>DÉSIGNATION</th><th class="qty">QTÉ</th><th class="unit">PRIX UNIT. HT</th><th class="amount">MONTANT HT</th></tr></thead><tbody><tr><td><strong>${escape(description)}</strong><br><span class="muted">Selon le devis ${escape(q.reference||'accepté lors de la réservation')}.</span></td><td class="qty">1</td><td class="unit">${escape(money(q.paidCents))}</td><td class="amount">${escape(money(q.paidCents))}</td></tr></tbody></table>
- <table class="summary"><tr><td style="width:53%"></td><td>Total HT de cette facture</td><td>${escape(money(q.paidCents))}</td></tr><tr><td></td><td>TVA non applicable</td><td>-</td></tr><tr class="total"><td></td><td>Total réglé</td><td>${escape(money(q.paidCents))}</td></tr><tr><td></td><td>Reste à payer sur cette facture</td><td>0,00 €</td></tr></table>
- <div class="booking"><p>Montant total de la réservation : <strong>${escape(money(q.totalCents))}</strong></p><p>Solde de la prestation : <strong>${escape(money(q.balanceCents))}</strong>${q.balanceCents?' - à régler au plus tard le '+escape(date(q.date))+', avant le début du service.':' - prestation intégralement réglée.'}</p></div>
- <footer>TVA non applicable, article 293 B du Code général des impôts.<br>Facture établie pour le versement reçu avant prestation. Ce versement sera déduit de la facture finale.<br>Pas d’escompte pour paiement anticipé. Clients professionnels : pénalités de retard au taux de refinancement BCE majoré de 10 points ; indemnité forfaitaire de recouvrement de 40 € par facture échue impayée.</footer></body></html>`;
+@page{size:A4;margin:16mm}*{box-sizing:border-box}body{margin:0;color:#291817;font:10pt/1.45 Arial,Helvetica,sans-serif}
+table{width:100%;border-collapse:collapse}td,th{vertical-align:top;overflow-wrap:anywhere}
+.head td{padding-bottom:14pt;border-bottom:1pt solid #d9cdbb}h1{font:normal 28pt Georgia,serif;margin:0 0 4pt}
+.ref{text-align:right;color:#594c42}.ref strong{color:#291817}
+.stamp{display:inline-block;margin-top:6pt;padding:3pt 8pt;border:1pt solid #214b3e;color:#214b3e;font-size:8pt;letter-spacing:1pt;font-weight:bold}
+.parties{margin:16pt 0}.parties td{width:50%;padding-right:14pt}h2{font-size:8pt;letter-spacing:1pt;color:#75665b;margin:0 0 6pt}
+p{margin:0 0 3pt}.strong{font-weight:bold}
+.lines th{text-align:left;font-size:8pt;letter-spacing:.8pt;color:#75665b;border-bottom:1pt solid #d9cdbb;padding:7pt 0}
+.lines td{padding:9pt 10pt 9pt 0;border-bottom:.5pt solid #e5ddcf}.lines .n{text-align:right;white-space:nowrap;padding-right:0;width:90pt}
+.sub{display:block;font-size:8.5pt;color:#75665b;margin-top:2pt}
+.order td{border-bottom:0;padding-top:9pt;color:#594c42}
+.pay{margin-top:16pt;background:#f6f0e4;border-radius:5pt}.pay td{padding:8pt 13pt}.pay .n{text-align:right;white-space:nowrap;width:110pt}
+.pay .total td{border-top:1pt solid #d9cdbb;font-size:13pt;font-weight:bold}.pay .total .n{font:normal 18pt Georgia,serif}
+.note{margin-top:12pt;font-size:9pt;color:#594c42}
+footer{margin-top:18pt;border-top:.5pt solid #d9cdbb;padding-top:9pt;font-size:7.5pt;line-height:1.55;color:#75665b}tr,footer{page-break-inside:avoid}
+</style></head><body>
+<table class="head"><tr><td><img src="https://eywacoffeecatering.com/assets/brand/eywa-wordmark-email-hd.png?v=20261120" width="150" height="42" alt="eywa coffee catering"></td>
+<td class="ref"><h1>${full?'Facture':'Facture d’acompte'}</h1><strong>N° ${escape(number)}</strong><br>Émise le ${escape(issued)}<br>Versement reçu le ${escape(q.paymentDate||issued)}<br><span class="stamp">${full?'FACTURE ACQUITTÉE':'ACOMPTE ACQUITTÉ'}</span></td></tr></table>
+<table class="parties"><tr>
+<td><h2>ÉMETTEUR</h2><p class="strong">EYWA Coffee Catering</p><p>Louis Le Poulain EI</p><p>87 ter rue Gustave Gailly</p><p>08090 Montcy-Notre-Dame</p><p>SIRET 910 174 390 00039 · RCS Sedan</p><p>contact.eywa08@gmail.com · 07 49 90 21 56</p></td>
+<td><h2>CLIENT</h2>${buyer.map((v,i)=>p(v,i===0?'strong':'')).join('')}<h2 style="margin-top:10pt">LIVRAISON</h2>${p((q.location||'Lieu à préciser')+' · '+longDate(q.date))}${p('Réf. devis '+(q.reference||'EYWA'))}</td>
+</tr></table>
+<table class="lines"><thead><tr><th>VOTRE COMMANDE</th><th class="n">MONTANT</th></tr></thead><tbody>
+${lines.map(l=>'<tr><td><strong>'+escape(l.title)+'</strong>'+(l.description?'<span class="sub">'+escape(l.description)+'</span>':'')+'</td><td class="n">'+escape(money(l.cents))+'</td></tr>').join('')}
+<tr class="order"><td>Total de la commande</td><td class="n">${escape(money(q.totalCents))}</td></tr></tbody></table>
+<table class="pay">
+<tr><td>${full?'Paiement intégral reçu':'Acompte de 50 % reçu'} le ${escape(q.paymentDate||issued)} par carte bancaire</td><td class="n">${escape(money(q.paidCents))}</td></tr>
+<tr class="total"><td>Montant de cette facture</td><td class="n">${escape(money(q.paidCents))}</td></tr>
+<tr><td>Reste à payer sur cette facture</td><td class="n">0,00 €</td></tr>
+</table>
+<p class="note">${full?'Commande intégralement réglée.':'Solde de la commande : <strong>'+escape(money(q.balanceCents))+'</strong>, à régler au plus tard le '+escape(longDate(q.date))+', avant le début du service. Il fera l’objet d’une facture de solde qui déduira cet acompte.'}</p>
+<p class="note">TVA non applicable, article 293 B du CGI.</p>
+<footer>Opération : vente de biens. Pas d’escompte pour paiement anticipé. Clients professionnels : en cas de retard de paiement, pénalités au taux de trois fois le taux d’intérêt légal et indemnité forfaitaire pour frais de recouvrement de 40 € (articles L441-10 et D441-5 du Code de commerce).</footer>
+</body></html>`;
 }
 
 export async function createInvoice(env,row,data,now=Date.now()){
