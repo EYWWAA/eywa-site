@@ -11,7 +11,7 @@ let state=null,csrf='',view='home',challenge='',search='',filter='all',taskFilte
 let toastTimer;
 function toast(message){$('#toast').textContent=message;$('#toast').hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').hidden=true,4500);}
 function loginView(){state=null;csrf='';$('#content').replaceChildren();$('#detail').close();$('#app').hidden=true;$('#login').hidden=false;}
-async function api(path,body){const res=await fetch('/espace/api/'+path,{method:body?'POST':'GET',credentials:'same-origin',headers:body?{'Content-Type':'application/json','X-EYWA-CSRF':csrf}:{},body:body?JSON.stringify(body):undefined});const data=await res.json();if(!res.ok){if(res.status===401&&!['verify','login'].includes(path))loginView();throw Error(data.error||'Réessayez.');}return data;}
+async function api(path,body){const res=await fetch('/espace/api/'+path,{method:body?'POST':'GET',credentials:'same-origin',headers:body?{'Content-Type':'application/json','X-EYWA-CSRF':csrf}:{},body:body?JSON.stringify(body):undefined});const data=await res.json();if(!res.ok){if(res.status===401&&!['verify','login','passkey-login','passkey-login-options'].includes(path))loginView();throw Error(data.error||'Réessayez.');}return data;}
 async function load(){state=await api('overview');$('#login').hidden=true;$('#app').hidden=false;$('#today').textContent=new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',timeZone:'Europe/Paris'}).toUpperCase();render();}
 async function act(body,reopen){await api('action',body);await load();if(reopen)await openEvent(reopen);toast('C’est enregistré.');}
 const isTest=q=>/(?:test|essai|démonstration|demonstration|technique)/i.test((q.name||'')+' '+(q.eventType||''))||['contact.eywa08@gmail.com','louis.lepoulain08@gmail.com'].includes(String(q.email||'').toLowerCase());
@@ -91,7 +91,27 @@ if(f.id==='block-form'){await act({action:'block',...b});$('#detail').close();}
 if(f.id==='settings-form')await act({action:'settings',...b,reviewEnabled:new FormData(f).has('reviewEnabled')});
 }catch(e){toast(e.message);}finally{if(button)button.disabled=false;}});
 $('#request-code').addEventListener('click',async()=>{const b=$('#request-code');b.disabled=true;try{const r=await api('login',{});challenge=r.challenge;$('#code-form').hidden=false;$('#login-message').textContent=r.message;b.textContent='Renvoyer un code';$('#code').focus();}catch(e){$('#login-message').textContent=e.message;}finally{b.disabled=false;}});
-$('#code-form').addEventListener('submit',async e=>{e.preventDefault();const b=$('#code-form button');b.disabled=true;try{const r=await api('verify',{challenge,code:$('#code').value.trim()});csrf=r.csrf;$('#code').value='';await load();}catch(e){$('#login-message').textContent=e.message;}finally{b.disabled=false;}});
+$('#code-form').addEventListener('submit',async e=>{e.preventDefault();const b=$('#code-form button');b.disabled=true;try{const r=await api('verify',{challenge,code:$('#code').value.trim()});csrf=r.csrf;$('#code').value='';await load();const s=await api('session');passkeySetup(s.passkeys);if(!$('#passkey-setup').hidden)toast('Activez Touch ID pour ne plus saisir de code : bouton en bas du menu.');}catch(e){$('#login-message').textContent=e.message;}finally{b.disabled=false;}});
 $('#close-dialog').addEventListener('click',()=>$('#detail').close());$('#new-event').addEventListener('click',newEvent);$('#refresh').addEventListener('click',()=>load().catch(e=>toast(e.message)));$('#logout').addEventListener('click',async()=>{try{await api('logout',{});loginView();}catch(e){toast(e.message);}});
-api('session').then(s=>{csrf=s.csrf;return load();}).catch(e=>{loginView();if(!/Connectez-vous/.test(e.message))$('#login-message').textContent=e.message;});
+api('session').then(s=>{csrf=s.csrf;passkeySetup(s.passkeys);return load();}).catch(e=>{loginView();if(!/Connectez-vous/.test(e.message))$('#login-message').textContent=e.message;});
+
+/* Connexion par empreinte (clé d'accès). Le code par e-mail reste disponible en secours. */
+const b64u={enc:b=>btoa(String.fromCharCode(...new Uint8Array(b))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''),dec:s=>Uint8Array.from(atob(s.replace(/-/g,'+').replace(/_/g,'/')+'==='.slice((s.length+3)%4)),c=>c.charCodeAt(0))};
+const passkeySupported=()=>!!(window.PublicKeyCredential&&navigator.credentials);
+const deviceHasPasskey=()=>{try{return localStorage.getItem('eywa-passkey')==='1';}catch{return false;}};
+function passkeySetup(count){$('#passkey-setup').hidden=!passkeySupported()||deviceHasPasskey();}
+if(passkeySupported())$('#passkey-login').hidden=false;
+$('#passkey-login').addEventListener('click',async()=>{const b=$('#passkey-login');b.disabled=true;$('#login-message').textContent='';try{
+ const o=await api('passkey-login-options',{});
+ const cred=await navigator.credentials.get({publicKey:{challenge:b64u.dec(o.challenge),rpId:o.rpId,timeout:o.timeout,userVerification:o.userVerification,allowCredentials:o.allowCredentials.map(c=>({type:c.type,id:b64u.dec(c.id)}))}});
+ const r=cred.response,res=await api('passkey-login',{id:b64u.enc(cred.rawId),clientDataJSON:b64u.enc(r.clientDataJSON),authenticatorData:b64u.enc(r.authenticatorData),signature:b64u.enc(r.signature)});
+ csrf=res.csrf;try{localStorage.setItem('eywa-passkey','1');}catch{}await load();passkeySetup();
+}catch(e){$('#login-message').textContent=e.name==='NotAllowedError'?'Connexion annulée. Réessayez ou recevez un code.':e.message;}finally{b.disabled=false;}});
+$('#passkey-setup').addEventListener('click',async()=>{const b=$('#passkey-setup');b.disabled=true;try{
+ const o=await api('passkey-register-options',{});
+ const cred=await navigator.credentials.create({publicKey:{...o,challenge:b64u.dec(o.challenge),user:{...o.user,id:b64u.dec(o.user.id)},excludeCredentials:o.excludeCredentials.map(c=>({type:c.type,id:b64u.dec(c.id)}))}});
+ const r=cred.response;if(!r.getPublicKey||!r.getAuthenticatorData)throw Error('Ce navigateur ne permet pas encore Touch ID. Mettez-le à jour.');
+ await api('passkey-register',{id:b64u.enc(cred.rawId),alg:r.getPublicKeyAlgorithm(),publicKey:b64u.enc(r.getPublicKey()),clientDataJSON:b64u.enc(r.clientDataJSON),authenticatorData:b64u.enc(r.getAuthenticatorData()),label:navigator.platform||''});
+ try{localStorage.setItem('eywa-passkey','1');}catch{}b.hidden=true;toast('Touch ID est activé. La prochaine fois, posez simplement votre doigt.');
+}catch(e){toast(e.name==='NotAllowedError'?'Activation annulée.':e.name==='InvalidStateError'?'Touch ID est déjà activé sur cet appareil.':e.message);if(e.name==='InvalidStateError'){try{localStorage.setItem('eywa-passkey','1');}catch{}b.hidden=true;}}finally{b.disabled=false;}});
 })();

@@ -29,12 +29,15 @@ export async function verifyCode(env,challenge,code,now=Date.now()){
  if(!row||!timingSafeEqual(Buffer.from(row.code_hash),Buffer.from(sign(env,challenge+':'+code))))throw Object.assign(Error('Code incorrect ou expiré.'),{status:401});
  const used=await env.DB.prepare('UPDATE eywa_crm_auth SET used=1 WHERE id=? AND used=0 RETURNING id').bind(challenge).first();
  if(!used)throw Object.assign(Error('Ce code a déjà été utilisé.'),{status:401});
+ return createSession(env,now);
+}
+export async function createSession(env,now=Date.now()){
  const token=randomBytes(32).toString('hex'),csrf=randomBytes(24).toString('hex');
  await env.DB.prepare('INSERT INTO eywa_crm_sessions(token_hash,csrf,expires_at) VALUES(?,?,?)').bind(hash(token),csrf,now+8*3600000).run();
  return {csrf,header:'__Host-eywa_session='+token+'; Secure; HttpOnly; SameSite=Strict; Path=/; Max-Age=28800'};
 }
 export async function logout(request,env){await env.DB.prepare('DELETE FROM eywa_crm_sessions WHERE token_hash=?').bind(hash(cookie(request))).run();}
 export async function cleanAuth(env,now=Date.now()){
- await env.DB.batch(['eywa_crm_auth','eywa_crm_sessions','eywa_crm_limits'].map(table=>env.DB.prepare('DELETE FROM '+table+' WHERE expires_at<?').bind(now)));
+ await env.DB.batch(['eywa_crm_auth','eywa_crm_sessions','eywa_crm_limits','eywa_crm_webauthn'].map(table=>env.DB.prepare('DELETE FROM '+table+' WHERE expires_at<?').bind(now)));
  await env.DB.prepare("DELETE FROM eywa_email_outbox WHERE kind='crm-login' AND created_at<?").bind(now-3600000).run();
 }
