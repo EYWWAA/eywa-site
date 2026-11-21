@@ -18,7 +18,7 @@ test('Paris calendar: D+3 minimum includes DST and rejects yesterday, today, D+1
 test('Price base 300, bar 200: launch excludes every personalization and includes travel',async()=>{
  const basic=await pricing.quote(quote);assert.equal(basic.normalCents,30000);assert.equal(basic.discountedCents,6000);
  const custom=await pricing.quote({...quote,options:['Habillage du bar','Gobelets sur mesure','Logo sur les boissons']});assert.equal(custom.normalCents,85000);assert.equal(custom.personalizationCents,55000);assert.equal(custom.discountedCents,61000);
- const multi=await pricing.quote({...quote,dy:2,options:['Habillage du bar']});assert.equal(multi.normalCents,100000);assert.equal(multi.discountedCents,52000);
+ const multi=await pricing.quote({...quote,dy:2,options:['Habillage du bar']});assert.equal(multi.normalCents,80000);assert.equal(multi.discountedCents,32000);
  const {normalCents}=await pricing.quote({...quote,g:76});assert.equal(normalCents,51006);
 });
 test('Phone format: France, Belgium, UK, international override and invalid numbers',()=>{

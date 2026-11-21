@@ -7,8 +7,8 @@ import {database,quote,bookingDetails} from './booking.test.mjs';
 import {createBookings} from '../src/lib/bookings.mjs';
 import {createSlots} from '../src/lib/slots.mjs';
 
-test('NATHALIE08: service reduced to one euro, selected personalizations kept for every day',async()=>{
- for(const [options,days,total] of [[[],1,100],[['Habillage du bar'],1,20100],[['Gobelets sur mesure'],1,20100],[['Logo sur les boissons'],1,15100],[['Habillage du bar','Gobelets sur mesure','Logo sur les boissons'],1,55100],[['Habillage du bar'],2,40100]]){
+test('NATHALIE08: service reduced to one euro, selected personalizations counted once per event',async()=>{
+ for(const [options,days,total] of [[[],1,100],[['Habillage du bar'],1,20100],[['Gobelets sur mesure'],1,20100],[['Logo sur les boissons'],1,15100],[['Habillage du bar','Gobelets sur mesure','Logo sur les boissons'],1,55100],[['Habillage du bar'],2,20100]]){
   const calculated=await pricing.quote({...quote,options,dy:days});
   for(const code of ['NATHALIE08','Nathalie08',' nathalie08 ']){
    const plan=paymentPlan(calculated,{code,offer:true},{});

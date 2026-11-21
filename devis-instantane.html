@@ -824,7 +824,7 @@
       /* Prix de l'option affiché sur la carte (Louis, 20/11/2026). */
       var info=card.querySelector('.perso-info'),price=card.querySelector('.perso-price'),days=Math.max(1,Number(A.days)||1);
       if(!price){price=document.createElement('div');price.className='perso-price';info.append(price);}
-      price.textContent='+ '+(EywaPersonalizations.rates[name]*days).toLocaleString('fr-FR')+' €'+(days>1?' pour '+days+' jours':'')+(name==='Gobelets sur mesure'?' · + 50 € si l’événement est dans moins de 14 jours':'');
+      price.textContent='+ '+EywaPersonalizations.rates[name].toLocaleString('fr-FR')+' €'+(days>1?' pour les '+days+' jours':'')+(name==='Gobelets sur mesure'?' · + 50 € si l’événement est dans moins de 14 jours':'');
     });
   }
   function togglePerso(el) {
@@ -871,11 +871,11 @@
     var extraHrs = Math.max(0, A.hrs - 1.5);
     var baristasNeeded = Math.ceil(A.guests / (A.hrs * 50));
     var extraBaristas = Math.max(0, baristasNeeded - 1);
-    var pricePerDay = (30000 + extraGuests * 231 + Math.round(extraHrs * 6923) + extraBaristas * 15000 + persoTotal() * 100) / 100;
-    return Math.round((pricePerDay * A.days + supplementUrgence() + window.eywaTravel.total)*100)/100;
+    var pricePerDay = (30000 + extraGuests * 231 + Math.round(extraHrs * 6923) + extraBaristas * 15000) / 100;
+    return Math.round((pricePerDay * A.days + persoTotal() + supplementUrgence() + window.eywaTravel.total)*100)/100;
   }
 
-  function calcPrice(){return EywaLaunchOffer.amount(calcNormalPrice(),persoTotal()*A.days+supplementUrgence());}
+  function calcPrice(){return EywaLaunchOffer.amount(calcNormalPrice(),persoTotal()+supplementUrgence());}
 
   function showPrice() {
     if(!window.eywaTravel){showStep('s2');return;}
@@ -884,10 +884,10 @@
     var extraHrs = Math.max(0, A.hrs - 1.5);
     var baristasNeeded = Math.ceil(A.guests / (A.hrs * 50));
     var extraBaristas = Math.max(0, baristasNeeded - 1);
-    var pricePerDay = (30000 + extraGuests * 231 + Math.round(extraHrs * 6923) + extraBaristas * 15000 + persoTotal() * 100) / 100;
+    var pricePerDay = (30000 + extraGuests * 231 + Math.round(extraHrs * 6923) + extraBaristas * 15000) / 100;
     A.totalPrice = calcPrice();
 
-    document.getElementById('priceDisplay').innerHTML = EywaLaunchOffer.priceHTML(calcNormalPrice(),persoTotal()*A.days+supplementUrgence());
+    document.getElementById('priceDisplay').innerHTML = EywaLaunchOffer.priceHTML(calcNormalPrice(),persoTotal()+supplementUrgence());
 
     var dateStr = A.date ? new Date(A.date + 'T12:00').toLocaleDateString('fr-FR', {day:'numeric',month:'long',year:'numeric'}) : '';
     var ctx = A.guests + ' invité' + (A.guests > 1 ? 's' : '') + ' · ' + hrsLabel(A.hrs);

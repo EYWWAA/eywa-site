@@ -16,11 +16,13 @@ async function quote(q,fetcher,now=new Date()){
   let selected=[];try{selected=typeof q.options==='string'?JSON.parse(q.options):q.options||[];}catch(_){throw Error('Options invalides');}
   selected=personalizations.validate(q.t,selected);
   const staff=Math.max(1,Math.ceil(guests/(hours*50)));
-  const dailyCents=30000+Math.max(0,guests-50)*231+Math.round(Math.max(0,hours-1.5)*6923)+(staff-1)*15000+selected.reduce((n,name)=>n+optionRates[name]*100,0);
+  const dailyCents=30000+Math.max(0,guests-50)*231+Math.round(Math.max(0,hours-1.5)*6923)+(staff-1)*15000;
+  /* Personnalisations facturées une seule fois, quel que soit le nombre de jours (Louis, 15/11/2026). */
+  const optionsCents=selected.reduce((n,name)=>n+optionRates[name]*100,0);
   const daysUntil=Math.round((Date.parse(date+'T12:00:00Z')-Date.parse(policy.today(now)+'T12:00:00Z'))/86400000);
   const rushCupsCents=selected.includes('Gobelets sur mesure')&&daysUntil>=0&&daysUntil<14?5000:0;
-  const normalCents=dailyCents*days+rushCupsCents+Math.round(travel.total*100);
-  const personalizationCents=Math.round(selected.reduce((n,name)=>n+optionRates[name],0)*days*100)+rushCupsCents;
+  const normalCents=dailyCents*days+optionsCents+rushCupsCents+Math.round(travel.total*100);
+  const personalizationCents=optionsCents+rushCupsCents;
   if(!Number.isSafeInteger(normalCents)||normalCents<100||normalCents>1000000)throw Error('Contactez EYWA pour ce devis');
   return {normalCents,discountedCents:Math.round((normalCents-personalizationCents)/5)+personalizationCents,personalizationCents,rushCupsCents,dates,trip,travel};
 }

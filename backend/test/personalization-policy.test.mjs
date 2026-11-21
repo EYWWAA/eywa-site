@@ -25,11 +25,11 @@ test('server rejects restricted private options on a corporate request',async()=
  for(const option of ['Gobelets avec stickers'])await assert.rejects(()=>pricing.quote({...q,t:'Entreprise',options:[option]},undefined,now),/indisponible/);
  await assert.rejects(()=>pricing.quote({...q,options:['Gobelets sur mesure','Gobelets avec stickers']},undefined,now),/Choisissez/);
 });
-test('stickers cost 100 per day, printer 150, and stickers never incur the printed-cup rush charge',async()=>{
+test('stickers cost 100, printer 150, counted once per event, and stickers never incur the printed-cup rush charge',async()=>{
  const stickers=await pricing.quote({...q,options:['Gobelets avec stickers']},undefined,now);
  assert.equal(stickers.normalCents,40000);assert.equal(stickers.personalizationCents,10000);assert.equal(stickers.rushCupsCents,0);
  const custom={...q,dy:2,options:['Gobelets avec stickers','Logo sur les boissons']},c=await pricing.quote(custom,undefined,now);
- assert.equal(c.normalCents,110000);assert.equal(c.personalizationCents,50000);assert.equal(c.rushCupsCents,0);
- assert.equal(paymentPlan(c,{code:'NATHALIE08'},{}).totalCents,50100);
- assert.equal(quoteLines(custom,c).lineItems.reduce((n,l)=>n+l.normalCents,0),110000);
+ assert.equal(c.normalCents,85000);assert.equal(c.personalizationCents,25000);assert.equal(c.rushCupsCents,0);
+ assert.equal(paymentPlan(c,{code:'NATHALIE08'},{}).totalCents,25100);
+ assert.equal(quoteLines(custom,c).lineItems.reduce((n,l)=>n+l.normalCents,0),85000);
 });

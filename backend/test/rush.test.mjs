@@ -21,8 +21,8 @@ const cases=[
  [5,['Habillage du bar'],1,50000,20000,0],
  [5,['Logo sur les boissons'],1,45000,15000,0],
  [5,['Habillage du bar','Gobelets sur mesure','Logo sur les boissons'],1,90000,60000,5000],
- [5,['Gobelets sur mesure'],2,105000,45000,5000],
- [5,['Gobelets sur mesure'],3,155000,65000,5000]
+ [5,['Gobelets sur mesure'],2,85000,25000,5000],
+ [5,['Gobelets sur mesure'],3,115000,25000,5000]
 ];
 function fixedDate(instant){return class extends Date{constructor(...args){super(...(args.length?args:[instant]));}static now(){return new Date(instant).getTime();}};}
 function helpers(source,end){return source.slice(source.indexOf('  function joursAvantEvenement('),source.indexOf(end,source.indexOf('  function joursAvantEvenement(')));}
@@ -63,9 +63,9 @@ test('Stripe request separates the one-time rush fee and preserves the full NATH
  const checkout=createCheckout({quote:async()=>calculated,getBookings:async()=>bookings,getSlots:async()=>slots,reconcile:async()=>{},json:(statusCode,data)=>({statusCode,body:JSON.stringify(data)}),settings:{EYWA_LAUNCH_ENABLED:'false'},request:async(path,method,values)=>{posts++;params=values;return {id:'cs_test_rush',url:'https://checkout.stripe.com/c/pay/test'};}});
  const event=expected=>({httpMethod:'POST',body:JSON.stringify({quote,bookingDetails,code:'NATHALIE08',expectedCents:expected})});
  try{
-  assert.equal((await checkout(event(40100))).statusCode,409);assert.equal(posts,0);
-  assert.equal((await checkout(event(45100))).statusCode,200);assert.equal(posts,1);
-  assert.equal(params['line_items[0][price_data][unit_amount]'],'100');assert.equal(params['line_items[1][price_data][unit_amount]'],'40000');assert.equal(params['line_items[2][price_data][unit_amount]'],'5000');
-  assert.equal(params['line_items[2][price_data][product_data][name]'],'Impression accélérée des gobelets');assert.equal(params['metadata[quote_total_cents]'],'45100');assert.equal(params['metadata[balance_cents]'],'0');
+  assert.equal((await checkout(event(45100))).statusCode,409);assert.equal(posts,0);
+  assert.equal((await checkout(event(25100))).statusCode,200);assert.equal(posts,1);
+  assert.equal(params['line_items[0][price_data][unit_amount]'],'100');assert.equal(params['line_items[1][price_data][unit_amount]'],'20000');assert.equal(params['line_items[2][price_data][unit_amount]'],'5000');
+  assert.equal(params['line_items[2][price_data][product_data][name]'],'Impression accélérée des gobelets');assert.equal(params['metadata[quote_total_cents]'],'25100');assert.equal(params['metadata[balance_cents]'],'0');
  }finally{db.raw.close();}
 });
