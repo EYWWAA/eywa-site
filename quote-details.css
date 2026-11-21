@@ -17,3 +17,6 @@
 @media print{.quote-dock,.included-more-toggle{display:none}.quote-result{padding-bottom:0}.quote-lines details p{display:block}}
 
 .quote-description{position:relative;margin-top:10px;color:#556377;font-size:16px;line-height:1.6;padding-right:27px}.quote-description-copy{margin:0!important;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.quote-description.expanded .quote-description-copy{display:block;overflow:visible}.quote-description-toggle{position:absolute;right:0;bottom:0;border:0;background:#fff;color:#253b31;font:700 20px/1.28 sans-serif;padding:0 3px;min-width:27px;min-height:26px;cursor:pointer}.quote-description-toggle:focus-visible{outline:2px solid #203d30;outline-offset:3px}.quote-line-time{margin:10px 0 0;color:#718096;font-size:16px}.quote-result .upsell-info .quote-description{font-size:14px}@media print{.quote-description-copy{display:block;overflow:visible}.quote-description-toggle{display:none}}
+
+/* Options : même fond que la carte, plus de bloc gris carré (Louis, 21/11/2026). */
+html body.eywa-warm.quote-result .upsells{background:transparent!important}
