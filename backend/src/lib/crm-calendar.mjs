@@ -86,14 +86,24 @@ export function createCalendar(env,fetcher=fetch){
   try{
    await sql('UPDATE eywa_crm_calendar_state SET last_attempt=? WHERE id=1',now).run();
    const url=calendarFeedURL(env.EYWA_CALENDAR_ICS_URL);phase='download';
-   const response=await fetcher(url,{redirect:'error',signal:AbortSignal.timeout(20000),headers:{Accept:'text/calendar','Cache-Control':'no-cache'}});
+   let target=url,response;
+   for(let redirects=0;redirects<4;redirects++){
+    response=await fetcher(target,{redirect:'manual',signal:AbortSignal.timeout(20000),headers:{Accept:'text/calendar','Cache-Control':'no-cache'}});
+    if(![301,302,303,307,308].includes(response.status))break;
+    phase='redirect';const next=new URL(response.headers.get('Location')||'',target),original=new URL(url);
+    // Google peut rediriger son export. Le lien privé ne quitte jamais ses hôtes d’agenda.
+    if(next.protocol!=='https:'||!['calendar.google.com','www.google.com'].includes(next.hostname)||next.port||next.username||next.password||next.pathname!==original.pathname||next.search||next.hash||redirects===3)throw Error('CALENDAR_REDIRECT_REJECTED');
+    target=next.href;phase='download';
+   }
    if(!response.ok){phase='http-'+response.status;throw Error('CALENDAR_DOWNLOAD_FAILED');}
+   phase='download-body';
    if(Number(response.headers.get('Content-Length'))>2000000)throw Error('CALENDAR_TOO_LARGE');
    const reader=response.body.getReader(),decoder=new TextDecoder();let content='',size=0;
    for(;;){const part=await reader.read();if(part.done)break;size+=part.value.byteLength;if(size>2000000){await reader.cancel();throw Error('CALENDAR_TOO_LARGE');}content+=decoder.decode(part.value,{stream:true});}content+=decoder.decode();
    const ownerEmail=decodeURIComponent(new URL(url).pathname.split('/')[3]);phase='parse';
    const items=readCalendar(content,{mode:state.mode,now,ownerEmail});phase='database';await replace(items,now);return {ok:true,count:items.length};
-  }catch{
+  }catch(error){
+   if(phase.startsWith('download'))phase+='-'+(['AbortError','TimeoutError','TypeError'].includes(error?.name)?error.name:'failure');
    await sql('UPDATE eywa_crm_calendar_state SET last_error=? WHERE id=1','Google Agenda n’a pas pu être actualisé. Les anciens créneaux restent conservés. ['+phase+']').run();
    if(force)fail('Google Agenda n’a pas pu être actualisé. Les anciens créneaux restent conservés.',503);
   }finally{await sql("DELETE FROM eywa_job_locks WHERE name='calendar-sync'").run();}

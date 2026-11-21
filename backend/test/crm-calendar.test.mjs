@@ -67,5 +67,17 @@ test('Google calendar: failed download keeps busy dates and stale connection fai
  }finally{env.DB.raw.close();}
 });
 test('Google calendar: successful sync is read only, rate limited and restores freshness after an outage',async()=>{
- const env=setup();try{env.EYWA_CALENDAR_ICS_URL=privateURL;let calls=0;const c=createCalendar(env,async(url,opts)=>{calls++;assert.equal(url,privateURL);assert.equal(opts.redirect,'error');assert(!opts.method||opts.method==='GET');return new Response(source,{headers:{'Content-Type':'text/calendar'}});});assert.equal((await c.sync(true,now)).count,1);await c.sync(false,now+1000);assert.equal(calls,1);assert.equal((await c.status()).last_error,null);assert.equal(env.DB.raw.prepare('SELECT COUNT(*) n FROM eywa_email_outbox').get().n,0);}finally{env.DB.raw.close();}
+ const env=setup();try{env.EYWA_CALENDAR_ICS_URL=privateURL;let calls=0;const c=createCalendar(env,async(url,opts)=>{calls++;assert.equal(url,privateURL);assert.equal(opts.redirect,'manual');assert(!opts.method||opts.method==='GET');return new Response(source,{headers:{'Content-Type':'text/calendar'}});});assert.equal((await c.sync(true,now)).count,1);await c.sync(false,now+1000);assert.equal(calls,1);assert.equal((await c.status()).last_error,null);assert.equal(env.DB.raw.prepare('SELECT COUNT(*) n FROM eywa_email_outbox').get().n,0);}finally{env.DB.raw.close();}
+});
+
+test('Google calendar: redirects remain restricted to the same Google calendar export',async()=>{
+ const env=setup();try{
+  env.EYWA_CALENDAR_ICS_URL=privateURL;let calls=0;
+  const c=createCalendar(env,async(url)=>{calls++;return calls===1?new Response(null,{status:302,headers:{Location:privateURL.replace('calendar.google.com','www.google.com')}}):new Response(source);});
+  assert.equal((await c.sync(true,now)).count,1);assert.equal(calls,2);
+  for(const location of ['https://example.invalid/private-feed','https://www.google.com/other-path',privateURL+'?token=bad']){
+   let rejectedCalls=0;const bad=createCalendar(env,async()=>{rejectedCalls++;return new Response(null,{status:302,headers:{Location:location}});});
+   await assert.rejects(()=>bad.sync(true,now+1000),e=>e.status===503);assert.equal(rejectedCalls,1);assert.equal((await bad.status()).last_error.endsWith('[redirect]'),true);
+  }
+ }finally{env.DB.raw.close();}
 });
