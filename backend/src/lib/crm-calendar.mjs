@@ -5,6 +5,10 @@ const fail=(message,status=400)=>{throw Object.assign(Error(message),{status});}
 const day=ms=>policy.today(new Date(ms));
 const hash=s=>createHash('sha256').update(s).digest('hex');
 const short=(s,n=4000)=>String(s||'').trim().slice(0,n);
+export function isEywaService(title){
+ const t=String(title||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+ return /\beywa\b/i.test(t)&&!/\b(prospection|relances?|entrainement|pitch)\b|pour pratiquer|^\s*eywa\s*[-–—:]\s*appels?\b/i.test(t);
+}
 // Repli explicite pour les exports Google qui omettent VTIMEZONE (règles UE modernes).
 const parisZone='BEGIN:VTIMEZONE\r\nTZID:Europe/Paris\r\nBEGIN:STANDARD\r\nDTSTART:19961027T030000\r\nRRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU\r\nTZOFFSETFROM:+0200\r\nTZOFFSETTO:+0100\r\nEND:STANDARD\r\nBEGIN:DAYLIGHT\r\nDTSTART:19960331T020000\r\nRRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU\r\nTZOFFSETFROM:+0100\r\nTZOFFSETTO:+0200\r\nEND:DAYLIGHT\r\nEND:VTIMEZONE';
 export function calendarFeedURL(value){
@@ -30,7 +34,7 @@ export function readCalendar(ics,{mode='eywa',now=Date.now(),ownerEmail=''}={}){
   const main=list.find(c=>!c.hasProperty('recurrence-id'));
   if(!main)continue;
   const title=String(main.getFirstPropertyValue('summary')||'');
-  if(mode==='eywa'&&!/\beywa\b/i.test(title))continue;
+  if(mode==='eywa'&&!isEywaService(title))continue;
   if(String(main.getFirstPropertyValue('status')).toUpperCase()==='CANCELLED'||declined(main))continue;
   for(const c of list)for(const name of ['dtstart','dtend','recurrence-id','rdate','exdate'])for(const prop of c.getAllProperties(name))for(const value of prop.getValues()){
    if(!(value instanceof ICAL.Time))continue;
@@ -46,7 +50,7 @@ export function readCalendar(ics,{mode='eywa',now=Date.now(),ownerEmail=''}={}){
    const startsAt=current.startDate.toUnixTime()*1000,endsAt=current.endDate.toUnixTime()*1000;
    if(!Number.isFinite(startsAt)||!Number.isFinite(endsAt)||endsAt<=startsAt||endsAt-startsAt>366*86400000)fail('Durée d’événement invalide.');
    const cancelled=String(c.getFirstPropertyValue('status')).toUpperCase()==='CANCELLED',transparent=String(c.getFirstPropertyValue('transp')).toUpperCase()==='TRANSPARENT';
-   const summary=short(c.getFirstPropertyValue('summary')||title,300),isEywa=/\beywa\b/i.test(summary);
+   const summary=short(c.getFirstPropertyValue('summary')||title,300),isEywa=isEywaService(summary);
    if(endsAt>from&&startsAt<to&&!cancelled&&!declined(c)&&(mode==='eywa'?isEywa:!transparent)){
     const d=day(startsAt),time=new Date(startsAt).toLocaleTimeString('fr-FR',{timeZone:'Europe/Paris',hour:'2-digit',minute:'2-digit'}),last=day(endsAt-1);
     items.push({id:'calendar-'+hash(uid+'|'+(iterator?next.toString():'single')),startsAt,endsAt,block:!transparent,data:{name:summary||'Indisponibilité',date:d,lastDate:last,time,hours:(endsAt-startsAt)/3600000,days:Math.round((Date.parse(last+'T12:00:00Z')-Date.parse(d+'T12:00:00Z'))/86400000)+1,eventType:isEywa?'Événement EYWA dans Google Agenda':'Rendez-vous dans Google Agenda',location:short(c.getFirstPropertyValue('location'),500),notes:isEywa?short(c.getFirstPropertyValue('description'),6000):'',allDay:current.startDate.isDate,isEywa,transparent,guests:0,options:[],calendarSource:'Google Agenda'}});
@@ -78,17 +82,19 @@ export function createCalendar(env,fetcher=fetch){
   if(!env.EYWA_CALENDAR_ICS_URL){if(force)fail('La connexion automatique Google Agenda reste à autoriser.',409);return;}
   const state=await status();if(!force&&state.last_attempt&&now-state.last_attempt<900000)return;
   const lock=await sql("INSERT INTO eywa_job_locks(name,until_at) VALUES('calendar-sync',?) ON CONFLICT(name) DO UPDATE SET until_at=excluded.until_at WHERE until_at<? RETURNING name",now+120000,now).first();if(!lock){if(force)fail('Une synchronisation est déjà en cours.',409);return;}
+  let phase='configuration';
   try{
    await sql('UPDATE eywa_crm_calendar_state SET last_attempt=? WHERE id=1',now).run();
-   const url=calendarFeedURL(env.EYWA_CALENDAR_ICS_URL),response=await fetcher(url,{redirect:'error',signal:AbortSignal.timeout(20000),headers:{Accept:'text/calendar'}});
-   if(!response.ok)throw Error('CALENDAR_DOWNLOAD_FAILED');
+   const url=calendarFeedURL(env.EYWA_CALENDAR_ICS_URL);phase='download';
+   const response=await fetcher(url,{redirect:'error',signal:AbortSignal.timeout(20000),headers:{Accept:'text/calendar','Cache-Control':'no-cache'}});
+   if(!response.ok){phase='http-'+response.status;throw Error('CALENDAR_DOWNLOAD_FAILED');}
    if(Number(response.headers.get('Content-Length'))>2000000)throw Error('CALENDAR_TOO_LARGE');
    const reader=response.body.getReader(),decoder=new TextDecoder();let content='',size=0;
    for(;;){const part=await reader.read();if(part.done)break;size+=part.value.byteLength;if(size>2000000){await reader.cancel();throw Error('CALENDAR_TOO_LARGE');}content+=decoder.decode(part.value,{stream:true});}content+=decoder.decode();
-   const ownerEmail=decodeURIComponent(new URL(url).pathname.split('/')[3]);
-   const items=readCalendar(content,{mode:state.mode,now,ownerEmail});await replace(items,now);return {ok:true,count:items.length};
+   const ownerEmail=decodeURIComponent(new URL(url).pathname.split('/')[3]);phase='parse';
+   const items=readCalendar(content,{mode:state.mode,now,ownerEmail});phase='database';await replace(items,now);return {ok:true,count:items.length};
   }catch{
-   await sql("UPDATE eywa_crm_calendar_state SET last_error='Google Agenda n’a pas pu être actualisé. Les anciens créneaux restent conservés.' WHERE id=1").run();
+   await sql('UPDATE eywa_crm_calendar_state SET last_error=? WHERE id=1','Google Agenda n’a pas pu être actualisé. Les anciens créneaux restent conservés. ['+phase+']').run();
    if(force)fail('Google Agenda n’a pas pu être actualisé. Les anciens créneaux restent conservés.',503);
   }finally{await sql("DELETE FROM eywa_job_locks WHERE name='calendar-sync'").run();}
  }

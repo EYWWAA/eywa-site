@@ -2,7 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {database} from './booking.test.mjs';
-import {readCalendar,calendarFeedURL,createCalendar} from '../src/lib/crm-calendar.mjs';
+import {readCalendar,calendarFeedURL,createCalendar,isEywaService} from '../src/lib/crm-calendar.mjs';
 import {createBookings} from '../src/lib/bookings.mjs';
 import {createCRM} from '../src/lib/crm.mjs';
 const now=Date.parse('2026-11-20T12:00:00Z');
@@ -10,6 +10,10 @@ const feed=body=>'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:fixture\r\nX-WR-TIMEZ
 const event=(uid,title,start='20261201T120000',end='20261201T140000',extra='')=>'BEGIN:VEVENT\r\nUID:'+uid+'\r\nSUMMARY:'+title+'\r\nDTSTART;TZID=Europe/Paris:'+start+'\r\nDTEND;TZID=Europe/Paris:'+end+'\r\n'+extra+'\r\nEND:VEVENT';
 const source=feed(event('fixture','EYWA - Déjeuner',undefined,undefined,'LOCATION:Lieu fictif\r\nDESCRIPTION:Horaire provisoire\\nÀ confirmer.'));
 const privateURL='https://calendar.google.com/calendar/ical/fixture%40example.invalid/private-fixture0123456789/basic.ics';
+test('Google calendar: service import excludes administrative EYWA reminders and prospecting',()=>{
+ for(const name of ['EYWA – Prospection ULTRA','EYWA – Améliorer le pitch + entraînement d’appel','EYWA – Appels fêtes de fin d’année','EYWA – Services à Charleville (même gratuits) pour pratiquer'])assert.equal(isEywaService(name),false);
+ assert.equal(isEywaService('EYWA – Déjeuner Nathalie Siméon (AXA) – 30 pers – OFFERT'),true);
+});
 function setup(){const DB=database();for(const f of ['0003_transactional_email.sql','0004_automation.sql','0006_balance_invoices.sql'])DB.raw.exec(fs.readFileSync(new URL('../migrations/'+f,import.meta.url),'utf8'));return {DB};}
 test('Google calendar: default import keeps EYWA only, preserving location and provisional notes',()=>{
  const items=readCalendar(feed(event('one','EYWA - Déjeuner')+'\r\n'+event('personal','Rendez-vous personnel')),{now});assert.equal(items.length,1);assert.equal(items[0].startsAt,Date.parse('2026-12-01T11:00:00Z'));assert.equal(items[0].data.date,'2026-12-01');assert.equal(items[0].data.time,'12:00');
