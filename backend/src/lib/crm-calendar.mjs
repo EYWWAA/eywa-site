@@ -103,7 +103,11 @@ export function createCalendar(env,fetcher=fetch){
    const ownerEmail=decodeURIComponent(new URL(url).pathname.split('/')[3]);phase='parse';
    const items=readCalendar(content,{mode:state.mode,now,ownerEmail});phase='database';await replace(items,now);return {ok:true,count:items.length};
   }catch(error){
-   if(phase.startsWith('download'))phase+='-'+(['AbortError','TimeoutError','TypeError'].includes(error?.name)?error.name:'failure');
+   if(phase.startsWith('download')){
+    const message=String(error?.message||'');
+    const reason=/too many subrequests/i.test(message)?'subrequest-limit':/redirect/i.test(message)?'redirect-failure':/network|fetch failed|dns/i.test(message)?'network-failure':(['AbortError','TimeoutError','TypeError'].includes(error?.name)?error.name:'failure');
+    phase+='-'+reason;
+   }
    await sql('UPDATE eywa_crm_calendar_state SET last_error=? WHERE id=1','Google Agenda n’a pas pu être actualisé. Les anciens créneaux restent conservés. ['+phase+']').run();
    if(force)fail('Google Agenda n’a pas pu être actualisé. Les anciens créneaux restent conservés.',503);
   }finally{await sql("DELETE FROM eywa_job_locks WHERE name='calendar-sync'").run();}
