@@ -6,6 +6,7 @@ import {createCalendar} from './crm-calendar.mjs';
 import {stopQuote} from './followups.mjs';
 import {html,css,js,icon,touchIcon} from './crm-assets.mjs';
 import {createPasskeys} from './crm-passkeys.mjs';
+import {createProspects} from './crm-prospects.mjs';
 const headers={'Cache-Control':'private, no-store','Pragma':'no-cache','X-Robots-Tag':'noindex, nofollow','Referrer-Policy':'no-referrer','X-Content-Type-Options':'nosniff','X-Frame-Options':'DENY','Content-Security-Policy':"default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' https://eywacoffeecatering.com data:; connect-src 'self'; manifest-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"};
 const json=(status,data,extra={})=>new Response(JSON.stringify(data),{status,headers:{...headers,'Content-Type':'application/json; charset=utf-8',...extra}});
 export async function crmHTTP(request,env,ctx){
@@ -34,6 +35,7 @@ export async function crmHTTP(request,env,ctx){
   if(path==='/espace/api/logout'&&request.method==='POST'){await logout(request,env);return json(200,{ok:true},{'Set-Cookie':'__Host-eywa_session=; Secure; HttpOnly; SameSite=Strict; Path=/; Max-Age=0'});}
   const crm=createCRM(env);
   if(path==='/espace/api/overview'&&request.method==='GET'){await crm.sync();return json(200,await crm.overview());}
+  if(path==='/espace/api/prospect'&&request.method==='GET')return json(200,await createProspects(env).details(u.searchParams.get('id')||''));
   if(path==='/espace/api/event'&&request.method==='GET')return json(200,await crm.details(u.searchParams.get('id')||''));
   if(path==='/espace/api/draft-preview'&&request.method==='GET'){
    const mail=await createCorrespondence(env).preview(u.searchParams.get('id')||'');
@@ -52,5 +54,5 @@ export async function crmHTTP(request,env,ctx){
  }catch(e){return json(e.status||503,{error:e.status?e.message:'L’espace est temporairement indisponible. Réessayez.'});}
 }
 export async function crmAutomation(env){
- const crm=createCRM(env),mailer=createMailer(env);await createCalendar(env).sync();await crm.sync();await crm.reviewQueue(mailer);await crm.alerts(mailer);await cleanAuth(env);
+ const crm=createCRM(env),mailer=createMailer(env);await createCalendar(env).sync();await crm.sync();await crm.reviewQueue(mailer);await crm.alerts(mailer);try{await createProspects(env).syncMail();}catch{/* Nouvel essai au prochain passage. */}await cleanAuth(env);
 }
