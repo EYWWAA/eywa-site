@@ -2,6 +2,14 @@
 import {randomUUID} from 'node:crypto';
 import policy from './booking-policy.cjs';
 
+// Heure de Paris → horodatage UTC (gère heure d'été et d'hiver).
+export function parisTime(date,time){for(const offset of [1,2]){const t=Date.parse(date+'T'+time+':00Z')-offset*3600000;const f=new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Paris',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(t)).replace(' ','T');if(f===date+'T'+time)return t;}fail('Heure invalide.');}
+const icsDate=t=>new Date(t).toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'');
+const icsText=s=>String(s).replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\r?\n/g,'\\n');
+export function calendarInvite(e){return ['BEGIN:VCALENDAR','PRODID:-//EYWA//Espace//FR','VERSION:2.0','METHOD:REQUEST','BEGIN:VEVENT','UID:'+e.uid+'@eywacoffeecatering.com','DTSTAMP:'+icsDate(e.stamp),'DTSTART:'+icsDate(e.start),'DTEND:'+icsDate(e.end),'SUMMARY:'+icsText(e.title),'DESCRIPTION:'+icsText(e.description),'LOCATION:'+icsText(e.location),'URL:'+e.location,'ORGANIZER;CN=EYWA Coffee Catering:mailto:contact.eywa08@gmail.com','ATTENDEE;CN='+icsText(e.attendeeName)+';ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:'+e.attendee,'STATUS:CONFIRMED','SEQUENCE:0','BEGIN:VALARM','TRIGGER:-PT15M','ACTION:DISPLAY','DESCRIPTION:Rappel','END:VALARM','END:VEVENT','END:VCALENDAR'].join('\r\n')+'\r\n';}
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function inviteHtml(v){return '<!doctype html><html lang="fr"><body style="margin:0;background:#f6f3ec;font-family:Arial,Helvetica,sans-serif;color:#291817"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:28px 12px"><table role="presentation" width="560" style="width:100%;max-width:560px;background:#fffdf8;border-radius:10px"><tr><td style="padding:30px 26px;font-size:15px;line-height:1.65">'+(v.copy?'<p style="color:#72766c;font-size:13px">Copie de l’invitation envoyée à '+esc(v.name)+' ('+esc(v.email)+').</p>':'')+'<p>Bonjour '+esc(v.first)+',</p><p>Je vous envoie l’invitation pour notre échange en visio le <b>'+esc(v.label)+'</b> ('+v.minutes+' min).</p><p style="margin:24px 0"><a href="'+esc(v.meetUrl)+'" style="display:inline-block;padding:13px 20px;border-radius:6px;background:#243d32;color:#fffdf8;text-decoration:none;font-weight:bold">Rejoindre la visio Google Meet</a></p>'+(v.message?'<p style="white-space:pre-wrap">'+esc(v.message)+'</p>':'')+'<p style="color:#72766c;font-size:13px">Le rendez-vous est en pièce jointe : vous pouvez l’ajouter à votre agenda en un clic.</p><p>Louis<br>EYWA Coffee Catering<br>07 49 90 21 56</p></td></tr></table></td></tr></table></body></html>';}
+
 export const statuses={'a-contacter':'À contacter',contacte:'Contacté',repondu:'A répondu',rdv:'Rendez-vous',devis:'Devis envoyé',gagne:'Client',perdu:'Sans suite'};
 export const sources={linkedin:'LinkedIn',mail:'E-mail',telephone:'Téléphone',salon:'Salon ou événement',recommandation:'Recommandation',autre:'Autre'};
 export const kinds={linkedin:'Message LinkedIn',mail_out:'E-mail envoyé',mail_in:'E-mail reçu',call:'Appel',meeting:'Rendez-vous',note:'Note'};
@@ -54,18 +62,25 @@ export function createProspects(env,deps={}){
   if(action==='prospect-meeting'){
    const p=await sql('SELECT id,name,email FROM eywa_crm_prospects WHERE id=?',text(b.prospectId,100)).first();if(!p)fail('Prospect introuvable.',404);
    if(!p.email)fail('Ajoutez l’e-mail de la personne dans sa fiche avant de l’inviter.');
+   const config=JSON.parse((await sql('SELECT data_json FROM eywa_crm_settings WHERE id=1').first())?.data_json||'{}'),meetUrl=config.meetUrl||'';
+   if(!/^https:\/\/meet\.google\.com\/[a-z]{3}-[a-z]{4}-[a-z]{3}$/.test(meetUrl))fail('Ajoutez d’abord votre lien Google Meet dans Réglages.');
    const when=day(b.date),time=text(b.time,5),minutes=Number(b.minutes);
    if(!when||!/^([01]\d|2[0-3]):[0-5]\d$/.test(time))fail('Choisissez la date et l’heure.');
-   if(when<policy.today(new Date(now)))fail('Cette date est passée.');
    if(![15,30,45,60,90].includes(minutes))fail('Durée invalide.');
-   if(!env.EYWA_MAIL_RELAY_URL||!env.EYWA_MAIL_RELAY_SECRET)fail('L’envoi d’invitations est indisponible.',503);
-   const title=text(b.title,200)||'Échange avec EYWA',message=text(b.message,3000),start=when+'T'+time;
-   let r;try{const res=await (deps.fetcher||fetch)(env.EYWA_MAIL_RELAY_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({secret:env.EYWA_MAIL_RELAY_SECRET,action:'meeting',id:'meet-'+p.id+'-'+start,to:p.email,start,minutes,title,description:message}),redirect:'follow',signal:AbortSignal.timeout(25000)});r=await res.json();}catch{fail('Google n’a pas répondu. Réessayez.',503);}
-   if(!r||r.ok!==true)fail(r?.error==='PAST'?'Cette heure est déjà passée.':'L’invitation n’est pas partie. Vérifiez que l’accès à l’agenda Google EYWA est autorisé.',502);
+   const startMs=parisTime(when,time);if(startMs<now)fail('Cette heure est déjà passée.');
+   const title=text(b.title,200)||'Échange avec EYWA',message=text(b.message,3000),uid='meet-'+p.id+'-'+when+'T'+time.replace(':','');
    const label=new Date(Date.parse(when+'T12:00:00Z')).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',timeZone:'UTC'})+' à '+time.replace(':','h');
-   await env.DB.batch([sql('INSERT INTO eywa_crm_prospect_events(id,prospect_id,kind,at,summary,body,created_at) VALUES(?,?,?,?,?,?,?) ON CONFLICT(id) DO NOTHING','meet:'+p.id+':'+start,p.id,'meeting',now,'Invitation Google Meet envoyée pour le '+label+' ('+minutes+' min)',(r.meetUrl?'Lien : '+r.meetUrl+'\n\n':'')+message,now),
+   const ics=calendarInvite({uid,start:startMs,end:startMs+minutes*60000,title,description:(message?message+'\n\n':'')+'Lien de la visio : '+meetUrl,location:meetUrl,attendee:p.email,attendeeName:p.name,stamp:now});
+   const first=p.name.split(/\s+/)[0];
+   const mail=copy=>({subject:(copy?'Copie : ':'')+title+' · '+label,text:(copy?'Copie de l’invitation envoyée à '+p.name+' ('+p.email+').\n\n':'')+'Bonjour '+first+',\n\nJe vous envoie l’invitation pour notre échange en visio le '+label+' ('+minutes+' min).\n\nLien Google Meet : '+meetUrl+'\n\n'+(message?message+'\n\n':'')+'Le rendez-vous est en pièce jointe, vous pouvez l’ajouter à votre agenda en un clic.\n\nLouis\nEYWA Coffee Catering\n07 49 90 21 56',html:inviteHtml({copy,name:p.name,email:p.email,first,label,minutes,meetUrl,message}),ics});
+   if(!deps.mailer)fail('L’envoi est indisponible.',503);
+   await deps.mailer.enqueue('invite:'+uid,p.email,mail(false),null,'prospect-invite');
+   await deps.mailer.enqueue('invite:'+uid+':copie','contact.eywa08@gmail.com',mail(true),null,'prospect-invite');
+   await env.DB.batch([sql('INSERT INTO eywa_crm_prospect_events(id,prospect_id,kind,at,summary,body,created_at) VALUES(?,?,?,?,?,?,?) ON CONFLICT(id) DO NOTHING','meet:'+uid,p.id,'meeting',now,'Invitation Google Meet envoyée pour le '+label+' ('+minutes+' min)','Lien : '+meetUrl+(message?'\n\n'+message:''),now),
     sql("UPDATE eywa_crm_prospects SET status=CASE WHEN status IN ('a-contacter','contacte','repondu') THEN 'rdv' ELSE status END,next_action_date=?,updated_at=? WHERE id=?",when,now,p.id)]);
-   return {ok:true,id:p.id,meetUrl:r.meetUrl||''};
+   await deps.mailer.deliver('invite:'+uid);await deps.mailer.deliver('invite:'+uid+':copie');
+   const sent=await sql("SELECT status FROM eywa_email_outbox WHERE id=?",'invite:'+uid).first();
+   return {ok:true,id:p.id,meetUrl,sent:sent?.status==='sent'};
   }
   if(action==='prospect-log-delete'){
    const r=await sql("DELETE FROM eywa_crm_prospect_events WHERE id=? AND id NOT LIKE 'gmail:%' RETURNING prospect_id",text(b.id,100)).first();if(!r)fail('Échange introuvable.',404);return {ok:true,id:r.prospect_id};

@@ -3,9 +3,10 @@ import policy from './booking-policy.cjs';
 import {escape,safeURL} from './mail-templates.mjs';
 import {createOrders} from './crm-orders.mjs';
 import {createProspects} from './crm-prospects.mjs';
+import {createMailer} from './mail-delivery.mjs';
 import {createCorrespondence} from './crm-correspondence.mjs';
 import {createCalendar} from './crm-calendar.mjs';
-export const defaultSettings={loadingMinutes:30,setupMinutes:60,cleanupMinutes:45,travelMinutes:30,reviewEnabled:true,reviewUrl:'https://search.google.com/local/writereview?placeid=ChIJzVp-mvUAbgUR1IO2D4738BY',reviewDelayDays:1};
+export const defaultSettings={loadingMinutes:30,setupMinutes:60,cleanupMinutes:45,travelMinutes:30,reviewEnabled:true,reviewUrl:'https://search.google.com/local/writereview?placeid=ChIJzVp-mvUAbgUR1IO2D4738BY',reviewDelayDays:1,meetUrl:''};
 const fail=(message,status=400)=>{throw Object.assign(Error(message),{status});};
 const parse=s=>{try{return JSON.parse(s||'{}');}catch{return {};}};
 const text=(v,max=1000)=>String(v??'').trim().slice(0,max);
@@ -45,7 +46,7 @@ export async function occupiedTimelineDays(env,q,calculated){
  return [...new Set([...dates,...calculated.dates])].sort();
 }
 export function createCRM(env){
- const prospecting=createProspects(env),procurement=createOrders(env),correspondence=createCorrespondence(env),calendar=createCalendar(env);
+ const prospecting=createProspects(env,{mailer:createMailer(env)}),procurement=createOrders(env),correspondence=createCorrespondence(env),calendar=createCalendar(env);
  const sql=(s,...v)=>env.DB.prepare(s).bind(...v);
  async function settings(){return {...defaultSettings,...parse((await sql('SELECT data_json FROM eywa_crm_settings WHERE id=1').first())?.data_json)};}
  async function event(id){const row=await sql('SELECT * FROM eywa_crm_events WHERE id=?',id).first();if(!row)fail('Événement introuvable.',404);return {...row,data:parse(row.data_json)};}
@@ -105,6 +106,7 @@ export function createCRM(env){
    for(const key of ['loadingMinutes','setupMinutes','cleanupMinutes','travelMinutes']){const n=Number(b[key]);if(!Number.isInteger(n)||n<0||n>2880)fail('Durée invalide.');next[key]=n;}
    next.reviewEnabled=b.reviewEnabled===true;next.reviewDelayDays=Number(b.reviewDelayDays);if(!Number.isInteger(next.reviewDelayDays)||next.reviewDelayDays<1||next.reviewDelayDays>30)fail('Délai d’avis invalide.');
    const u=new URL(String(b.reviewUrl||current.reviewUrl));if(u.protocol!=='https:'||!['search.google.com','g.page','www.google.com','maps.app.goo.gl'].includes(u.hostname))fail('Utilisez le lien officiel de votre fiche Google.');next.reviewUrl=u.href;
+   const meet=String(b.meetUrl??current.meetUrl??'').trim();if(meet){let m;try{m=new URL(meet);}catch{fail('Lien Google Meet invalide.');}if(m.protocol!=='https:'||m.hostname!=='meet.google.com'||!/^\/[a-z]{3}-[a-z]{4}-[a-z]{3}$/.test(m.pathname))fail('Collez un lien Google Meet du type https://meet.google.com/abc-defg-hij.');next.meetUrl='https://meet.google.com'+m.pathname;}else next.meetUrl='';
    await sql('UPDATE eywa_crm_settings SET data_json=? WHERE id=1',JSON.stringify(next)).run();await audit(action,'settings');return {ok:true};
   }
   if(action==='task'){

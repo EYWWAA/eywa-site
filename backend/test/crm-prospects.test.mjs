@@ -34,22 +34,32 @@ test('Prospects: Gmail exchanges are imported once, inbound mail marks a reply',
  }finally{DB.raw.close();}
 });
 
-test('Prospects: Google Meet invitation goes through the relay once and books a meeting',async()=>{
- const DB=crmDatabase();let sent=[];
- const fetcher=async(url,o)=>{const b=JSON.parse(o.body);sent.push(b);return new Response(JSON.stringify(b.action==='meeting'?{ok:true,meetUrl:'https://meet.google.com/abc-defg-hij'}:{ok:false}));};
- const p=createProspects(env(DB),{fetcher});try{
+test('Prospects: Meet invitation is mailed with a calendar file, to the prospect and a copy to EYWA',async()=>{
+ const DB=crmDatabase(),queued=[],delivered=[];
+ const mailer={enqueue:async(id,to,payload,q,kind)=>{queued.push({id,to,payload,kind});DB.raw.prepare("INSERT OR IGNORE INTO eywa_email_outbox(id,recipient,payload_json,created_at,kind) VALUES(?,?,?,?,?)").run(id,to,JSON.stringify(payload),Date.now(),kind);},deliver:async id=>{delivered.push(id);DB.raw.prepare("UPDATE eywa_email_outbox SET status='sent' WHERE id=?").run(id);}};
+ const p=createProspects(env(DB),{mailer});try{
+  DB.raw.prepare("INSERT OR REPLACE INTO eywa_crm_settings(id,data_json) VALUES(1,?)").run(JSON.stringify({}));
   const {id}=await p.mutate('prospect',{...base,email:'',status:'repondu'});
   await assert.rejects(()=>p.mutate('prospect-meeting',{prospectId:id,date:'2099-01-05',time:'14:30',minutes:30}),/e-mail/);
   await p.mutate('prospect',{...base,id,status:'repondu'});
+  await assert.rejects(()=>p.mutate('prospect-meeting',{prospectId:id,date:'2099-01-05',time:'14:30',minutes:30}),/Réglages/);
+  DB.raw.prepare("UPDATE eywa_crm_settings SET data_json=? WHERE id=1").run(JSON.stringify({meetUrl:'https://meet.google.com/abc-defg-hij'}));
   await assert.rejects(()=>p.mutate('prospect-meeting',{prospectId:id,date:'2020-01-05',time:'14:30',minutes:30}),/passée/);
   await assert.rejects(()=>p.mutate('prospect-meeting',{prospectId:id,date:'2099-01-05',time:'25:00',minutes:30}),/heure/);
   await assert.rejects(()=>p.mutate('prospect-meeting',{prospectId:id,date:'2099-01-05',time:'14:30',minutes:7}),/Durée/);
-  const r=await p.mutate('prospect-meeting',{prospectId:id,date:'2099-01-05',time:'14:30',minutes:30,title:'Bar à café pour vos portes ouvertes',message:'À très vite'});
-  assert.equal(r.meetUrl,'https://meet.google.com/abc-defg-hij');
-  assert.equal(sent.at(-1).to,'prospect@example.com');assert.equal(sent.at(-1).start,'2099-01-05T14:30');assert.equal(sent.at(-1).action,'meeting');
-  const d=await p.details(id);assert.equal(d.status,'rdv');assert.equal(d.next_action_date,'2099-01-05');assert.equal(d.events[0].kind,'meeting');assert(d.events[0].body.includes('meet.google.com'));
+  const r=await p.mutate('prospect-meeting',{prospectId:id,date:'2099-01-05',time:'14:30',minutes:30,title:'Bar à café, portes ouvertes',message:'À très vite'});
+  assert.equal(r.sent,true);assert.equal(r.meetUrl,'https://meet.google.com/abc-defg-hij');
+  assert.deepEqual(queued.map(q=>q.to),['prospect@example.com','contact.eywa08@gmail.com']);assert.equal(delivered.length,2);
+  const ics=queued[0].payload.ics;
+  assert.match(ics,/METHOD:REQUEST/);assert.match(ics,/DTSTART:20990105T133000Z/);assert.match(ics,/DTEND:20990105T140000Z/);assert.match(ics,/ATTENDEE;CN=Personne fictive.*mailto:prospect@example.com/);assert.match(ics,/SUMMARY:Bar à café\\, portes ouvertes/);
+  assert.match(queued[0].payload.html,/meet\.google\.com\/abc-defg-hij/);assert(!queued[0].payload.subject.startsWith('Copie'));assert(queued[1].payload.subject.startsWith('Copie'));
+  const d=await p.details(id);assert.equal(d.status,'rdv');assert.equal(d.next_action_date,'2099-01-05');assert.equal(d.events[0].kind,'meeting');
   await p.mutate('prospect-meeting',{prospectId:id,date:'2099-01-05',time:'14:30',minutes:30});assert.equal((await p.details(id)).events.length,1);
-  const down=createProspects(env(DB),{fetcher:async()=>new Response(JSON.stringify({ok:false}))});
-  await assert.rejects(()=>down.mutate('prospect-meeting',{prospectId:id,date:'2099-02-05',time:'10:00',minutes:30}),/agenda Google/);
  }finally{DB.raw.close();}
+});
+
+test('Prospects: Paris time handles winter and summer',async()=>{
+ const {parisTime}=await import('../src/lib/crm-prospects.mjs');
+ assert.equal(new Date(parisTime('2027-01-15','10:00')).toISOString(),'2027-01-15T09:00:00.000Z');
+ assert.equal(new Date(parisTime('2027-07-15','10:00')).toISOString(),'2027-07-15T08:00:00.000Z');
 });
