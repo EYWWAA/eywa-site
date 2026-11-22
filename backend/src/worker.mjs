@@ -15,6 +15,7 @@ import {createStripe} from './lib/stripe.mjs';
 import {createCheckout} from './checkout.mjs';
 import {createPaymentStatus} from './paymentStatus.mjs';
 import {createWebhook} from './webhook.mjs';
+import {createMeetings} from './lib/crm-meetings.mjs';
 import {queueBalanceInvoices,balanceCheckout,recordBalancePayment} from './lib/balance.mjs';
 import {crmHTTP,crmAutomation} from './lib/crm-http.mjs';
 import {occupiedTimelineDays} from './lib/crm.mjs';
@@ -47,6 +48,7 @@ export async function handle(request,env,ctx,displayCache){
   catch(e){return send(stripe.json(400,{code:e.code||'INVALID_DATES',minDate:policy.minimumDate(),error:'Réservez au moins 3 jours à l’avance et choisissez des dates valides.'}));}
   try{await bookings.ready();await reconcileBookings(bookings,stripe.request);const blocked=await bookings.busy(from,to);return send(stripe.json(200,{minDate:policy.minimumDate(),blocked,available:blocked.length===0}));}catch{return send(stripe.json(503,{error:'Le calendrier est temporairement indisponible. Réessayez avant de réserver.'}));}
  }
+ if(['/visio','/visio.ics','/visio-decision'].includes(route)){try{const r=await createMeetings(env,{mailer}).publicRoute(request,url);if(r)return r;}catch{return new Response('Service momentanément indisponible. Appelez EYWA au 07 49 90 21 56.',{status:503,headers:{'Content-Type':'text/plain; charset=utf-8'}});}}
  const event={httpMethod:request.method,headers:Object.fromEntries(request.headers),queryStringParameters:Object.fromEntries(url.searchParams),body:request.method==='GET'||request.method==='HEAD'?null:await request.text(),isBase64Encoded:false};
  if(route==='/quote-view'&&request.method==='GET')return quotes.view(url.searchParams.get('id'));
  if(route==='/quote-pdf'&&request.method==='GET'){

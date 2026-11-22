@@ -52,7 +52,7 @@ test('Prospects: Meet invitation is mailed with agenda links, to the prospect an
   assert.deepEqual(queued.map(q=>q.to),['prospect@example.com','contact.eywa08@gmail.com']);assert.equal(delivered.length,2);
   const pay=queued[0].payload;assert.equal(pay.ics,undefined);
   assert.match(pay.subject,/^Visio avec Louis Le Poulain · EYWA Coffee Catering · /);
-  assert.match(pay.html,/meet\.google\.com\/abc-defg-hij/);assert.match(pay.html,/calendar\.google\.com\/calendar\/render\?action=TEMPLATE/);assert.match(pay.html,/dates=20990105T133000Z%2F20990105T140000Z/);assert.match(pay.html,/outlook\.live\.com/);
+  assert.match(pay.html,/meet\.google\.com\/abc-defg-hij/);assert.match(pay.html,/calendar\.google\.com\/calendar\/render\?action=TEMPLATE/);assert.match(pay.html,/dates=20990105T133000Z%2F20990105T140000Z/);assert.match(pay.html,/outlook\.live\.com/);assert.match(pay.html,/Apple Calendrier/);assert.match(pay.html,/visio\.ics\?m=/);assert.match(pay.html,/Proposer un autre créneau/);
   assert(pay.html.indexOf('Rejoindre la visio')<pay.html.indexOf('Google Agenda'));assert(!pay.subject.startsWith('Copie'));assert(queued[1].payload.subject.startsWith('Copie'));
   const d=await p.details(id);assert.equal(d.status,'rdv');assert.equal(d.next_action_date,'2099-01-05');assert.equal(d.events[0].kind,'meeting');
   await p.mutate('prospect-meeting',{prospectId:id,date:'2099-01-05',time:'14:30',minutes:30});assert.equal((await p.details(id)).events.length,1);
