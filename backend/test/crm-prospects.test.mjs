@@ -34,7 +34,7 @@ test('Prospects: Gmail exchanges are imported once, inbound mail marks a reply',
  }finally{DB.raw.close();}
 });
 
-test('Prospects: Meet invitation is mailed with a calendar file, to the prospect and a copy to EYWA',async()=>{
+test('Prospects: Meet invitation is mailed with agenda links, to the prospect and a copy to EYWA',async()=>{
  const DB=crmDatabase(),queued=[],delivered=[];
  const mailer={enqueue:async(id,to,payload,q,kind)=>{queued.push({id,to,payload,kind});DB.raw.prepare("INSERT OR IGNORE INTO eywa_email_outbox(id,recipient,payload_json,created_at,kind) VALUES(?,?,?,?,?)").run(id,to,JSON.stringify(payload),Date.now(),kind);},deliver:async id=>{delivered.push(id);DB.raw.prepare("UPDATE eywa_email_outbox SET status='sent' WHERE id=?").run(id);}};
  const p=createProspects(env(DB),{mailer});try{
@@ -47,12 +47,13 @@ test('Prospects: Meet invitation is mailed with a calendar file, to the prospect
   await assert.rejects(()=>p.mutate('prospect-meeting',{prospectId:id,date:'2020-01-05',time:'14:30',minutes:30}),/passée/);
   await assert.rejects(()=>p.mutate('prospect-meeting',{prospectId:id,date:'2099-01-05',time:'25:00',minutes:30}),/heure/);
   await assert.rejects(()=>p.mutate('prospect-meeting',{prospectId:id,date:'2099-01-05',time:'14:30',minutes:7}),/Durée/);
-  const r=await p.mutate('prospect-meeting',{prospectId:id,date:'2099-01-05',time:'14:30',minutes:30,title:'Bar à café, portes ouvertes',message:'À très vite'});
+  const r=await p.mutate('prospect-meeting',{prospectId:id,date:'2099-01-05',time:'14:30',minutes:30,});
   assert.equal(r.sent,true);assert.equal(r.meetUrl,'https://meet.google.com/abc-defg-hij');
   assert.deepEqual(queued.map(q=>q.to),['prospect@example.com','contact.eywa08@gmail.com']);assert.equal(delivered.length,2);
-  const ics=queued[0].payload.ics;
-  assert.match(ics,/METHOD:REQUEST/);assert.match(ics,/DTSTART:20990105T133000Z/);assert.match(ics,/DTEND:20990105T140000Z/);assert.match(ics,/ATTENDEE;CN=Personne fictive.*mailto:prospect@example.com/);assert.match(ics,/SUMMARY:Bar à café\\, portes ouvertes/);
-  assert.match(queued[0].payload.html,/meet\.google\.com\/abc-defg-hij/);assert(!queued[0].payload.subject.startsWith('Copie'));assert(queued[1].payload.subject.startsWith('Copie'));
+  const pay=queued[0].payload;assert.equal(pay.ics,undefined);
+  assert.match(pay.subject,/^Visio avec Louis Le Poulain · EYWA Coffee Catering · /);
+  assert.match(pay.html,/meet\.google\.com\/abc-defg-hij/);assert.match(pay.html,/calendar\.google\.com\/calendar\/render\?action=TEMPLATE/);assert.match(pay.html,/dates=20990105T133000Z%2F20990105T140000Z/);assert.match(pay.html,/outlook\.live\.com/);
+  assert(pay.html.indexOf('Rejoindre la visio')<pay.html.indexOf('Google Agenda'));assert(!pay.subject.startsWith('Copie'));assert(queued[1].payload.subject.startsWith('Copie'));
   const d=await p.details(id);assert.equal(d.status,'rdv');assert.equal(d.next_action_date,'2099-01-05');assert.equal(d.events[0].kind,'meeting');
   await p.mutate('prospect-meeting',{prospectId:id,date:'2099-01-05',time:'14:30',minutes:30});assert.equal((await p.details(id)).events.length,1);
  }finally{DB.raw.close();}
