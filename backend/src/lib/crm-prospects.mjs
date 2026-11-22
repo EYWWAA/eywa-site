@@ -13,7 +13,7 @@ function linkedin(v){const s=text(v,500);if(!s)return '';let u;try{u=new URL(s);
 function phone(v){const s=text(v,40);if(s&&!/^[+\d][\d\s.()-]{5,}$/.test(s))fail('Numéro de téléphone invalide.');return s;}
 function day(v){const s=text(v,10);if(!s)return null;if(!policy.validDate(s))fail('Date invalide.');return s;}
 
-export function createProspects(env){
+export function createProspects(env,deps={}){
  const sql=(s,...v)=>env.DB.prepare(s).bind(...v);
  async function list(){
   return (await sql(`SELECT p.id,p.name,p.company,p.role,p.email,p.phone,p.linkedin_url,p.source,p.status,p.next_action_date,p.updated_at,
@@ -50,6 +50,22 @@ export function createProspects(env){
    await env.DB.batch([sql('INSERT INTO eywa_crm_prospect_events(id,prospect_id,kind,at,summary,created_at) VALUES(?,?,?,?,?,?)',randomUUID(),p.id,b.kind,at,summary,now),
     sql("UPDATE eywa_crm_prospects SET status=CASE WHEN status='a-contacter' THEN 'contacte' ELSE status END,next_action_date=COALESCE(?,next_action_date),updated_at=? WHERE id=?",day(b.nextActionDate),now,p.id)]);
    return {ok:true,id:p.id};
+  }
+  if(action==='prospect-meeting'){
+   const p=await sql('SELECT id,name,email FROM eywa_crm_prospects WHERE id=?',text(b.prospectId,100)).first();if(!p)fail('Prospect introuvable.',404);
+   if(!p.email)fail('Ajoutez l’e-mail de la personne dans sa fiche avant de l’inviter.');
+   const when=day(b.date),time=text(b.time,5),minutes=Number(b.minutes);
+   if(!when||!/^([01]\d|2[0-3]):[0-5]\d$/.test(time))fail('Choisissez la date et l’heure.');
+   if(when<policy.today(new Date(now)))fail('Cette date est passée.');
+   if(![15,30,45,60,90].includes(minutes))fail('Durée invalide.');
+   if(!env.EYWA_MAIL_RELAY_URL||!env.EYWA_MAIL_RELAY_SECRET)fail('L’envoi d’invitations est indisponible.',503);
+   const title=text(b.title,200)||'Échange avec EYWA',message=text(b.message,3000),start=when+'T'+time;
+   let r;try{const res=await (deps.fetcher||fetch)(env.EYWA_MAIL_RELAY_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({secret:env.EYWA_MAIL_RELAY_SECRET,action:'meeting',id:'meet-'+p.id+'-'+start,to:p.email,start,minutes,title,description:message}),redirect:'follow',signal:AbortSignal.timeout(25000)});r=await res.json();}catch{fail('Google n’a pas répondu. Réessayez.',503);}
+   if(!r||r.ok!==true)fail(r?.error==='PAST'?'Cette heure est déjà passée.':'L’invitation n’est pas partie. Vérifiez que l’accès à l’agenda Google EYWA est autorisé.',502);
+   const label=new Date(Date.parse(when+'T12:00:00Z')).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',timeZone:'UTC'})+' à '+time.replace(':','h');
+   await env.DB.batch([sql('INSERT INTO eywa_crm_prospect_events(id,prospect_id,kind,at,summary,body,created_at) VALUES(?,?,?,?,?,?,?) ON CONFLICT(id) DO NOTHING','meet:'+p.id+':'+start,p.id,'meeting',now,'Invitation Google Meet envoyée pour le '+label+' ('+minutes+' min)',(r.meetUrl?'Lien : '+r.meetUrl+'\n\n':'')+message,now),
+    sql("UPDATE eywa_crm_prospects SET status=CASE WHEN status IN ('a-contacter','contacte','repondu') THEN 'rdv' ELSE status END,next_action_date=?,updated_at=? WHERE id=?",when,now,p.id)]);
+   return {ok:true,id:p.id,meetUrl:r.meetUrl||''};
   }
   if(action==='prospect-log-delete'){
    const r=await sql("DELETE FROM eywa_crm_prospect_events WHERE id=? AND id NOT LIKE 'gmail:%' RETURNING prospect_id",text(b.id,100)).first();if(!r)fail('Échange introuvable.',404);return {ok:true,id:r.prospect_id};

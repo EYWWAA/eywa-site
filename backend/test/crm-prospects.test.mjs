@@ -33,3 +33,23 @@ test('Prospects: Gmail exchanges are imported once, inbound mail marks a reply',
   assert.equal(await createProspects({...env(DB),EYWA_GMAIL_ARCHIVE_ENABLED:'false'}).syncMail(fetcher),0);
  }finally{DB.raw.close();}
 });
+
+test('Prospects: Google Meet invitation goes through the relay once and books a meeting',async()=>{
+ const DB=crmDatabase();let sent=[];
+ const fetcher=async(url,o)=>{const b=JSON.parse(o.body);sent.push(b);return new Response(JSON.stringify(b.action==='meeting'?{ok:true,meetUrl:'https://meet.google.com/abc-defg-hij'}:{ok:false}));};
+ const p=createProspects(env(DB),{fetcher});try{
+  const {id}=await p.mutate('prospect',{...base,email:'',status:'repondu'});
+  await assert.rejects(()=>p.mutate('prospect-meeting',{prospectId:id,date:'2099-01-05',time:'14:30',minutes:30}),/e-mail/);
+  await p.mutate('prospect',{...base,id,status:'repondu'});
+  await assert.rejects(()=>p.mutate('prospect-meeting',{prospectId:id,date:'2020-01-05',time:'14:30',minutes:30}),/passée/);
+  await assert.rejects(()=>p.mutate('prospect-meeting',{prospectId:id,date:'2099-01-05',time:'25:00',minutes:30}),/heure/);
+  await assert.rejects(()=>p.mutate('prospect-meeting',{prospectId:id,date:'2099-01-05',time:'14:30',minutes:7}),/Durée/);
+  const r=await p.mutate('prospect-meeting',{prospectId:id,date:'2099-01-05',time:'14:30',minutes:30,title:'Bar à café pour vos portes ouvertes',message:'À très vite'});
+  assert.equal(r.meetUrl,'https://meet.google.com/abc-defg-hij');
+  assert.equal(sent.at(-1).to,'prospect@example.com');assert.equal(sent.at(-1).start,'2099-01-05T14:30');assert.equal(sent.at(-1).action,'meeting');
+  const d=await p.details(id);assert.equal(d.status,'rdv');assert.equal(d.next_action_date,'2099-01-05');assert.equal(d.events[0].kind,'meeting');assert(d.events[0].body.includes('meet.google.com'));
+  await p.mutate('prospect-meeting',{prospectId:id,date:'2099-01-05',time:'14:30',minutes:30});assert.equal((await p.details(id)).events.length,1);
+  const down=createProspects(env(DB),{fetcher:async()=>new Response(JSON.stringify({ok:false}))});
+  await assert.rejects(()=>down.mutate('prospect-meeting',{prospectId:id,date:'2099-02-05',time:'10:00',minutes:30}),/agenda Google/);
+ }finally{DB.raw.close();}
+});

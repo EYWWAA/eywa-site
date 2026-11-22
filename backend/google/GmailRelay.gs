@@ -1,12 +1,13 @@
 /* EYWA server relay. Public endpoint requires a private server secret.
    No payment or booking is ever created by this script. */
-var EYWA_RELAY_VERSION='20261109';
+var EYWA_RELAY_VERSION='20261122-meet';
 function reply_(value){return ContentService.createTextOutput(JSON.stringify(value)).setMimeType(ContentService.MimeType.JSON);}
 function doPost(e){
  var props=PropertiesService.getScriptProperties(),expected=props.getProperty('EYWA_MAIL_RELAY_SECRET'),body;
  try{body=JSON.parse(e.postData.contents);}catch(_){return reply_({ok:false});}
  if(!expected||!body.secret||body.secret!==expected)return reply_({ok:false});
  if(body.action==='messages')return readMessages_(body);
+ if(body.action==='meeting')return createMeeting_(body);
  if(body.action!=='send'||!/^[a-zA-Z0-9:_-]{1,200}$/.test(body.id||'')||!/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(body.to||'')||String(body.html||'').length>100000||String(body.subject||'').length>250)return reply_({ok:false});
  var lock=LockService.getScriptLock();if(!lock.tryLock(20000))return reply_({ok:false});
  try{
@@ -55,4 +56,20 @@ function verifyConfiguration(){
  var result={secretConfigured:!!props.getProperty('EYWA_MAIL_RELAY_SECRET'),remainingRecipients:MailApp.getRemainingDailyQuota(),archiveEnabled:props.getProperty('EYWA_GMAIL_ARCHIVE_ENABLED')==='true'};
  if(result.archiveEnabled)result.gmailAddress=gmailGet_('profile').emailAddress;
  console.log(JSON.stringify(result));return result;
+}
+/* Invitation Google Meet envoyée depuis l'agenda EYWA (Google envoie lui-même l'invitation à l'invité). */
+function createMeeting_(body){
+ if(!/^[a-zA-Z0-9:_-]{1,200}$/.test(body.id||'')||!/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(body.to||'')||!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(body.start||''))return reply_({ok:false,error:'INVALID'});
+ var minutes=Number(body.minutes);if(!(minutes>=15&&minutes<=180))return reply_({ok:false,error:'INVALID'});
+ var props=PropertiesService.getScriptProperties(),key='meet:'+body.id,done=props.getProperty(key);if(done)return reply_(JSON.parse(done));
+ var lock=LockService.getScriptLock();if(!lock.tryLock(20000))return reply_({ok:false,error:'BUSY'});
+ try{
+  done=props.getProperty(key);if(done)return reply_(JSON.parse(done));
+  var tz='Europe/Paris',start=Utilities.parseDate(body.start+':00',tz,"yyyy-MM-dd'T'HH:mm:ss");
+  if(start.getTime()<Date.now()-600000)return reply_({ok:false,error:'PAST'});
+  var end=new Date(start.getTime()+minutes*60000),fmt=function(d){return Utilities.formatDate(d,tz,"yyyy-MM-dd'T'HH:mm:ss");};
+  var created=Calendar.Events.insert({summary:String(body.title||'Échange avec EYWA').slice(0,200),description:String(body.description||'').slice(0,4000),start:{dateTime:fmt(start),timeZone:tz},end:{dateTime:fmt(end),timeZone:tz},attendees:[{email:body.to}],conferenceData:{createRequest:{requestId:body.id.slice(0,64),conferenceSolutionKey:{type:'hangoutsMeet'}}}},'primary',{conferenceDataVersion:1,sendUpdates:'all'});
+  var result={ok:true,eventId:created.id,meetUrl:created.hangoutLink||'',version:EYWA_RELAY_VERSION};
+  props.setProperty(key,JSON.stringify(result));return reply_(result);
+ }catch(_){return reply_({ok:false,error:'CALENDAR_FAILED'});}finally{lock.releaseLock();}
 }
