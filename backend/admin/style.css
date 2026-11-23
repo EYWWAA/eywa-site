@@ -191,3 +191,17 @@ main{margin:0 auto;align-self:start}
 .flow-step.wait b{font-weight:normal;color:var(--muted)}
 .flow-step div{padding-top:5px}
 .flow-step small{display:block;color:var(--muted)}
+/* Phase 8 : rapports */
+.report-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:18px;align-items:start}
+.bars{display:grid;grid-template-columns:repeat(12,1fr);gap:6px;height:170px;align-items:end}
+.bar-col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;min-width:0}
+.bar{display:block;width:70%;max-width:26px;border-radius:6px 6px 2px 2px;background:var(--accent);height:2%}
+.bar.ca{background:var(--green)}
+.bar.days{background:#8fb487}
+.bar-val{font-size:10px;color:var(--muted);white-space:nowrap;margin-bottom:3px}
+.bar-col small{font-size:10px;margin-top:5px}
+.mini-table{width:100%;border-collapse:collapse}
+.mini-table td{padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+.mini-table td:not(:first-child){text-align:right;color:var(--muted)}
+.mini-table td:last-child{color:var(--ink);font-weight:bold}
+.bar-col.future .bar{opacity:.55}.bar-col.future small{font-style:italic}
