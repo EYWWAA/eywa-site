@@ -1,3 +1,4 @@
+import {createBankPayments} from './bank-payments.mjs';
 import {crmSession,requestCode,verifyCode,logout,cleanAuth} from './crm-auth.mjs';
 import {createCRM} from './crm.mjs';
 import {createMailer} from './mail-delivery.mjs';
@@ -34,7 +35,7 @@ export async function crmHTTP(request,env,ctx){
   if(path==='/espace/api/passkey-register'&&request.method==='POST')return json(200,await passkeys.register(body));
   if(path==='/espace/api/logout'&&request.method==='POST'){await logout(request,env);return json(200,{ok:true},{'Set-Cookie':'__Host-eywa_session=; Secure; HttpOnly; SameSite=Strict; Path=/; Max-Age=0'});}
   const crm=createCRM(env);
-  if(path==='/espace/api/overview'&&request.method==='GET'){await crm.sync();return json(200,await crm.overview());}
+  if(path==='/espace/api/overview'&&request.method==='GET'){await crm.sync();return json(200,{...await crm.overview(),bankRequests:await createBankPayments(env).pending()});}
   if(path==='/espace/api/prospect'&&request.method==='GET')return json(200,await createProspects(env).details(u.searchParams.get('id')||''));
   if(path==='/espace/api/event'&&request.method==='GET')return json(200,await crm.details(u.searchParams.get('id')||''));
   if(path==='/espace/api/draft-preview'&&request.method==='GET'){
@@ -42,6 +43,8 @@ export async function crmHTTP(request,env,ctx){
    return new Response(mail.html,{headers:{...headers,'Content-Type':'text/html; charset=utf-8','Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'; img-src https://eywacoffeecatering.com; base-uri 'none'; frame-ancestors 'none'; form-action 'none'"}});
   }
   if(path==='/espace/api/action'&&request.method==='POST'){
+   const bank=createBankPayments(env);
+   if(body.action==='bank-paid'||body.action==='bank-balance-paid'){const result=body.action==='bank-paid'?await bank.confirm(String(body.id||'')):await bank.confirmBalance(String(body.token||''));ctx.waitUntil(createMailer(env).flush());return json(200,result);}
    const correspondence=createCorrespondence(env);
    if(body.action==='calendar-refresh')return json(200,await createCalendar(env).sync(true));
    if(body.action==='quote-tracking')return json(200,await correspondence.saveTracking(body));

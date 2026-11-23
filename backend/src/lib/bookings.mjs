@@ -14,7 +14,7 @@ export function createBookings(db){
   async bySession(session){return q('SELECT id,state FROM eywa_bookings WHERE session_id=?',session).first();},
   async paid(s){if(s.payment_status!=='paid'||s.currency!=='eur')return false;return Boolean(await q("UPDATE eywa_bookings SET state='paid',session_id=?,paid_at=COALESCE(paid_at,strftime('%Y-%m-%dT%H:%M:%fZ','now')) WHERE (id=? OR (session_id=? AND ? IS NULL)) AND (session_id IS NULL OR session_id=?) AND payable_cents=? AND state IN ('held','paid') RETURNING id",s.id,s.metadata?.eywa_booking||null,s.id,s.metadata?.eywa_booking||null,s.id,s.amount_total).first());},
   async release(id,session){await db.batch([q("DELETE FROM eywa_booking_days WHERE booking_id=? AND EXISTS (SELECT 1 FROM eywa_bookings WHERE id=? AND state='held' AND session_id IS ?)",id,id,session),q("UPDATE eywa_bookings SET state='released' WHERE id=? AND state='held' AND session_id IS ?",id,session)]);},
-  async stale(){return (await q("SELECT id,session_id,created_at FROM eywa_bookings WHERE state='held' AND created_at<strftime('%Y-%m-%dT%H:%M:%fZ','now','-32 minutes') ORDER BY created_at LIMIT 10").all()).results;}
+  async stale(){return (await q("SELECT id,session_id,created_at FROM eywa_bookings WHERE state='held' AND COALESCE(session_id,'') NOT LIKE 'bank:%' AND created_at<strftime('%Y-%m-%dT%H:%M:%fZ','now','-32 minutes') ORDER BY created_at LIMIT 10").all()).results;}
  };
 }
 export async function reconcileBookings(bookings,request){

@@ -1,3 +1,4 @@
+import {bankDetails,prepareBank,createBankPayments} from './lib/bank-payments.mjs';
 import {createMailer} from './lib/mail-delivery.mjs';
 import {quoteEmails} from './lib/quote-emails.mjs';
 import {quoteLines} from './lib/quote-lines.mjs';
@@ -24,7 +25,7 @@ export async function handle(request,env,ctx,displayCache){
  const url=new URL(request.url),route=url.pathname.replace(/^\/\.netlify\/functions\//,'/');
  if(url.pathname==='/espace'||url.pathname.startsWith('/espace/'))return crmHTTP(request,env,ctx);
  const stripe=createStripe(env),slots=createSlots(env.DB),bookings=createBookings(env.DB),deps={...stripe,quote:async(q)=>{const c=await pricing.quote(q);return {...c,...quoteLines(q,c),dates:await occupiedTimelineDays(env,q,c)};},getSlots:async()=>slots,getBookings:async()=>bookings,settings:env};
- const mailer=createMailer(env),quotes=quoteEmails(env,deps,mailer);deps.findQuote=quotes.find;deps.quoteState=quotes.state;deps.notifyPayment=paymentAutomation(env,stripe,mailer);deps.balancePaid=s=>recordBalancePayment(env,s);
+ const mailer=createMailer(env),quotes=quoteEmails(env,deps,mailer);deps.findQuote=quotes.find;deps.quoteState=quotes.state;deps.notifyPayment=paymentAutomation(env,stripe,mailer);deps.balancePaid=s=>recordBalancePayment(env,s);const bank=createBankPayments(env,mailer);deps.prepareBank=(details,q)=>prepareBank(env,details,q);deps.bankRequest=bank.requested;
  const send=result=>new Response(result.statusCode===204?null:result.body,{status:result.statusCode,headers:result.headers});
  if(request.method==='OPTIONS')return send(stripe.json(204,{}));
  if(route==='/launch-offer'){
@@ -57,7 +58,8 @@ export async function handle(request,env,ctx,displayCache){
   if(!row)return new Response('Document en cours de préparation.',{status:503,headers:{'Cache-Control':'no-store'}});
   return new Response(Uint8Array.from(atob(row.pdf_base64),c=>c.charCodeAt(0)),{headers:{'Content-Type':'application/pdf','Content-Disposition':'attachment; filename="Devis-EYWA.pdf"','Cache-Control':'private, no-store','X-Robots-Tag':'noindex, nofollow','Referrer-Policy':'no-referrer'}});
  }
- if(route==='/balance-pay'&&request.method==='GET'){try{return await balanceCheckout(env,stripe.request,url.searchParams.get('token'));}catch{return new Response('Le paiement n’a pas pu être préparé. Réessayez ou contactez Eywa au 07 49 90 21 56.',{status:503,headers:{'Content-Type':'text/plain; charset=utf-8'}});}}
+ if(route==='/balance-pay'&&request.method==='GET'){try{return await balanceCheckout(env,stripe.request,url.searchParams.get('token'),url.searchParams.get('method')||'choose');}catch{return new Response('Le paiement n’a pas pu être préparé. Réessayez ou contactez Eywa au 07 49 90 21 56.',{status:503,headers:{'Content-Type':'text/plain; charset=utf-8'}});}}
+ if(route==='/bank-request'&&request.method==='GET')return bank.view(url.searchParams.get('token'));
  if(route==='/invoice'&&request.method==='GET')return invoiceResponse(env,url.searchParams.get('token'),url.searchParams.get('format')==='pdf');
  if(route==='/message-view'&&request.method==='GET'){
   const qid=url.searchParams.get('qid'),id=url.searchParams.get('message');if(!/^[a-f0-9-]{36}$/.test(qid||'')||String(id||'').length>250)return new Response('Message introuvable',{status:404});
@@ -82,14 +84,14 @@ export async function handle(request,env,ctx,displayCache){
  if(route==='/quote-price'){
   if(request.method!=='POST')return send(stripe.json(405,{error:'Méthode non autorisée'}));
   if(request.headers.get('Origin')!==origin)return send(stripe.json(403,{error:'Origine non autorisée'}));
-  try{const body=JSON.parse(event.body||'{}'),calculated=await pricing.quote(body.quote||{}),plan=paymentPlan(calculated,body,env);return send(stripe.json(200,plan));}
+  try{const body=JSON.parse(event.body||'{}'),calculated=await pricing.quote(body.quote||{}),plan=paymentPlan(calculated,body,env);return send(stripe.json(200,{...plan,bankAvailable:!!bankDetails(env)}));}
   catch(e){return send(stripe.json(400,{code:e.code||'INVALID_QUOTE',error:e.code==='CODE_INVALID'||e.code==='DATE_TOO_SOON'?e.message:'Le devis doit être recalculé avec un lieu et une date valides.'}));}
  }
  if(route==='/launch-checkout'){
   if(request.headers.get('Origin')!==origin)return send(stripe.json(403,{error:'Origine non autorisée'}));
   // Do not offer any payment flow before the old state has been imported.
   try{await slots.status();}catch{return send(stripe.json(503,{error:'Le paiement est temporairement indisponible.'}));}
-  const result=await createCheckout(deps)(event);return send(result);
+  const result=await createCheckout(deps)(event);if(result.statusCode===200&&env.EYWA_AUTOMATION_ENABLED==='true')ctx.waitUntil(mailer.flush());return send(result);
  }
  if(route==='/launch-payment-status'){const result=await createPaymentStatus(deps)(event);if(env.EYWA_AUTOMATION_ENABLED==='true')ctx.waitUntil(mailer.flush());return send(result);}
  if(route==='/launch-webhook'){const result=await createWebhook(deps)(event);if(result.statusCode===200&&env.EYWA_AUTOMATION_ENABLED==='true')ctx.waitUntil(mailer.flush());return send(result);}
@@ -102,7 +104,7 @@ export async function runAutomation(env){
  if(!await sql('UPDATE eywa_job_locks SET until_at=? WHERE name=? AND until_at<? RETURNING name',now+240000,'automation',now).first())return;
  try{
   const stripe=createStripe(env),bookings=createBookings(env.DB),mailer=createMailer(env),notion=createNotionSync(env),notify=paymentAutomation(env,stripe,mailer);
-  await reconcileBookings(bookings,stripe.request);
+  await createBankPayments(env,mailer).reconcile();await reconcileBookings(bookings,stripe.request);
   const pending=(await sql("SELECT b.session_id FROM eywa_bookings b WHERE b.state='paid' AND json_extract(b.details_json,'$.automationVersion')='20261109' AND (NOT EXISTS (SELECT 1 FROM eywa_invoices i WHERE i.session_id=b.session_id) OR NOT EXISTS (SELECT 1 FROM eywa_email_outbox e WHERE e.id='payment:'||b.session_id||':admin')) LIMIT 10").all()).results;
   for(const row of pending){try{await notify(await stripe.request('checkout/sessions/'+encodeURIComponent(row.session_id)));}catch{/* Retry next scheduled execution; do not alter payment state. */}}
   try{await notion.refreshStops();}catch{/* Email delivery continues; Notion retries separately. */}

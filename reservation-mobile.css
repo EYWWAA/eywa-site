@@ -1,0 +1,69 @@
+/* Parcours validé le 23 novembre : la question, puis le total et les actions. */
+html body.eywa-warm.quote-booking.booking-revised{height:100vh;height:var(--booking-height,100dvh);min-height:0;padding:0!important;overflow:hidden;background:#fffaf0!important;display:flex;flex-direction:column;font-family:Jost,Arial,sans-serif}
+html body.eywa-warm.quote-booking.booking-revised .top{flex:none;width:min(600px,100%);min-height:76px;padding:18px 24px;margin:0 auto;gap:20px;background:transparent!important;border-bottom:1px solid #e9e1d5}
+html body.eywa-warm.quote-booking.booking-revised .top .logo{display:block;width:104px;line-height:1;flex:none}
+html body.eywa-warm.quote-booking.booking-revised .top .eywa-wordmark{display:block;width:104px!important;height:auto!important;max-height:40px;object-fit:contain}
+html body.eywa-warm.quote-booking.booking-revised .top .quote-home{font:400 13px/1.4 Jost,Arial,sans-serif;white-space:nowrap;color:#726355!important}
+html body.eywa-warm.quote-booking.booking-revised #phases,html body.eywa-warm.quote-booking.booking-revised #dots{display:none!important}
+.booking-progress{flex:none;width:min(600px,100%);padding:21px 24px 12px;margin:auto}
+.booking-progress-row{display:flex;align-items:center;justify-content:space-between;gap:16px;color:#7b6c5d;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.booking-progress-row strong{font-weight:500;color:#956c4e;white-space:nowrap}
+.booking-progress-track{display:flex;gap:5px;margin-top:12px}
+.booking-progress-track i{height:3px;border-radius:4px;background:#e9e0d3;flex:1}
+.booking-progress-track i.done{background:#aa7c59}
+.booking-availability{font-size:12px;line-height:1.4;color:#847565;margin-top:9px}
+.booking-availability p{margin:0!important;font-size:12px!important}
+.booking-availability [data-error="true"]{color:#a33932!important;font-weight:500}
+html body.eywa-warm.quote-booking.booking-revised .main{flex:1;min-height:0;width:min(600px,100%);margin:0 auto;padding:0 24px!important;display:flex;align-items:stretch}
+html body.eywa-warm.quote-booking.booking-revised .card{flex:1;min-height:0;max-height:none;max-width:none;width:100%;padding:0!important;border:0!important;box-shadow:none!important;border-radius:0!important;background:transparent!important;display:flex;flex-direction:column}
+html body.eywa-warm.quote-booking.booking-revised .step{flex:1;min-height:0;max-height:none;flex-direction:column;overflow:hidden}
+html body.eywa-warm.quote-booking.booking-revised .booking-content{flex:1;min-height:0;max-height:none;padding:22px 1px 20px!important;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#b7997c transparent}
+html body.eywa-warm.quote-booking.booking-revised .step-label{font-size:10px!important;letter-spacing:.15em;line-height:1.5;margin:0 0 14px;color:#95816d!important}
+html body.eywa-warm.quote-booking.booking-revised .step-title{font:400 clamp(28px,4.2vw,34px)/1.18 'Playfair Display',Georgia,serif!important;letter-spacing:-.035em;margin:0 0 13px!important;color:#30261f!important;text-wrap:balance}
+html body.eywa-warm.quote-booking.booking-revised .step-sub{font:400 15px/1.5 Jost,Arial,sans-serif!important;color:#796e63!important;margin:0 0 22px!important}
+html body.eywa-warm.quote-booking.booking-revised label.fld{font:500 14px/1.4 Jost,Arial,sans-serif!important;color:#3b3026!important;margin-bottom:8px}
+html body.eywa-warm.quote-booking.booking-revised :is(input[type=text],input[type=tel],input[type=email],textarea,select){font:400 16px/1.4 Jost,Arial,sans-serif!important;border:1px solid #d7c4b1!important;border-radius:10px!important;background:#fffdf8!important;color:#30261f!important;min-height:52px;padding:13px 14px}
+html body.eywa-warm.quote-booking.booking-revised textarea{min-height:76px}
+html body.eywa-warm.quote-booking.booking-revised :is(input,textarea,select):focus{border-color:#a77956!important;outline:2px solid #a7795620;outline-offset:1px}
+html body.eywa-warm.quote-booking.booking-revised .hint{font:400 12px/1.5 Jost,Arial,sans-serif!important;color:#8b7e71!important}
+html body.eywa-warm.quote-booking.booking-revised :is(.radio-opt,.check-opt){background:#fffdf8!important;border:1px solid #ded3c5!important;border-radius:10px!important;padding:13px 12px;gap:11px;min-height:50px}
+html body.eywa-warm.quote-booking.booking-revised .radio-opt.selected,html body.eywa-warm.quote-booking.booking-revised .check-opt.checked{border-color:#ae835f!important;background:#fcf6ec!important}
+html body.eywa-warm.quote-booking.booking-revised :is(.radio-opt,.check-opt) input{accent-color:#a77956;min-height:18px;min-width:18px}
+html body.eywa-warm.quote-booking.booking-revised :is(.radio-opt,.check-opt) span{font:400 14px/1.45 Jost,Arial,sans-serif!important}
+html body.eywa-warm.quote-booking.booking-revised .phone-control{display:grid;grid-template-columns:115px minmax(0,1fr);gap:8px}
+html body.eywa-warm.quote-booking.booking-revised .phone-control select{width:100%;padding:12px 6px;font-size:13px!important}
+.booking-scroll-cue{flex:none;text-align:center;font-size:12px;color:#866f5b;padding:6px 0 8px;background:linear-gradient(#fffaf0b0,#fffaf0);border-top:1px solid #ede4d6}
+.booking-scroll-cue[hidden]{display:none}
+html body.eywa-warm.quote-booking.booking-revised .booking-dock{flex:none;background:#fffdf8!important;border-top:1px solid #e5dacb;width:min(600px,100%);margin:auto;padding:15px 24px max(9px,env(safe-area-inset-bottom));z-index:10;box-shadow:0 -5px 15px #654d3710}
+html body.eywa-warm.quote-booking.booking-revised .total-bar{position:static!important;display:flex!important;align-items:center;justify-content:space-between;gap:18px;flex:none;background:transparent!important;border:0!important;padding:0!important;margin:0!important;box-shadow:none!important;width:100%}
+html body.eywa-warm.quote-booking.booking-revised .total-label{font:500 13px/1.4 Jost,Arial,sans-serif!important;color:#382d24!important}
+.booking-total-note{font-size:12px;line-height:1.4;color:#897663;margin-top:2px}
+html body.eywa-warm.quote-booking.booking-revised .total-amount{font:500 29px/1.15 Jost,Arial,sans-serif!important;letter-spacing:-1px;color:#30261f!important;white-space:nowrap}
+html body.eywa-warm.quote-booking.booking-revised .booking-dock .btn-row{display:flex;position:static;transform:none;gap:10px;width:100%;margin:13px 0 0!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none;flex:none}
+html body.eywa-warm.quote-booking.booking-revised .booking-dock :is(.btn-next,.btn-pay-final){flex:1;min-width:0;min-height:48px;padding:12px 16px;border:0;border-radius:9px!important;background:#a77956!important;color:#fffdf8!important;font:500 15px/1.35 Jost,Arial,sans-serif!important}
+html body.eywa-warm.quote-booking.booking-revised .booking-dock .btn-back{flex:0 0 auto;min-height:48px;padding:12px 15px;border:1px solid #dfd2c2;border-radius:9px!important;background:transparent!important;font:400 14px/1.35 Jost,Arial,sans-serif!important;color:#7e6856!important}
+html body.eywa-warm.quote-booking.booking-revised .booking-dock button:disabled{opacity:.45;cursor:wait}
+html body.eywa-warm.quote-booking.booking-revised .legal-site-footer{padding:9px 0 0!important;margin:0!important;background:transparent!important}
+html body.eywa-warm.quote-booking.booking-revised .eywa-legal-links{gap:4px 16px;border:0!important;margin:0!important;padding:0!important;flex-wrap:wrap;line-height:1.5}
+html body.eywa-warm.quote-booking.booking-revised .eywa-legal-links a{font:400 11px/1.5 Jost,Arial,sans-serif!important;color:#978779!important;text-decoration:underline;text-underline-offset:3px}
+html body.eywa-warm.quote-booking.booking-revised #s8 .payment-breakdown{padding:14px 15px;border:0;border-radius:11px;background:#f3ecdf;margin-bottom:18px}
+html body.eywa-warm.quote-booking.booking-revised #s8 .payment-breakdown>div{font:400 14px/1.5 Jost,Arial,sans-serif}
+html body.eywa-warm.quote-booking.booking-revised #s8 .payment-breakdown .payment-due{border-top:0;border-bottom:1px solid #ded1c0;padding:0 0 11px;margin-bottom:2px;font-weight:400}
+html body.eywa-warm.quote-booking.booking-revised #s8 #payment-deposit{font-size:23px;font-weight:500;color:#785338}
+html body.eywa-warm.quote-booking.booking-revised #s8 .payment-methods-note{font:400 13px/1.5 Jost,Arial,sans-serif;background:#fffdf8!important;border-color:#ded3c5!important;border-radius:10px!important;padding:12px}
+html body.eywa-warm.quote-booking.booking-revised #s8 .legal-details{margin:16px 0 8px;font:400 12px/1.5 Jost,Arial,sans-serif;color:#7a6b5c}
+.legal-details summary{cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+html body.eywa-warm.quote-booking.booking-revised #s8 .legal-payment-summary{margin-top:12px;font-size:12px}
+html body.eywa-warm.quote-booking.booking-revised #cgv-wrap{padding:11px 12px;margin-top:0;background:transparent!important}
+html body.eywa-warm.quote-booking.booking-revised #cgv-wrap span{font-size:12px!important}
+html body.eywa-warm.quote-booking.booking-revised .eywa-help-bar{display:none!important}
+html body.eywa-warm.quote-booking.booking-revised .welcome-box{text-align:left;padding:0}
+html body.eywa-warm.quote-booking.booking-revised .event-summary{margin:18px 0;background:#f3ecdf}
+@media(min-width:681px){html body.eywa-warm.quote-booking.booking-revised .main{padding:0 32px!important}.booking-progress{padding-inline:32px}html body.eywa-warm.quote-booking.booking-revised .booking-dock{padding-inline:32px}.booking-revised .booking-content{padding-top:28px!important}}
+@media(max-height:700px){html body.eywa-warm.quote-booking.booking-revised .top{min-height:58px;padding-block:10px}.booking-progress{padding-top:12px;padding-bottom:7px}html body.eywa-warm.quote-booking.booking-revised .booking-content{padding-top:12px!important}html body.eywa-warm.quote-booking.booking-revised .booking-dock{padding-top:10px}html body.eywa-warm.quote-booking.booking-revised .step-title{font-size:26px!important}}
+
+.booking-payment-choice{border:0;padding:0;margin:0 0 18px;display:grid;gap:8px}.booking-payment-choice[hidden]{display:none}.booking-payment-choice legend{font-size:14px;font-weight:500;margin-bottom:10px}.booking-payment-choice small{display:block;font-size:12px;color:#8c7a68;margin-top:2px}.booking-payment-choice input[type=radio]{padding:0!important}.booking-payment-choice #bank-email-wrap[hidden]{display:none}
+
+html body.eywa-warm.quote-booking.booking-revised #s8 .payment-breakdown>div:first-child{display:none}html body.eywa-warm.quote-booking.booking-revised #s8 .step-title{font-size:30px!important}html body.eywa-warm.quote-booking.booking-revised #s8 .step-sub{font-size:14px!important;margin-bottom:18px!important}.booking-payment-choice legend{font-size:13px}.booking-payment-choice .radio-opt{padding-block:10px!important}html body.eywa-warm.quote-booking.booking-revised #s8 .payment-methods-note{display:none}html body.eywa-warm.quote-booking.booking-revised #s8 .code-advantage{margin-top:8px;font-size:12px}.booking-progress-track i{flex-basis:0}
+
+html body.eywa-warm.quote-booking.booking-revised .step-label{display:none!important}

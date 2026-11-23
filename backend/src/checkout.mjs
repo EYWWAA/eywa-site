@@ -10,6 +10,8 @@ export function createCheckout(deps){
   let body;try{body=JSON.parse(event.body||'{}');}catch{return json(400,{error:'Demande invalide'});}
   let calculated,plan;
   try{calculated=await quote(body.quote||{});plan=paymentPlan(calculated,body,settings);}catch(e){return json(400,{code:e.code||'INVALID_QUOTE',error:e.code==='DATE_TOO_SOON'||e.code==='CODE_INVALID'?e.message:'Le devis doit être recalculé avec un lieu et une date valides.'});}
+  const method=body.paymentMethod||'card';if(!['card','bank_transfer'].includes(method))return json(400,{error:'Moyen de paiement invalide.'});
+  if(method==='bank_transfer'&&plan.launch)return json(400,{error:'Cette offre nécessite un règlement par carte.'});
   const {normalCents:normal,payableCents:payable,launch,special,serviceSpecial,travelCents,kind,totalCents}=plan;
   if(Number(body.expectedCents)!==payable)return json(409,{code:'PRICE_CHANGED',...plan,error:'Le prix a changé. Vérifiez le nouveau montant avant de payer.'});
   let details;try{details=bookingDetails.validate(body.bookingDetails);}catch(e){return json(400,{code:'INVALID_BOOKING_DETAILS',error:e.message});}
@@ -18,7 +20,8 @@ export function createCheckout(deps){
   if(quoteId&&!savedQuote)return json(400,{error:'Devis introuvable. Recréez votre devis avant de réserver.'});
   const quoteState=savedQuote&&deps.quoteState?await deps.quoteState(savedQuote.id):null;
   if(quoteState?.status!=='paid'&&Number.isFinite(quoteState?.expires_at)&&quoteState.expires_at<=Date.now())return json(410,{code:'QUOTE_EXPIRED',error:'Ce devis a expiré le '+new Date(quoteState.expires_at-1).toLocaleDateString('fr-FR',{timeZone:'Europe/Paris'})+'. Demandez un nouveau devis, ou écrivez à contact.eywa08@gmail.com pour qu’on le réactive.'});
-  details.quoteId=savedQuote?.id||null;details.automationVersion='20261109';
+  details.quoteId=savedQuote?.id||null;details.automationVersion=method==='bank_transfer'?'20261123-bank':'20261109';
+  if(method==='bank_transfer'){try{details.bank={...deps.prepareBank(details,savedQuote),totalCents};}catch(e){return json(e.status||400,{error:e.message});}}
   details.eventSummary={date:body.quote.d,lineItems:calculated.lineItems,staff:calculated.staff,normalCents:calculated.normalCents,time:body.quote.ti,guests:Number(body.quote.g),hours:Number(body.quote.h),days:Number(body.quote.dy||1),location:body.quote.l,eventType:body.quote.t,options:(()=>{try{return typeof body.quote.options==='string'?JSON.parse(body.quote.options):body.quote.options||[];}catch{return [];}})(),firstName:body.quote.p};
   let slot,slots,booking,bookings;
   details.eventSummary.travelMinutes=calculated.trip?.outwardMinutes>0?Math.ceil(calculated.trip.outwardMinutes):null;
@@ -32,6 +35,7 @@ export function createCheckout(deps){
       slots=await getSlots();await reconcile(slots);slot=await slots.claim(normal,payable);
       if(!slot){await bookings.release(booking.id,null);return json(409,{code:'OFFER_ENDED',error:'L’offre sur la première réservation n’est plus disponible. Vérifiez le tarif avant de payer.'});}
     }
+    if(method==='bank_transfer'){await bookings.attach(booking.id,'bank:'+booking.id);return json(200,await deps.bankRequest(booking,calculated,plan,details,savedQuote));}
     const line=(i,name,cents,description)=>({[`line_items[${i}][price_data][currency]`]:'eur',[`line_items[${i}][price_data][product_data][name]`]:name,[`line_items[${i}][price_data][product_data][description]`]:description,[`line_items[${i}][price_data][unit_amount]`]:String(cents),[`line_items[${i}][quantity]`]:'1'});
     const params={
       ...line(0,serviceSpecial?'Prestation et déplacement EYWA — code NATHALIE08':special?'Réservation EYWA — tarif spécial':launch?'Coffee bar et déplacement — offre de lancement −80 %':'Réservation EYWA — acompte de 50 %',serviceSpecial?100:launch?payable-calculated.personalizationCents:payable,serviceSpecial?'Prestation et déplacement à 1 €. Personnalisations au tarif normal.':special?'Paiement intégral de la réservation':launch?'Remise de 80 % sur la prestation et le déplacement. Personnalisations au tarif normal.':'Coffee bar, personnalisations et déplacement selon votre devis'),
