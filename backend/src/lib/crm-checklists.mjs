@@ -19,7 +19,8 @@ export function createChecklists(env){
  async function defaultOf(kind){return sql('SELECT id FROM eywa_crm_checklists WHERE kind=? AND is_default=1',kind).first();}
  const itemsOf=async id=>(await sql('SELECT * FROM eywa_crm_checklist_items WHERE checklist_id=? ORDER BY position',id).all()).results;
  // Copie une checklist admin en tâches datées, et une checklist brief en éléments du jour J.
- function adminStatements(eventId,date,items,now){return items.map(i=>sql('INSERT INTO eywa_crm_tasks(id,event_id,title,due_date,created_at) VALUES(?,?,?,?,?) ON CONFLICT DO NOTHING',eventId+':cl:'+i.id,eventId,i.label,policy.addDays(date,i.offset_days),now));}
+ // Une tâche ne peut pas être datée avant le jour de la réservation : si l'événement est trop proche, elle est due tout de suite.
+ function adminStatements(eventId,date,items,now){const today=policy.today(new Date(now));return items.map(i=>{const d=policy.addDays(date,i.offset_days);return sql('INSERT INTO eywa_crm_tasks(id,event_id,title,due_date,created_at) VALUES(?,?,?,?,?) ON CONFLICT DO NOTHING',eventId+':cl:'+i.id,eventId,i.label,d<today?today:d,now);});}
  function briefStatements(eventId,items,now){return items.map(i=>sql('INSERT INTO eywa_crm_brief_items(id,event_id,stage,label,quantity,unit,position,created_at) VALUES(?,?,?,?,?,?,?,?) ON CONFLICT DO NOTHING',eventId+':cl:'+i.id,eventId,i.stage,i.label,i.quantity,i.unit,i.position,now));}
  async function applyDefaults(eventId,date,now=Date.now()){
   const statements=[];

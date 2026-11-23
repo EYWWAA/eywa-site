@@ -8,7 +8,7 @@ import {createChecklists} from './crm-checklists.mjs';
 import {createMailer} from './mail-delivery.mjs';
 import {createCorrespondence} from './crm-correspondence.mjs';
 import {createCalendar} from './crm-calendar.mjs';
-export const defaultSettings={loadingMinutes:30,setupMinutes:60,cleanupMinutes:45,travelMinutes:30,reviewEnabled:true,reviewUrl:'https://search.google.com/local/writereview?placeid=ChIJzVp-mvUAbgUR1IO2D4738BY',reviewDelayDays:1,meetUrl:''};
+export const defaultSettings={loadingMinutes:30,setupMinutes:60,cleanupMinutes:45,travelMinutes:30,reviewEnabled:true,reviewUrl:'https://search.google.com/local/writereview?placeid=ChIJzVp-mvUAbgUR1IO2D4738BY',reviewDelayDays:3,meetUrl:''};
 const fail=(message,status=400)=>{throw Object.assign(Error(message),{status});};
 const parse=s=>{try{return JSON.parse(s||'{}');}catch{return {};}};
 const text=(v,max=1000)=>String(v??'').trim().slice(0,max);
@@ -35,7 +35,7 @@ export function taskTemplates(q){
  const options=Array.isArray(q.options)?q.options:[];
  if(options.includes('Gobelets sur mesure'))out.push(['cups','Commander les gobelets imprimés',-21]);
  if(options.includes('Gobelets avec stickers'))out.push(['stickers','Préparer les stickers des gobelets',-14]);
- if(options.includes('Habillage du bar'))out.push(['bar','Valider et commander l’habillage du bar',-21]);
+ if(options.includes('Habillage du bar'))out.push(['bar','Commander la devanture (habillage) du bar',-14]);
  if(options.some(x=>/Gobelets|Habillage|Logo/.test(x)))out.push(['artwork','Récupérer et valider les fichiers de personnalisation',-22]);
  if(options.includes('Logo sur les boissons'))out.push(['printer','Préparer et tester l’imprimante',-1]);
  return out.map(([key,title,delta])=>({key,title,dueDate:policy.addDays(q.date,delta)}));
@@ -53,7 +53,7 @@ export function createCRM(env){
  const sql=(s,...v)=>env.DB.prepare(s).bind(...v);
  async function settings(){return {...defaultSettings,...parse((await sql('SELECT data_json FROM eywa_crm_settings WHERE id=1').first())?.data_json)};}
  async function event(id){const row=await sql('SELECT * FROM eywa_crm_events WHERE id=?',id).first();if(!row)fail('Événement introuvable.',404);return {...row,data:parse(row.data_json)};}
- async function tasks(id,q,now){await checklists.applyDefaults(id,q.date,now);const extra=taskTemplates(q);if(extra.length)await env.DB.batch(extra.map(t=>sql('INSERT INTO eywa_crm_tasks(id,event_id,title,due_date,created_at) VALUES(?,?,?,?,?) ON CONFLICT DO NOTHING',id+':'+t.key,id,t.title,t.dueDate,now)));}
+ async function tasks(id,q,now){await checklists.applyDefaults(id,q.date,now);const extra=taskTemplates(q);if(extra.length)await env.DB.batch(extra.map(t=>sql('INSERT INTO eywa_crm_tasks(id,event_id,title,due_date,created_at) VALUES(?,?,?,?,?) ON CONFLICT DO NOTHING',id+':'+t.key,id,t.title,t.dueDate<policy.today(new Date(now))?policy.today(new Date(now)):t.dueDate,now)));}
  async function sync(now=Date.now()){
   const config=await settings();
   // Lecture des réservations réglées uniquement. Aucun paiement ni facture n’est créé ici.
