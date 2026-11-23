@@ -174,6 +174,7 @@ if(b.dataset.finPeriod){finPeriod=b.dataset.finPeriod;render();}
 if(b.dataset.expiry){if(b.dataset.expiry==='now'&&!confirm('Expirer ce devis maintenant ? Le client ne pourra plus le payer.'))return;await act({action:'quote-expiry',quoteId:b.dataset.quote,mode:b.dataset.expiry});}
 if(b.dataset.contactFilter){contactFilter=b.dataset.contactFilter;render();}
 if(b.dataset.dosTab){dosTab=b.dataset.dosTab;render();}
+if(b.dataset.showTests){showTests=true;render();}
 if(b.dataset.planTab){planTab=b.dataset.planTab;render();}
 if(b.dataset.planFilter){planFilter=b.dataset.planFilter;render();}
 if(b.dataset.evTab&&evData){evTab=b.dataset.evTab;evHtml=eventPage(evData,evCurrent);render();}
@@ -296,7 +297,7 @@ function planRow(e){const q=e.data,d=new Date(q.date+'T12:00:00Z'),cal=e.calenda
  const pill=(v,label)=>'<span class="plan-pill '+v+'">'+label+'</span>';
  return '<button class="plan-row" data-event="'+esc(e.id)+'"><span class="date-tile"><b>'+d.getDate()+'</b><small>'+d.toLocaleDateString('fr-FR',{month:'short'})+'</small></span><span class="row-info"><b>'+esc(q.name)+'</b><small>'+esc([q.eventType,q.time,cal?'':q.guests?q.guests+' invités':''].filter(Boolean).join(' · '))+'</small><small>'+esc(q.location||'')+'</small></span>'
   +(cal?'<span class="plan-pills"><span class="plan-pill none">Google Agenda</span></span>':'<span class="plan-pills">'+pill(p.tasks,'Tâches '+p.done+'/'+p.total)+pill(p.staff,'Barista '+p.staffN+'/'+p.need)+pill(p.equip,p.eqN?'Matériel prêt':'Matériel à affecter')+pill(p.pay,p.pay==='none'?'Pas de paiement suivi':p.pay==='ok'?'Payé':'Solde '+euro(p.f.balance_cents))+'</span>')+badge(e.status)+'</button>';}
-function planning(){const t=today(),all=events(),up=all.filter(e=>e.ends_at>Date.now()).sort((a,b)=>a.starts_at-b.starts_at),past=all.filter(e=>e.ends_at<=Date.now()).sort((a,b)=>b.starts_at-a.starts_at);
+function planning(){const t=today(),all=events(),hiddenTests=showTests?0:[...state.events,...(state.externalEvents||[])].filter(e=>e.status!=='cancelled'&&isTest(e.data)&&e.ends_at>Date.now()).length,up=all.filter(e=>e.ends_at>Date.now()).sort((a,b)=>a.starts_at-b.starts_at),past=all.filter(e=>e.ends_at<=Date.now()).sort((a,b)=>b.starts_at-a.starts_at);
  const worst=e=>{if(e.calendarOnly)return 'ok';const p=pillState(e),v=[p.tasks,p.staff,p.equip,p.pay];return v.includes('bad')?'bad':v.includes('warn')?'warn':'ok';};
  const count=k=>up.filter(e=>worst(e)===k).length;
  const tabs='<div class="ev-tabs" role="tablist">'+[['upcoming','À venir',up.length],['past','Passés',past.length],['month','Calendrier du mois','']].map(([k,l,n])=>'<button role="tab" data-plan-tab="'+k+'" class="'+(planTab===k?'active':'')+'" aria-selected="'+(planTab===k)+'">'+l+(n!==''?' <span class="ev-count">'+n+'</span>':'')+'</button>').join('')+'</div>';
@@ -305,7 +306,8 @@ function planning(){const t=today(),all=events(),up=all.filter(e=>e.ends_at>Date
  if(planTab==='upcoming'&&planFilter!=='all')list=list.filter(e=>worst(e)===planFilter);
  const filters=planTab==='upcoming'?'<div class="plan-filters">'+[['all','Tous',up.length],['bad','Problème',count('bad')],['warn','À surveiller',count('warn')],['ok','Prêts',count('ok')]].map(([k,l,n])=>'<button class="chip-filter '+k+(planFilter===k?' active':'')+'" data-plan-filter="'+k+'">'+l+' <b>'+n+'</b></button>').join('')+'<span class="plan-legend">Les pastilles passent au rouge 7 jours avant l’événement s’il manque quelqu’un ou du matériel.</span></div>':'';
  let rows='',m='';list.forEach(e=>{const lm=new Date(e.data.date+'T12:00:00Z').toLocaleDateString('fr-FR',{month:'long',year:'numeric'});if(lm!==m){rows+='<p class="plan-month">'+esc(m=lm)+'</p>';}rows+=planRow(e);});
- return tabs+filters+'<section class="plan-list">'+(rows||empty(planTab==='past'?'Aucun événement passé.':planFilter==='all'?'Aucun événement à venir. Les réservations du site et les événements externes arrivent ici.':'Aucun événement dans ce filtre.'))+'</section>';}
+ const hint=hiddenTests?'<p class="test-hint">'+hiddenTests+' événement'+(hiddenTests>1?'s':'')+' à venir fait'+(hiddenTests>1?'s':'')+' avec votre adresse ou un nom de test '+(hiddenTests>1?'sont masqués':'est masqué')+'. <button class="text-button" data-show-tests="1">Les afficher</button></p>':'';
+ return tabs+hint+filters+'<section class="plan-list">'+(rows||empty(planTab==='past'?'Aucun événement passé.':planFilter==='all'?'Aucun événement à venir. Les réservations du site et les événements externes arrivent ici.':'Aucun événement dans ce filtre.'))+'</section>';}
 
 /* Phase 4 : pipeline des devis en colonnes. Les colonnes reprennent le suivi commercial existant. */
 let dosTab='board';

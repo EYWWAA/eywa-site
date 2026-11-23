@@ -220,3 +220,5 @@ main{margin:0 auto;align-self:start}
 .cs-row a,.cs-row span{font-size:14px}
 .cs-links{display:flex;flex-wrap:wrap;gap:8px}.cs-links .button{margin:0}
 .cs-pitch summary{cursor:pointer;font-weight:bold}.cs-pitch p{margin:8px 0 0;line-height:1.6;background:#f6ecd9;border-radius:10px;padding:12px 14px}
+
+.test-hint{background:#fbefd9;border:1px solid #efd5a6;border-radius:10px;padding:10px 14px;font-size:14px;color:#8a5a12;margin:0 0 16px}.test-hint .text-button{display:inline;padding:0;color:var(--green);text-decoration:underline}
