@@ -212,3 +212,11 @@ main{margin:0 auto;align-self:start}
 .danger-text{color:var(--danger)!important}
 .ev-card-head .bad{color:var(--danger)}.ev-card-head .warn{color:#8a5a12}
 .expiry-form input[type=date]{min-width:170px}
+
+/* Fiche d'appel prospect */
+.call-sheet{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 16px;display:grid;gap:12px}
+.cs-row{display:grid;grid-template-columns:90px 1fr;gap:2px 12px;align-items:baseline}
+.cs-row small{grid-row:span 2;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:1px}
+.cs-row a,.cs-row span{font-size:14px}
+.cs-links{display:flex;flex-wrap:wrap;gap:8px}.cs-links .button{margin:0}
+.cs-pitch summary{cursor:pointer;font-weight:bold}.cs-pitch p{margin:8px 0 0;line-height:1.6;background:#f6ecd9;border-radius:10px;padding:12px 14px}

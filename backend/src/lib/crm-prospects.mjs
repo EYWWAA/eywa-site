@@ -12,6 +12,7 @@ const OWNER=/(?:^|[<\s])contact\.?eywa08@gmail\.com(?:$|[>\s])/i;
 const fail=(s,status=400)=>{throw Object.assign(Error(s),{status});};
 const text=(s,n)=>String(s??'').trim().slice(0,n);
 function email(v){const s=text(v,254).toLowerCase();if(s&&!/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(s))fail('Adresse e-mail invalide.');return s;}
+function webLink(v){const s=text(v,800);if(!s)return '';let u;try{u=new URL(s);}catch{fail('Lien invalide : il doit commencer par https://');}if(u.protocol!=='https:')fail('Lien invalide : il doit commencer par https://');return u.href;}
 function linkedin(v){const s=text(v,500);if(!s)return '';let u;try{u=new URL(s);}catch{fail('Lien LinkedIn invalide.');}if(u.protocol!=='https:'||!/(^|\.)linkedin\.com$/.test(u.hostname))fail('Indiquez un lien de profil LinkedIn.');return u.href;}
 function phone(v){const s=text(v,40);if(s&&!/^[+\d][\d\s.()-]{5,}$/.test(s))fail('Numéro de téléphone invalide.');return s;}
 function day(v){const s=text(v,10);if(!s)return null;if(!policy.validDate(s))fail('Date invalide.');return s;}
@@ -19,7 +20,7 @@ function day(v){const s=text(v,10);if(!s)return null;if(!policy.validDate(s))fai
 export function createProspects(env,deps={}){
  const sql=(s,...v)=>env.DB.prepare(s).bind(...v);
  async function list(){
-  return (await sql(`SELECT p.id,p.name,p.company,p.role,p.email,p.phone,p.linkedin_url,p.source,p.status,p.next_action_date,p.updated_at,
+  return (await sql(`SELECT p.id,p.name,p.company,p.role,p.email,p.phone,p.linkedin_url,p.source,p.status,p.next_action_date,p.updated_at,p.first_name,p.last_name,p.address,p.photos_url,p.event_photos_url,p.event_name,p.event_date,p.event_guests,p.pitch,
    (SELECT MAX(at) FROM eywa_crm_prospect_events e WHERE e.prospect_id=p.id) AS last_contact_at,
    (SELECT COUNT(*) FROM eywa_crm_prospect_events e WHERE e.prospect_id=p.id) AS exchanges
    FROM eywa_crm_prospects p ORDER BY COALESCE(p.next_action_date,'9999-12-31'),p.updated_at DESC LIMIT 2000`).all()).results;
@@ -31,18 +32,18 @@ export function createProspects(env,deps={}){
  }
  async function mutate(action,b,now=Date.now()){
   if(action==='prospect'){
-   const name=text(b.name,150);if(!name)fail('Indiquez le nom de la personne.');
+   const first=text(b.firstName,80),last=text(b.lastName,80),name=text(b.name,150)||[first,last].filter(Boolean).join(' ');if(!name)fail('Indiquez le nom de la personne.');
    const source=b.source in sources?b.source:fail('Canal invalide.'),status=b.status in statuses?b.status:fail('Statut invalide.');
-   const row={name,company:text(b.company,150),role:text(b.role,150),email:email(b.email),phone:phone(b.phone),linkedin:linkedin(b.linkedinUrl),source,status,next:day(b.nextActionDate),notes:text(b.notes,4000)};
+   const row={name,company:text(b.company,150),role:text(b.role,150),email:email(b.email),phone:phone(b.phone),linkedin:linkedin(b.linkedinUrl),source,status,next:day(b.nextActionDate),notes:text(b.notes,4000),first,last,address:text(b.address,300),photos:webLink(b.photosUrl),eventPhotos:webLink(b.eventPhotosUrl),eventName:text(b.eventName,200),eventDate:text(b.eventDate,100),eventGuests:text(b.eventGuests,60),pitch:text(b.pitch,4000)};
    if(row.email){const twin=await sql('SELECT id FROM eywa_crm_prospects WHERE email=? AND id<>?',row.email,text(b.id,100)).first();if(twin)fail('Cette adresse e-mail est déjà dans une autre fiche.',409);}
    if(b.id){
     const current=await sql('SELECT email FROM eywa_crm_prospects WHERE id=?',text(b.id,100)).first();if(!current)fail('Prospect introuvable.',404);
     const reset=current.email!==row.email;
-    await sql('UPDATE eywa_crm_prospects SET name=?,company=?,role=?,email=?,phone=?,linkedin_url=?,source=?,status=?,next_action_date=?,notes=?,updated_at=?'+(reset?',mail_scanned_at=0,mail_page_token=NULL,mail_range_end=NULL':'')+' WHERE id=?',row.name,row.company,row.role,row.email,row.phone,row.linkedin,row.source,row.status,row.next,row.notes,now,text(b.id,100)).run();
+    await sql('UPDATE eywa_crm_prospects SET name=?,company=?,role=?,email=?,phone=?,linkedin_url=?,source=?,status=?,next_action_date=?,notes=?,first_name=?,last_name=?,address=?,photos_url=?,event_photos_url=?,event_name=?,event_date=?,event_guests=?,pitch=?,updated_at=?'+(reset?',mail_scanned_at=0,mail_page_token=NULL,mail_range_end=NULL':'')+' WHERE id=?',row.name,row.company,row.role,row.email,row.phone,row.linkedin,row.source,row.status,row.next,row.notes,row.first,row.last,row.address,row.photos,row.eventPhotos,row.eventName,row.eventDate,row.eventGuests,row.pitch,now,text(b.id,100)).run();
     return {ok:true,id:b.id};
    }
    const id=randomUUID();
-   await sql('INSERT INTO eywa_crm_prospects(id,name,company,role,email,phone,linkedin_url,source,status,next_action_date,notes,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)',id,row.name,row.company,row.role,row.email,row.phone,row.linkedin,row.source,row.status,row.next,row.notes,now,now).run();
+   await sql('INSERT INTO eywa_crm_prospects(id,name,company,role,email,phone,linkedin_url,source,status,next_action_date,notes,first_name,last_name,address,photos_url,event_photos_url,event_name,event_date,event_guests,pitch,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',id,row.name,row.company,row.role,row.email,row.phone,row.linkedin,row.source,row.status,row.next,row.notes,row.first,row.last,row.address,row.photos,row.eventPhotos,row.eventName,row.eventDate,row.eventGuests,row.pitch,now,now).run();
    return {ok:true,id};
   }
   if(action==='prospect-log'){
