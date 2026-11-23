@@ -174,3 +174,20 @@ main{margin:0 auto;align-self:start}
 .kpi.ok strong{color:#2f5b3a}
 .kpi.bad strong,.kpi.bad small{color:var(--danger)}
 @media(max-width:1050px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* Phase 7 : automatisations */
+.flows{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px;align-items:start}
+.flow-card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:20px 22px}
+.flow-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:4px}
+.flow-head h3{font:21px/1.2 Georgia,serif;margin:0}
+.flow{list-style:none;margin:14px 0 0;padding:0}
+.flow-step{display:grid;grid-template-columns:32px 1fr;gap:12px;align-items:start;position:relative;padding-bottom:14px}
+.flow-step:not(:last-child)::after{content:'';position:absolute;left:15px;top:32px;bottom:0;width:2px;background:var(--line)}
+.flow-ico{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:14px;background:var(--soft);color:var(--green);z-index:1}
+.flow-step.trigger .flow-ico{background:var(--green);color:#fff}
+.flow-step.mail .flow-ico{background:#f6ecd9;color:#6e4f2a}
+.flow-step.wait .flow-ico{background:#eef0f4;color:#4a5568}
+.flow-step.cond .flow-ico{background:#fbefd9;color:#8a5a12;font-weight:bold}
+.flow-step.stop .flow-ico{background:#f8e3dd;color:var(--danger)}
+.flow-step.wait b{font-weight:normal;color:var(--muted)}
+.flow-step div{padding-top:5px}
+.flow-step small{display:block;color:var(--muted)}
