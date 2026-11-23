@@ -8,7 +8,7 @@ import {stopQuote} from './followups.mjs';
 import {html,css,js,icon,touchIcon} from './crm-assets.mjs';
 import {createPasskeys} from './crm-passkeys.mjs';
 import {createProspects} from './crm-prospects.mjs';
-const headers={'Cache-Control':'private, no-store','Pragma':'no-cache','X-Robots-Tag':'noindex, nofollow','Referrer-Policy':'no-referrer','X-Content-Type-Options':'nosniff','X-Frame-Options':'DENY','Content-Security-Policy':"default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' https://eywacoffeecatering.com data:; connect-src 'self'; manifest-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"};
+const headers={'Cache-Control':'private, no-store','Pragma':'no-cache','X-Robots-Tag':'noindex, nofollow','Referrer-Policy':'no-referrer','X-Content-Type-Options':'nosniff','X-Frame-Options':'DENY','Content-Security-Policy':"default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' https://eywacoffeecatering.com data:; connect-src 'self'; manifest-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'; frame-src https://www.openstreetmap.org"};
 const json=(status,data,extra={})=>new Response(JSON.stringify(data),{status,headers:{...headers,'Content-Type':'application/json; charset=utf-8',...extra}});
 export async function crmHTTP(request,env,ctx){
  const u=new URL(request.url),path=u.pathname;

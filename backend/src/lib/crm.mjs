@@ -29,6 +29,14 @@ export function eventTimeline(q,settings=defaultSettings,overrides={}){
  const serviceStart=parisTime(q.date,q.time||'10:00'),serviceEnd=parisTime(policy.addDays(q.date,days-1),q.time||'10:00')+Math.round(hours*3600000);
  return {loadingMinutes,setupMinutes,cleanupMinutes,travelMinutes,serviceStart,serviceEnd,startsAt:serviceStart-(loadingMinutes+setupMinutes+travelMinutes)*60000,endsAt:serviceEnd+(cleanupMinutes+travelMinutes+loadingMinutes)*60000};
 }
+/* Position du lieu pour la carte : géocodeur public de l'IGN, sans clé, avec mémoire pour ne pas le rappeler. */
+const placeCache=new Map();
+export async function geocodePlace(address){
+ const key=String(address||'').trim().slice(0,300);if(!key)return null;if(placeCache.has(key))return placeCache.get(key);
+ try{const c=new AbortController(),t=setTimeout(()=>c.abort(),3000);const r=await fetch('https://data.geopf.fr/geocodage/search?limit=1&q='+encodeURIComponent(key),{signal:c.signal});clearTimeout(t);if(!r.ok)return null;
+  const f=(await r.json()).features?.[0],[lon,lat]=f?.geometry?.coordinates||[];if(!Number.isFinite(lat)||!Number.isFinite(lon))return null;
+  const place={lat,lon,label:f.properties?.label||key};placeCache.set(key,place);return place;}catch{return null;}
+}
 export function taskTemplates(q){
  // Les tâches de base viennent de la checklist admin par défaut ; ici, seulement celles liées aux options.
  const out=[];
@@ -98,7 +106,7 @@ export function createCRM(env){
   ]):[{results:[]},{results:[]},{results:[]}];
   const source=qid?parse((await sql('SELECT data_json FROM eywa_quotes WHERE id=?',qid).first())?.data_json):{};
   const booking=e.booking_id?parse((await sql('SELECT details_json FROM eywa_bookings WHERE id=?',e.booking_id).first())?.details_json):{};
-  return {...e,brief:e.quoteOnly?[]:await checklists.brief(e.id),originalQuote:source,correspondence:qid?await correspondence.details(qid):null,clientMessage:source.details||'',referencePhoto:booking.referencePhoto||'',procurement:e.quoteOnly?null:await procurement.details(e.id),invoices:invoices.results.map(i=>({seq:i.seq,token:i.token,createdAt:i.created_at,data:parse(i.data_json)})),messages:[...messages.results.map(m=>({id:m.id,status:m.status,kind:m.kind,at:m.sent_at||m.created_at,subject:parse(m.payload_json).subject,text:parse(m.payload_json).text,lastError:m.last_error})),...received.results.map(m=>{const data=parse(m.data_json);return {...data,at:m.created_at,status:!data.from?'archived':/(?:^|[<\s])contact\.eywa08@gmail\.com(?:$|[>\s])/i.test(data.from)?'sent':'received'};})].sort((a,b)=>b.at-a.at)};
+  return {...e,place:await geocodePlace(e.data?.location),brief:e.quoteOnly?[]:await checklists.brief(e.id),originalQuote:source,correspondence:qid?await correspondence.details(qid):null,clientMessage:source.details||'',referencePhoto:booking.referencePhoto||'',procurement:e.quoteOnly?null:await procurement.details(e.id),invoices:invoices.results.map(i=>({seq:i.seq,token:i.token,createdAt:i.created_at,data:parse(i.data_json)})),messages:[...messages.results.map(m=>({id:m.id,status:m.status,kind:m.kind,at:m.sent_at||m.created_at,subject:parse(m.payload_json).subject,text:parse(m.payload_json).text,lastError:m.last_error})),...received.results.map(m=>{const data=parse(m.data_json);return {...data,at:m.created_at,status:!data.from?'archived':/(?:^|[<\s])contact\.eywa08@gmail\.com(?:$|[>\s])/i.test(data.from)?'sent':'received'};})].sort((a,b)=>b.at-a.at)};
  }
  async function audit(action,id){await sql('INSERT INTO eywa_crm_audit(action,entity,at) VALUES(?,?,?)',action,id,Date.now()).run();}
  async function mutate(action,b,now=Date.now()){
