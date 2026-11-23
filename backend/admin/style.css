@@ -139,3 +139,28 @@ nav button.active svg{opacity:1}
 @media(max-width:1050px){.plan-row{grid-template-columns:auto minmax(0,1fr) auto}.plan-pills{grid-column:1/-1;justify-content:flex-start;max-width:none}}
 @media(max-width:720px){.plan-legend{display:none}.plan-row{gap:12px;padding:12px}}
 main{margin:0 auto;align-self:start}
+/* Phase 4 : pipeline */
+.pipe-top{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-bottom:18px}
+.pipe-top input{max-width:320px}
+.pipe-rate{font-size:14px;color:var(--muted)}
+.pipe-rate b{color:var(--green);font-size:17px}
+.pipe-board{display:grid;grid-template-columns:repeat(5,minmax(210px,1fr));gap:14px;overflow-x:auto;padding-bottom:8px;align-items:start}
+.pipe-col{background:#efeee5;border-radius:16px;padding:12px;min-height:160px}
+.pipe-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:4px 4px 12px;font-weight:bold;font-size:14px}
+.pipe-head small{width:100%;font-weight:normal;color:var(--muted)}
+.pipe-head .ev-count{background:var(--paper);color:var(--muted)}
+.pipe-col.paid .pipe-head span:first-child{color:#2f5b3a}
+.pipe-col.lost{opacity:.8}
+.pipe-items{display:flex;flex-direction:column;gap:9px}
+.pipe-card{display:flex;flex-direction:column;gap:2px;width:100%;text-align:left;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-left:4px solid var(--line);border-radius:12px;padding:12px 13px}
+.pipe-card:hover{filter:none;box-shadow:0 4px 14px rgba(41,44,39,.08)}
+.pipe-col.paid .pipe-card{border-left-color:#8fb487}
+.pipe-card.late{border-left-color:#e0a54b}
+.pipe-card small{color:var(--muted)}
+.pipe-meta{font-size:13px;color:#4f564b;margin-top:4px}
+.pipe-foot{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-top:8px}
+.pipe-card.late .pipe-foot small{color:#8a5a12}
+.pipe-empty{color:var(--muted);font-size:13px;text-align:center;margin:18px 0}
+@media(max-width:720px){.pipe-board{grid-template-columns:repeat(5,82vw)}}
+.pipe-board{grid-template-columns:repeat(5,minmax(170px,1fr));gap:10px}
+.pipe-foot{flex-direction:column;align-items:flex-start;gap:2px}
