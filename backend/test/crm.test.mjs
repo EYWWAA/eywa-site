@@ -9,7 +9,7 @@ import {crmHTTP} from '../src/lib/crm-http.mjs';
 import {createBookings} from '../src/lib/bookings.mjs';
 import {queueFollowups} from '../src/lib/followups.mjs';
 
-export function crmDatabase(){const DB=database();for(const f of ['0003_transactional_email.sql','0004_automation.sql','0006_balance_invoices.sql'])DB.raw.exec(fs.readFileSync(new URL('../migrations/'+f,import.meta.url),'utf8'));return DB;}
+export function crmDatabase(){const DB=database();for(const f of ['0003_transactional_email.sql','0004_automation.sql','0006_balance_invoices.sql','0016_quote_expiry.sql'])DB.raw.exec(fs.readFileSync(new URL('../migrations/'+f,import.meta.url),'utf8'));return DB;}
 const envFor=DB=>({DB,EYWA_AUTOMATION_ENABLED:'true',EYWA_MAIL_RELAY_SECRET:'local-test-only'});
 const manual={name:'Client fictif',email:'fixture@example.com',date:'2027-06-01',time:'10:00',hours:2,days:1,guests:70,eventType:'Mariage',location:'Lieu fictif'};
 function signedChallenge(env,id='10000000-0000-4000-8000-000000000001',code='12345678'){

@@ -76,14 +76,14 @@ export function createCRM(env){
  async function overview(){
   const [eventRows,quotes,taskRows,resources,assignments,blocks,errors,config,finances]=await Promise.all([
    sql('SELECT * FROM eywa_crm_events ORDER BY starts_at DESC LIMIT 1500').all(),
-   sql('SELECT q.id,q.data_json,q.created_at,s.status AS state,t.stage,t.next_action_date FROM eywa_quotes q LEFT JOIN eywa_quote_state s ON s.quote_id=q.id LEFT JOIN eywa_crm_quote_tracking t ON t.quote_id=q.id ORDER BY q.created_at DESC LIMIT 1500').all(),
+   sql('SELECT q.id,q.data_json,q.created_at,s.status AS state,s.expires_at,t.stage,t.next_action_date FROM eywa_quotes q LEFT JOIN eywa_quote_state s ON s.quote_id=q.id LEFT JOIN eywa_crm_quote_tracking t ON t.quote_id=q.id ORDER BY q.created_at DESC LIMIT 1500').all(),
    sql('SELECT * FROM eywa_crm_tasks ORDER BY due_date,title LIMIT 5000').all(),
    sql('SELECT * FROM eywa_crm_resources ORDER BY kind,name').all(),sql('SELECT * FROM eywa_crm_assignments').all(),sql('SELECT * FROM eywa_crm_blocks ORDER BY from_date').all(),
    sql("SELECT id,kind,quote_id,attempts,last_error,next_attempt FROM eywa_email_outbox WHERE status='pending' AND attempts>0 ORDER BY created_at DESC LIMIT 20").all(),settings(),
    sql("SELECT i.quote_id,i.seq,i.token,i.created_at,json_extract(i.data_json,'$.totalCents') AS total_cents,json_extract(i.data_json,'$.date') AS event_date,json_extract(i.data_json,'$.company') AS company,json_extract(i.data_json,'$.name') AS name,json_extract(i.data_json,'$.email') AS email,json_extract(i.data_json,'$.balanceCents') AS balance_cents,json_extract(i.data_json,'$.paidCents') AS paid_cents,EXISTS(SELECT 1 FROM eywa_invoices s JOIN eywa_balance_payments p ON p.token=s.token WHERE s.session_id='balance:'||i.session_id) AS settled FROM eywa_invoices i WHERE json_extract(i.data_json,'$.kind') IS NULL").all()
   ]);
   const events=eventRows.results.map(e=>({...e,data_json:undefined,data:parse(e.data_json)}));
-  const dossiers=quotes.results.map(r=>{const q=parse(r.data_json);return {id:r.id,createdAt:r.created_at,state:r.state||'open',stage:r.stage||'new',nextActionDate:r.next_action_date,reference:q.reference,name:q.name,email:q.email,phone:q.phone,company:q.company,eventType:q.eventType,date:q.date,time:q.time,hours:q.hours,days:q.days,guests:q.guests,location:q.location,options:q.options,totalCents:q.totalCents,quoteUrl:q.quoteUrl};});
+  const dossiers=quotes.results.map(r=>{const q=parse(r.data_json);return {id:r.id,createdAt:r.created_at,expiresAt:r.expires_at??null,state:r.state||'open',stage:r.stage||'new',nextActionDate:r.next_action_date,reference:q.reference,name:q.name,email:q.email,phone:q.phone,company:q.company,eventType:q.eventType,date:q.date,time:q.time,hours:q.hours,days:q.days,guests:q.guests,location:q.location,options:q.options,totalCents:q.totalCents,quoteUrl:q.quoteUrl};});
   return {calendar:await calendar.status(),externalEvents:await calendar.events(),events,quotes:dossiers,tasks:taskRows.results,resources:resources.results,assignments:assignments.results,blocks:blocks.results,errors:errors.results,settings:config,finances:finances.results,suppliers:await procurement.suppliers(),prospects:await prospecting.list(),notes:await notebook.list(),checklists:await checklists.library(),briefItems:(await sql('SELECT event_id,done FROM eywa_crm_brief_items').all()).results,now:Date.now(),limited:eventRows.results.length===1500||quotes.results.length===1500};
  }
  async function details(id){
@@ -106,6 +106,12 @@ export function createCRM(env){
   if(String(action).startsWith('prospect'))return prospecting.mutate(action,b,now);
   if(String(action).startsWith('note'))return notebook.mutate(action,b,now);
   if(String(action).startsWith('checklist')||['brief-item','event-checklist-replace','task-delete'].includes(action))return checklists.mutate(action,b,now);
+  if(action==='quote-expiry'){
+   const id=String(b.quoteId||'');if(!/^[a-f0-9-]{36}$/.test(id))fail('Devis invalide.');
+   const st=await sql('SELECT status FROM eywa_quote_state WHERE quote_id=?',id).first();if(!st)fail('Devis introuvable.',404);if(st.status==='paid')fail('Ce devis est déjà réservé.');
+   let at=null;if(b.mode==='now')at=now;else if(b.mode==='date'){if(!/^\d{4}-\d{2}-\d{2}$/.test(b.date||''))fail('Choisissez une date.');at=Date.parse(b.date+'T00:00:00+01:00')+86400000;if(at<=now)fail('Choisissez une date à venir.');}else if(b.mode!=='none')fail('Action invalide.');
+   await sql('UPDATE eywa_quote_state SET expires_at=? WHERE quote_id=?',at,id).run();return {ok:true,id:'quote-'+id};
+  }
   if(action==='settings'){
    const current=await settings(),next={...current};
    for(const key of ['loadingMinutes','setupMinutes','cleanupMinutes','travelMinutes']){const n=Number(b[key]);if(!Number.isInteger(n)||n<0||n>2880)fail('Durée invalide.');next[key]=n;}

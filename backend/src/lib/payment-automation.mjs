@@ -1,5 +1,5 @@
 import {paymentMail} from './mail-templates.mjs';
-import {stopQuote} from './followups.mjs';
+import {stopQuote,expireOverlapping} from './followups.mjs';
 import {emailAddress} from './quote-emails.mjs';
 import {createInvoice,invoiceNumber,invoiceURL,invoiceHTML} from './invoices.mjs';
 export function paymentAutomation(env,stripe,mailer){
@@ -12,6 +12,9 @@ export function paymentAutomation(env,stripe,mailer){
   const details=JSON.parse(booking.details_json||'{}');if(details.automationVersion!=='20261109')return;const qid=details.quoteId||session.metadata?.eywa_quote;
   // Stop follow-ups first. Email/invoice failures must not resume reminders.
   if(qid)await stopQuote(env,qid,'paid',session.id);
+  // La date est prise : les autres devis sur ces jours expirent, et Louis est prévenu pour proposer une autre date.
+  const taken=await expireOverlapping(env,booking.start_date,booking.end_date,qid);
+  if(taken.length)await mailer.enqueue('date-taken:'+session.id,'contact.eywa08@gmail.com',dateTakenMail(taken,booking.start_date),null,'admin');
   const saved=qid?await sql('SELECT data_json FROM eywa_quotes WHERE id=?',qid).first():null;
   const q={...(saved?JSON.parse(saved.data_json):{}),...details.eventSummary};
   const expanded=await stripe.request('checkout/sessions/'+encodeURIComponent(session.id)+'?expand[]=payment_intent.latest_charge');
@@ -31,4 +34,14 @@ export function paymentAutomation(env,stripe,mailer){
   }
   if(qid)await sql('UPDATE eywa_notion_jobs SET version=version+1 WHERE quote_id=?',qid).run();
  };
+}
+
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+export function dateTakenMail(quotes,day){
+ const d=new Date(day+'T12:00:00Z').toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'});
+ const lines=quotes.map(q=>(q.name||'Client')+(q.company?' ('+q.company+')':'')+' · '+(q.email||'')+(q.phone?' · '+q.phone:''));
+ const subject='Date prise le '+d+' : '+quotes.length+' devis expiré'+(quotes.length>1?'s':'');
+ const text=['La date du '+d+' vient d’être réservée.','Ces devis portaient sur la même date. Ils ont expiré et leurs relances sont arrêtées :',...lines,'Pense à leur proposer une autre date.'].join('\n\n');
+ const html='<p>La date du <b>'+esc(d)+'</b> vient d’être réservée.</p><p>Ces devis portaient sur la même date. Ils ont expiré et leurs relances sont arrêtées :</p><ul>'+lines.map(l=>'<li>'+esc(l)+'</li>').join('')+'</ul><p>Pense à leur proposer une autre date.</p>';
+ return {subject,html,text};
 }

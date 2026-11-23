@@ -16,6 +16,8 @@ export function createCheckout(deps){
   const quoteId=String(body.quote?.qid||'');
   const savedQuote=quoteId?await deps.findQuote?.(quoteId):null;
   if(quoteId&&!savedQuote)return json(400,{error:'Devis introuvable. Recréez votre devis avant de réserver.'});
+  const quoteState=savedQuote&&deps.quoteState?await deps.quoteState(savedQuote.id):null;
+  if(quoteState?.status!=='paid'&&Number.isFinite(quoteState?.expires_at)&&quoteState.expires_at<=Date.now())return json(410,{code:'QUOTE_EXPIRED',error:'Ce devis a expiré le '+new Date(quoteState.expires_at-1).toLocaleDateString('fr-FR',{timeZone:'Europe/Paris'})+'. Demandez un nouveau devis, ou écrivez à contact.eywa08@gmail.com pour qu’on le réactive.'});
   details.quoteId=savedQuote?.id||null;details.automationVersion='20261109';
   details.eventSummary={date:body.quote.d,lineItems:calculated.lineItems,staff:calculated.staff,normalCents:calculated.normalCents,time:body.quote.ti,guests:Number(body.quote.g),hours:Number(body.quote.h),days:Number(body.quote.dy||1),location:body.quote.l,eventType:body.quote.t,options:(()=>{try{return typeof body.quote.options==='string'?JSON.parse(body.quote.options):body.quote.options||[];}catch{return [];}})(),firstName:body.quote.p};
   let slot,slots,booking,bookings;

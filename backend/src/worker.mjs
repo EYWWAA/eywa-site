@@ -24,7 +24,7 @@ export async function handle(request,env,ctx,displayCache){
  const url=new URL(request.url),route=url.pathname.replace(/^\/\.netlify\/functions\//,'/');
  if(url.pathname==='/espace'||url.pathname.startsWith('/espace/'))return crmHTTP(request,env,ctx);
  const stripe=createStripe(env),slots=createSlots(env.DB),bookings=createBookings(env.DB),deps={...stripe,quote:async(q)=>{const c=await pricing.quote(q);return {...c,...quoteLines(q,c),dates:await occupiedTimelineDays(env,q,c)};},getSlots:async()=>slots,getBookings:async()=>bookings,settings:env};
- const mailer=createMailer(env),quotes=quoteEmails(env,deps,mailer);deps.findQuote=quotes.find;deps.notifyPayment=paymentAutomation(env,stripe,mailer);deps.balancePaid=s=>recordBalancePayment(env,s);
+ const mailer=createMailer(env),quotes=quoteEmails(env,deps,mailer);deps.findQuote=quotes.find;deps.quoteState=quotes.state;deps.notifyPayment=paymentAutomation(env,stripe,mailer);deps.balancePaid=s=>recordBalancePayment(env,s);
  const send=result=>new Response(result.statusCode===204?null:result.body,{status:result.statusCode,headers:result.headers});
  if(request.method==='OPTIONS')return send(stripe.json(204,{}));
  if(route==='/launch-offer'){

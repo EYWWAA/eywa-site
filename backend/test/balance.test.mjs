@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import {database} from './booking.test.mjs';
 import {queueBalanceInvoices,recordBalancePayment,balanceCheckout,BALANCE_START} from '../src/lib/balance.mjs';
 import {invoiceHTML} from '../src/lib/invoices.mjs';
-function setup(){const DB=database();for(const name of ['0002_booking_calendar.sql','0003_transactional_email.sql','0004_automation.sql','0006_balance_invoices.sql'])DB.raw.exec(fs.readFileSync(new URL('../migrations/'+name,import.meta.url),'utf8'));return {DB};}
+function setup(){const DB=database();for(const name of ['0002_booking_calendar.sql','0003_transactional_email.sql','0004_automation.sql','0016_quote_expiry.sql','0006_balance_invoices.sql'])DB.raw.exec(fs.readFileSync(new URL('../migrations/'+name,import.meta.url),'utf8'));return {DB};}
 const lines=[{title:'Formule de base',cents:30000},{title:'Déplacement aller-retour',cents:17644},{title:'Habillage du bar',cents:20000,personalization:true},{title:'Gobelets sur mesure',cents:20000,personalization:true},{title:'Impression accélérée des gobelets',cents:5000,personalization:true}];
 async function seed(env,{end='2026-12-02',created=BALANCE_START+1000}={}){
  await env.DB.prepare("INSERT INTO eywa_bookings(id,session_id,state,start_date,end_date,normal_cents,payable_cents,payment_kind,paid_at) VALUES('b1','cs_1','paid',?,?,92644,46322,'deposit','2026-11-21T09:00:00Z')").bind(end,end).run();

@@ -14,7 +14,7 @@ test('Google calendar: service import excludes administrative EYWA reminders and
  for(const name of ['EYWA – Prospection ULTRA','EYWA – Améliorer le pitch + entraînement d’appel','EYWA – Appels fêtes de fin d’année','EYWA – Services à Charleville (même gratuits) pour pratiquer'])assert.equal(isEywaService(name),false);
  assert.equal(isEywaService('EYWA – Déjeuner Nathalie Siméon (AXA) – 30 pers – OFFERT'),true);
 });
-function setup(){const DB=database();for(const f of ['0003_transactional_email.sql','0004_automation.sql','0006_balance_invoices.sql'])DB.raw.exec(fs.readFileSync(new URL('../migrations/'+f,import.meta.url),'utf8'));return {DB};}
+function setup(){const DB=database();for(const f of ['0003_transactional_email.sql','0004_automation.sql','0016_quote_expiry.sql','0006_balance_invoices.sql'])DB.raw.exec(fs.readFileSync(new URL('../migrations/'+f,import.meta.url),'utf8'));return {DB};}
 test('Google calendar: default import keeps EYWA only, preserving location and provisional notes',()=>{
  const items=readCalendar(feed(event('one','EYWA - Déjeuner')+'\r\n'+event('personal','Rendez-vous personnel')),{now});assert.equal(items.length,1);assert.equal(items[0].startsAt,Date.parse('2026-12-01T11:00:00Z'));assert.equal(items[0].data.date,'2026-12-01');assert.equal(items[0].data.time,'12:00');
  const [q]=readCalendar(source,{now});assert.equal(q.data.location,'Lieu fictif');assert(q.data.notes.includes('provisoire\n'));assert.equal(q.data.hours,2);assert.equal(q.block,true);

@@ -2,6 +2,10 @@ import {escape,safeURL} from './mail-templates.mjs';
 /* Trois relances (J+1, J+3, J+5 comme Always Kind Co) recopiées des mails d'Always Kind Co et validées par Louis le 20/11/2026.
    Mêmes textes pour tous les types d'événements ; le reste viendra plus tard. */
 export const reminderDays=[1,3,5];
+/* Expiration (Louis, 23/11/2026) : 14 jours après l'envoi, et au plus tard à minuit la veille de l'événement, comme Flashquotes. */
+export const QUOTE_EXPIRY_DAYS=14;
+export const eventStart=date=>Date.parse(String(date||'')+'T00:00:00+02:00');
+export function quoteExpiry(createdAt,date){const e=eventStart(date),limit=createdAt+QUOTE_EXPIRY_DAYS*86400000;return Number.isFinite(e)?Math.min(limit,e-86400000):limit;}
 export function segment(type=''){
  if(/mariage|wedding/i.test(type))return 'wedding';
  if(/anniversaire|privé|famille|baptême|communion/i.test(type))return 'private';
@@ -33,9 +37,9 @@ export async function registerQuote(env,q,now=Date.now()){
  const sql=(s,...v)=>env.DB.prepare(s).bind(...v);
  // Use the earliest Paris midnight offset as a conservative cut-off.
  // Never follow up on the event date, including across DST changes.
- const eventAt=Date.parse(q.date+'T00:00:00+02:00');
+ const eventAt=eventStart(q.date),expiresAt=Number.isFinite(q.expiresAt)?q.expiresAt:quoteExpiry(now,q.date);
  await env.DB.batch([
-  sql('INSERT INTO eywa_quote_state(quote_id,event_at,created_at) VALUES(?,?,?) ON CONFLICT DO NOTHING',q.id,eventAt,now),
+  sql('INSERT INTO eywa_quote_state(quote_id,event_at,created_at,expires_at) VALUES(?,?,?,?) ON CONFLICT DO NOTHING',q.id,eventAt,now,expiresAt),
   /* Relances systématiques : la personne vient de demander ce devis, le
      suivi en est le prolongement direct. Chaque message porte en pied de
      page un lien pour les arrêter, et elles cessent dès qu'un paiement
@@ -55,7 +59,7 @@ export async function stopQuote(env,id,status='closed',session=null,now=Date.now
 }
 export async function queueFollowups(env,mailer,now=Date.now()){
  const sql=(s,...v)=>env.DB.prepare(s).bind(...v);
- const rows=(await sql("SELECT r.*,q.data_json FROM eywa_reminders r JOIN eywa_quote_state s ON s.quote_id=r.quote_id JOIN eywa_quotes q ON q.id=r.quote_id WHERE r.state='pending' AND r.due_at<=? AND s.status='open' AND s.event_at>? AND EXISTS (SELECT 1 FROM eywa_email_outbox o WHERE o.id='quote:'||q.id||':client' AND o.status='sent') ORDER BY r.due_at LIMIT 10",now,now).all()).results;
+ const rows=(await sql("SELECT r.*,q.data_json FROM eywa_reminders r JOIN eywa_quote_state s ON s.quote_id=r.quote_id JOIN eywa_quotes q ON q.id=r.quote_id WHERE r.state='pending' AND r.due_at<=? AND s.status='open' AND s.event_at>? AND (s.expires_at IS NULL OR s.expires_at>?) AND EXISTS (SELECT 1 FROM eywa_email_outbox o WHERE o.id='quote:'||q.id||':client' AND o.status='sent') ORDER BY r.due_at LIMIT 10",now,now,now).all()).results;
  for(const row of rows){
   // Relances J+15 et J+25 déjà programmées avant le 20/11/2026 : on ne les envoie plus.
   if(!reminderDays.includes(row.day)){await sql("UPDATE eywa_reminders SET state='skipped' WHERE quote_id=? AND day=?",row.quote_id,row.day).run();continue;}
@@ -68,8 +72,20 @@ export async function queueFollowups(env,mailer,now=Date.now()){
   const stop='https://eywa-booking.eywa-booking-cloudflare.workers.dev/followup-stop?id='+q.id;
   const payload=reminderMail(q,row.day,stop);
   await env.DB.batch([
-   sql("INSERT INTO eywa_email_outbox(id,recipient,payload_json,created_at,quote_id,kind) SELECT ?,?,?,?,?,? WHERE EXISTS (SELECT 1 FROM eywa_quote_state WHERE quote_id=? AND status='open' AND event_at>?) ON CONFLICT DO NOTHING",id,q.email,JSON.stringify(payload),now,q.id,'reminder',q.id,now),
+   sql("INSERT INTO eywa_email_outbox(id,recipient,payload_json,created_at,quote_id,kind) SELECT ?,?,?,?,?,? WHERE EXISTS (SELECT 1 FROM eywa_quote_state WHERE quote_id=? AND status='open' AND event_at>? AND (expires_at IS NULL OR expires_at>?)) ON CONFLICT DO NOTHING",id,q.email,JSON.stringify(payload),now,q.id,'reminder',q.id,now,now),
    sql("UPDATE eywa_reminders SET state='queued' WHERE quote_id=? AND day=?",q.id,row.day)
   ]);
  }
+}
+
+/* Quand une date est prise (réservation payée ou dates bloquées), les autres devis ouverts sur ces jours expirent tout de suite. */
+export async function expireOverlapping(env,from,to,exceptId=null,now=Date.now()){
+ const sql=(s,...v)=>env.DB.prepare(s).bind(...v);
+ const rows=(await sql("SELECT q.id,q.data_json FROM eywa_quote_state s JOIN eywa_quotes q ON q.id=s.quote_id WHERE s.status='open' AND (s.expires_at IS NULL OR s.expires_at>?)",now).all()).results;
+ const hit=[];
+ for(const r of rows){if(r.id===exceptId)continue;let q;try{q=JSON.parse(r.data_json);}catch{continue;}if(!/^\d{4}-\d{2}-\d{2}$/.test(q.date||''))continue;
+  const end=new Date(Date.parse(q.date+'T12:00:00Z')+(Math.max(1,Number(q.days)||1)-1)*86400000).toISOString().slice(0,10);
+  if(q.date<=to&&end>=from)hit.push(q);}
+ if(hit.length)await env.DB.batch(hit.flatMap(q=>[sql('UPDATE eywa_quote_state SET expires_at=? WHERE quote_id=?',now,q.id),sql("UPDATE eywa_reminders SET state='cancelled' WHERE quote_id=? AND state='pending'",q.id),sql("DELETE FROM eywa_email_outbox WHERE quote_id=? AND kind='reminder' AND status='pending'",q.id)]));
+ return hit;
 }

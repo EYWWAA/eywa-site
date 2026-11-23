@@ -205,3 +205,10 @@ main{margin:0 auto;align-self:start}
 .mini-table td:not(:first-child){text-align:right;color:var(--muted)}
 .mini-table td:last-child{color:var(--ink);font-weight:bold}
 .bar-col.future .bar{opacity:.55}.bar-col.future small{font-style:italic}
+
+.meta-chip.bad{background:#f8e3dd;border-color:#ebc3b8;color:#9c412f}
+.pipe-exp{font-size:12px;color:var(--muted);margin-top:2px}
+.pipe-exp.warn{color:#8a5a12}.pipe-exp.bad{color:var(--danger);font-weight:bold}
+.danger-text{color:var(--danger)!important}
+.ev-card-head .bad{color:var(--danger)}.ev-card-head .warn{color:#8a5a12}
+.expiry-form input[type=date]{min-width:170px}

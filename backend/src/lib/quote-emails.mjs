@@ -1,4 +1,4 @@
-import {registerQuote} from './followups.mjs';
+import {registerQuote,quoteExpiry} from './followups.mjs';
 import {randomUUID,createHash} from 'node:crypto';
 import {quoteMail} from './mail-templates.mjs';
 export const apiOrigin='https://eywa-booking.eywa-booking-cloudflare.workers.dev';
@@ -27,6 +27,7 @@ export function quoteEmails(env,deps,mailer){
   params.set('qid',id);params.set('pr',calculated.normalCents/100);params.set('v','20261109-automatisation');
   let options=[];try{options=typeof q.options==='string'?JSON.parse(q.options):q.options||[];}catch{}
   const data={id,createdAt:Date.now(),followupConsent:body.followupConsent===true,consentVersion:body.followupConsent===true?'quote-followup-20261109':null,reference:'EYWA-'+id.slice(0,8).toUpperCase(),email,name:(contact.firstName+' '+contact.lastName).trim(),firstName:contact.firstName.trim(),phone:contact.phone||'',company:contact.company||'',details:contact.details||'',eventType:String(q.t||'Votre événement').slice(0,250),date:q.d,time:q.ti,location:String(q.l||'Lieu à confirmer').slice(0,500),guests:Number(q.g),hours:Number(q.h),days:Number(q.dy||1),options,lineItems:calculated.lineItems,staff:calculated.staff,normalCents:calculated.normalCents,normalTravelCents:Math.round(calculated.travel.total*100),totalCents,travelCents:Math.round(calculated.travel.total*100*(launch?0.2:1)),launch,quoteUrl:'https://eywacoffeecatering.com/devis.html?'+params,documentUrl:apiOrigin+'/quote-view?id='+id};
+  data.expiresAt=quoteExpiry(data.createdAt,data.date);
   data.travelMinutes=calculated.trip?.outwardMinutes>0?Math.ceil(calculated.trip.outwardMinutes):null;
   // Store the quote and both email jobs atomically, so a request retry can never lose a message.
   const now=Date.now(),jobs=[['quote:'+id+':client',email,{...quoteMail(data),quoteDocument:{quoteId:id,filename:'Devis-'+data.reference+'.pdf',html:quoteMail(data,false,{document:true}).html}}],['quote:'+id+':admin','contact.eywa08@gmail.com',quoteMail(data,true)]];
@@ -35,6 +36,7 @@ export function quoteEmails(env,deps,mailer){
   await registerQuote(env,data,data.createdAt);
   return deps.json(200,{id,url:data.quoteUrl,queued:true});
  }
- async function view(id){const q=await find(id);if(!q)return new Response('Devis introuvable',{status:404});const page=quoteMail(q,false,{document:true});return new Response(page.html,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Robots-Tag':'noindex, nofollow','Referrer-Policy':'no-referrer','Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'; img-src https://eywacoffeecatering.com; base-uri 'none'; frame-ancestors 'none'"}});}
- return {find,submit,view};
+ async function view(id){const q=await find(id);if(!q)return new Response('Devis introuvable',{status:404});const st=await sql('SELECT status,expires_at FROM eywa_quote_state WHERE quote_id=?',q.id).first();q.expiresAt=st?.status==='paid'?null:st?.expires_at??null;const page=quoteMail(q,false,{document:true});return new Response(page.html,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Robots-Tag':'noindex, nofollow','Referrer-Policy':'no-referrer','Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'; img-src https://eywacoffeecatering.com; base-uri 'none'; frame-ancestors 'none'"}});}
+ async function state(id){return sql('SELECT status,expires_at FROM eywa_quote_state WHERE quote_id=?',id).first();}
+ return {find,submit,view,state};
 }

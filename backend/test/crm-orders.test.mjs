@@ -5,7 +5,7 @@ import {database} from './booking.test.mjs';
 import {createCRM} from '../src/lib/crm.mjs';
 import {createOrders,orderCategories,suggestions,supplierLink} from '../src/lib/crm-orders.mjs';
 import {crmHTTP} from '../src/lib/crm-http.mjs';
-function setup(){const DB=database();for(const f of ['0003_transactional_email.sql','0004_automation.sql','0006_balance_invoices.sql'])DB.raw.exec(fs.readFileSync(new URL('../migrations/'+f,import.meta.url),'utf8'));return {DB};}
+function setup(){const DB=database();for(const f of ['0003_transactional_email.sql','0004_automation.sql','0016_quote_expiry.sql','0006_balance_invoices.sql'])DB.raw.exec(fs.readFileSync(new URL('../migrations/'+f,import.meta.url),'utf8'));return {DB};}
 const sample={name:'Client fictif',email:'fixture@example.invalid',date:'2027-06-15',time:'10:00',hours:2,days:1,guests:50,eventType:'Mariage'};
 const payload=o=>({id:o.id,updatedAt:o.updated_at,quantity:o.quantity??'',quantityConfirmed:!!o.quantity_confirmed,supplierId:o.supplier_id||'',status:o.status,artworkStatus:o.artwork_status,clientRequest:o.client_request,format:o.format,artworkUrl:o.artwork_url,orderReference:o.order_reference,orderUrl:o.order_url,dueDate:o.due_date||'',notes:o.notes});
 test('orders: each selected option gets the right supply item, with plain cups for stickers',()=>{
