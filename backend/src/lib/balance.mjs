@@ -1,7 +1,6 @@
 import {bankDetails} from './bank-payments.mjs';
-import {escape} from './mail-templates.mjs';
-// Facture de solde (décision de Louis du 20/11/2026) : envoyée le lendemain de l'événement,
-// payable sous 30 jours, par carte ou virement via un lien de paiement Stripe.
+// Contrats du 23/11 : facture à J-7, solde au jour J.
+// Les anciens contrats conservent l'envoi après événement et le délai de 30 jours.
 import terms from './payment-terms.cjs';
 import policy from './booking-policy.cjs';
 import {randomBytes} from 'node:crypto';
