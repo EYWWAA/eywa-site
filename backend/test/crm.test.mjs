@@ -33,9 +33,9 @@ test('CRM: option-specific preparation is dated relative to the event and preser
  const DB=crmDatabase(),crm=createCRM(envFor(DB));try{
   assert(taskTemplates({...manual,options:['Gobelets sur mesure']}).some(t=>t.dueDate==='2027-05-11'&&t.key==='cups'));
   assert(!taskTemplates({...manual,options:['Gobelets avec stickers']}).some(t=>t.key==='cups'));
-  const {id}=await crm.mutate('manual-event',manual);let tasks=DB.raw.prepare('SELECT * FROM eywa_crm_tasks WHERE event_id=?').all(id);assert.equal(tasks.length,3);
+  const {id}=await crm.mutate('manual-event',manual);let tasks=DB.raw.prepare('SELECT * FROM eywa_crm_tasks WHERE event_id=?').all(id);assert.equal(tasks.length,7);assert.equal(DB.raw.prepare('SELECT COUNT(*) n FROM eywa_crm_brief_items WHERE event_id=?').get(id).n,27);
   await crm.mutate('task',{id:tasks[0].id,done:true});await crm.mutate('event',{id,notes:'Préparation validée'});
-  tasks=DB.raw.prepare('SELECT * FROM eywa_crm_tasks WHERE event_id=?').all(id);assert.equal(tasks.length,3);assert.equal(tasks.filter(t=>t.done).length,1);assert(tasks.find(t=>t.done).completed_at);
+  tasks=DB.raw.prepare('SELECT * FROM eywa_crm_tasks WHERE event_id=?').all(id);assert.equal(tasks.length,7);assert.equal(tasks.filter(t=>t.done).length,1);assert(tasks.find(t=>t.done).completed_at);
  }finally{DB.raw.close();}
 });
 test('CRM: owner-only login, one-use codes, hashed sessions and expiry',async()=>{
@@ -98,7 +98,7 @@ test('CRM: paid reservations sync once, do not mutate financial snapshots or res
   DB.raw.prepare("INSERT INTO eywa_quote_state(quote_id,status,event_at,created_at) VALUES(?,'paid',?,?)").run(q.id,parisTime(manual.date,'10:00'),Date.now());
   const b=await bookings.claim([manual.date],50000,25000,'deposit',{...bookingDetails,quoteId:q.id,eventSummary:{date:q.date,hours:2,time:'10:00',days:1,guests:70,options:q.options}});await bookings.attach(b.id,'cs_test_crm');await bookings.paid({id:'cs_test_crm',payment_status:'paid',currency:'eur',amount_total:25000,metadata:{eywa_booking:b.id}});
   const before=DB.raw.prepare('SELECT details_json FROM eywa_bookings').get().details_json;await crm.sync();await crm.sync();
-  assert.equal(DB.raw.prepare('SELECT COUNT(*) n FROM eywa_crm_events').get().n,1);assert.equal(DB.raw.prepare('SELECT COUNT(*) n FROM eywa_crm_tasks').get().n,5);assert.equal(DB.raw.prepare('SELECT COUNT(*) n FROM eywa_email_outbox').get().n,0);
+  assert.equal(DB.raw.prepare('SELECT COUNT(*) n FROM eywa_crm_events').get().n,1);assert.equal(DB.raw.prepare('SELECT COUNT(*) n FROM eywa_crm_tasks').get().n,9);assert.equal(DB.raw.prepare('SELECT COUNT(*) n FROM eywa_email_outbox').get().n,0);
   await crm.mutate('event',{id:'booking-'+b.id,notes:'À préparer'});assert.equal(DB.raw.prepare('SELECT details_json FROM eywa_bookings').get().details_json,before);
   await assert.rejects(()=>crm.mutate('event',{id:'booking-'+b.id,status:'cancelled'}));
   const data=await crm.overview();assert.equal(data.events.length,1);assert.equal((await crm.details('booking-'+b.id)).data.notes,'À préparer');
