@@ -465,4 +465,8 @@ function reports(){const all=quotes(),paid=all.filter(q=>q.state==='paid'),now=n
   +'<section class="ev-card"><div class="ev-card-head"><h3>Par type d’événement</h3></div>'+(types.length?'<table class="mini-table"><tbody>'+types.map(([k,v])=>'<tr><td>'+esc(k)+'</td><td>'+v.n+'</td><td>'+euro(v.ca)+'</td></tr>').join('')+'</tbody></table>':empty('Pas encore de réservation.'))+'</section>'
   +'<section class="ev-card"><div class="ev-card-head"><h3>Meilleurs clients</h3></div>'+(top.length?'<table class="mini-table"><tbody>'+top.map(([k,v])=>'<tr><td>'+esc(k)+'</td><td>'+v.n+' résa</td><td>'+euro(v.ca)+'</td></tr>').join('')+'</tbody></table>':empty('Pas encore de réservation.'))+'</section></div>';}
 function sizeBars(){document.querySelectorAll('.bar[style-h]').forEach(b=>{b.style.height=Math.max(2,Number(b.getAttribute('style-h')))+'%';});}
+// Nouvelle version : si le code publié change, la page se recharge toute seule au retour sur l'onglet ou l'application.
+(()=>{let known=null;const sig=t=>t.length+':'+[...t].reduce((h,c,i)=>i%97?h:(h*31+c.charCodeAt(0))|0,7);
+const check=async()=>{try{const t=await (await fetch('/espace/app.js',{cache:'no-store'})).text(),n=sig(t);if(known===null)known=n;else if(n!==known){known=n;const d=$('#detail');if(!(d&&d.open)&&!document.querySelector('form[data-dirty="true"]'))location.reload();}}catch{}};
+check();document.addEventListener('visibilitychange',()=>{if(!document.hidden)check();});setInterval(check,300000);})();
 })();
