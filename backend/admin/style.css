@@ -246,3 +246,7 @@ main{margin:0 auto;align-self:start}
 .ct-exp{margin:-4px 0 10px;font-size:13px;color:var(--muted)}.ct-exp.bad{color:var(--danger)}.ct-exp.warn{color:#a15c00}
 @media(max-width:1050px){.ct-grid{grid-template-columns:1fr}.ct-bar .secondary{margin-left:0}.ct-feed li{grid-template-columns:1fr auto}.ct-feed time{grid-column:1/-1}}
 .ct-table td:first-child{min-width:150px}
+
+/* Téléphone : le menu se déplie au lieu d'une bande à faire défiler */
+.nav-toggle{display:none}
+@media(max-width:720px){.nav-toggle{display:flex;align-items:center;justify-content:space-between;width:100%;margin:0 0 12px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);font-weight:600;cursor:pointer}.nav-toggle b{font-weight:400;font-size:13px;color:var(--muted)}aside nav{display:none}aside.nav-open nav{display:grid;grid-template-columns:1fr 1fr;gap:6px;overflow:visible;padding-bottom:16px}aside nav .nav-group{grid-column:1/-1;margin:8px 0 0}aside nav button{white-space:normal;text-align:left}}
