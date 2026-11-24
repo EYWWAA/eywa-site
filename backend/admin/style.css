@@ -250,3 +250,7 @@ main{margin:0 auto;align-self:start}
 /* Téléphone : le menu se déplie au lieu d'une bande à faire défiler */
 .nav-toggle{display:none}
 @media(max-width:720px){.nav-toggle{display:flex;align-items:center;justify-content:space-between;width:100%;margin:0 0 12px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);font-weight:600;cursor:pointer}.nav-toggle b{font-weight:400;font-size:13px;color:var(--muted)}aside nav{display:none}aside.nav-open nav{display:grid;grid-template-columns:1fr 1fr;gap:6px;overflow:visible;padding-bottom:16px}aside nav .nav-group{grid-column:1/-1;margin:8px 0 0}aside nav button{white-space:normal;text-align:left}}
+
+/* Fournisseurs : fiches courtes */
+.sup-facts{display:flex;gap:22px;margin:8px 0 12px}.sup-facts span{display:flex;flex-direction:column;font-size:12px;color:var(--muted)}.sup-facts b{font-size:17px;color:var(--ink);font-weight:600}
+.sup-notes{white-space:pre-line;font-size:14px;line-height:1.55;margin:0 0 14px}
