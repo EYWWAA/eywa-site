@@ -1,6 +1,8 @@
 import {randomUUID} from 'node:crypto';
 import policy from './booking-policy.cjs';
 export const categories={'cups-printed':'Gobelets imprimés','cups-plain':'Gobelets standards','stickers':'Stickers pour gobelets','bar-wrap':'Habillage du bar','foam':'Logo sur la mousse'};
+// Les fournisseurs ont un type de plus que les commandes d'événement : les consommables.
+export const supplierCategories={...categories,consumables:'Consommables'};
 const fail=(s,status=400)=>{throw Object.assign(Error(s),{status});};
 const text=(s,n=2000)=>String(s??'').trim().slice(0,n);
 export function supplierLink(value){
@@ -45,7 +47,7 @@ export function createOrders(env){
  async function details(id){const e=await event(id);await ensure(e);const list=await suppliers(),orders=(await sql('SELECT * FROM eywa_crm_orders WHERE event_id=? ORDER BY category',id).all()).results;return {suppliers:list,orders:orders.map(o=>({...o,suggestions:suggestions(list,o,e.data.date)}))};}
  async function mutate(action,b,now=Date.now()){
   if(action==='supplier'){
-   if(!categories[b.category]||!text(b.name,150))fail('Complétez le nom et le type de fournisseur.');
+   if(!supplierCategories[b.category]||!text(b.name,150))fail('Complétez le nom et le type de fournisseur.');
    const id=b.id?text(b.id,100):randomUUID(),number=(v,min,max)=>{if(v===''||v===null||v===undefined)return null;const n=Number(v);if(!Number.isInteger(n)||n<min||n>max)fail('Vérifiez les quantités et délais du fournisseur.');return n;};
    const min=number(b.minQuantity,1,1000000),max=number(b.maxQuantity,1,1000000),lead=number(b.leadDays,0,180),priority=number(b.priority??10,0,1000),url=supplierLink(b.url),preferred=b.preferred===true;
    if(min!==null&&max!==null&&min>max)fail('Le maximum doit être supérieur au minimum.');

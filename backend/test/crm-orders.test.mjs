@@ -23,7 +23,7 @@ test('orders: suggestions require confirmed quantity, enabled supplier, matching
 });
 test('orders: Notion supplier seeds remain candidates and do not silently become selected',async()=>{
  const env=setup(),crm=createCRM(env),orders=createOrders(env);try{
-  const list=await orders.suppliers();assert.equal(list.length,8);assert(list.every(s=>s.preferred===0));assert.equal(list.find(s=>s.id==='pixeprint-cups').min_quantity,250);
+  const list=await orders.suppliers();assert.equal(list.length,11);assert(list.every(s=>s.preferred===0));assert.equal(list.find(s=>s.id==='pixeprint-cups').min_quantity,250);
   const {id}=await crm.mutate('manual-event',sample);const d=await orders.details(id);assert.equal(d.orders.length,1);assert.equal(d.orders[0].supplier_id,null);assert.equal(d.orders[0].quantity,null);assert.deepEqual(d.orders[0].suggestions,[]);
   await orders.details(id);assert.equal(env.DB.raw.prepare('SELECT COUNT(*) n FROM eywa_crm_orders').get().n,1);
  }finally{env.DB.raw.close();}
