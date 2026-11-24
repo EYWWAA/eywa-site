@@ -20,7 +20,7 @@ function day(v){const s=text(v,10);if(!s)return null;if(!policy.validDate(s))fai
 export function createProspects(env,deps={}){
  const sql=(s,...v)=>env.DB.prepare(s).bind(...v);
  async function list(){
-  return (await sql(`SELECT p.id,p.name,p.company,p.role,p.email,p.phone,p.linkedin_url,p.source,p.status,p.next_action_date,p.updated_at,p.first_name,p.last_name,p.address,p.photos_url,p.event_photos_url,p.event_name,p.event_date,p.event_guests,p.pitch,
+  return (await sql(`SELECT p.id,p.name,p.company,p.role,p.email,p.phone,p.linkedin_url,p.source,p.status,p.next_action_date,p.updated_at,p.created_at,p.first_name,p.last_name,p.address,p.photos_url,p.event_photos_url,p.event_name,p.event_date,p.event_guests,p.pitch,
    (SELECT MAX(at) FROM eywa_crm_prospect_events e WHERE e.prospect_id=p.id) AS last_contact_at,
    (SELECT COUNT(*) FROM eywa_crm_prospect_events e WHERE e.prospect_id=p.id) AS exchanges
    FROM eywa_crm_prospects p ORDER BY COALESCE(p.next_action_date,'9999-12-31'),p.updated_at DESC LIMIT 2000`).all()).results;

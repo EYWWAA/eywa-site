@@ -4,6 +4,7 @@ import {escape,safeURL} from './mail-templates.mjs';
 import {createOrders} from './crm-orders.mjs';
 import {createProspects} from './crm-prospects.mjs';
 import {createNotebook} from './crm-notebook.mjs';
+import {createContactNotes} from './crm-contact-notes.mjs';
 import {createChecklists} from './crm-checklists.mjs';
 import {createMailer} from './mail-delivery.mjs';
 import {createCorrespondence} from './crm-correspondence.mjs';
@@ -57,7 +58,7 @@ export async function occupiedTimelineDays(env,q,calculated){
  return [...new Set([...dates,...calculated.dates])].sort();
 }
 export function createCRM(env){
- const checklists=createChecklists(env),notebook=createNotebook(env),prospecting=createProspects(env,{mailer:createMailer(env)}),procurement=createOrders(env),correspondence=createCorrespondence(env),calendar=createCalendar(env);
+ const checklists=createChecklists(env),notebook=createNotebook(env),contactNotes=createContactNotes(env),prospecting=createProspects(env,{mailer:createMailer(env)}),procurement=createOrders(env),correspondence=createCorrespondence(env),calendar=createCalendar(env);
  const sql=(s,...v)=>env.DB.prepare(s).bind(...v);
  async function settings(){return {...defaultSettings,...parse((await sql('SELECT data_json FROM eywa_crm_settings WHERE id=1').first())?.data_json)};}
  async function event(id){const row=await sql('SELECT * FROM eywa_crm_events WHERE id=?',id).first();if(!row)fail('Événement introuvable.',404);return {...row,data:parse(row.data_json)};}
@@ -92,7 +93,7 @@ export function createCRM(env){
   ]);
   const events=eventRows.results.map(e=>({...e,data_json:undefined,data:parse(e.data_json)}));
   const dossiers=quotes.results.map(r=>{const q=parse(r.data_json);return {id:r.id,createdAt:r.created_at,expiresAt:r.expires_at??null,state:r.state||'open',stage:r.stage||'new',nextActionDate:r.next_action_date,reference:q.reference,name:q.name,email:q.email,phone:q.phone,company:q.company,eventType:q.eventType,date:q.date,time:q.time,hours:q.hours,days:q.days,guests:q.guests,location:q.location,options:q.options,totalCents:q.totalCents,quoteUrl:q.quoteUrl};});
-  return {calendar:await calendar.status(),externalEvents:await calendar.events(),events,quotes:dossiers,tasks:taskRows.results,resources:resources.results,assignments:assignments.results,blocks:blocks.results,errors:errors.results,settings:config,finances:finances.results,suppliers:await procurement.suppliers(),prospects:await prospecting.list(),notes:await notebook.list(),checklists:await checklists.library(),briefItems:(await sql('SELECT event_id,done FROM eywa_crm_brief_items').all()).results,now:Date.now(),limited:eventRows.results.length===1500||quotes.results.length===1500};
+  return {calendar:await calendar.status(),externalEvents:await calendar.events(),events,quotes:dossiers,tasks:taskRows.results,resources:resources.results,assignments:assignments.results,blocks:blocks.results,errors:errors.results,settings:config,finances:finances.results,suppliers:await procurement.suppliers(),prospects:await prospecting.list(),notes:await notebook.list(),contactNotes:await contactNotes.list(),checklists:await checklists.library(),briefItems:(await sql('SELECT event_id,done FROM eywa_crm_brief_items').all()).results,now:Date.now(),limited:eventRows.results.length===1500||quotes.results.length===1500};
  }
  async function details(id){
   if(id.startsWith('calendar-'))return calendar.details(id);
@@ -111,6 +112,7 @@ export function createCRM(env){
  async function audit(action,id){await sql('INSERT INTO eywa_crm_audit(action,entity,at) VALUES(?,?,?)',action,id,Date.now()).run();}
  async function mutate(action,b,now=Date.now()){
   if(action==='supplier'||action==='order')return procurement.mutate(action,b,now);
+  if(String(action).startsWith('contact-note'))return contactNotes.mutate(action,b,now);
   if(String(action).startsWith('prospect'))return prospecting.mutate(action,b,now);
   if(String(action).startsWith('note'))return notebook.mutate(action,b,now);
   if(String(action).startsWith('checklist')||['brief-item','event-checklist-replace','task-delete'].includes(action))return checklists.mutate(action,b,now);

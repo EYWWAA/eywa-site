@@ -114,3 +114,14 @@ test('CRM: review requires enabled setting, completed real event, consent, delay
   const second=await crm.mutate('manual-event',{...manual,name:'Client TEST',date:'2027-06-02'});await crm.mutate('event',{id:second.id,status:'completed'});await crm.mutate('review',{id:second.id,enabled:true});await crm.reviewQueue(mailer,finish+4*86400000);assert.equal(sent.size,1);
  }finally{DB.raw.close();}
 });
+
+test('CRM: notes de contact, ajout, épinglage et suppression',async()=>{
+ const DB=crmDatabase();try{const crm=createCRM(envFor(DB));
+  await assert.rejects(()=>crm.mutate('contact-note',{contactKey:'@a@b.fr',body:'  '}));
+  await crm.mutate('contact-note',{contactKey:'@a@b.fr',body:'Préfère les mails le matin'},1000);await crm.mutate('contact-note',{contactKey:'@a@b.fr',body:'Rappeler en janvier'},2000);
+  let notes=(await crm.overview()).contactNotes;assert.equal(notes.length,2);assert.equal(notes[0].body,'Rappeler en janvier');
+  await crm.mutate('contact-note-pin',{id:notes[1].id,pinned:true});notes=(await crm.overview()).contactNotes;assert.equal(notes[0].body,'Préfère les mails le matin');assert.equal(notes[0].pinned,1);
+  await crm.mutate('contact-note-delete',{id:notes[0].id});assert.equal((await crm.overview()).contactNotes.length,1);
+  await assert.rejects(()=>crm.mutate('contact-note-delete',{id:'inconnu'}));
+ }finally{DB.raw.close();}
+});
