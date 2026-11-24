@@ -64,3 +64,14 @@ test('Prospects: Paris time handles winter and summer',async()=>{
  assert.equal(new Date(parisTime('2027-01-15','10:00')).toISOString(),'2027-01-15T09:00:00.000Z');
  assert.equal(new Date(parisTime('2027-07-15','10:00')).toISOString(),'2027-07-15T08:00:00.000Z');
 });
+
+test('Prospects: change le statut d’un ou plusieurs prospects d’un coup',async()=>{
+ const DB=crmDatabase(),p=createProspects(env(DB));try{
+  const a=(await p.mutate('prospect',base)).id,b=(await p.mutate('prospect',{...base,name:'Autre fictif',email:'autre@example.com',linkedinUrl:'https://www.linkedin.com/in/autre/'})).id;
+  assert.deepEqual(await p.mutate('prospect-status',{ids:[a,b],status:'contacte'}),{ok:true,changed:2});
+  assert.equal((await p.details(a)).status,'contacte');assert.equal((await p.details(b)).events.length,1);
+  assert.equal((await p.mutate('prospect-status',{ids:[a],status:'contacte'})).changed,0);
+  await assert.rejects(()=>p.mutate('prospect-status',{ids:[a],status:'bidon'}),/Statut/);
+  await assert.rejects(()=>p.mutate('prospect-status',{ids:[],status:'perdu'}),/au moins/);
+ }finally{DB.raw.close();}
+});

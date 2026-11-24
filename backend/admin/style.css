@@ -263,3 +263,4 @@ button.secondary.danger{color:var(--danger);border-color:#e7c4b8}
 .badge.p-invitation{background:#f6eedd;color:#8a6a2a;border:1px dashed #d9bf8c}
 
 .sel-col{width:38px;padding-right:0}.sel-col input{width:18px;height:18px}button.danger{color:var(--danger)}
+.grp td{background:var(--soft);padding:10px;font-size:12px;letter-spacing:.5px;border-bottom:1px solid var(--line)}select.pstatus{width:auto;min-width:150px;padding:7px 8px;font-size:13px}#pbulk-status{width:auto}

@@ -55,6 +55,13 @@ export function createProspects(env,deps={}){
     sql("UPDATE eywa_crm_prospects SET status=CASE WHEN status IN ('a-contacter','invitation') THEN 'contacte' ELSE status END,next_action_date=COALESCE(?,next_action_date),updated_at=? WHERE id=?",day(b.nextActionDate),now,p.id)]);
    return {ok:true,id:p.id};
   }
+  if(action==='prospect-status'){
+   const status=b.status in statuses?b.status:fail('Statut invalide.'),ids=[...new Set((Array.isArray(b.ids)?b.ids:[b.id]).map(i=>text(i,100)).filter(Boolean))].slice(0,200);
+   if(!ids.length)fail('Choisissez au moins un prospect.');
+   const found=(await Promise.all(ids.map(id=>sql('SELECT id,status FROM eywa_crm_prospects WHERE id=?',id).first()))).filter(p=>p&&p.status!==status);
+   if(found.length)await env.DB.batch(found.flatMap(p=>[sql('UPDATE eywa_crm_prospects SET status=?,updated_at=? WHERE id=?',status,now,p.id),sql('INSERT INTO eywa_crm_prospect_events(id,prospect_id,kind,at,summary,created_at) VALUES(?,?,?,?,?,?)',randomUUID(),p.id,'note',now,'Statut : '+statuses[status],now)]));
+   return {ok:true,changed:found.length};
+  }
   if(action==='prospect-meeting'){
    const p=await sql('SELECT id,name,email FROM eywa_crm_prospects WHERE id=?',text(b.prospectId,100)).first();if(!p)fail('Prospect introuvable.',404);
    if(!p.email)fail('Ajoutez l’e-mail de la personne dans sa fiche avant de l’inviter.');
