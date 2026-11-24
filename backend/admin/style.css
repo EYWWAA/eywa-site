@@ -259,3 +259,5 @@ main{margin:0 auto;align-self:start}
 
 .sup-title{font-size:15px;font-weight:600;margin:26px 0 10px}.sup-notes-cell{white-space:pre-line!important;font-size:13px;color:var(--muted);min-width:240px;max-width:380px}
 .cs-company h4{margin:12px 0 0;font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted,#776)}.cs-company h4:first-of-type{margin-top:8px}.cs-company p{margin-top:4px}
+button.secondary.danger{color:var(--danger);border-color:#e7c4b8}
+.badge.p-invitation{background:#f6eedd;color:#8a6a2a;border:1px dashed #d9bf8c}
