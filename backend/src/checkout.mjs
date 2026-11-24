@@ -1,4 +1,5 @@
 import {paymentPlan} from './lib/payment-plan.mjs';
+import {withCardFallback} from './lib/payment-methods.mjs';
 import bookingDetails from './lib/booking-details.cjs';
 import bookingPolicy from './lib/booking-policy.cjs';
 import {reconcileBookings} from './lib/bookings.mjs';
@@ -39,7 +40,7 @@ export function createCheckout(deps){
     const line=(i,name,cents,description)=>({[`line_items[${i}][price_data][currency]`]:'eur',[`line_items[${i}][price_data][product_data][name]`]:name,[`line_items[${i}][price_data][product_data][description]`]:description,[`line_items[${i}][price_data][unit_amount]`]:String(cents),[`line_items[${i}][quantity]`]:'1'});
     const params={
       ...line(0,serviceSpecial?'Prestation et déplacement EYWA — code NATHALIE08':special?'Réservation EYWA — tarif spécial':launch?'Coffee bar et déplacement — offre de lancement −80 %':'Réservation EYWA — acompte de 50 %',serviceSpecial?100:launch?payable-calculated.personalizationCents:payable,serviceSpecial?'Prestation et déplacement à 1 €. Personnalisations au tarif normal.':special?'Paiement intégral de la réservation':launch?'Remise de 80 % sur la prestation et le déplacement. Personnalisations au tarif normal.':'Coffee bar, personnalisations et déplacement selon votre devis'),
-      mode:'payment',locale:'fr','payment_method_types[]':'card',customer_creation:'always',billing_address_collection:'required',
+      mode:'payment',locale:'fr','payment_method_types[0]':'card','payment_method_types[1]':'wero',customer_creation:'always',billing_address_collection:'required',
       success_url:'https://eywacoffeecatering.com/merci.html?session_id={CHECKOUT_SESSION_ID}',
       cancel_url:'https://eywacoffeecatering.com/reservation.html?'+new URLSearchParams({...body.quote,pr:normal/100}).toString(),
       expires_at:String(Math.floor(Date.now()/1000)+1860),
@@ -53,7 +54,7 @@ export function createCheckout(deps){
     if(serviceSpecial&&travelCents)Object.assign(params,line(nextLine++,'Déplacement — tarif normal',travelCents,'Frais de déplacement selon votre devis'));
     if(savedQuote){params.customer_email=savedQuote.email;params['payment_intent_data[receipt_email]']=savedQuote.email;params['metadata[eywa_quote]']=savedQuote.id;}
     if(slot){params['metadata[eywa_claim]']=slot.claim_id;params['metadata[eywa_slot]']=String(slot.slot);}
-    const session=await request('checkout/sessions','POST',params,'eywa-booking-'+booking.id);
+    const session=await withCardFallback(request,params,'eywa-booking-'+booking.id);
     await bookings.attach(booking.id,session.id);if(slot)await slots.attach(slot.claim_id,session.id);
     return json(200,{url:session.url});
   }catch(e){

@@ -1,5 +1,6 @@
 import {bankDetails} from './bank-payments.mjs';
 import {bankBlock,bankCSP} from './bank-block.mjs';
+import {withCardFallback} from './payment-methods.mjs';
 // Contrats du 23/11 : facture à J-7, solde au jour J.
 // Les anciens contrats conservent l'envoi après événement et le délai de 30 jours.
 import terms from './payment-terms.cjs';
@@ -50,9 +51,9 @@ export async function balanceCheckout(env,request,token,method='choose'){
  if(!row)return new Response('Facture introuvable',{status:404});
  if(await sql('SELECT 1 FROM eywa_balance_payments WHERE token=?',token).first())return new Response('Cette facture est déjà réglée. Merci !',{headers:{'Content-Type':'text/plain; charset=utf-8'}});
  const q=JSON.parse(row.data_json),bank=q.bankDetails||bankDetails(env);
- if(method!=='card'&&bank){const page=shell({heading:'Le solde de votre réservation.',intro:'Vous pouvez effectuer un virement avec les coordonnées ci-dessous ou régler par carte. Le règlement par virement sera validé après vérification de sa réception.',rows:[['Échéance',q.dueDate]],extra:bankBlock({bank,amountCents:q.balanceCents}),amount:q.balanceCents,amountLabel:'Solde à régler',buttons:[['Régler par carte',balancePayURL(token)+'&method=card']],note:''});return new Response(page.html,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'private, no-store','X-Robots-Tag':'noindex, nofollow','Referrer-Policy':'no-referrer','Content-Security-Policy':bankCSP}});}
- const session=await request('checkout/sessions','POST',{
-  mode:'payment',locale:'fr','payment_method_types[0]':'card',
+ if(method!=='card'&&bank){const page=shell({heading:'Le solde de votre réservation.',intro:'Vous pouvez effectuer un virement avec les coordonnées ci-dessous ou régler par carte. Le règlement par virement sera validé après vérification de sa réception.',rows:[['Échéance',q.dueDate]],extra:bankBlock({bank,amountCents:q.balanceCents}),amount:q.balanceCents,amountLabel:'Solde à régler',buttons:[['Régler par carte ou Wero',balancePayURL(token)+'&method=card']],note:''});return new Response(page.html,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'private, no-store','X-Robots-Tag':'noindex, nofollow','Referrer-Policy':'no-referrer','Content-Security-Policy':bankCSP}});}
+ const session=await withCardFallback(request,{
+  mode:'payment',locale:'fr','payment_method_types[0]':'card','payment_method_types[1]':'wero',
   customer_creation:'always',...(q.email?{customer_email:q.email}:{}),
   'line_items[0][price_data][currency]':'eur','line_items[0][price_data][unit_amount]':String(q.balanceCents),'line_items[0][quantity]':'1',
   'line_items[0][price_data][product_data][name]':'Solde, facture N° '+invoiceNumber(row),
