@@ -258,3 +258,4 @@ main{margin:0 auto;align-self:start}
 .sup-table td,.sup-table th{white-space:nowrap}.sup-table td{vertical-align:middle}.sup-price{font-variant-numeric:tabular-nums}.sup-price.best{color:var(--green);font-weight:600}
 
 .sup-title{font-size:15px;font-weight:600;margin:26px 0 10px}.sup-notes-cell{white-space:pre-line!important;font-size:13px;color:var(--muted);min-width:240px;max-width:380px}
+.cs-company h4{margin:12px 0 0;font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted,#776)}.cs-company h4:first-of-type{margin-top:8px}.cs-company p{margin-top:4px}
