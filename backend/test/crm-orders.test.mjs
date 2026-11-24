@@ -23,7 +23,7 @@ test('orders: suggestions require confirmed quantity, enabled supplier, matching
 });
 test('orders: Notion supplier seeds remain candidates and do not silently become selected',async()=>{
  const env=setup(),crm=createCRM(env),orders=createOrders(env);try{
-  const list=await orders.suppliers();assert.equal(list.length,10);assert(list.every(s=>s.preferred===0));assert.equal(list.find(s=>s.id==='pixeprint-cups').min_quantity,250);
+  const list=await orders.suppliers();assert.equal(list.length,8);assert(list.every(s=>s.preferred===0));assert.equal(list.find(s=>s.id==='pixeprint-cups').min_quantity,250);
   const {id}=await crm.mutate('manual-event',sample);const d=await orders.details(id);assert.equal(d.orders.length,1);assert.equal(d.orders[0].supplier_id,null);assert.equal(d.orders[0].quantity,null);assert.deepEqual(d.orders[0].suggestions,[]);
   await orders.details(id);assert.equal(env.DB.raw.prepare('SELECT COUNT(*) n FROM eywa_crm_orders').get().n,1);
  }finally{env.DB.raw.close();}
@@ -62,4 +62,12 @@ test('orders: private data stays protected and shortcut manifest contains no cli
   const manifest=await crmHTTP(new Request('https://test.example/espace/manifest.webmanifest'),env,{});assert.equal(manifest.status,200);const m=await manifest.json();assert.equal(m.start_url,'/espace/');assert.equal(m.display,'standalone');
   assert.equal((await crmHTTP(new Request('https://test.example/espace/api/overview'),env,{})).status,401);
  }finally{env.DB.raw.close();}
+});
+
+test('Fournisseurs: prix par quantité, virgule acceptée, tri et rejet des formats inconnus',async()=>{
+ const {priceList}=await import('../src/lib/crm-orders.mjs');
+ assert.equal(priceList('200=163,45 ; 100=158.35\n150 = 160,91 €'),'100=158.35;150=160.91;200=163.45');
+ assert.equal(priceList(''),'');assert.equal(priceList(null),'');
+ assert.throws(()=>priceList('cent = beaucoup'),/Prix non reconnus/);
+ assert.throws(()=>priceList('100=12,345'),/Prix non reconnus/);
 });

@@ -22,6 +22,18 @@ export function suggestions(suppliers,order,date,now=new Date()){
  const remaining=Math.round((Date.parse(date+'T12:00:00Z')-Date.parse(policy.today(now)+'T12:00:00Z'))/86400000);
  return suppliers.filter(s=>s.active&&s.preferred&&s.category===order.category&&s.url&&s.lead_days!==null&&Number(s.lead_days)<=remaining&&(s.min_quantity===null||order.quantity>=s.min_quantity)&&(s.max_quantity===null||order.quantity<=s.max_quantity)).sort((a,b)=>a.priority-b.priority||a.name.localeCompare(b.name));
 }
+// Prix par quantité : « 100=158,35 ; 200=163,45 » (euros HT) enregistré en « 100=158.35;200=163.45 ».
+export function priceList(v){
+ const out=[];
+ for(const part of String(v??'').split(/[;\n]/).map(x=>x.trim()).filter(Boolean)){
+  const m=/^(\d{1,7})\s*=\s*(\d{1,7}(?:[.,]\d{1,2})?)\s*(?:€|eur|euros)?$/i.exec(part);
+  if(!m)fail('Prix non reconnus. Écrivez par exemple : 100=158,35 ; 200=163,45');
+  const q=Number(m[1]),p=Number(m[2].replace(',','.'));
+  if(q<1||q>1000000)fail('Quantité de prix invalide.');
+  out.push([q,p]);
+ }
+ return out.sort((a,b)=>a[0]-b[0]).map(([q,p])=>q+'='+String(p)).join(';');
+}
 export function createOrders(env){
  const sql=(s,...v)=>env.DB.prepare(s).bind(...v);
  const suppliers=async()=>(await sql('SELECT * FROM eywa_crm_suppliers ORDER BY category,name').all()).results;
@@ -38,9 +50,10 @@ export function createOrders(env){
    const min=number(b.minQuantity,1,1000000),max=number(b.maxQuantity,1,1000000),lead=number(b.leadDays,0,180),priority=number(b.priority??10,0,1000),url=supplierLink(b.url),preferred=b.preferred===true;
    if(min!==null&&max!==null&&min>max)fail('Le maximum doit être supérieur au minimum.');
    if(preferred&&(!url||lead===null))fail('Renseignez le lien et le délai avant d’activer les suggestions.');
+   const prices=priceList(b.prices);
    const current=await sql('SELECT category FROM eywa_crm_suppliers WHERE id=?',id).first();
    if(current&&current.category!==b.category&&await sql('SELECT id FROM eywa_crm_orders WHERE supplier_id=? LIMIT 1',id).first())fail('Ce fournisseur est déjà lié à une commande. Ajoutez une autre fiche pour ce type de produit.',409);
-   await sql('INSERT INTO eywa_crm_suppliers(id,name,category,url,min_quantity,max_quantity,lead_days,preferred,priority,active,notes,source_url) VALUES(?,?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET name=excluded.name,category=excluded.category,url=excluded.url,min_quantity=excluded.min_quantity,max_quantity=excluded.max_quantity,lead_days=excluded.lead_days,preferred=excluded.preferred,priority=excluded.priority,active=excluded.active,notes=excluded.notes',id,text(b.name,150),b.category,url,min,max,lead,preferred?1:0,priority,b.active===false?0:1,text(b.notes,4000),'').run();
+   await sql('INSERT INTO eywa_crm_suppliers(id,name,category,url,min_quantity,max_quantity,lead_days,preferred,priority,active,notes,source_url,prices) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET name=excluded.name,category=excluded.category,url=excluded.url,min_quantity=excluded.min_quantity,max_quantity=excluded.max_quantity,lead_days=excluded.lead_days,preferred=excluded.preferred,priority=excluded.priority,active=excluded.active,notes=excluded.notes,prices=excluded.prices',id,text(b.name,150),b.category,url,min,max,lead,preferred?1:0,priority,b.active===false?0:1,text(b.notes,4000),'',prices).run();
    return {ok:true,id};
   }
   if(action==='order'){
