@@ -1,4 +1,5 @@
 import {randomBytes} from 'node:crypto';
+import {bankBlock,bankCSP} from './bank-block.mjs';
 import {emailAddress} from './quote-emails.mjs';
 import {escape as e,money,shell,paymentMail} from './mail-templates.mjs';
 import {createBookings} from './bookings.mjs';
@@ -55,8 +56,8 @@ export function createBankPayments(env,mailer=createMailer(env)){
  async function view(token){
   try{const row=await find(token),d=JSON.parse(row.details_json),b=d.bank;if(row.state==='released')return new Response('<h1>Cette demande a expiré.</h1><p>Contactez EYWA avant de faire un virement pour vérifier la disponibilité.</p>',{status:410,headers});
    const reference='EYWA-'+row.id.slice(0,8).toUpperCase();
-   const content=shell({heading:row.state==='paid'?'Votre virement est confirmé.':'Demande d’acompte · Proforma',intro:row.state==='paid'?'Votre réservation est confirmée. La facture est envoyée par e-mail.':'Ce document présente le règlement attendu et ne constitue pas une facture acquittée. La date est retenue pendant 48 heures ; la confirmation est envoyée après vérification de la réception du virement.',rows:[['Événement',row.start_date],['Facturation',d.billingName],['Total du devis',money(b.totalCents)],['Solde après cet acompte',money(b.totalCents-row.payable_cents)],...bankRows(b.account,reference)],amount:row.payable_cents,amountLabel:row.state==='paid'?'Montant reçu':'Montant à virer',buttons:[],note:'Référence à indiquer : '+reference+'. Un virement effectué après expiration nécessite une nouvelle vérification de disponibilité. Contact : contact.eywa08@gmail.com.'});
-   return new Response(content.html,{headers});
+   const content=shell({heading:row.state==='paid'?'Votre virement est confirmé.':'Demande d’acompte · Proforma',intro:row.state==='paid'?'Votre réservation est confirmée. La facture est envoyée par e-mail.':'Ce document présente le règlement attendu et ne constitue pas une facture acquittée. La date est retenue pendant 48 heures ; la confirmation est envoyée après vérification de la réception du virement.',rows:[['Événement',row.start_date],['Facturation',d.billingName],['Total du devis',money(b.totalCents)],['Solde après cet acompte',money(b.totalCents-row.payable_cents)],],amount:row.payable_cents,extra:row.state==='paid'?'':bankBlock({bank:b.account,reference,amountCents:row.payable_cents}),amountLabel:row.state==='paid'?'Montant reçu':'Montant à virer',buttons:[],note:'Référence à indiquer : '+reference+'. Un virement effectué après expiration nécessite une nouvelle vérification de disponibilité. Contact : contact.eywa08@gmail.com.'});
+   return new Response(content.html,{headers:row.state==='paid'?headers:{...headers,'Content-Security-Policy':bankCSP}});
   }catch(error){return new Response('Document introuvable.',{status:error.status||503,headers});}
  }
  async function confirmBalance(token){
