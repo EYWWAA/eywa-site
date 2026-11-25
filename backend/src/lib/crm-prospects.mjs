@@ -5,7 +5,7 @@ import {createMeetings,parisTime} from './crm-meetings.mjs';
 export {parisTime};
 
 
-export const statuses={'a-contacter':'À contacter',invitation:'Invitation en attente',contacte:'Contacté',repondu:'A répondu',rdv:'Rendez-vous',devis:'Devis envoyé',gagne:'Client',perdu:'Sans suite'};
+export const statuses={'a-inviter':'À inviter',invitation:'Invitation en attente','a-contacter':'À contacter',contacte:'Contacté',repondu:'A répondu',rdv:'Rendez-vous',devis:'Devis envoyé',gagne:'Client',perdu:'Sans suite'};
 export const sources={linkedin:'LinkedIn',mail:'E-mail',telephone:'Téléphone',salon:'Salon ou événement',recommandation:'Recommandation',autre:'Autre'};
 export const kinds={linkedin:'Message LinkedIn',mail_out:'E-mail envoyé',mail_in:'E-mail reçu',call:'Appel',meeting:'Rendez-vous',note:'Note'};
 const OWNER=/(?:^|[<\s])contact\.?eywa08@gmail\.com(?:$|[>\s])/i;
@@ -52,7 +52,7 @@ export function createProspects(env,deps={}){
    const when=day(b.date)||policy.today(new Date(now)),at=Date.parse(when+'T12:00:00Z'),summary=text(b.summary,2000);
    if(!summary)fail('Résumez l’échange en une phrase.');
    await env.DB.batch([sql('INSERT INTO eywa_crm_prospect_events(id,prospect_id,kind,at,summary,created_at) VALUES(?,?,?,?,?,?)',randomUUID(),p.id,b.kind,at,summary,now),
-    sql("UPDATE eywa_crm_prospects SET status=CASE WHEN status IN ('a-contacter','invitation') THEN 'contacte' ELSE status END,next_action_date=COALESCE(?,next_action_date),updated_at=? WHERE id=?",day(b.nextActionDate),now,p.id)]);
+    sql("UPDATE eywa_crm_prospects SET status=CASE WHEN status IN ('a-inviter','a-contacter','invitation') THEN 'contacte' ELSE status END,next_action_date=COALESCE(?,next_action_date),updated_at=? WHERE id=?",day(b.nextActionDate),now,p.id)]);
    return {ok:true,id:p.id};
   }
   if(action==='prospect-status'){
@@ -94,7 +94,7 @@ export function createProspects(env,deps={}){
     if(!/^[a-fA-F0-9]+$/.test(m.id||'')||!Number.isFinite(m.at)||m.at>end)continue;
     const out=OWNER.test(m.from||''),body=text(m.text,20000);
     statements.push(sql('INSERT INTO eywa_crm_prospect_events(id,prospect_id,kind,at,summary,body,created_at) VALUES(?,?,?,?,?,?,?) ON CONFLICT(id) DO NOTHING','gmail:'+m.id+':'+p.id,p.id,out?'mail_out':'mail_in',m.at,text(m.subject||'(Sans objet)',250),body,now));
-    if(!out)statements.push(sql("UPDATE eywa_crm_prospects SET status=CASE WHEN status IN ('a-contacter','invitation','contacte') THEN 'repondu' ELSE status END WHERE id=?",p.id));
+    if(!out)statements.push(sql("UPDATE eywa_crm_prospects SET status=CASE WHEN status IN ('a-inviter','a-contacter','invitation','contacte') THEN 'repondu' ELSE status END WHERE id=?",p.id));
     added++;
    }
    statements.push(sql('UPDATE eywa_crm_prospects SET mail_scanned_at=?,mail_page_token=?,mail_range_end=? WHERE id=?',data.nextPageToken?p.mail_scanned_at:end,data.nextPageToken||null,data.nextPageToken?end:null,p.id));
