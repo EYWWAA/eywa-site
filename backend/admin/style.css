@@ -264,3 +264,4 @@ button.secondary.danger{color:var(--danger);border-color:#e7c4b8}
 
 .sel-col{width:38px;padding-right:0}.sel-col input{width:18px;height:18px}button.danger{color:var(--danger)}
 .grp td{background:var(--soft);padding:10px;font-size:12px;letter-spacing:.5px;border-bottom:1px solid var(--line)}select.pstatus{width:auto;min-width:150px;padding:7px 8px;font-size:13px}#pbulk-status{width:auto}
+.ct-company{line-height:1.6;overflow-wrap:anywhere}.ct-company.idea{background:#f6ecd9;border-radius:10px;padding:12px 14px;font-size:15px}
