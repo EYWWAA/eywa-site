@@ -266,3 +266,4 @@ button.secondary.danger{color:var(--danger);border-color:#e7c4b8}
 .grp td{background:var(--soft);padding:10px;font-size:12px;letter-spacing:.5px;border-bottom:1px solid var(--line)}select.pstatus{width:auto;min-width:150px;padding:7px 8px;font-size:13px}#pbulk-status{width:auto}
 .ct-company{line-height:1.6;overflow-wrap:anywhere}.ct-company.idea{background:#f6ecd9;border-radius:10px;padding:12px 14px;font-size:15px}
 .badge.p-a-inviter{background:#fff;color:#72766c;border:1px solid #cdd1c5}
+.badge.budget{font-weight:bold;padding:3px 8px;margin-right:4px}.badge.b-A{background:#dcebdf;color:#1f5130}.badge.b-B{background:#f4ead6;color:#7a5a1c}.badge.b-C{background:#ededeb;color:#777}
