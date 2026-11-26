@@ -4,7 +4,7 @@
    coup d'œil et le client peut la recalculer lui-même. */
 (function(root){
   'use strict';
-  var RATE_PER_KM=0.35, RATE_PER_HOUR=0, FREE_OUTWARD_KM=20;
+  var RATE_PER_KM=0.15, RATE_PER_HOUR=0, FREE_OUTWARD_KM=20;
   function calculate(roundTripKm,roundTripMinutes,outwardKm){
     if(typeof roundTripKm!=='number'||!Number.isFinite(roundTripKm)||roundTripKm<0||
        typeof roundTripMinutes!=='number'||!Number.isFinite(roundTripMinutes)||roundTripMinutes<0){
