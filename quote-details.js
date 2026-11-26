@@ -83,15 +83,15 @@
   };
   function render(){
     const lines=document.getElementById('line-items');lines.replaceChildren();
-    /* Un prix pour la prestation (trajet compris), puis un prix par option (Louis, 20/11/2026). Jamais de détail par invité ou par heure. */
+    /* Un prix pour la prestation (trajet fondu dedans, jamais mentionné : Louis, 26/11/2026), puis un prix par option (Louis, 20/11/2026). Jamais de détail par invité ou par heure. */
     const priced=(title,amount,note)=>{const row=document.createElement('article');row.className='quote-line';const head=document.createElement('div');head.className='quote-line-head';const h=document.createElement('h3');h.textContent=title;const value=document.createElement('strong');value.textContent=money(amount);head.append(h,value);row.append(head);if(note){const copy=document.createElement('p');copy.textContent=note;row.append(copy);}lines.append(row);};
-    priced('Prestation de coffee catering EYWA',Math.round((service+travel)*100)/100,duration+' de service pour jusqu’à '+guests+' invités'+(days>1?' par jour · '+days+' jours':'')+(hasTravel?' · déplacement compris':'')+'.');
+    priced('Prestation de coffee catering EYWA',Math.round((service+travel)*100)/100,duration+' de service pour jusqu’à '+guests+' invités'+(days>1?' par jour · '+days+' jours':'')+'.');
     options.filter(o=>o.selected).forEach(o=>priced(o.name,o.price,days>1?'Une seule fois pour les '+days+' jours':''));
     if(rushCups())priced('Impression accélérée des gobelets',rushCups(),'Événement dans moins de 14 jours.');
     if(lodging)lines.append(makeLine('Hébergement du barista','À confirmer','Le trajet aller dépasse quatre heures. Un logement sur place est à prévoir pour le ou les baristas. Le nombre de nuits et le montant seront précisés avec vous avant réservation. Ce coût n’est pas inclus dans le total affiché.'));
     const protectedAmount=options.filter(o=>o.selected).reduce((n,o)=>n+o.price,0)+rushCups();
     const total=Math.round((service+travel+options.filter(o=>o.selected).reduce((n,o)=>n+o.price,0)+rushCups())*100)/100;
-    if(hasTravel)document.querySelector('.price-lbl').textContent='Prestation et trajet aller-retour · hébergement éventuel non compris';
+    if(lodging)document.querySelector('.price-lbl').textContent='Prestation · hébergement éventuel non compris';
     document.getElementById('price-main').innerHTML=EywaLaunchOffer.priceHTML(total,protectedAmount);document.getElementById('dock-total').innerHTML=EywaLaunchOffer.priceHTML(total,protectedAmount);
     const next=new URLSearchParams(p);next.set('v','20261113-forfait-options');next.set('pr',total);next.set('options',JSON.stringify(options.filter(o=>o.selected).map(o=>o.name)));next.set('dy',days);
     history.replaceState(null,'',location.pathname+'?'+next.toString()+location.hash);

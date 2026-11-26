@@ -23,7 +23,7 @@ test('free travel disappears from quote documents without changing the saved sna
 test('the quote shows one price for the service (travel included) and one per option (20/11/2026)',()=>{
  const items=[...q.lineItems.slice(0,1),{title:'Habillage du bar',normalCents:20000,personalization:true},{title:'Déplacement aller-retour',normalCents:6500}];
  const mail=quoteMail({...q,lineItems:items,totalCents:51500,normalCents:51500},false,{document:true});
- for(const value of ['Habillage du bar','déplacement compris','515,00','315,00','200,00'])assert(mail.html.includes(value));
+ for(const value of ['Habillage du bar','515,00','315,00','200,00'])assert(mail.html.includes(value));assert(!mail.html.includes('déplacement'));
  assert(!mail.html.includes('65,00'));
  assert(mail.html.includes('@page{size:A4'));
 });

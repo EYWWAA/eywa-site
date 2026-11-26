@@ -413,7 +413,7 @@
     <!-- S2 : Lieu -->
     <div class="step" id="s2">
       <div class="question">Où se déroule votre événement&nbsp;?</div>
-      <div class="question-sub">La ville suffit&nbsp;: elle sert à estimer le déplacement. L’adresse exacte vous sera demandée à la réservation.</div>
+      <div class="question-sub">La ville suffit pour préparer votre proposition. L’adresse exacte vous sera demandée à la réservation.</div>
       <input type="text" id="lieu-input" placeholder="Ville ou code postal" oninput="checkS2()">
       <button type="button" class="btn-fq" onclick="findEventAddress()">Continuer</button>
       <div id="travel-results"></div><p id="travel-status" role="status" aria-live="polite"></p><p style="font-size:11px">Lieux : <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OpenStreetMap</a>. Votre lieu est transmis aux services de recherche et d’itinéraire.</p>
@@ -901,7 +901,7 @@
       var pn = A.personalization[pi];
       if (Object.prototype.hasOwnProperty.call(PERSO_PRIX,pn)) bd += '<div class="brow"><span>' + pn + '</span></div>';
     }
-    if(window.eywaTravel.pending)bd += '<div class="brow note"><span>Le déplacement reste à confirmer avec EYWA.</span></div>';
+    if(window.eywaTravel.pending)bd += '<div class="brow note"><span>Le lieu reste à confirmer avec EYWA.</span></div>';
     if(window.eywaTravel.lodgingRequired)bd += '<div class="brow note"><span>Hébergement à confirmer avec EYWA avant réservation.</span></div>';
     if(EywaLaunchOffer.state.active)bd += '<div class="brow note"><span>Paiement intégral à la réservation. Offre valable pour la première réservation réglée intégralement.</span></div>';
     document.getElementById('breakdown').innerHTML = bd;
@@ -1000,7 +1000,7 @@
 <script src="devis-pickers.js?v=20261113-forfait-options"></script>
 <script src="quote-edit.js?v=20261121-modifier"></script>
 <script src="brand-options.js?v=20261006-publication" defer></script>
-<script src="travel-pricing.js?v=20261126-km15"></script><script src="travel-route.js?v=20261015-local20"></script><script src="travel-origin.js?v=20261006-publication"></script><script src="service-area.js?v=20261007-zone-300km"></script><script src="travel-places.js?v=20261007-zone-300km"></script><script src="travel-form.js?v=20261015-local20"></script>
+<script src="travel-pricing.js?v=20261126-km15"></script><script src="travel-route.js?v=20261015-local20"></script><script src="travel-origin.js?v=20261006-publication"></script><script src="service-area.js?v=20261007-zone-300km"></script><script src="travel-places.js?v=20261007-zone-300km"></script><script src="travel-form.js?v=20261126-sans-trajet"></script>
 <script src="eywa-assistant.js?v=20261109-confidentialite" defer></script>
 </body>
 </html>

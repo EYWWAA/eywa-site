@@ -36,10 +36,10 @@ export function quoteMail(q,admin=false,{document=false}={}){
  const selected=Array.isArray(q.options)?q.options:allLines.filter(l=>l.personalization&&!/^Impression accélérée/.test(l.title||'')).map(l=>l.title);
  const paidTravel=allLines.some(l=>/^Déplacement/i.test(l.title||'')&&l.normalCents>0);
  // Keep the calculation snapshot private; the customer receives a package.
- // Un prix pour la prestation (déplacement compris), puis un prix par personnalisation (Louis, 20/11/2026). Jamais de détail par invité ou par heure.
+ // Un prix pour la prestation (déplacement fondu dedans, jamais mentionné : Louis, 26/11/2026), puis un prix par personnalisation (Louis, 20/11/2026). Jamais de détail par invité ou par heure.
  const extras=[...Array.from(new Set(selected)).map(title=>{const l=allLines.find(x=>x.title===title&&x.personalization&&Number.isSafeInteger(x.normalCents));return {title,amount:l?l.normalCents:null};}),...allLines.filter(l=>/^Impression accélérée/.test(l.title||'')&&Number.isSafeInteger(l.normalCents)).map(l=>({title:l.title,amount:l.normalCents}))];
  const priced=extras.every(l=>Number.isSafeInteger(l.amount));
- const lines=[{title:'Prestation de coffee catering EYWA',description:duration(q.hours||1.5)+' de service pour jusqu’à '+plural(q.guests||50,'invité','invités')+(q.days>1?' par jour · '+plural(q.days,'jour','jours'):'')+(paidTravel?' · déplacement compris':''),amount:priced?normal-extras.reduce((n,l)=>n+l.amount,0):null},...extras.map(l=>({title:l.title,description:'',amount:l.amount}))];
+ const lines=[{title:'Prestation de coffee catering EYWA',description:duration(q.hours||1.5)+' de service pour jusqu’à '+plural(q.guests||50,'invité','invités')+(q.days>1?' par jour · '+plural(q.days,'jour','jours'):''),amount:priced?normal-extras.reduce((n,l)=>n+l.amount,0):null},...extras.map(l=>({title:l.title,description:'',amount:l.amount}))];
  const destination=q.quoteUrl||q.documentUrl;
  const primary=url(destination),reference=q.reference||'Devis EYWA';
  const included='Coffee bar mobile, '+plural(q.staff||Math.max(1,Math.ceil((q.guests||50)/((q.hours||1.5)*50))),'barista professionnel','baristas professionnels')+', service jusqu’à '+esc(q.guests||50)+' invités et boissons préparées à la demande.';

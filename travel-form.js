@@ -35,12 +35,12 @@
     status.textContent=message;
     var bouton=document.createElement('button');
     bouton.type='button';bouton.className='travel-result travel-result-fallback';
-    bouton.textContent='Continuer sans le déplacement';
+    bouton.textContent='Continuer';
     bouton.addEventListener('click',function(){
       version++;
       window.eywaTravel=deplacementAConfirmer();
       results.replaceChildren();
-      status.textContent='Déplacement à confirmer. Votre devis affiche le prix de la prestation ; nous chiffrons le trajet avec vous.';
+      status.textContent='Lieu à confirmer : nous le validerons avec vous avant la réservation.';
       suivant(true);
     });
     results.append(bouton);
@@ -94,7 +94,7 @@
       if(ticket!==version)return;
       var cost=EywaTravelPricing.calculate(trip.roundTripKm,trip.roundTripMinutes,trip.outwardKm);
       window.eywaTravel=Object.assign(cost,{localFree:trip.localFree===true,coordinates:feature.geometry.coordinates,country:feature.properties.countrycode,outwardMinutes:trip.outwardMinutes,lodgingRequired:trip.lodgingRequired,label:input.value,approximate:feature.properties.type!=='housenumber'});
-      status.textContent=trip.localFree?'Lieu reconnu. Déplacement gratuit dans le rayon de 20 km.':'';
+      status.textContent=trip.localFree?'Lieu reconnu.':'';
       
       suivant(true);
     }catch(e){if(ticket===version)proposerSansDeplacement('Le lieu est reconnu, mais le trajet n’a pas pu être calculé.');}
