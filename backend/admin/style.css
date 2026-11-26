@@ -270,3 +270,4 @@ button.secondary.danger{color:var(--danger);border-color:#e7c4b8}
 .sector-events{margin:8px 0 0;padding-left:20px;line-height:1.6}.sector-events li:last-child{font-weight:bold;list-style:none;margin-left:-20px;margin-top:6px}
 
 .cs-copy{margin-top:8px}
+.prospect-stats .stat.offer{border-color:var(--accent);background:#f7ece3}.prospect-stats .stat.offer.on{background:var(--green);color:#fffdf8}
