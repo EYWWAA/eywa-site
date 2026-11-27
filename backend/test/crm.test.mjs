@@ -125,3 +125,18 @@ test('CRM: notes de contact, ajout, épinglage et suppression',async()=>{
   await assert.rejects(()=>crm.mutate('contact-note-delete',{id:'inconnu'}));
  }finally{DB.raw.close();}
 });
+
+test('CRM: une prestation de l’agenda devient un dossier, suit les changements, et un événement supprimé ne revient pas',async()=>{
+ const DB=crmDatabase();try{
+  const crm=createCRM(envFor(DB)),now=Date.parse('2026-11-27T09:00:00Z'),start=Date.parse('2027-01-08T11:00:00Z');
+  const data=time=>JSON.stringify({name:'EYWA – Déjeuner fictif – 30 pers – OFFERT',date:'2027-01-08',time,hours:2,days:1,location:'Lieu fictif',notes:'Contact : 07 00 00 00 00. 30 personnes.',isEywa:true,guests:0,options:[]});
+  DB.raw.prepare("INSERT INTO eywa_crm_calendar_events(id,data_json,starts_at,ends_at,status,last_seen) VALUES(?,?,?,?,'active','x')").run('calendar-'+'a'.repeat(64),data('12:00'),start,start+7200000);
+  await crm.sync(now);await crm.sync(now);
+  let o=await crm.overview();assert.equal(o.events.length,1);assert.equal(o.externalEvents.length,0);
+  const e=o.events[0];assert.equal(e.data.guests,30);assert.equal(e.data.phone,'07 00 00 00 00');assert.equal(e.data.eventType,'Prestation offerte');assert(o.tasks.some(t=>t.event_id===e.id));assert(o.briefItems.some(t=>t.event_id===e.id));
+  DB.raw.prepare('UPDATE eywa_crm_calendar_events SET data_json=?').run(data('13:00'));
+  await crm.sync(now);assert.equal((await crm.overview()).events[0].data.time,'13:00');
+  await crm.mutate('event-delete',{id:e.id},now);await crm.sync(now);
+  o=await crm.overview();assert.equal(o.events.length,0);assert.equal(o.tasks.length,0);assert.equal(o.externalEvents.length,0);
+ }finally{DB.raw.close();}
+});

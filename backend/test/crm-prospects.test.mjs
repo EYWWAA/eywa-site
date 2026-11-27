@@ -91,3 +91,12 @@ test('Prospects: relance à 14 jours quand « Contacté », annulée quand la pe
   assert.equal((await p.details(id)).next_action_date,null);
  }finally{DB.raw.close();}
 });
+
+test('Prospects: fixer puis supprimer un rendez-vous',async()=>{
+ const DB=crmDatabase(),p=createProspects(env(DB)),now=Date.parse('2026-11-27T09:00:00Z');try{
+  const id=(await p.mutate('prospect',{...base,status:'repondu',nextActionDate:''},now)).id;
+  const r=await p.mutate('prospect-rdv',{prospectId:id,date:'2026-11-30',time:'16:00',minutes:60,place:'Bureaux'},now);
+  const list=await p.meetings(now);assert.equal(list.length,1);assert.equal(list[0].start_at,Date.parse('2026-11-30T15:00:00Z'));assert.equal((await p.details(id)).status,'rdv');
+  await p.mutate('prospect-rdv-delete',{id:r.meetingId},now);assert.equal((await p.meetings(now)).length,0);
+ }finally{DB.raw.close();}
+});

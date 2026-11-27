@@ -29,6 +29,7 @@ export function createProspects(env,deps={}){
    (SELECT COUNT(*) FROM eywa_crm_prospect_events e WHERE e.prospect_id=p.id AND e.kind<>'note') AS exchanges
    FROM eywa_crm_prospects p ORDER BY COALESCE(p.next_action_date,'9999-12-31'),p.updated_at DESC LIMIT 2000`).all()).results;
  }
+ async function meetings(now=Date.now()){return (await sql("SELECT m.id,m.prospect_id,m.start_at,m.minutes,m.place,p.name,p.company,p.phone FROM eywa_crm_meetings m JOIN eywa_crm_prospects p ON p.id=m.prospect_id WHERE m.status='scheduled' AND m.start_at>? ORDER BY m.start_at LIMIT 50",now-86400000).all()).results;}
  async function details(id){
   const p=await sql('SELECT * FROM eywa_crm_prospects WHERE id=?',text(id,100)).first();if(!p)fail('Prospect introuvable.',404);
   const events=(await sql('SELECT id,kind,at,summary,body FROM eywa_crm_prospect_events WHERE prospect_id=? ORDER BY at DESC LIMIT 300',p.id).all()).results;
@@ -71,6 +72,22 @@ export function createProspects(env,deps={}){
    if(found.length)await env.DB.batch(found.flatMap(p=>[sql('UPDATE eywa_crm_prospects SET status=?,next_action_date=?,updated_at=? WHERE id=?',status,nextFor(p),now,p.id),sql('INSERT INTO eywa_crm_prospect_events(id,prospect_id,kind,at,summary,created_at) VALUES(?,?,?,?,?,?)',randomUUID(),p.id,channel(p.source),now,'Statut : '+statuses[status],now)]));
    return {ok:true,changed:found.length};
   }
+  if(action==='prospect-rdv'){
+   const p=await sql('SELECT id,status FROM eywa_crm_prospects WHERE id=?',text(b.prospectId,100)).first();if(!p)fail('Choisissez la personne.',404);
+   const when=day(b.date),time=text(b.time,5),minutes=Number(b.minutes||60),place=text(b.place,300);
+   if(!when||!/^([01]\d|2[0-3]):[0-5]\d$/.test(time))fail('Choisissez la date et l’heure.');
+   if(![15,30,45,60,90,120].includes(minutes))fail('Durée invalide.');
+   const startMs=parisTime(when,time),id='rdv-'+randomUUID();
+   await env.DB.batch([sql("INSERT INTO eywa_crm_meetings(id,prospect_id,start_at,minutes,status,created_at,place) VALUES(?,?,?,?,'scheduled',?,?)",id,p.id,startMs,minutes,now,place),
+    sql('INSERT INTO eywa_crm_prospect_events(id,prospect_id,kind,at,summary,created_at) VALUES(?,?,?,?,?,?)',id,p.id,'meeting',now,'Rendez-vous fixé le '+when.split('-').reverse().join('/')+' à '+time+(place?' · '+place:''),now),
+    sql("UPDATE eywa_crm_prospects SET status=CASE WHEN status IN ('a-inviter','a-contacter','invitation','contacte','repondu') THEN 'rdv' ELSE status END,next_action_date=?,updated_at=? WHERE id=?",when,now,p.id)]);
+   return {ok:true,id:p.id,meetingId:id};
+  }
+  if(action==='prospect-rdv-delete'){
+   const m=await sql('SELECT id FROM eywa_crm_meetings WHERE id=?',text(b.id,200)).first();if(!m)fail('Rendez-vous introuvable.',404);
+   await env.DB.batch([sql('DELETE FROM eywa_crm_meeting_requests WHERE meeting_id=?',m.id),sql('DELETE FROM eywa_crm_meetings WHERE id=?',m.id),sql('DELETE FROM eywa_crm_prospect_events WHERE id IN (?,?)',m.id,'meet:'+m.id)]);
+   return {ok:true};
+  }
   if(action==='prospect-meeting'){
    const p=await sql('SELECT id,name,email FROM eywa_crm_prospects WHERE id=?',text(b.prospectId,100)).first();if(!p)fail('Prospect introuvable.',404);
    if(!p.email)fail('Ajoutez l’e-mail de la personne dans sa fiche avant de l’inviter.');
@@ -111,5 +128,5 @@ export function createProspects(env,deps={}){
   }
   return added;
  }
- return {list,details,mutate,syncMail};
+ return {list,details,meetings,mutate,syncMail};
 }

@@ -63,8 +63,38 @@ export function createCRM(env){
  async function settings(){return {...defaultSettings,...parse((await sql('SELECT data_json FROM eywa_crm_settings WHERE id=1').first())?.data_json)};}
  async function event(id){const row=await sql('SELECT * FROM eywa_crm_events WHERE id=?',id).first();if(!row)fail('Événement introuvable.',404);return {...row,data:parse(row.data_json)};}
  async function tasks(id,q,now){await checklists.applyDefaults(id,q.date,now);const extra=taskTemplates(q);if(extra.length)await env.DB.batch(extra.map(t=>sql('INSERT INTO eywa_crm_tasks(id,event_id,title,due_date,created_at) VALUES(?,?,?,?,?) ON CONFLICT DO NOTHING',id+':'+t.key,id,t.title,t.dueDate<policy.today(new Date(now))?policy.today(new Date(now)):t.dueDate,now)));}
+ // Une prestation notée dans Google Agenda devient un dossier complet (tâches, brief, barista, matériel).
+ // Elle suit ensuite les changements de date, d'heure et de lieu faits dans l'agenda.
+ async function syncAgenda(config,now){
+  const rows=(await sql('SELECT * FROM eywa_crm_calendar_events').all()).results;
+  for(const r of rows){
+   const c=parse(r.data_json);if(!c.isEywa||/\b(rdv|rendez-vous|visio)\b/i.test(c.name||''))continue;
+   const existing=await sql("SELECT * FROM eywa_crm_events WHERE json_extract(data_json,'$.calendarId')=?",r.id).first();
+   if(existing?.deleted_at)continue;
+   const key=JSON.stringify([c.date,c.time,c.hours,c.days,c.location]),active=r.status==='active';
+   if(!existing){
+    if(!active||r.ends_at<now)continue;
+    const text0=(c.name||'')+' '+(c.notes||''),guests=Number(c.guests)||Number(text0.match(/(\d{1,5})\s*(?:personnes|pers\b|invités)/i)?.[1])||0;
+    const data={name:String(c.name||'Prestation').replace(/^\s*EYWA\s*[-–—:]\s*/i,'').slice(0,150),email:'',phone:text0.match(/(?:\+33\s?|0)[1-9](?:[\s.]?\d{2}){4}/)?.[0]||'',company:'',date:c.date,time:c.allDay?'10:00':c.time,hours:Math.min(24,Number(c.hours)||2),days:Number(c.days)||1,guests,eventType:/offert/i.test(text0)?'Prestation offerte':'Prestation',location:c.location||'',options:[],notes:c.notes||'',reference:'AGENDA-'+r.id.slice(9,17).toUpperCase(),calendarId:r.id,calendarKey:key};
+    data.staff=Math.max(1,Math.ceil((guests||1)/(data.hours*50)));
+    let timeline;try{timeline=eventTimeline(data,config);}catch{continue;}
+    const id='agenda-'+r.id.slice(9,41);
+    await sql('INSERT INTO eywa_crm_events(id,data_json,status,starts_at,ends_at,created_at,review_eligible,review_state) VALUES(?,?,?,?,?,?,0,?) ON CONFLICT DO NOTHING',id,JSON.stringify({...data,timeline}),'confirmed',timeline.startsAt,timeline.endsAt,now,'off').run();
+    await tasks(id,data,now);
+    continue;
+   }
+   const old=parse(existing.data_json);
+   if(!active){if(existing.status==='confirmed')await sql("UPDATE eywa_crm_events SET status='cancelled' WHERE id=?",existing.id).run();continue;}
+   if(old.calendarKey===key&&existing.status!=='cancelled')continue;
+   const data={...old,date:c.date,time:c.allDay?'10:00':c.time,hours:Math.min(24,Number(c.hours)||old.hours),days:Number(c.days)||1,location:c.location||'',calendarKey:key};
+   let timeline;try{timeline=eventTimeline(data,config,old.timeline||{});}catch{continue;}
+   await sql('UPDATE eywa_crm_events SET data_json=?,status=?,starts_at=?,ends_at=? WHERE id=?',JSON.stringify({...data,timeline}),existing.status==='cancelled'?'confirmed':existing.status,timeline.startsAt,timeline.endsAt,existing.id).run();
+   await sql('UPDATE eywa_crm_assignments SET starts_at=?,ends_at=? WHERE event_id=?',timeline.startsAt,timeline.endsAt,existing.id).run();
+  }
+ }
  async function sync(now=Date.now()){
   const config=await settings();
+  await syncAgenda(config,now);
   // Lecture des réservations réglées uniquement. Aucun paiement ni facture n’est créé ici.
   const rows=(await sql("SELECT b.*,q.data_json AS quote_json FROM eywa_bookings b LEFT JOIN eywa_quotes q ON q.id=json_extract(b.details_json,'$.quoteId') WHERE b.state='paid' AND NOT EXISTS(SELECT 1 FROM eywa_crm_events e WHERE e.booking_id=b.id) ORDER BY b.created_at DESC LIMIT 20").all()).results;
   for(const b of rows){
@@ -82,9 +112,11 @@ export function createCRM(env){
    await sql('INSERT INTO eywa_crm_blocks(id,from_date,to_date,label,event_id) VALUES(?,?,?,?,?) ON CONFLICT DO NOTHING','event:'+id,b.start_date,b.end_date,data.name,id).run();
   }
  }
+ // Un événement d'agenda transformé en dossier n'apparaît plus une seconde fois.
+ async function externalEvents(){const adopted=new Set((await sql("SELECT json_extract(data_json,'$.calendarId') AS c FROM eywa_crm_events WHERE json_extract(data_json,'$.calendarId') IS NOT NULL").all()).results.map(r=>r.c));return (await calendar.events()).filter(e=>!adopted.has(e.id));}
  async function overview(){
   const [eventRows,quotes,taskRows,resources,assignments,blocks,errors,config,finances]=await Promise.all([
-   sql('SELECT * FROM eywa_crm_events ORDER BY starts_at DESC LIMIT 1500').all(),
+   sql('SELECT * FROM eywa_crm_events WHERE deleted_at IS NULL ORDER BY starts_at DESC LIMIT 1500').all(),
    sql('SELECT q.id,q.data_json,q.created_at,s.status AS state,s.expires_at,t.stage,t.next_action_date FROM eywa_quotes q LEFT JOIN eywa_quote_state s ON s.quote_id=q.id LEFT JOIN eywa_crm_quote_tracking t ON t.quote_id=q.id ORDER BY q.created_at DESC LIMIT 1500').all(),
    sql('SELECT * FROM eywa_crm_tasks ORDER BY due_date,title LIMIT 5000').all(),
    sql('SELECT * FROM eywa_crm_resources ORDER BY kind,name').all(),sql('SELECT * FROM eywa_crm_assignments').all(),sql('SELECT * FROM eywa_crm_blocks ORDER BY from_date').all(),
@@ -93,7 +125,7 @@ export function createCRM(env){
   ]);
   const events=eventRows.results.map(e=>({...e,data_json:undefined,data:parse(e.data_json)}));
   const dossiers=quotes.results.map(r=>{const q=parse(r.data_json);return {id:r.id,createdAt:r.created_at,expiresAt:r.expires_at??null,state:r.state||'open',stage:r.stage||'new',nextActionDate:r.next_action_date,reference:q.reference,name:q.name,email:q.email,phone:q.phone,company:q.company,eventType:q.eventType,date:q.date,time:q.time,hours:q.hours,days:q.days,guests:q.guests,location:q.location,options:q.options,totalCents:q.totalCents,quoteUrl:q.quoteUrl};});
-  return {calendar:await calendar.status(),externalEvents:await calendar.events(),events,quotes:dossiers,tasks:taskRows.results,resources:resources.results,assignments:assignments.results,blocks:blocks.results,errors:errors.results,settings:config,finances:finances.results,suppliers:await procurement.suppliers(),prospects:await prospecting.list(),notes:await notebook.list(),contactNotes:await contactNotes.list(),checklists:await checklists.library(),briefItems:(await sql('SELECT event_id,done FROM eywa_crm_brief_items').all()).results,now:Date.now(),limited:eventRows.results.length===1500||quotes.results.length===1500};
+  return {calendar:await calendar.status(),externalEvents:await externalEvents(),meetings:await prospecting.meetings(),events,quotes:dossiers,tasks:taskRows.results,resources:resources.results,assignments:assignments.results,blocks:blocks.results,errors:errors.results,settings:config,finances:finances.results,suppliers:await procurement.suppliers(),prospects:await prospecting.list(),notes:await notebook.list(),contactNotes:await contactNotes.list(),checklists:await checklists.library(),briefItems:(await sql('SELECT event_id,done FROM eywa_crm_brief_items').all()).results,now:Date.now(),limited:eventRows.results.length===1500||quotes.results.length===1500};
  }
  async function details(id){
   if(id.startsWith('calendar-'))return calendar.details(id);
@@ -151,6 +183,13 @@ export function createCRM(env){
    if(qty===0){await sql('DELETE FROM eywa_crm_assignments WHERE event_id=? AND resource_id=?',e.id,b.resourceId).run();return {ok:true};}
    // Vérification atomique et conservatrice de toutes les affectations qui chevauchent ce créneau.
    const row=await sql('INSERT INTO eywa_crm_assignments(event_id,resource_id,quantity,starts_at,ends_at) SELECT ?,id,?,?,? FROM eywa_crm_resources r WHERE id=? AND active=1 AND quantity>=?+COALESCE((SELECT SUM(a.quantity) FROM eywa_crm_assignments a WHERE a.resource_id=r.id AND a.event_id<>? AND a.starts_at<? AND a.ends_at>?),0) ON CONFLICT(event_id,resource_id) DO UPDATE SET quantity=excluded.quantity,starts_at=excluded.starts_at,ends_at=excluded.ends_at RETURNING event_id',e.id,qty,e.starts_at,e.ends_at,b.resourceId,qty,e.id,e.ends_at,e.starts_at).first();if(!row)fail('Ressource indisponible sur ce créneau.',409);await audit(action,e.id);return {ok:true};
+  }
+  if(action==='event-delete'){
+   // La ligne est gardée (masquée) : sinon une réservation réglée serait recréée à la prochaine synchronisation. Factures et paiements ne sont pas touchés.
+   const e=await event(String(b.id||''));
+   const statements=[sql("UPDATE eywa_crm_events SET deleted_at=?,status='cancelled',review_state='off' WHERE id=?",now,e.id),sql('DELETE FROM eywa_crm_blocks WHERE event_id=?',e.id),sql('DELETE FROM eywa_crm_assignments WHERE event_id=?',e.id),sql('DELETE FROM eywa_crm_tasks WHERE event_id=?',e.id),sql('DELETE FROM eywa_crm_brief_items WHERE event_id=?',e.id),sql("DELETE FROM eywa_email_outbox WHERE id=? AND status='pending'",'crm-review:'+e.id)];
+   if(e.booking_id)statements.push(sql('DELETE FROM eywa_booking_days WHERE booking_id=?',e.booking_id));
+   await env.DB.batch(statements);await audit(action,e.id);return {ok:true};
   }
   if(action==='block'){
    if(!policy.validDate(b.from)||!policy.validDate(b.to)||b.to<b.from||b.to>policy.addDays(b.from,365)||!text(b.label,150))fail('Période de blocage invalide.');
