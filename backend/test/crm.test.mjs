@@ -140,3 +140,16 @@ test('CRM: une prestation de l’agenda devient un dossier, suit les changements
   o=await crm.overview();assert.equal(o.events.length,0);assert.equal(o.tasks.length,0);assert.equal(o.externalEvents.length,0);
  }finally{DB.raw.close();}
 });
+
+test('CRM: modifier un événement déplace sa date, ses tâches et son blocage',async()=>{
+ const DB=crmDatabase();try{
+  const crm=createCRM(envFor(DB)),now=Date.parse('2027-01-02T09:00:00Z');
+  const {id}=await crm.mutate('manual-event',manual,now);
+  const before=(await crm.overview()).tasks.filter(t=>t.event_id===id).map(t=>t.due_date).sort();
+  await crm.mutate('event-edit',{...manual,id,name:'Nom changé',date:'2027-06-05',time:'12:00',hours:2,guests:30,location:'Autre lieu'},now);
+  const o=await crm.overview(),e=o.events.find(x=>x.id===id);assert.equal(e.data.date,'2027-06-05');assert.equal(e.data.name,'Nom changé');assert.equal(e.data.location,'Autre lieu');
+  const after=o.tasks.filter(t=>t.event_id===id).map(t=>t.due_date).sort();assert.equal(after.length,before.length);assert.equal(Date.parse(after[0])-Date.parse(before[0]),4*86400000);
+  assert.equal(o.blocks.find(x=>x.event_id===id).from_date,'2027-06-05');
+  await assert.rejects(()=>crm.mutate('event-edit',{...manual,id,date:'faux'},now),/date/i);
+ }finally{DB.raw.close();}
+});

@@ -63,6 +63,8 @@ export function createCRM(env){
  async function settings(){return {...defaultSettings,...parse((await sql('SELECT data_json FROM eywa_crm_settings WHERE id=1').first())?.data_json)};}
  async function event(id){const row=await sql('SELECT * FROM eywa_crm_events WHERE id=?',id).first();if(!row)fail('Événement introuvable.',404);return {...row,data:parse(row.data_json)};}
  async function tasks(id,q,now){await checklists.applyDefaults(id,q.date,now);const extra=taskTemplates(q);if(extra.length)await env.DB.batch(extra.map(t=>sql('INSERT INTO eywa_crm_tasks(id,event_id,title,due_date,created_at) VALUES(?,?,?,?,?) ON CONFLICT DO NOTHING',id+':'+t.key,id,t.title,t.dueDate<policy.today(new Date(now))?policy.today(new Date(now)):t.dueDate,now)));}
+ // Quand la date change, les tâches pas encore faites se décalent d'autant, sans jamais tomber dans le passé.
+ async function shiftTasks(id,from,to,now){const delta=Math.round((Date.parse(to+'T12:00:00Z')-Date.parse(from+'T12:00:00Z'))/86400000);if(!delta)return;await sql("UPDATE eywa_crm_tasks SET due_date=MAX(?,date(due_date,?)) WHERE event_id=? AND done=0",policy.today(new Date(now)),(delta>0?'+':'')+delta+' days',id).run();}
  // Une prestation notée dans Google Agenda devient un dossier complet (tâches, brief, barista, matériel).
  // Elle suit ensuite les changements de date, d'heure et de lieu faits dans l'agenda.
  async function syncAgenda(config,now){
@@ -90,6 +92,7 @@ export function createCRM(env){
    let timeline;try{timeline=eventTimeline(data,config,old.timeline||{});}catch{continue;}
    await sql('UPDATE eywa_crm_events SET data_json=?,status=?,starts_at=?,ends_at=? WHERE id=?',JSON.stringify({...data,timeline}),existing.status==='cancelled'?'confirmed':existing.status,timeline.startsAt,timeline.endsAt,existing.id).run();
    await sql('UPDATE eywa_crm_assignments SET starts_at=?,ends_at=? WHERE event_id=?',timeline.startsAt,timeline.endsAt,existing.id).run();
+   await shiftTasks(existing.id,old.date,data.date,now);
   }
  }
  async function sync(now=Date.now()){
@@ -183,6 +186,27 @@ export function createCRM(env){
    if(qty===0){await sql('DELETE FROM eywa_crm_assignments WHERE event_id=? AND resource_id=?',e.id,b.resourceId).run();return {ok:true};}
    // Vérification atomique et conservatrice de toutes les affectations qui chevauchent ce créneau.
    const row=await sql('INSERT INTO eywa_crm_assignments(event_id,resource_id,quantity,starts_at,ends_at) SELECT ?,id,?,?,? FROM eywa_crm_resources r WHERE id=? AND active=1 AND quantity>=?+COALESCE((SELECT SUM(a.quantity) FROM eywa_crm_assignments a WHERE a.resource_id=r.id AND a.event_id<>? AND a.starts_at<? AND a.ends_at>?),0) ON CONFLICT(event_id,resource_id) DO UPDATE SET quantity=excluded.quantity,starts_at=excluded.starts_at,ends_at=excluded.ends_at RETURNING event_id',e.id,qty,e.starts_at,e.ends_at,b.resourceId,qty,e.id,e.ends_at,e.starts_at).first();if(!row)fail('Ressource indisponible sur ce créneau.',409);await audit(action,e.id);return {ok:true};
+  }
+  if(action==='event-edit'){
+   const e=await event(String(b.id||'')),config=await settings();
+   // Une réservation réglée a un devis et une facture : sa date et son contenu ne se réécrivent pas depuis le planning.
+   if(e.booking_id)fail('Cette réservation est liée à une facture : elle ne se modifie pas ici.',409);
+   const data={...e.data,name:text(b.name,150),company:text(b.company,200),email:text(b.email,254),phone:text(b.phone,60),location:text(b.location,500),date:String(b.date||''),time:String(b.time||''),hours:Number(b.hours),guests:Number(b.guests||0)};
+   if(!data.name)fail('Donnez un nom à l’événement.');
+   if(!policy.validDate(data.date)||!/^([01]\d|2[0-3]):[0-5]\d$/.test(data.time))fail('Choisissez la date et l’heure.');
+   if(!Number.isInteger(data.guests)||data.guests<0||data.guests>100000)fail('Nombre d’invités invalide.');
+   if(data.email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email))fail('Adresse e-mail invalide.');
+   data.staff=Math.max(1,Math.ceil((data.guests||1)/((data.hours||1.5)*50)));
+   const timeline=eventTimeline(data,config,e.data.timeline||{});data.timeline=timeline;
+   if(e.status!=='cancelled'){
+    if(await sql("SELECT id FROM eywa_crm_events WHERE id<>? AND status<>'cancelled' AND starts_at<? AND ends_at>? LIMIT 1",e.id,timeline.endsAt,timeline.startsAt).first())errorConflict();
+    if(await sql('SELECT booking_id FROM eywa_booking_days WHERE day>=? AND day<=? LIMIT 1',day(timeline.startsAt),day(timeline.endsAt-1)).first())errorConflict();
+   }
+   const statements=[sql('UPDATE eywa_crm_events SET data_json=?,starts_at=?,ends_at=? WHERE id=?',JSON.stringify(data),timeline.startsAt,timeline.endsAt,e.id),sql('UPDATE eywa_crm_assignments SET starts_at=?,ends_at=? WHERE event_id=?',timeline.startsAt,timeline.endsAt,e.id)];
+   // Les événements ajoutés à la main bloquent leurs journées ; ceux de l'agenda sont déjà bloqués par l'agenda lui-même.
+   if(!data.calendarId&&e.status!=='cancelled')statements.push(sql('DELETE FROM eywa_crm_blocks WHERE event_id=?',e.id),sql('INSERT INTO eywa_crm_blocks(id,from_date,to_date,label,event_id) VALUES(?,?,?,?,?)','event:'+e.id,day(timeline.startsAt),day(timeline.endsAt-1),data.name,e.id));
+   try{await env.DB.batch(statements);}catch{errorConflict();}
+   await shiftTasks(e.id,e.data.date,data.date,now);await audit(action,e.id);return {ok:true,id:e.id};
   }
   if(action==='event-delete'){
    // La ligne est gardée (masquée) : sinon une réservation réglée serait recréée à la prochaine synchronisation. Factures et paiements ne sont pas touchés.
