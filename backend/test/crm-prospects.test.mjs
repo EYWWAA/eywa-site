@@ -75,3 +75,19 @@ test('Prospects: change le statut d’un ou plusieurs prospects d’un coup',asy
   await assert.rejects(()=>p.mutate('prospect-status',{ids:[],status:'perdu'}),/au moins/);
  }finally{DB.raw.close();}
 });
+
+test('Prospects: relance à 14 jours quand « Contacté », annulée quand la personne répond',async()=>{
+ const DB=crmDatabase(),p=createProspects(env(DB)),now=Date.parse('2026-11-27T09:00:00Z');try{
+  const id=(await p.mutate('prospect',{...base,status:'a-contacter',nextActionDate:''},now)).id;
+  await p.mutate('prospect-status',{ids:[id],status:'invitation'},now);
+  let row=(await p.list())[0];assert.equal(row.exchanges,0);assert.equal(row.next_action_date,null);
+  await p.mutate('prospect-status',{ids:[id],status:'contacte'},now);
+  row=(await p.list())[0];assert.equal(row.exchanges,1);assert.equal(row.next_action_date,'2026-12-11');
+  await p.mutate('prospect-status',{ids:[id],status:'repondu'},now);
+  row=(await p.list())[0];assert.equal(row.next_action_date,null);assert.equal(row.exchanges,2);
+  await p.mutate('prospect',{...base,id,status:'contacte',nextActionDate:''},now);
+  assert.equal((await p.details(id)).next_action_date,'2026-12-11');
+  await p.mutate('prospect',{...base,id,status:'repondu',nextActionDate:'2026-12-11'},now);
+  assert.equal((await p.details(id)).next_action_date,null);
+ }finally{DB.raw.close();}
+});

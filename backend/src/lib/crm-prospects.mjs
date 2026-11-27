@@ -18,12 +18,15 @@ function linkedin(v){const s=text(v,500);if(!s)return '';let u;try{u=new URL(s);
 function phone(v){const s=text(v,40);if(s&&!/^[+\d][\d\s.()-]{5,}$/.test(s))fail('Numéro de téléphone invalide.');return s;}
 function day(v){const s=text(v,10);if(!s)return null;if(!policy.validDate(s))fail('Date invalide.');return s;}
 
+// Relance automatique deux semaines après le premier message ; elle s'annule dès que la personne n'est plus « Contacté ».
+const followUp=now=>policy.today(new Date(now+14*86400000));
+const NOT_YET=['a-inviter','invitation','a-contacter'];
 export function createProspects(env,deps={}){
  const sql=(s,...v)=>env.DB.prepare(s).bind(...v);
  async function list(){
   return (await sql(`SELECT p.id,p.name,p.company,p.role,p.email,p.phone,p.linkedin_url,p.source,p.status,p.next_action_date,p.updated_at,p.created_at,p.first_name,p.last_name,p.address,p.photos_url,p.event_photos_url,p.event_name,p.event_date,p.event_guests,p.pitch,p.budget,p.sector,p.offer,
-   (SELECT MAX(at) FROM eywa_crm_prospect_events e WHERE e.prospect_id=p.id) AS last_contact_at,
-   (SELECT COUNT(*) FROM eywa_crm_prospect_events e WHERE e.prospect_id=p.id) AS exchanges
+   (SELECT MAX(at) FROM eywa_crm_prospect_events e WHERE e.prospect_id=p.id AND e.kind<>'note') AS last_contact_at,
+   (SELECT COUNT(*) FROM eywa_crm_prospect_events e WHERE e.prospect_id=p.id AND e.kind<>'note') AS exchanges
    FROM eywa_crm_prospects p ORDER BY COALESCE(p.next_action_date,'9999-12-31'),p.updated_at DESC LIMIT 2000`).all()).results;
  }
  async function details(id){
@@ -38,11 +41,13 @@ export function createProspects(env,deps={}){
    const row={name,company:text(b.company,150),role:text(b.role,150),email:email(b.email),phone:phone(b.phone),linkedin:linkedin(b.linkedinUrl),source,status,next:day(b.nextActionDate),notes:text(b.notes,4000),first,last,address:text(b.address,300),photos:webLink(b.photosUrl),eventPhotos:webLink(b.eventPhotosUrl),eventName:text(b.eventName,200),eventDate:text(b.eventDate,100),eventGuests:text(b.eventGuests,60),pitch:text(b.pitch,4000),about:text(b.companyAbout,4000),pastEvents:text(b.companyEvents,4000),caterers:text(b.companyCaterers,4000),nextEvent:text(b.companyNext,4000),idea:text(b.companyIdea,4000),budget:['A','B','C'].includes(b.budget)?b.budget:'',sector:SECTORS.includes(b.sector)?b.sector:'',offer:b.offer?1:0};
    if(row.email){const twin=await sql('SELECT id FROM eywa_crm_prospects WHERE email=? AND id<>?',row.email,text(b.id,100)).first();if(twin)fail('Cette adresse e-mail est déjà dans une autre fiche.',409);}
    if(b.id){
-    const current=await sql('SELECT email FROM eywa_crm_prospects WHERE id=?',text(b.id,100)).first();if(!current)fail('Prospect introuvable.',404);
+    const current=await sql('SELECT email,status,next_action_date FROM eywa_crm_prospects WHERE id=?',text(b.id,100)).first();if(!current)fail('Prospect introuvable.',404);
+    if(row.status!==current.status){const untouched=!row.next||row.next===current.next_action_date;if(row.status==='contacte'&&untouched)row.next=followUp(now);else if((current.status==='contacte'||row.status==='repondu')&&untouched)row.next=null;}
     const reset=current.email!==row.email;
     await sql('UPDATE eywa_crm_prospects SET name=?,company=?,role=?,email=?,phone=?,linkedin_url=?,source=?,status=?,next_action_date=?,notes=?,first_name=?,last_name=?,address=?,photos_url=?,event_photos_url=?,event_name=?,event_date=?,event_guests=?,pitch=?,company_about=?,company_events=?,company_caterers=?,company_next=?,company_idea=?,budget=?,sector=?,offer=?,updated_at=?'+(reset?',mail_scanned_at=0,mail_page_token=NULL,mail_range_end=NULL':'')+' WHERE id=?',row.name,row.company,row.role,row.email,row.phone,row.linkedin,row.source,row.status,row.next,row.notes,row.first,row.last,row.address,row.photos,row.eventPhotos,row.eventName,row.eventDate,row.eventGuests,row.pitch,row.about,row.pastEvents,row.caterers,row.nextEvent,row.idea,row.budget,row.sector,row.offer,now,text(b.id,100)).run();
     return {ok:true,id:b.id};
    }
+   if(row.status==='contacte'&&!row.next)row.next=followUp(now);
    const id=randomUUID();
    await sql('INSERT INTO eywa_crm_prospects(id,name,company,role,email,phone,linkedin_url,source,status,next_action_date,notes,first_name,last_name,address,photos_url,event_photos_url,event_name,event_date,event_guests,pitch,company_about,company_events,company_caterers,company_next,company_idea,budget,sector,offer,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',id,row.name,row.company,row.role,row.email,row.phone,row.linkedin,row.source,row.status,row.next,row.notes,row.first,row.last,row.address,row.photos,row.eventPhotos,row.eventName,row.eventDate,row.eventGuests,row.pitch,row.about,row.pastEvents,row.caterers,row.nextEvent,row.idea,row.budget,row.sector,row.offer,now,now).run();
    return {ok:true,id};
@@ -53,14 +58,17 @@ export function createProspects(env,deps={}){
    const when=day(b.date)||policy.today(new Date(now)),at=Date.parse(when+'T12:00:00Z'),summary=text(b.summary,2000);
    if(!summary)fail('Résumez l’échange en une phrase.');
    await env.DB.batch([sql('INSERT INTO eywa_crm_prospect_events(id,prospect_id,kind,at,summary,created_at) VALUES(?,?,?,?,?,?)',randomUUID(),p.id,b.kind,at,summary,now),
-    sql("UPDATE eywa_crm_prospects SET status=CASE WHEN status IN ('a-inviter','a-contacter','invitation') THEN 'contacte' ELSE status END,next_action_date=COALESCE(?,next_action_date),updated_at=? WHERE id=?",day(b.nextActionDate),now,p.id)]);
+    sql("UPDATE eywa_crm_prospects SET status=CASE WHEN status IN ('a-inviter','a-contacter','invitation') THEN 'contacte' ELSE status END,next_action_date=COALESCE(?,CASE WHEN status IN ('a-inviter','a-contacter','invitation') THEN ? ELSE next_action_date END),updated_at=? WHERE id=?",day(b.nextActionDate),followUp(now),now,p.id)]);
    return {ok:true,id:p.id};
   }
   if(action==='prospect-status'){
    const status=b.status in statuses?b.status:fail('Statut invalide.'),ids=[...new Set((Array.isArray(b.ids)?b.ids:[b.id]).map(i=>text(i,100)).filter(Boolean))].slice(0,200);
    if(!ids.length)fail('Choisissez au moins un prospect.');
-   const found=(await Promise.all(ids.map(id=>sql('SELECT id,status FROM eywa_crm_prospects WHERE id=?',id).first()))).filter(p=>p&&p.status!==status);
-   if(found.length)await env.DB.batch(found.flatMap(p=>[sql('UPDATE eywa_crm_prospects SET status=?,updated_at=? WHERE id=?',status,now,p.id),sql('INSERT INTO eywa_crm_prospect_events(id,prospect_id,kind,at,summary,created_at) VALUES(?,?,?,?,?,?)',randomUUID(),p.id,'note',now,'Statut : '+statuses[status],now)]));
+   const found=(await Promise.all(ids.map(id=>sql('SELECT id,status,source,next_action_date FROM eywa_crm_prospects WHERE id=?',id).first()))).filter(p=>p&&p.status!==status);
+   // « Contacté » et « A répondu » comptent comme des échanges ; les autres changements ne sont que des notes.
+   const channel=source=>status!=='contacte'&&status!=='repondu'?'note':source==='telephone'?'call':source==='mail'?(status==='contacte'?'mail_out':'mail_in'):'linkedin';
+   const nextFor=p=>status==='contacte'?followUp(now):status==='repondu'||p.status==='contacte'?null:p.next_action_date;
+   if(found.length)await env.DB.batch(found.flatMap(p=>[sql('UPDATE eywa_crm_prospects SET status=?,next_action_date=?,updated_at=? WHERE id=?',status,nextFor(p),now,p.id),sql('INSERT INTO eywa_crm_prospect_events(id,prospect_id,kind,at,summary,created_at) VALUES(?,?,?,?,?,?)',randomUUID(),p.id,channel(p.source),now,'Statut : '+statuses[status],now)]));
    return {ok:true,changed:found.length};
   }
   if(action==='prospect-meeting'){
@@ -95,7 +103,7 @@ export function createProspects(env,deps={}){
     if(!/^[a-fA-F0-9]+$/.test(m.id||'')||!Number.isFinite(m.at)||m.at>end)continue;
     const out=OWNER.test(m.from||''),body=text(m.text,20000);
     statements.push(sql('INSERT INTO eywa_crm_prospect_events(id,prospect_id,kind,at,summary,body,created_at) VALUES(?,?,?,?,?,?,?) ON CONFLICT(id) DO NOTHING','gmail:'+m.id+':'+p.id,p.id,out?'mail_out':'mail_in',m.at,text(m.subject||'(Sans objet)',250),body,now));
-    if(!out)statements.push(sql("UPDATE eywa_crm_prospects SET status=CASE WHEN status IN ('a-inviter','a-contacter','invitation','contacte') THEN 'repondu' ELSE status END WHERE id=?",p.id));
+    if(!out)statements.push(sql("UPDATE eywa_crm_prospects SET next_action_date=CASE WHEN status IN ('a-inviter','a-contacter','invitation','contacte') THEN NULL ELSE next_action_date END,status=CASE WHEN status IN ('a-inviter','a-contacter','invitation','contacte') THEN 'repondu' ELSE status END WHERE id=?",p.id));
     added++;
    }
    statements.push(sql('UPDATE eywa_crm_prospects SET mail_scanned_at=?,mail_page_token=?,mail_range_end=? WHERE id=?',data.nextPageToken?p.mail_scanned_at:end,data.nextPageToken||null,data.nextPageToken?end:null,p.id));
