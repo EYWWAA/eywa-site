@@ -271,3 +271,4 @@ button.secondary.danger{color:var(--danger);border-color:#e7c4b8}
 
 .cs-copy{margin-top:8px}
 .prospect-stats .stat.offer{border-color:var(--accent);background:#f7ece3}.prospect-stats .stat.offer.on{background:var(--green);color:#fffdf8}
+.ev-photos{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}.ev-photos .button{margin:0}a.ev-photo-link{display:inline-block;border:1px solid var(--line);border-radius:20px;padding:3px 11px;font-size:12px;text-decoration:none;background:var(--soft);white-space:nowrap}
